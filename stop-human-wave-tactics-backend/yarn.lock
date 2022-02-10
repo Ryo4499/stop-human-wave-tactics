@@ -1787,7 +1787,7 @@
     "@strapi/utils" "4.0.7"
     lodash "4.17.21"
 
-"@strapi/plugin-graphql@4.0.7":
+"@strapi/plugin-graphql@4.0.7", "@strapi/plugin-graphql@^4.0.7":
   version "4.0.7"
   resolved "https://registry.yarnpkg.com/@strapi/plugin-graphql/-/plugin-graphql-4.0.7.tgz#f1f92bd5be7577bb679e2f9c6784658315101c8f"
   integrity sha512-xqmlkbuwQu2VjsmISjcFghdN67qH+OWuVZ/DZL0ZFimNRjkCnqhFCTPGsEF71c03YcaHeaPG1PEfOro+oOkzEw==
@@ -1939,7 +1939,7 @@
     statuses "2.0.1"
     uuid "^3.3.2"
 
-"@strapi/utils@4.0.7":
+"@strapi/utils@4.0.7", "@strapi/utils@^4.0.7":
   version "4.0.7"
   resolved "https://registry.yarnpkg.com/@strapi/utils/-/utils-4.0.7.tgz#718823fcf23c028a65ce8c317a36cc6d7321eb0c"
   integrity sha512-coGjVudsnlXvb20mobyeoguCfXKnLjXnKhYiMoS6wqy4ozazu12+5MsCh7Hs9UAkvK4Fzhf7+urvyoj/UpSkaQ==
@@ -3015,6 +3015,18 @@ backo2@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/backo2/-/backo2-1.0.2.tgz#31ab1ac8b129363463e35b3ebb69f4dfcfba7947"
   integrity sha1-MasayLEpNjRj41s+u2n038+6eUc=
+
+bad-words@^3.0.4:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/bad-words/-/bad-words-3.0.4.tgz#044c83935c4c363a905d47b5e0179f7241fecaec"
+  integrity sha512-v/Q9uRPH4+yzDVLL4vR1+S9KoFgOEUl5s4axd6NIAq8SV2mradgi4E8lma/Y0cw1ltVdvyegCQQKffCPRCp8fg==
+  dependencies:
+    badwords-list "^1.0.0"
+
+badwords-list@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/badwords-list/-/badwords-list-1.0.0.tgz#5e9856dbf13482a295c3b0b304afb9d4cfc5c579"
+  integrity sha1-XphW2/E0gqKVw7CzBK+51M/FxXk=
 
 balanced-match@^1.0.0:
   version "1.0.2"
@@ -9614,6 +9626,15 @@ std-env@^2.2.1:
   integrity sha512-eOsoKTWnr6C8aWrqJJ2KAReXoa7Vn5Ywyw6uCXgA/xDhxPoaIsBa5aNJmISY04dLwXPBnDHW4diGM7Sn5K4R/g==
   dependencies:
     ci-info "^3.1.1"
+
+strapi-plugin-comments@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/strapi-plugin-comments/-/strapi-plugin-comments-2.0.2.tgz#16d0b15be142bdab324174135c8d09530c8d34ea"
+  integrity sha512-Q4Y1xKuZyctOb+cNrebkeQWYzJHDiBu/uCsYABRNajgSMny5/g2lHZNmKKHgkyWjBoLnW3aDs7Ru9e5bsyA5aw==
+  dependencies:
+    "@strapi/plugin-graphql" "^4.0.7"
+    "@strapi/utils" "^4.0.7"
+    bad-words "^3.0.4"
 
 stream-browserify@^3.0.0:
   version "3.0.0"
