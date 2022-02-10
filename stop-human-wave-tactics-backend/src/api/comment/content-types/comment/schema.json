@@ -1,0 +1,43 @@
+{
+  "kind": "collectionType",
+  "collectionName": "comments",
+  "info": {
+    "singularName": "comment",
+    "pluralName": "comments",
+    "displayName": "Comment",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "contributor": {
+      "type": "string",
+      "maxLength": 10,
+      "minLength": 1,
+      "unique": true,
+      "required": true,
+      "regex": "[^!#<>:;&~@%+$\"\\'\\*\\^\\(\\)\\[\\]\\|\\/\\.,_-]+"
+    },
+    "content": {
+      "type": "string",
+      "regex": "[^!#<>:;&~@%+$\"\\'\\*\\^\\(\\)\\[\\]\\|\\/\\.,_-]+",
+      "unique": false,
+      "required": true,
+      "minLength": 1
+    },
+    "article": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::article.article",
+      "inversedBy": "comments"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "comments"
+    }
+  }
+}
