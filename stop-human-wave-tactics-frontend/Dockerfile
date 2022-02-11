@@ -1,11 +1,10 @@
-FROM node:16
+FROM node:16-alpine
 
 WORKDIR /home/stop-human-wave-tactics-frontend
 
 COPY package.json .
 COPY yarn.lock .
 
-RUN apt update -y && yarn install --frozen-lockfile --ignore-optional
+RUN apk update && yarn install --frozen-lockfile --ignore-optional && apk add tzdata
 
-CMD ["yarn","dev"]
-
+ENV TZ=Asia/Tokyo

@@ -8,5 +8,3 @@ COPY yarn.lock .
 RUN apk update && yarn install --frozen-lockfile --ignore-optional && apk add tzdata
 
 ENV TZ=Asia/Tokyo
-
-CMD ["yarn","develop"]
