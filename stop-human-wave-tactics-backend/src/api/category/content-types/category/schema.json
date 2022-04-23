@@ -7,21 +7,26 @@
     "displayName": "Category"
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
     "name": {
       "type": "string",
+      "minLength": 1,
       "unique": true,
-      "required": true,
-      "maxLength": 1
+      "required": true
     },
     "slug": {
       "type": "uid",
       "targetField": "name",
-      "required": true,
-      "minLength": 1
+      "required": true
+    },
+    "articles": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::article.article",
+      "mappedBy": "category"
     }
   }
 }
