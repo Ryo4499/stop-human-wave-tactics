@@ -13,7 +13,7 @@ services:
             - front
             - back
     db:
-        image: postgres:13-alpine
+        image: postgres:14-alpine
         environment:
             TZ: Asia/Tokyo
             POSTGRES_USER: postgres
@@ -28,7 +28,7 @@ services:
         volumes:
             - backModules:/home/stop-human-wave-tactics-backend/node_modules
             - ./stop-human-wave-tactics-backend:/home/stop-human-wave-tactics-backend
-        command: sh -c "yarn build && yarn develop"
+        command: sh -c "yarn build && yarn dev"
         depends_on:
             - db
     front:
