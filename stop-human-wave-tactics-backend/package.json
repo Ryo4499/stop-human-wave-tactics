@@ -4,24 +4,25 @@
   "version": "0.1.0",
   "description": "A Strapi application",
   "scripts": {
-    "develop": "strapi develop",
+    "dev": "strapi develop",
     "start": "strapi start",
     "build": "strapi build",
     "strapi": "strapi"
   },
   "devDependencies": {},
   "dependencies": {
-    "@strapi/plugin-graphql": "4.0.7",
-    "@strapi/plugin-i18n": "4.0.7",
-    "@strapi/plugin-users-permissions": "4.0.7",
-    "@strapi/strapi": "4.0.7",
-    "pg": "8.6.0"
+    "@strapi/plugin-graphql": "4.2.0-beta.1",
+    "@strapi/plugin-i18n": "4.2.0-beta.1",
+    "@strapi/plugin-users-permissions": "4.2.0-beta.1",
+    "@strapi/strapi": "4.2.0-beta.1",
+    "pg": "8.7.3",
+    "strapi-plugin-wysiwsg-react-md-editor": "^4.1.0"
   },
   "author": {
     "name": "A Strapi developer"
   },
   "strapi": {
-    "uuid": "3be19913-856f-4b9a-a36c-5759b68e3088"
+    "uuid": "4c60bcc9-ca4d-42b0-96c2-9e5786c283d6"
   },
   "engines": {
     "node": ">=12.x.x <=16.x.x",
