@@ -14,9 +14,9 @@
   "attributes": {
     "title": {
       "type": "string",
-      "required": true,
       "unique": true,
       "minLength": 1,
+      "required": true,
       "maxLength": 128
     },
     "content": {
@@ -26,29 +26,27 @@
     },
     "slug": {
       "type": "uid",
-      "targetField": "title",
-      "required": true
+      "required": true,
+      "targetField": "title"
     },
     "thumbnail": {
       "type": "media",
       "multiple": true,
       "required": false,
       "allowedTypes": [
-        "images",
-        "files",
-        "videos"
+        "images"
       ]
-    },
-    "comments": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::comment.comment",
-      "mappedBy": "article"
     },
     "user": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
+      "inversedBy": "articles"
+    },
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::category.category",
       "inversedBy": "articles"
     }
   }
