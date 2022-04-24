@@ -1,24 +1,20 @@
-import type { NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import Button from '@mui/material/Button'
+import Link from 'next/link'
 
-const Home: NextPage = () => {
+export default function Home() {
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
-        <title>脱人海戦術</title>
-        <meta name="description" content="脱人海戦術のトップページ" />
-        <meta name="author" content="ar44" />
-        <meta name="keywords" content="Python,Cython,C," />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <main className={styles.main}>
-      </main>
-
+      <p>[Your Self Introduction]</p>
+      <p>
+        (This is a sample website - you’ll be building a site like this in{' '}
+        <a href="https://nextjs.org/learn">our Next.js tutorial</a>.)
+      </p>
+      <Button variant="contained" color="primary">
+        Hello World
+      </Button>
     </div>
   )
 }
-
-export default Home
