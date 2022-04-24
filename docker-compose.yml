@@ -25,9 +25,12 @@ services:
         build:
             context: ./stop-human-wave-tactics-backend
             dockerfile: Dockerfile
+        environment:
+            TZ: Asia/Tokyo
         volumes:
             - backModules:/home/stop-human-wave-tactics-backend/node_modules
             - ./stop-human-wave-tactics-backend:/home/stop-human-wave-tactics-backend
+        tty: true
         command: sh -c "yarn build && yarn dev"
         depends_on:
             - db
@@ -35,9 +38,12 @@ services:
         build:
             context: ./stop-human-wave-tactics-frontend
             dockerfile: Dockerfile
+        environment:
+            TZ: Asia/Tokyo
         volumes:
             - frontModules:/home/stop-human-wave-tactics-frontend/node_modules
             - ./stop-human-wave-tactics-frontend:/home/stop-human-wave-tactics-frontend
+        tty: true
         command: sh -c "yarn build && yarn dev"
         depends_on:
             - back
