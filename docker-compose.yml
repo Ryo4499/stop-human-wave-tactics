@@ -1,20 +1,21 @@
 version: "3"
 services:
     proxy:
-      image: nginx:stable
-      ports:
-        - "80:80"
-      volumes:
-        - ./nginx/conf.d/defalt.conf:/etc/nginx/conf.d/default.conf
-      depends_on:
-        - db
-        - front
-        - back
-    db:
-        image: postgres:13-alpine
-        ports:
-            - 5432:5432
+        image: nginx:stable
         environment:
+            TZ: Asia/Tokyo
+        ports:
+            - "80:80"
+        volumes:
+            - ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+        depends_on:
+            - db
+            - front
+            - back
+    db:
+        image: postgres:14-alpine
+        environment:
+            TZ: Asia/Tokyo
             POSTGRES_USER: postgres
             POSTGRES_PASSWORD: secret
             POSTGRES_DB: stop_human_wave_tactics_db
@@ -24,23 +25,26 @@ services:
         build:
             context: ./stop-human-wave-tactics-backend
             dockerfile: Dockerfile
-        ports:
-            - "8000:1337"
+        environment:
+            TZ: Asia/Tokyo
         volumes:
             - backModules:/home/stop-human-wave-tactics-backend/node_modules
             - ./stop-human-wave-tactics-backend:/home/stop-human-wave-tactics-backend
         tty: true
+        command: sh -c "yarn build && yarn dev"
         depends_on:
             - db
     front:
         build:
             context: ./stop-human-wave-tactics-frontend
             dockerfile: Dockerfile
-        ports:
-            - "8080:8000"
+        environment:
+            TZ: Asia/Tokyo
         volumes:
             - frontModules:/home/stop-human-wave-tactics-frontend/node_modules
             - ./stop-human-wave-tactics-frontend:/home/stop-human-wave-tactics-frontend
+        tty: true
+        command: sh -c "yarn build && yarn dev"
         depends_on:
             - back
             - db

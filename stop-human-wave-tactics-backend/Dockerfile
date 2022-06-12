@@ -5,6 +5,6 @@ WORKDIR /home/stop-human-wave-tactics-backend
 COPY package.json .
 COPY yarn.lock .
 
-RUN apk update && yarn install --frozen-lockfile --ignore-optional
+RUN apk update && apk add libressl-dev libffi-dev tzdata && yarn global add yarn && yarn install --frozen-lockfile --ignore-optional
 
-CMD ["yarn","develop"]
+ENV TZ=Asia/Tokyo
