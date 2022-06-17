@@ -17,3 +17,5 @@ docker-compose down
 2. dceでSWCの確認
 3. docker volumeの削除
 4. node_modules,yarn.lockを削除して再ビルド
+5. DevDependency等の確認
+
