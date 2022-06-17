@@ -8,6 +8,8 @@ services:
       - ./.env
     environment:
       - TZ
+      - BASIC_AUTH_USERNAME
+      - BASIC_AUTH_PASSWORD
     ports:
       - "80:80"
     volumes:
