@@ -2,12 +2,12 @@ export default ({ env }) => ({
   connection: {
     client: "postgres",
     connection: {
-      host: env("DATABASE_HOST", "db"),
-      port: env.int("DATABASE_PORT", 5432),
-      database: env("DATABASE_NAME", "stop_human_wave_tactics_db"),
-      user: env("DATABASE_USERNAME", "postgres"),
-      password: env("DATABASE_PASSWORD", "secret"),
-      ssl: env.bool("DATABASE_SSL", false),
+      host: env("POSTGRES_HOST"),
+      port: env.int("POSTGRES_PORT"),
+      database: env("POSTGRES_DB"),
+      user: env("POSTGRES_USER"),
+      password: env("POSTGRES_PASSWORD"),
+      ssl: env.bool("DB_SSL", false),
     },
   },
 });
