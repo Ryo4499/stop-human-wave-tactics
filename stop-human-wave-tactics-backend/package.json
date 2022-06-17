@@ -9,7 +9,6 @@
     "build": "strapi build",
     "strapi": "strapi"
   },
-  "devDependencies": {},
   "dependencies": {
     "@strapi/strapi": "4.2.0-beta.4",
     "@strapi/admin": "4.2.0-beta.4",
@@ -26,8 +25,9 @@
     "pg": "8.7.3",
     "strapi-plugin-wysiwsg-react-md-editor": "^4.1.0"
   },
+  "devDependencies": {},
   "author": {
-    "name": "A Strapi developer"
+    "name": "ar44"
   },
   "strapi": {
     "uuid": "4c60bcc9-ca4d-42b0-96c2-9e5786c283d6"
