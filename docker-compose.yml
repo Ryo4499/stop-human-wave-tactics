@@ -1,55 +1,63 @@
-version: "3"
+version: "3.9"
 services:
-    proxy:
-        image: nginx:stable
-        environment:
-            TZ: Asia/Tokyo
-        ports:
-            - "80:80"
-        volumes:
-            - ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
-        depends_on:
-            - db
-            - front
-            - back
-    db:
-        image: postgres:14-alpine
-        environment:
-            TZ: Asia/Tokyo
-            POSTGRES_USER: postgres
-            POSTGRES_PASSWORD: secret
-            POSTGRES_DB: stop_human_wave_tactics_db
-        volumes:
-            - dbData:/var/lib/postgresql/data
-    back:
-        build:
-            context: ./stop-human-wave-tactics-backend
-            dockerfile: Dockerfile
-        environment:
-            TZ: Asia/Tokyo
-        volumes:
-            - backModules:/home/stop-human-wave-tactics-backend/node_modules
-            - ./stop-human-wave-tactics-backend:/home/stop-human-wave-tactics-backend
-        tty: true
-        command: sh -c "yarn build && yarn dev"
-        depends_on:
-            - db
-    front:
-        build:
-            context: ./stop-human-wave-tactics-frontend
-            dockerfile: Dockerfile
-        environment:
-            TZ: Asia/Tokyo
-        volumes:
-            - frontModules:/home/stop-human-wave-tactics-frontend/node_modules
-            - ./stop-human-wave-tactics-frontend:/home/stop-human-wave-tactics-frontend
-        tty: true
-        command: sh -c "yarn build && yarn dev"
-        depends_on:
-            - back
-            - db
+  proxy:
+    image: nginx:stable
+    env_file:
+      - .env
+    environment:
+      - TZ
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - db
+      - front
+      - back
+  db:
+    image: postgres:14-alpine
+    env_file:
+      - .env
+    environment:
+      - TZ
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+    volumes:
+      - dbData:/var/lib/postgresql/data
+  back:
+    build:
+      context: ./stop-human-wave-tactics-backend
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    environment:
+      - TZ
+    volumes:
+      - backModules:/home/stop-human-wave-tactics-backend/node_modules
+      - ./stop-human-wave-tactics-backend:/home/stop-human-wave-tactics-backend
+    tty: true
+    command: sh -c "yarn build && yarn dev"
+    depends_on:
+      - db
+  front:
+    build:
+      context: ./stop-human-wave-tactics-frontend
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    environment:
+      - TZ
+    volumes:
+      - frontModules:/home/stop-human-wave-tactics-frontend/node_modules
+      - ./stop-human-wave-tactics-frontend:/home/stop-human-wave-tactics-frontend
+    tty: true
+    command: sh -c "yarn build && yarn dev"
+    depends_on:
+      - back
+      - db
 
 volumes:
-    dbData:
-    frontModules:
-    backModules:
+  dbData:
+  frontModules:
+  backModules:
