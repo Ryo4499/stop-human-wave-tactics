@@ -21,7 +21,7 @@ services:
       - front
       - back
     restart: unless-stopped
-        
+
   db:
     image: postgres:14-alpine
     env_file:
@@ -73,7 +73,6 @@ services:
         else \
           yarn build && yarn dev; \
         fi
-          
     depends_on:
       - db
     restart: unless-stopped
