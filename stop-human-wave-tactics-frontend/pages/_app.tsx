@@ -1,6 +1,5 @@
 import "../styles/globals.css"
-import Header from "../components/common/Header";
-import Fotter from "../components/common/Footer";
+import Layout from "../components/Layouts/Layout";
 import { AppProps } from "next/app";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import {
@@ -27,7 +26,9 @@ export default function App({ Component, pageProps }: AppProps) {
         return (
                 <ApolloProvider client={client}>
                         <ThemeProvider theme={darkTheme}>
-                                <Component {...pageProps} />
+                                <Layout>
+                                        <Component {...pageProps} />
+                                </Layout>
                         </ThemeProvider>
                 </ApolloProvider>
         );
