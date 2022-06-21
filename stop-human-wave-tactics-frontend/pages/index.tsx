@@ -1,7 +1,5 @@
 import Articles from "../components/Article/Articles";
 import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Pagination from "@mui/material/Pagination";
 import type { InferGetStaticPropsType } from "next";
 
 export async function getStaticProps() {

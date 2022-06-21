@@ -2,7 +2,7 @@ import Header from "../Common/Header"
 import Footer from "../Common/Footer"
 import Sidebar from "../Common/Sidebar"
 import React, { ReactElement } from "react"
-import { Grid, Box, Container, Item } from "@mui/material"
+import { Grid } from "@mui/material"
 
 type LayoutProps = Required<{ readonly children: ReactElement }>
 
