@@ -68,6 +68,17 @@
       "relation": "oneToMany",
       "target": "api::article.article",
       "mappedBy": "user"
+    },
+    "img": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "bio": {
+      "type": "string",
+      "maxLength": 255
     }
   }
 }
