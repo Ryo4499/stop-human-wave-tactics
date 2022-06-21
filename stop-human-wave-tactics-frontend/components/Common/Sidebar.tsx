@@ -1,4 +1,4 @@
-import { Avatar, Box, Grid, Typography } from '@mui/material'
+import { Avatar, Grid, Typography } from '@mui/material'
 
 export default function Sidebar() {
         return (
