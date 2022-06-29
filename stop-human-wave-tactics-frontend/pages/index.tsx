@@ -1,5 +1,6 @@
 import Articles from "../components/Article/Articles";
 import Grid from "@mui/material/Grid";
+import React from "react";
 import type { InferGetStaticPropsType } from "next";
 
 export async function getStaticProps() {
@@ -17,6 +18,13 @@ export default function App({
         products,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
         return (
-                <Articles></Articles>
+                <React.Fragment>
+                        <Articles></Articles>
+                        <Articles></Articles>
+                        <Articles></Articles>
+                        <Articles></Articles>
+                        <Articles></Articles>
+                        <Articles></Articles>
+                </React.Fragment>
         );
 }
