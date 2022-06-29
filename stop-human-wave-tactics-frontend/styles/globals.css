@@ -10,7 +10,8 @@ html,
 body,
 div#__next,
 div#__next > div {
-	width: 100%;
+	min-height: 100vh;
+	overflow: auto;
 }
 
 a {
