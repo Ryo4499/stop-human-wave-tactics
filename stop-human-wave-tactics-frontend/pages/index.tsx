@@ -4,27 +4,30 @@ import React from "react";
 import type { InferGetStaticPropsType } from "next";
 
 export async function getStaticProps() {
-        const products = [1, 2, 3];
-
         return {
+                //ここにAPIから記事一覧を取得
                 props: {
-                        products,
+                        time: new Date().toLocaleString(),
                 },
+                // ISR
                 revalidate: 4 * 60 * 60,
         };
 }
 
+//記事のTYPE
+type Props = {
+        time: string;
+}
+
+//引数はpropsの変数名に合わせる
 export default function App({
-        products,
+        time,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
         return (
-                <React.Fragment>
+                <Grid>
+                        <h1>{time}</h1>
                         <Articles></Articles>
                         <Articles></Articles>
-                        <Articles></Articles>
-                        <Articles></Articles>
-                        <Articles></Articles>
-                        <Articles></Articles>
-                </React.Fragment>
+                </Grid>
         );
 }
