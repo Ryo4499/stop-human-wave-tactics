@@ -13,7 +13,7 @@
     "@_sh/strapi-plugin-ckeditor": "^1.1.0",
     "@chartbrew/plugin-strapi": "^0.2.7",
     "@notum-cz/strapi-plugin-content-versioning": "^0.4.3",
-    "@offset-dev/strapi-calendar": "^0.0.6",
+    "@offset-dev/strapi-calendar": "^0.0.7",
     "@strapi/admin": "4.2.0",
     "@strapi/database": "4.2.0",
     "@strapi/logger": "4.2.2",
