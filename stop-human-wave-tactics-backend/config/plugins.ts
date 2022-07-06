@@ -19,5 +19,9 @@ export default ({ env }) => ({
       dsn: env('SENTRY_DNS'),
       sendMetadata: true,
     }
+  },
+  wysiwyg:{
+	  enabled: true,
+	  resolve: "./src/plugins/wysiwyg"
   }
 });
