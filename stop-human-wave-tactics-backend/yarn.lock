@@ -2378,13 +2378,13 @@
     reselect "^4.0.0"
     yup "^0.32.9"
 
-"@strapi/plugin-documentation@4.2.0":
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/@strapi/plugin-documentation/-/plugin-documentation-4.2.0.tgz#9a9cf545dc2dd7955e0e4777f74b14ff2759f68f"
-  integrity sha512-Agi8V47/Jgb9jIt77dAE8U5oKkh54UwZ80x3+z4bzBysKKnAvAY3Dj48cUYFS5wVoVIeJcdcGKN0K6hRz1yFSg==
+"@strapi/plugin-documentation@4.2.2":
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/@strapi/plugin-documentation/-/plugin-documentation-4.2.2.tgz#4b0b7abce8119eab9c2161e1eee647cdad57aa13"
+  integrity sha512-0j2aYNJ0ucWFvj7iEJCVfAt4c0/6UedGHvuVGVjt4lWl/DLL1rBgs8fO7Tbljwh43KLrlDtcaL92198ycTMxKw==
   dependencies:
-    "@strapi/helper-plugin" "4.2.0"
-    "@strapi/utils" "4.2.0"
+    "@strapi/helper-plugin" "4.2.2"
+    "@strapi/utils" "4.2.2"
     bcryptjs "2.4.3"
     cheerio "^1.0.0-rc.5"
     fs-extra "10.0.0"
@@ -2402,6 +2402,7 @@
     redux "^4.0.1"
     reselect "^4.0.0"
     swagger-ui-dist "4.11.1"
+    yaml "1.10.2"
 
 "@strapi/plugin-email@4.2.2":
   version "4.2.2"
@@ -12724,7 +12725,7 @@ yallist@4.0.0, yallist@^4.0.0:
   resolved "https://registry.yarnpkg.com/yallist/-/yallist-4.0.0.tgz#9bb92790d9c0effec63be73519e11a35019a3a72"
   integrity sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==
 
-yaml@^1.7.2:
+yaml@1.10.2, yaml@^1.7.2:
   version "1.10.2"
   resolved "https://registry.yarnpkg.com/yaml/-/yaml-1.10.2.tgz#2301c5ffbf12b467de8da2333a459e29e7920e4b"
   integrity sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==
