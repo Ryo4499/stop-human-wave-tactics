@@ -27,7 +27,8 @@
     "slug": {
       "type": "uid",
       "required": true,
-      "targetField": "title"
+      "targetField": "title",
+      "private": true
     },
     "thumbnail": {
       "type": "media",
