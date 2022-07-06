@@ -6,6 +6,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { Article } from '../../typedefs/types';
 
 const bull = (
         <Box
@@ -40,10 +41,16 @@ const card = (
         </Box>
 );
 
-export default function Articles() {
+export default function Articles(articles:Articles[]) {
         return (
                 <Grid>
-                        <Card variant="outlined">{card}</Card>
+                        {props.map((article: Article) => {
+                                return(
+                                        <li key={article.slug}>
+
+                                        </li>
+                                )
+                        })}
                 </Grid>
         );
 }
