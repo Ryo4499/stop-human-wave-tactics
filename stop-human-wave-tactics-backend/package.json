@@ -12,7 +12,6 @@
   "dependencies": {
     "@_sh/strapi-plugin-ckeditor": "^1.1.0",
     "@chartbrew/plugin-strapi": "^0.2.7",
-    "@exfabrica/strapi-plugin-awesome-seo": "^1.0.0-beta.1.1",
     "@notum-cz/strapi-plugin-content-versioning": "^0.4.3",
     "@offset-dev/strapi-calendar": "^0.0.6",
     "@strapi/admin": "4.2.0",
@@ -33,8 +32,7 @@
     "strapi-plugin-fuzzy-search": "^1.9.4",
     "strapi-plugin-measurement-protocol": "^1.0.1",
     "strapi-plugin-migrations": "^1.0.4",
-    "strapi-plugin-wysiwsg-react-md-editor": "^4.1.0",
-    "strapi-prometheus": "^0.6.2"
+    "strapi-plugin-wysiwsg-react-md-editor": "^4.2.0"
   },
   "devDependencies": {},
   "author": {
