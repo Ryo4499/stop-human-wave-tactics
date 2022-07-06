@@ -7,7 +7,7 @@ export async function getStaticProps() {
         return {
                 //ここにAPIから記事一覧を取得
                 props: {
-                        time: new Date().toLocaleString(),
+                        articles: getArticles()
                 },
                 // ISR
                 revalidate: 4 * 60 * 60,
@@ -26,8 +26,7 @@ export default function App({
         return (
                 <Grid>
                         <h1>{time}</h1>
-                        <Articles></Articles>
-                        <Articles></Articles>
+                        <Articles articles={articles}></Articles>
                 </Grid>
         );
 }
