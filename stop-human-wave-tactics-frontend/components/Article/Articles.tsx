@@ -41,16 +41,9 @@ const card = (
         </Box>
 );
 
-export default function Articles(articles:Articles[]) {
+export default function Articles(articles: Article[]) {
         return (
                 <Grid>
-                        {props.map((article: Article) => {
-                                return(
-                                        <li key={article.slug}>
-
-                                        </li>
-                                )
-                        })}
                 </Grid>
         );
 }
