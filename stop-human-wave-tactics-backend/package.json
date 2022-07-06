@@ -16,7 +16,7 @@
     "@offset-dev/strapi-calendar": "^0.0.6",
     "@strapi/admin": "4.2.0",
     "@strapi/database": "4.2.0",
-    "@strapi/logger": "4.2.0",
+    "@strapi/logger": "4.2.2",
     "@strapi/plugin-documentation": "4.2.0",
     "@strapi/plugin-graphql": "4.2.2",
     "@strapi/plugin-i18n": "4.2.0",
