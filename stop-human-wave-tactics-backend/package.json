@@ -10,11 +10,7 @@
     "strapi": "strapi"
   },
   "dependencies": {
-    "@_sh/strapi-plugin-ckeditor": "^1.1.0",
-    "@chartbrew/plugin-strapi": "^0.2.7",
-    "@notum-cz/strapi-plugin-content-versioning": "^0.4.3",
-    "@offset-dev/strapi-calendar": "^0.0.7",
-    "@strapi/admin": "4.2.0",
+    "@strapi/admin": "4.2.2",
     "@strapi/database": "4.2.2",
     "@strapi/logger": "4.2.2",
     "@strapi/plugin-documentation": "4.2.2",
@@ -24,17 +20,16 @@
     "@strapi/plugin-seo": "^1.7.3",
     "@strapi/plugin-users-permissions": "4.2.2",
     "@strapi/strapi": "4.2.2",
-    "@strapi/typescript-utils": "4.3.0-beta.1",
+    "@strapi/typescript-utils": "4.2.2",
     "@strapi/utils": "4.2.2",
+    "eslint": "8.19.0",
+    "pg": "8.7.3"
+  },
+  "peerDependencies": {
     "dicer": "^0.3.1",
-    "pg": "8.7.3",
+    "koa": "2.13.1",
     "prismjs": "^1.28.0",
-    "strapi-plugin-config-sync": "^1.0.2",
-    "strapi-plugin-deepl": "^0.3.7",
-    "strapi-plugin-fuzzy-search": "^1.9.4",
-    "strapi-plugin-measurement-protocol": "^1.0.1",
-    "strapi-plugin-migrations": "^1.0.4",
-    "strapi-plugin-wysiwsg-react-md-editor": "^4.2.0"
+    "qs": "6.10.1"
   },
   "devDependencies": {},
   "author": {
@@ -44,7 +39,7 @@
     "uuid": "4c60bcc9-ca4d-42b0-96c2-9e5786c283d6"
   },
   "engines": {
-    "node": ">=12.x.x <=16.x.x",
+    "node": ">=16.x.x",
     "npm": ">=6.0.0"
   },
   "license": "MIT"
