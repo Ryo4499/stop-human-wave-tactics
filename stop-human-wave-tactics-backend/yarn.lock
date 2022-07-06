@@ -2339,14 +2339,6 @@
   dependencies:
     rimraf "^3.0.2"
 
-"@strapi/logger@4.2.0":
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/@strapi/logger/-/logger-4.2.0.tgz#3be7f2e895aff7a185005921bd2722d9ab817008"
-  integrity sha512-4uV7Ledt+/wdNxMYuzH9FarOV0urpBjAhRfMPT5FZKG9R8HQ7dmbpxTNnt/+KISVw7yEdaCfEiNcD4HlrDG3sw==
-  dependencies:
-    lodash "4.17.21"
-    winston "3.3.3"
-
 "@strapi/logger@4.2.2":
   version "4.2.2"
   resolved "https://registry.yarnpkg.com/@strapi/logger/-/logger-4.2.2.tgz#143969dbc194908759e46317245bcf02fae5903d"
@@ -2445,12 +2437,12 @@
     pluralize "^8.0.0"
     subscriptions-transport-ws "0.9.19"
 
-"@strapi/plugin-i18n@4.2.0":
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/@strapi/plugin-i18n/-/plugin-i18n-4.2.0.tgz#ae9a2f4b2e78c5be3d46884c57fbb808856b88ca"
-  integrity sha512-IKi9k1w22sejzv6bvwGukVp+1ar6n2dt+jwwlWgSorr+48u3kyhmiZpqmLP95o9+3qE3sXpuOPm5P8vQKVNHbw==
+"@strapi/plugin-i18n@4.2.2":
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/@strapi/plugin-i18n/-/plugin-i18n-4.2.2.tgz#5499df3f511671170b9401017f73636e9453249c"
+  integrity sha512-buYkKm5leJ1nnoPVi4zjnSjQTjGtEus2YPMjw15td6lSAzJZWyjLb10nEH8Ii5MQWQUV/QLuIUseFkP8mQ1S9w==
   dependencies:
-    "@strapi/utils" "4.2.0"
+    "@strapi/utils" "4.2.2"
     lodash "4.17.21"
 
 "@strapi/plugin-sentry@4.2.0":
