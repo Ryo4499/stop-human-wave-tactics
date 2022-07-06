@@ -10,10 +10,6 @@
     "strapi": "strapi"
   },
   "dependencies": {
-    "@_sh/strapi-plugin-ckeditor": "^1.1.0",
-    "@chartbrew/plugin-strapi": "^0.2.7",
-    "@notum-cz/strapi-plugin-content-versioning": "^0.4.3",
-    "@offset-dev/strapi-calendar": "^0.0.7",
     "@strapi/admin": "4.2.0",
     "@strapi/database": "4.2.0",
     "@strapi/logger": "4.2.2",
@@ -26,22 +22,14 @@
     "@strapi/strapi": "4.2.2",
     "@strapi/typescript-utils": "4.3.0-beta.1",
     "@strapi/utils": "4.2.0",
-    "dicer": "0.3.1",
     "eslint": "8.19.0",
-    "koa": "2.13.1",
-    "pg": "8.7.3",
-    "prismjs": "1.28.0",
-    "qs": "6.10.1",
-    "strapi-plugin-config-sync": "^1.0.2",
-    "strapi-plugin-deepl": "^0.3.7",
-    "strapi-plugin-fuzzy-search": "^1.9.4",
-    "strapi-plugin-measurement-protocol": "^1.0.1",
-    "strapi-plugin-migrations": "^1.0.4",
-    "strapi-plugin-wysiwsg-react-md-editor": "^4.2.0"
+    "pg": "8.7.3"
   },
   "peerDependencies": {
     "dicer": "^0.3.1",
-    "prismjs": "^1.28.0"
+    "koa": "2.13.1",
+    "prismjs": "^1.28.0",
+    "qs": "6.10.1"
   },
   "devDependencies": {},
   "author": {
