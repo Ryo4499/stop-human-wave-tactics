@@ -1,4 +1,4 @@
-FROM node:18-alpine
+FROM node:16-alpine
 
 ARG UID
 ARG GID
