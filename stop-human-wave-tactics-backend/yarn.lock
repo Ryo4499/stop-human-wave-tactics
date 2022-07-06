@@ -2445,10 +2445,10 @@
     "@strapi/utils" "4.2.2"
     lodash "4.17.21"
 
-"@strapi/plugin-sentry@4.2.0":
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/@strapi/plugin-sentry/-/plugin-sentry-4.2.0.tgz#4add049238b1486c052d3dd5412cbc76eb8bc73d"
-  integrity sha512-Y1COEZmQQZ+CMHif5zwWFHcwRqnHl2EJy9rj9/HNmA0i/Vs7sjfWfqNEv0qTKXpuhsD6lmHzkEbxIb076WkzhQ==
+"@strapi/plugin-sentry@4.2.2":
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/@strapi/plugin-sentry/-/plugin-sentry-4.2.2.tgz#625d1473811f1d43e786036a67689bb189673f6d"
+  integrity sha512-t13uJrgQEQs7d6ULABtY/6BgqQLJVMlKdG2HkmtHZYVmAEz3W65OoXizHuoJwxgg61GSKTH2+bZXhuDEyZQKTQ==
   dependencies:
     "@sentry/node" "6.19.6"
 
