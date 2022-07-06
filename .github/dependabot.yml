@@ -9,13 +9,40 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
-  
-  - package-ecosystem: "yarn"
+      day: "saturday"
+      time: "00:00"
+      timezone: Asia/Tokyo
+    commit-message:
+      prefix: "change"
+      include: "scope"
+    labels:
+      - "dependabot"
+    target-branch: "dependabot/release"
+
+  - package-ecosystem: "npm"
     directory: "/stop-human-wave-tactics-frontend"
     schedule:
-      interval: "daily"
-  
-  - package-ecosystem: "yarn"
+      interval: "weekly"
+      day: "saturday"
+      time: "00:00"
+      timezone: Asia/Tokyo
+    commit-message:
+      prefix: "change"
+      include: "scope"
+    labels:
+      - "dependabot"
+    target-branch: "dependabot/release"
+
+  - package-ecosystem: "npm"
     directory: "/stop-human-wave-tactics-backend"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+      day: "saturday"
+      time: "00:00"
+      timezone: Asia/Tokyo
+    commit-message:
+      prefix: "change"
+      include: "scope"
+    labels:
+      - "dependabot"
+    target-branch: "dependabot/release"
