@@ -20,7 +20,7 @@
     "@strapi/plugin-seo": "^1.7.3",
     "@strapi/plugin-users-permissions": "4.2.2",
     "@strapi/strapi": "4.2.2",
-    "@strapi/typescript-utils": "4.2.2",
+    "@strapi/typescript-utils": "4.3.0-beta.2",
     "@strapi/utils": "4.2.2",
     "eslint": "8.19.0",
     "pg": "8.7.3"

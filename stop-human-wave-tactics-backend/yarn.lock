@@ -1676,107 +1676,6 @@
     escape-string-regexp "^2.0.0"
     lodash.deburr "^4.1.0"
 
-"@strapi/admin@4.2.0":
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/@strapi/admin/-/admin-4.2.0.tgz#00b01f449092f880f2b278d4846b41aeced0317c"
-  integrity sha512-aArKaqMCdgVqC8pvwI2QCcTj1XJHsUHe0qnU8cqryvVq+fSX3pUmD9+URlKqmqBHCY2NpaAI7fAwT+ECeWwENA==
-  dependencies:
-    "@babel/core" "7.16.7"
-    "@babel/plugin-transform-runtime" "7.16.7"
-    "@babel/polyfill" "7.12.1"
-    "@babel/preset-env" "7.16.7"
-    "@babel/preset-react" "7.16.7"
-    "@babel/runtime" "7.16.7"
-    "@casl/ability" "^5.4.3"
-    "@fingerprintjs/fingerprintjs" "3.3.2"
-    "@fortawesome/fontawesome-free" "^5.15.3"
-    "@fortawesome/fontawesome-svg-core" "^1.2.35"
-    "@fortawesome/free-brands-svg-icons" "^5.15.3"
-    "@fortawesome/free-solid-svg-icons" "^5.15.3"
-    "@fortawesome/react-fontawesome" "^0.1.14"
-    "@strapi/babel-plugin-switch-ee-ce" "4.2.0"
-    "@strapi/design-system" "1.1.1"
-    "@strapi/helper-plugin" "4.2.0"
-    "@strapi/icons" "1.1.1"
-    "@strapi/utils" "4.2.0"
-    axios "0.24.0"
-    babel-loader "8.2.3"
-    babel-plugin-styled-components "2.0.2"
-    bcryptjs "2.4.3"
-    chalk "^4.1.1"
-    chokidar "^3.5.1"
-    codemirror "^5.61.0"
-    cross-env "^7.0.3"
-    css-loader "6.5.1"
-    date-fns "2.22.1"
-    dotenv "8.5.1"
-    esbuild-loader "2.18.0"
-    execa "^1.0.0"
-    fast-deep-equal "3.1.3"
-    font-awesome "^4.7.0"
-    formik "^2.2.6"
-    fs-extra "10.0.0"
-    highlight.js "^10.4.1"
-    history "^4.9.0"
-    hoist-non-react-statics "^3.3.0"
-    html-loader "3.0.1"
-    html-webpack-plugin "5.5.0"
-    immer "9.0.6"
-    invariant "^2.2.4"
-    js-cookie "2.2.1"
-    jsonwebtoken "8.5.1"
-    koa-compose "4.1.0"
-    koa-passport "4.1.4"
-    koa-static "5.0.0"
-    lodash "4.17.21"
-    markdown-it "^12.3.2"
-    markdown-it-abbr "^1.0.4"
-    markdown-it-container "^3.0.0"
-    markdown-it-deflist "^2.1.0"
-    markdown-it-emoji "^2.0.0"
-    markdown-it-footnote "^3.0.3"
-    markdown-it-ins "^3.0.1"
-    markdown-it-mark "^3.0.1"
-    markdown-it-sub "^1.0.0"
-    markdown-it-sup "1.0.0"
-    match-sorter "^4.0.2"
-    mini-css-extract-plugin "2.4.4"
-    moment "^2.29.1"
-    node-polyfill-webpack-plugin "1.1.4"
-    p-map "4.0.0"
-    passport-local "1.0.0"
-    prop-types "^15.7.2"
-    qs "6.10.1"
-    react "^17.0.2"
-    react-copy-to-clipboard "^5.0.3"
-    react-dnd "^14.0.2"
-    react-dnd-html5-backend "^14.0.0"
-    react-dom "^17.0.2"
-    react-error-boundary "3.1.1"
-    react-fast-compare "^3.2.0"
-    react-helmet "^6.1.0"
-    react-intl "5.20.2"
-    react-query "3.24.3"
-    react-redux "7.2.3"
-    react-router "5.2.0"
-    react-router-dom "5.2.0"
-    react-select "^4.0.2"
-    react-virtualized "^9.22.3"
-    redux "^4.0.1"
-    redux-saga "^0.16.0"
-    reselect "^4.0.0"
-    rimraf "3.0.2"
-    sanitize-html "2.4.0"
-    semver "7.3.5"
-    sift "13.5.0"
-    style-loader "3.3.1"
-    styled-components "5.3.3"
-    webpack "5.65.0"
-    webpack-cli "4.9.1"
-    webpack-dev-server "4.7.3"
-    webpackbar "5.0.0-3"
-    yup "^0.32.9"
-
 "@strapi/admin@4.2.2":
   version "4.2.2"
   resolved "https://registry.yarnpkg.com/@strapi/admin/-/admin-4.2.2.tgz#9ea2945f590a503cd25a6c9955f35445edbc8921"
@@ -1880,11 +1779,6 @@
     webpackbar "5.0.0-3"
     yup "^0.32.9"
 
-"@strapi/babel-plugin-switch-ee-ce@4.2.0":
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/@strapi/babel-plugin-switch-ee-ce/-/babel-plugin-switch-ee-ce-4.2.0.tgz#07e9b4012001ec1301ecf57a9bc5302985463678"
-  integrity sha512-syCBMsX2MEitKUlc+6fR3YrviDk38YXfuggkUkjbz0ujNMicPDgMQ33WSrWweoWL/mHvRckPR08pBqm95d1vkQ==
-
 "@strapi/babel-plugin-switch-ee-ce@4.2.2":
   version "4.2.2"
   resolved "https://registry.yarnpkg.com/@strapi/babel-plugin-switch-ee-ce/-/babel-plugin-switch-ee-ce-4.2.2.tgz#7e3ba5d957b68f22b42d5405e631740fd432eabf"
@@ -1901,15 +1795,6 @@
     knex "1.0.4"
     lodash "4.17.21"
     umzug "3.1.1"
-
-"@strapi/design-system@1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@strapi/design-system/-/design-system-1.1.1.tgz#87efc79a0cb0f8b74fd36924bc4089c91928f946"
-  integrity sha512-yM67ASyhtJqOSNPYiOQIG9qxsd9ceZ/00Yf0be5dArlgnhm/byQLnrWunq4L2mnhBGI1S6EjXjRzML/7NL5VDQ==
-  dependencies:
-    "@internationalized/number" "^3.0.2"
-    compute-scroll-into-view "^1.0.17"
-    prop-types "^15.7.2"
 
 "@strapi/design-system@1.2.0":
   version "1.2.0"
@@ -1950,33 +1835,6 @@
     plop "2.7.6"
     pluralize "8.0.0"
 
-"@strapi/helper-plugin@4.2.0":
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/@strapi/helper-plugin/-/helper-plugin-4.2.0.tgz#69e6c5b33b21285fb5c3fbb0b0a89027bf0b0e17"
-  integrity sha512-daNcIrtqoFAVZthIcdwmnnNR03YBZXXHqC1dF6sJqIZPD+agOxfO2qYWpRn3oJgFKLA82h4t439mPUNA6uvTJQ==
-  dependencies:
-    "@fortawesome/fontawesome-free" "^5.15.2"
-    "@fortawesome/fontawesome-svg-core" "^1.2.35"
-    "@fortawesome/free-brands-svg-icons" "^5.15.2"
-    "@fortawesome/free-solid-svg-icons" "^5.15.3"
-    "@fortawesome/react-fontawesome" "^0.1.14"
-    axios "0.25.0"
-    babel-plugin-styled-components "2.0.2"
-    formik "2.2.9"
-    invariant "^2.2.1"
-    lodash "4.17.21"
-    match-sorter "^4.0.2"
-    mini-css-extract-plugin "2.4.4"
-    moment "^2.29.1"
-    react "^17.0.2"
-    react-dom "^17.0.2"
-    react-helmet "^6.1.0"
-    react-intl "5.20.2"
-    react-router "^5.2.0"
-    react-router-dom "5.2.0"
-    styled-components "5.3.3"
-    whatwg-fetch "^3.6.2"
-
 "@strapi/helper-plugin@4.2.2":
   version "4.2.2"
   resolved "https://registry.yarnpkg.com/@strapi/helper-plugin/-/helper-plugin-4.2.2.tgz#8bdb9a82b391c10ce10ac3ee6b7013601092754c"
@@ -2001,13 +1859,6 @@
     react-router-dom "5.2.0"
     styled-components "5.3.3"
     whatwg-fetch "^3.6.2"
-
-"@strapi/icons@1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@strapi/icons/-/icons-1.1.1.tgz#dd3866ac94866286011d3a71e2dc287cb8c7828e"
-  integrity sha512-TaVVZWB8xWksm5ONthECi2bNtm643Maj+Yr3qtEfaNGPuoRWbNkiXQROrMZiDLUtmaUgJtQj4Wr41bZJxgQ/4g==
-  dependencies:
-    rimraf "^3.0.2"
 
 "@strapi/icons@1.2.0":
   version "1.2.0"
@@ -2260,25 +2111,17 @@
     statuses "2.0.1"
     uuid "^3.3.2"
 
-"@strapi/typescript-utils@4.3.0-beta.1":
-  version "4.3.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@strapi/typescript-utils/-/typescript-utils-4.3.0-beta.1.tgz#dbee738cc6f2362989e059ab2d8883866a75b414"
-  integrity sha512-f7XxvowISTqsk1fmX8/4uNHQ8ED+2HLND3Dnx9PEujEmElnaBTSg6zLh0G457McD/2zo5mO0XlwvirsgOLWmpA==
+"@strapi/typescript-utils@4.3.0-beta.2":
+  version "4.3.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@strapi/typescript-utils/-/typescript-utils-4.3.0-beta.2.tgz#e3c64e6154b4b53ca3a29256eff1789346d8b75e"
+  integrity sha512-bxG+tz4DXQNU12N4w2sU1H/8TVgM2TgsCQqfVN6QsLJ+WuD4+IM0bbObr5QBLfgId1Jgwa1ROnwMr+/00mBcSg==
   dependencies:
+    chalk "4.1.2"
+    cli-table3 "0.6.2"
     fs-extra "10.0.1"
     lodash "4.17.21"
+    prettier "2.7.1"
     typescript "4.6.2"
-
-"@strapi/utils@4.2.0":
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/@strapi/utils/-/utils-4.2.0.tgz#64a557303978ee8a020a134f1842a10f52ef2c3a"
-  integrity sha512-1/tEca6Qrhc3JVpxqC6jHKbt4igZltXA5lRtODgV42QynoSGaC51vbMPlZ/TcSzSfp9w3N7ogsnmv+5k3CB4Lg==
-  dependencies:
-    "@sindresorhus/slugify" "1.1.0"
-    date-fns "2.24.0"
-    http-errors "1.8.0"
-    lodash "4.17.21"
-    yup "0.32.9"
 
 "@strapi/utils@4.2.2":
   version "4.2.2"
@@ -4037,6 +3880,15 @@ cli-table3@0.6.1:
     string-width "^4.2.0"
   optionalDependencies:
     colors "1.4.0"
+
+cli-table3@0.6.2:
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/cli-table3/-/cli-table3-0.6.2.tgz#aaf5df9d8b5bf12634dc8b3040806a0c07120d2a"
+  integrity sha512-QyavHCaIC80cMivimWu4aWHilIpiDpfm3hGmqAmXVL1UsnbLuBSMd21hTX6VY4ZSDSM73ESLeF8TOYId3rBTbw==
+  dependencies:
+    string-width "^4.2.0"
+  optionalDependencies:
+    "@colors/colors" "1.5.0"
 
 cli-width@^3.0.0:
   version "3.0.0"
@@ -9310,6 +9162,11 @@ prelude-ls@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.2.1.tgz#debc6489d7a6e6b0e7611888cec880337d316396"
   integrity sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==
+
+prettier@2.7.1:
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.7.1.tgz#e235806850d057f97bb08368a4f7d899f7760c64"
+  integrity sha512-ujppO+MkdPqoVINuDFDRLClm7D78qbDt0/NR+wp5FqEZOoTNAjPHWj17QRhu7geIHJfcNhRk1XVQmF8Bp3ye+g==
 
 pretty-error@^4.0.0:
   version "4.0.0"
