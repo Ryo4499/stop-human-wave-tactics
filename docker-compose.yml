@@ -12,6 +12,7 @@ services:
       - BASIC_AUTH_PASSWORD
     ports:
       - "80:80"
+    tty: true
     volumes:
       - type: bind
         source: "./nginx/conf.d/default.conf"
@@ -31,6 +32,7 @@ services:
       - POSTGRES_USER
       - POSTGRES_PASSWORD
       - POSTGRES_DB
+    tty: true
     volumes:
       - "dbData:/var/lib/postgresql/data"
     restart: unless-stopped
