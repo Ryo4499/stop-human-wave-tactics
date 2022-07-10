@@ -12,4 +12,13 @@ module.exports = ({ env }) => ({
       },
     },
   },
+  ckeditor: true,
+  seo: { enabled: true },
+  sentry: {
+    enabled: true,
+    config: {
+      dsn: env("SENTRY_DNS"),
+      sendMetadata: true,
+    },
+  },
 });
