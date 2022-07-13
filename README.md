@@ -11,6 +11,15 @@ docker-compose up -d
 docker-compose down
 ```
 
+## UPDATE手順
+
+```bash
+cd stop-human-wave-tactics
+docker-compose down
+docker-compose exec back
+yarn upgrade-interactive
+```
+
 ## トラブルシューティング
 
 1. .envの確認
