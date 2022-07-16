@@ -18,7 +18,7 @@
     "@strapi/plugin-seo": "^1.7.3",
     "@strapi/plugin-users-permissions": "4.2.3",
     "@strapi/strapi": "4.2.3",
-    "pg": "8.6.0",
+    "pg": "8.7.3",
     "strapi-plugin-preview-button": "^0.3.4"
   },
   "author": {
