@@ -4,22 +4,12 @@ import React from "react"
 import Layout from "../components/Layouts/Layout";
 import { AppProps } from "next/app";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import {
-        ApolloClient,
-        InMemoryCache,
-        ApolloProvider,
-        useQuery,
-        gql
-} from "@apollo/client";
-
-const cache = new InMemoryCache()
-const client = new ApolloClient({
-        uri: `${process.env.BACKEND_URL}/graphql`,
-        cache: cache,
-});
+import { ApolloProvider } from "@apollo/client";
+import { useApollo } from "../lib/apollo-client";
 
 export default function App({ Component, pageProps }: AppProps) {
         const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+        const client = useApollo(pageProps)
 
         const theme = React.useMemo(
                 () =>
