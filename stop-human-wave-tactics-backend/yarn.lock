@@ -2015,10 +2015,10 @@
   dependencies:
     "@sentry/node" "6.19.6"
 
-"@strapi/plugin-seo@^1.7.3":
-  version "1.7.3"
-  resolved "https://registry.yarnpkg.com/@strapi/plugin-seo/-/plugin-seo-1.7.3.tgz#94b3c647a199544d40b78940b83ee7ad6a8f6159"
-  integrity sha512-4SNFHljS3OirgQgFF68BfysB3vHu2X7pF1Pco7Gs0gatebshsTtg1PsHihKd2j07CkEfdxpRSt9wVknwabb7HA==
+"@strapi/plugin-seo@^1.7.4":
+  version "1.7.4"
+  resolved "https://registry.yarnpkg.com/@strapi/plugin-seo/-/plugin-seo-1.7.4.tgz#0f6d48f96a136e954cb1bd44fb59e5b2d8d2c8e0"
+  integrity sha512-e1AXkuXZLEpWiXAXuEdIxTkzH7qh6GiMw62coqiFN8/O3VzacTzOXzqCj1MY+CRky0EBBde1VmDVqlTrZm9Ltw==
   dependencies:
     eslint-plugin-react-hooks "^4.3.0"
     lodash "^4.17.21"
@@ -8582,7 +8582,7 @@ pg-int8@1.0.1:
   resolved "https://registry.yarnpkg.com/pg-int8/-/pg-int8-1.0.1.tgz#943bd463bf5b71b4170115f80f8efc9a0c0eb78c"
   integrity sha512-WCtabS6t3c8SkpDBUlb1kjOs7l66xsGdKpIPZsg4wR+B3+u9UAum2odSsF9tnvxg80h4ZxLWMy4pRjOsFIqQpw==
 
-pg-pool@^3.3.0:
+pg-pool@^3.5.1:
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/pg-pool/-/pg-pool-3.5.1.tgz#f499ce76f9bf5097488b3b83b19861f28e4ed905"
   integrity sha512-6iCR0wVrro6OOHFsyavV+i6KYL4lVNyYAB9RD18w66xSzN+d8b66HiwuP30Gp1SH5O9T82fckkzsRjlrhD0ioQ==
@@ -8603,15 +8603,15 @@ pg-types@^2.1.0:
     postgres-date "~1.0.4"
     postgres-interval "^1.1.0"
 
-pg@8.6.0:
-  version "8.6.0"
-  resolved "https://registry.yarnpkg.com/pg/-/pg-8.6.0.tgz#e222296b0b079b280cce106ea991703335487db2"
-  integrity sha512-qNS9u61lqljTDFvmk/N66EeGq3n6Ujzj0FFyNMGQr6XuEv4tgNTXvJQTfJdcvGit5p5/DWPu+wj920hAJFI+QQ==
+pg@8.7.3:
+  version "8.7.3"
+  resolved "https://registry.yarnpkg.com/pg/-/pg-8.7.3.tgz#8a5bdd664ca4fda4db7997ec634c6e5455b27c44"
+  integrity sha512-HPmH4GH4H3AOprDJOazoIcpI49XFsHCe8xlrjHkWiapdbHK+HLtbm/GQzXYAZwmPju/kzKhjaSfMACG+8cgJcw==
   dependencies:
     buffer-writer "2.0.0"
     packet-reader "1.0.0"
     pg-connection-string "^2.5.0"
-    pg-pool "^3.3.0"
+    pg-pool "^3.5.1"
     pg-protocol "^1.5.0"
     pg-types "^2.1.0"
     pgpass "1.x"
