@@ -258,125 +258,6 @@ type ComponentSharedSeo {
   canonicalURL: String
 }
 
-input ArticleFiltersInput {
-  id: IDFilterInput
-  title: StringFilterInput
-  content: StringFilterInput
-  slug: StringFilterInput
-  category: CategoryFiltersInput
-  Seo: ComponentSharedSeoFiltersInput
-  createdAt: DateTimeFilterInput
-  updatedAt: DateTimeFilterInput
-  publishedAt: DateTimeFilterInput
-  localizations: ArticleFiltersInput
-  locale: StringFilterInput
-  and: [ArticleFiltersInput]
-  or: [ArticleFiltersInput]
-  not: ArticleFiltersInput
-}
-
-input ArticleInput {
-  title: String
-  content: String
-  thumbnail: ID
-  slug: String
-  category: ID
-  Seo: ComponentSharedSeoInput
-  publishedAt: DateTime
-}
-
-type Article {
-  title: String!
-  content: String!
-  thumbnail: UploadFileEntityResponse
-  category: CategoryEntityResponse
-  Seo: ComponentSharedSeo
-  createdAt: DateTime
-  updatedAt: DateTime
-  publishedAt: DateTime
-  localizations(
-    filters: ArticleFiltersInput
-    pagination: PaginationArg = {}
-    sort: [String] = []
-    publicationState: PublicationState = LIVE
-  ): ArticleRelationResponseCollection
-  locale: String
-}
-
-type ArticleEntity {
-  id: ID
-  attributes: Article
-}
-
-type ArticleEntityResponse {
-  data: ArticleEntity
-}
-
-type ArticleEntityResponseCollection {
-  data: [ArticleEntity!]!
-  meta: ResponseCollectionMeta!
-}
-
-type ArticleRelationResponseCollection {
-  data: [ArticleEntity!]!
-}
-
-input CategoryFiltersInput {
-  id: IDFilterInput
-  name: StringFilterInput
-  slug: StringFilterInput
-  articles: ArticleFiltersInput
-  createdAt: DateTimeFilterInput
-  updatedAt: DateTimeFilterInput
-  localizations: CategoryFiltersInput
-  locale: StringFilterInput
-  and: [CategoryFiltersInput]
-  or: [CategoryFiltersInput]
-  not: CategoryFiltersInput
-}
-
-input CategoryInput {
-  name: String
-  slug: String
-  articles: [ID]
-}
-
-type Category {
-  name: String!
-  articles(
-    filters: ArticleFiltersInput
-    pagination: PaginationArg = {}
-    sort: [String] = []
-    publicationState: PublicationState = LIVE
-  ): ArticleRelationResponseCollection
-  createdAt: DateTime
-  updatedAt: DateTime
-  localizations(
-    filters: CategoryFiltersInput
-    pagination: PaginationArg = {}
-    sort: [String] = []
-  ): CategoryRelationResponseCollection
-  locale: String
-}
-
-type CategoryEntity {
-  id: ID
-  attributes: Category
-}
-
-type CategoryEntityResponse {
-  data: CategoryEntity
-}
-
-type CategoryEntityResponseCollection {
-  data: [CategoryEntity!]!
-  meta: ResponseCollectionMeta!
-}
-
-type CategoryRelationResponseCollection {
-  data: [CategoryEntity!]!
-}
-
 input UploadFileFiltersInput {
   id: IDFilterInput
   name: StringFilterInput
@@ -393,6 +274,8 @@ input UploadFileFiltersInput {
   previewUrl: StringFilterInput
   provider: StringFilterInput
   provider_metadata: JSONFilterInput
+  folder: UploadFolderFiltersInput
+  folderPath: StringFilterInput
   createdAt: DateTimeFilterInput
   updatedAt: DateTimeFilterInput
   and: [UploadFileFiltersInput]
@@ -415,6 +298,8 @@ input UploadFileInput {
   previewUrl: String
   provider: String
   provider_metadata: JSON
+  folder: ID
+  folderPath: String
 }
 
 type UploadFile {
@@ -449,6 +334,71 @@ type UploadFileEntityResponse {
 type UploadFileEntityResponseCollection {
   data: [UploadFileEntity!]!
   meta: ResponseCollectionMeta!
+}
+
+type UploadFileRelationResponseCollection {
+  data: [UploadFileEntity!]!
+}
+
+input UploadFolderFiltersInput {
+  id: IDFilterInput
+  name: StringFilterInput
+  pathId: IntFilterInput
+  parent: UploadFolderFiltersInput
+  children: UploadFolderFiltersInput
+  files: UploadFileFiltersInput
+  path: StringFilterInput
+  createdAt: DateTimeFilterInput
+  updatedAt: DateTimeFilterInput
+  and: [UploadFolderFiltersInput]
+  or: [UploadFolderFiltersInput]
+  not: UploadFolderFiltersInput
+}
+
+input UploadFolderInput {
+  name: String
+  pathId: Int
+  parent: ID
+  children: [ID]
+  files: [ID]
+  path: String
+}
+
+type UploadFolder {
+  name: String!
+  pathId: Int!
+  parent: UploadFolderEntityResponse
+  children(
+    filters: UploadFolderFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+  ): UploadFolderRelationResponseCollection
+  files(
+    filters: UploadFileFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+  ): UploadFileRelationResponseCollection
+  path: String!
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+type UploadFolderEntity {
+  id: ID
+  attributes: UploadFolder
+}
+
+type UploadFolderEntityResponse {
+  data: UploadFolderEntity
+}
+
+type UploadFolderEntityResponseCollection {
+  data: [UploadFolderEntity!]!
+  meta: ResponseCollectionMeta!
+}
+
+type UploadFolderRelationResponseCollection {
+  data: [UploadFolderEntity!]!
 }
 
 input I18NLocaleFiltersInput {
@@ -623,16 +573,136 @@ type UsersPermissionsUserRelationResponseCollection {
   data: [UsersPermissionsUserEntity!]!
 }
 
+input ArticleFiltersInput {
+  id: IDFilterInput
+  title: StringFilterInput
+  content: StringFilterInput
+  slug: StringFilterInput
+  category: CategoryFiltersInput
+  Seo: ComponentSharedSeoFiltersInput
+  createdAt: DateTimeFilterInput
+  updatedAt: DateTimeFilterInput
+  publishedAt: DateTimeFilterInput
+  localizations: ArticleFiltersInput
+  locale: StringFilterInput
+  and: [ArticleFiltersInput]
+  or: [ArticleFiltersInput]
+  not: ArticleFiltersInput
+}
+
+input ArticleInput {
+  title: String
+  content: String
+  thumbnail: ID
+  slug: String
+  category: ID
+  Seo: ComponentSharedSeoInput
+  publishedAt: DateTime
+}
+
+type Article {
+  title: String!
+  content: String!
+  thumbnail: UploadFileEntityResponse
+  category: CategoryEntityResponse
+  Seo: ComponentSharedSeo
+  createdAt: DateTime
+  updatedAt: DateTime
+  publishedAt: DateTime
+  localizations(
+    filters: ArticleFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+    publicationState: PublicationState = LIVE
+  ): ArticleRelationResponseCollection
+  locale: String
+}
+
+type ArticleEntity {
+  id: ID
+  attributes: Article
+}
+
+type ArticleEntityResponse {
+  data: ArticleEntity
+}
+
+type ArticleEntityResponseCollection {
+  data: [ArticleEntity!]!
+  meta: ResponseCollectionMeta!
+}
+
+type ArticleRelationResponseCollection {
+  data: [ArticleEntity!]!
+}
+
+input CategoryFiltersInput {
+  id: IDFilterInput
+  name: StringFilterInput
+  slug: StringFilterInput
+  articles: ArticleFiltersInput
+  createdAt: DateTimeFilterInput
+  updatedAt: DateTimeFilterInput
+  localizations: CategoryFiltersInput
+  locale: StringFilterInput
+  and: [CategoryFiltersInput]
+  or: [CategoryFiltersInput]
+  not: CategoryFiltersInput
+}
+
+input CategoryInput {
+  name: String
+  slug: String
+  articles: [ID]
+}
+
+type Category {
+  name: String!
+  articles(
+    filters: ArticleFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+    publicationState: PublicationState = LIVE
+  ): ArticleRelationResponseCollection
+  createdAt: DateTime
+  updatedAt: DateTime
+  localizations(
+    filters: CategoryFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+  ): CategoryRelationResponseCollection
+  locale: String
+}
+
+type CategoryEntity {
+  id: ID
+  attributes: Category
+}
+
+type CategoryEntityResponse {
+  data: CategoryEntity
+}
+
+type CategoryEntityResponseCollection {
+  data: [CategoryEntity!]!
+  meta: ResponseCollectionMeta!
+}
+
+type CategoryRelationResponseCollection {
+  data: [CategoryEntity!]!
+}
+
 union GenericMorph =
     ComponentSharedMetaSocial
   | ComponentSharedSeo
-  | Article
-  | Category
   | UploadFile
+  | UploadFolder
   | I18NLocale
   | UsersPermissionsPermission
   | UsersPermissionsRole
   | UsersPermissionsUser
+  | Article
+  | Category
 
 input FileInfoInput {
   name: String
@@ -700,27 +770,18 @@ input PaginationArg {
 }
 
 type Query {
-  article(id: ID, locale: I18NLocaleCode): ArticleEntityResponse
-  articles(
-    filters: ArticleFiltersInput
-    pagination: PaginationArg = {}
-    sort: [String] = []
-    publicationState: PublicationState = LIVE
-    locale: I18NLocaleCode
-  ): ArticleEntityResponseCollection
-  category(id: ID, locale: I18NLocaleCode): CategoryEntityResponse
-  categories(
-    filters: CategoryFiltersInput
-    pagination: PaginationArg = {}
-    sort: [String] = []
-    locale: I18NLocaleCode
-  ): CategoryEntityResponseCollection
   uploadFile(id: ID): UploadFileEntityResponse
   uploadFiles(
     filters: UploadFileFiltersInput
     pagination: PaginationArg = {}
     sort: [String] = []
   ): UploadFileEntityResponseCollection
+  uploadFolder(id: ID): UploadFolderEntityResponse
+  uploadFolders(
+    filters: UploadFolderFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+  ): UploadFolderEntityResponseCollection
   i18NLocale(id: ID): I18NLocaleEntityResponse
   i18NLocales(
     filters: I18NLocaleFiltersInput
@@ -739,10 +800,34 @@ type Query {
     pagination: PaginationArg = {}
     sort: [String] = []
   ): UsersPermissionsUserEntityResponseCollection
+  article(id: ID, locale: I18NLocaleCode): ArticleEntityResponse
+  articles(
+    filters: ArticleFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+    publicationState: PublicationState = LIVE
+    locale: I18NLocaleCode
+  ): ArticleEntityResponseCollection
+  category(id: ID, locale: I18NLocaleCode): CategoryEntityResponse
+  categories(
+    filters: CategoryFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+    locale: I18NLocaleCode
+  ): CategoryEntityResponseCollection
   me: UsersPermissionsMe
 }
 
 type Mutation {
+  createUploadFile(data: UploadFileInput!): UploadFileEntityResponse
+  updateUploadFile(id: ID!, data: UploadFileInput!): UploadFileEntityResponse
+  deleteUploadFile(id: ID!): UploadFileEntityResponse
+  createUploadFolder(data: UploadFolderInput!): UploadFolderEntityResponse
+  updateUploadFolder(
+    id: ID!
+    data: UploadFolderInput!
+  ): UploadFolderEntityResponse
+  deleteUploadFolder(id: ID!): UploadFolderEntityResponse
   createArticle(
     data: ArticleInput!
     locale: I18NLocaleCode
@@ -763,9 +848,6 @@ type Mutation {
     locale: I18NLocaleCode
   ): CategoryEntityResponse
   deleteCategory(id: ID!, locale: I18NLocaleCode): CategoryEntityResponse
-  createUploadFile(data: UploadFileInput!): UploadFileEntityResponse
-  updateUploadFile(id: ID!, data: UploadFileInput!): UploadFileEntityResponse
-  deleteUploadFile(id: ID!): UploadFileEntityResponse
   upload(
     refId: ID
     ref: String
