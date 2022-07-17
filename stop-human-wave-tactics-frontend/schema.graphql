@@ -198,12 +198,47 @@ input ComponentSharedMetaSocialFiltersInput {
   not: ComponentSharedMetaSocialFiltersInput
 }
 
+input ComponentSharedMetaSocialInput {
+  id: ID
+  socialNetwork: ENUM_COMPONENTSHAREDMETASOCIAL_SOCIALNETWORK
+  title: String
+  description: String
+  image: ID
+}
+
 type ComponentSharedMetaSocial {
   id: ID!
   socialNetwork: ENUM_COMPONENTSHAREDMETASOCIAL_SOCIALNETWORK!
   title: String!
   description: String!
   image: UploadFileEntityResponse
+}
+
+input ComponentSharedSeoFiltersInput {
+  metaTitle: StringFilterInput
+  metaDescription: StringFilterInput
+  metaSocial: ComponentSharedMetaSocialFiltersInput
+  keywords: StringFilterInput
+  metaRobots: StringFilterInput
+  structuredData: JSONFilterInput
+  metaViewport: StringFilterInput
+  canonicalURL: StringFilterInput
+  and: [ComponentSharedSeoFiltersInput]
+  or: [ComponentSharedSeoFiltersInput]
+  not: ComponentSharedSeoFiltersInput
+}
+
+input ComponentSharedSeoInput {
+  id: ID
+  metaTitle: String
+  metaDescription: String
+  metaImage: ID
+  metaSocial: [ComponentSharedMetaSocialInput]
+  keywords: String
+  metaRobots: String
+  structuredData: JSON
+  metaViewport: String
+  canonicalURL: String
 }
 
 type ComponentSharedSeo {
@@ -228,11 +263,13 @@ input ArticleFiltersInput {
   title: StringFilterInput
   content: StringFilterInput
   slug: StringFilterInput
-  user: UsersPermissionsUserFiltersInput
   category: CategoryFiltersInput
+  Seo: ComponentSharedSeoFiltersInput
   createdAt: DateTimeFilterInput
   updatedAt: DateTimeFilterInput
   publishedAt: DateTimeFilterInput
+  localizations: ArticleFiltersInput
+  locale: StringFilterInput
   and: [ArticleFiltersInput]
   or: [ArticleFiltersInput]
   not: ArticleFiltersInput
@@ -241,27 +278,29 @@ input ArticleFiltersInput {
 input ArticleInput {
   title: String
   content: String
+  thumbnail: ID
   slug: String
-  thumbnail: [ID]
-  user: ID
   category: ID
+  Seo: ComponentSharedSeoInput
   publishedAt: DateTime
 }
 
 type Article {
   title: String!
   content: String!
-  slug: String!
-  thumbnail(
-    filters: UploadFileFiltersInput
-    pagination: PaginationArg = {}
-    sort: [String] = []
-  ): UploadFileRelationResponseCollection
-  user: UsersPermissionsUserEntityResponse
+  thumbnail: UploadFileEntityResponse
   category: CategoryEntityResponse
+  Seo: ComponentSharedSeo
   createdAt: DateTime
   updatedAt: DateTime
   publishedAt: DateTime
+  localizations(
+    filters: ArticleFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+    publicationState: PublicationState = LIVE
+  ): ArticleRelationResponseCollection
+  locale: String
 }
 
 type ArticleEntity {
@@ -289,6 +328,8 @@ input CategoryFiltersInput {
   articles: ArticleFiltersInput
   createdAt: DateTimeFilterInput
   updatedAt: DateTimeFilterInput
+  localizations: CategoryFiltersInput
+  locale: StringFilterInput
   and: [CategoryFiltersInput]
   or: [CategoryFiltersInput]
   not: CategoryFiltersInput
@@ -302,7 +343,6 @@ input CategoryInput {
 
 type Category {
   name: String!
-  slug: String!
   articles(
     filters: ArticleFiltersInput
     pagination: PaginationArg = {}
@@ -311,6 +351,12 @@ type Category {
   ): ArticleRelationResponseCollection
   createdAt: DateTime
   updatedAt: DateTime
+  localizations(
+    filters: CategoryFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+  ): CategoryRelationResponseCollection
+  locale: String
 }
 
 type CategoryEntity {
@@ -325,6 +371,10 @@ type CategoryEntityResponse {
 type CategoryEntityResponseCollection {
   data: [CategoryEntity!]!
   meta: ResponseCollectionMeta!
+}
+
+type CategoryRelationResponseCollection {
+  data: [CategoryEntity!]!
 }
 
 input UploadFileFiltersInput {
@@ -399,10 +449,6 @@ type UploadFileEntityResponse {
 type UploadFileEntityResponseCollection {
   data: [UploadFileEntity!]!
   meta: ResponseCollectionMeta!
-}
-
-type UploadFileRelationResponseCollection {
-  data: [UploadFileEntity!]!
 }
 
 input I18NLocaleFiltersInput {
@@ -529,7 +575,6 @@ input UsersPermissionsUserFiltersInput {
   confirmed: BooleanFilterInput
   blocked: BooleanFilterInput
   role: UsersPermissionsRoleFiltersInput
-  articles: ArticleFiltersInput
   createdAt: DateTimeFilterInput
   updatedAt: DateTimeFilterInput
   and: [UsersPermissionsUserFiltersInput]
@@ -547,7 +592,6 @@ input UsersPermissionsUserInput {
   confirmed: Boolean
   blocked: Boolean
   role: ID
-  articles: [ID]
 }
 
 type UsersPermissionsUser {
@@ -557,12 +601,6 @@ type UsersPermissionsUser {
   confirmed: Boolean
   blocked: Boolean
   role: UsersPermissionsRoleEntityResponse
-  articles(
-    filters: ArticleFiltersInput
-    pagination: PaginationArg = {}
-    sort: [String] = []
-    publicationState: PublicationState = LIVE
-  ): ArticleRelationResponseCollection
   createdAt: DateTime
   updatedAt: DateTime
 }
@@ -601,6 +639,9 @@ input FileInfoInput {
   alternativeText: String
   caption: String
 }
+
+# A string used to identify an i18n locale
+scalar I18NLocaleCode
 
 type UsersPermissionsMe {
   id: ID!
@@ -659,18 +700,20 @@ input PaginationArg {
 }
 
 type Query {
-  article(id: ID): ArticleEntityResponse
+  article(id: ID, locale: I18NLocaleCode): ArticleEntityResponse
   articles(
     filters: ArticleFiltersInput
     pagination: PaginationArg = {}
     sort: [String] = []
     publicationState: PublicationState = LIVE
+    locale: I18NLocaleCode
   ): ArticleEntityResponseCollection
-  category(id: ID): CategoryEntityResponse
+  category(id: ID, locale: I18NLocaleCode): CategoryEntityResponse
   categories(
     filters: CategoryFiltersInput
     pagination: PaginationArg = {}
     sort: [String] = []
+    locale: I18NLocaleCode
   ): CategoryEntityResponseCollection
   uploadFile(id: ID): UploadFileEntityResponse
   uploadFiles(
@@ -700,12 +743,26 @@ type Query {
 }
 
 type Mutation {
-  createArticle(data: ArticleInput!): ArticleEntityResponse
-  updateArticle(id: ID!, data: ArticleInput!): ArticleEntityResponse
-  deleteArticle(id: ID!): ArticleEntityResponse
-  createCategory(data: CategoryInput!): CategoryEntityResponse
-  updateCategory(id: ID!, data: CategoryInput!): CategoryEntityResponse
-  deleteCategory(id: ID!): CategoryEntityResponse
+  createArticle(
+    data: ArticleInput!
+    locale: I18NLocaleCode
+  ): ArticleEntityResponse
+  updateArticle(
+    id: ID!
+    data: ArticleInput!
+    locale: I18NLocaleCode
+  ): ArticleEntityResponse
+  deleteArticle(id: ID!, locale: I18NLocaleCode): ArticleEntityResponse
+  createCategory(
+    data: CategoryInput!
+    locale: I18NLocaleCode
+  ): CategoryEntityResponse
+  updateCategory(
+    id: ID!
+    data: CategoryInput!
+    locale: I18NLocaleCode
+  ): CategoryEntityResponse
+  deleteCategory(id: ID!, locale: I18NLocaleCode): CategoryEntityResponse
   createUploadFile(data: UploadFileInput!): UploadFileEntityResponse
   updateUploadFile(id: ID!, data: UploadFileInput!): UploadFileEntityResponse
   deleteUploadFile(id: ID!): UploadFileEntityResponse
@@ -724,6 +781,16 @@ type Mutation {
   ): [UploadFileEntityResponse]!
   updateFileInfo(id: ID!, info: FileInfoInput): UploadFileEntityResponse!
   removeFile(id: ID!): UploadFileEntityResponse
+  createArticleLocalization(
+    id: ID
+    data: ArticleInput
+    locale: I18NLocaleCode
+  ): ArticleEntityResponse
+  createCategoryLocalization(
+    id: ID
+    data: CategoryInput
+    locale: I18NLocaleCode
+  ): CategoryEntityResponse
 
   # Create a new role
   createUsersPermissionsRole(
