@@ -6,7 +6,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { Article } from '../../typedefs/types';
+import { Article } from '../../types/types';
 
 const bull = (
         <Box
