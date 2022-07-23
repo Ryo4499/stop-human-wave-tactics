@@ -1,4 +1,5 @@
-import Articles from "../../components/Article/ArticleDetails";
+import { Articles } from "../../components/Articles"
+
 import Grid from "@mui/material/Grid";
 import React from "react";
 import type { InferGetStaticPropsType } from "next";
