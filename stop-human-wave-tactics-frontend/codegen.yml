@@ -1,0 +1,8 @@
+schema: schema.graphql
+documents: graphql/**/*.graphql
+generates:
+  types/apollo_client.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-graphql-request
