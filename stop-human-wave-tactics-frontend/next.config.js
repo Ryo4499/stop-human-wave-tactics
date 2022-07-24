@@ -1,8 +1,22 @@
-/**
- * @type {import('next').NextConfig}
- **/
+/*
+  eslint-disable
+  @typescript-eslint/no-var-requires,
+  @typescript-eslint/explicit-function-return-type,
+  @type {import('next').NextConfig}
+*/
+
 const nextConfig = {
-	reactStrictMode: true,
+  reactStrictMode: true,
+  i18n: {
+    locales: ["en", "ja"],
+    defaultLocale: "ja",
+  },
+  domains: [
+    {
+      domain: "localhost",
+      defaultLocale: "ja",
+    },
+  ],
 };
 
 module.exports = nextConfig;

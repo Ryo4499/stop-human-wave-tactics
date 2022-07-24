@@ -1,12 +1,41 @@
-import { useQuery } from "@apollo/client"
+import { useQuery } from "@apollo/client";
+import { Grid } from "@mui/material";
+import { getArticles } from "../../graphql/getArticles";
+import {
+  ArticleFiltersInput,
+  getArticlesQuery,
+  getArticlesQueryVariables,
+  PaginationArg,
+  PublicationState,
+} from "../../types/apollo_client";
 
-interface IArticlesProps{
-    page:number
-}
-const perPage = parseInt(process.env.PER_PAGE || "10")
+const perPage = parseInt(process.env.PER_PAGE || "10");
 
-export const Articles = ({ page }: IArticlesProps) => {
-    return (
-        <div></div>
-    )
-}
+export const Articles = (
+  filters: ArticleFiltersInput,
+  pagination: PaginationArg,
+  sort: [string],
+  publicationState: PublicationState,
+  locale: [string]
+) => {
+  const { data, loading, error } = useQuery<
+    getArticlesQuery,
+    getArticlesQueryVariables
+  >(getArticles, {
+    fetchPolicy: "cache-and-network",
+    nextFetchPolicy: "cache-first",
+    variables: {
+      filters: filters,
+      pagination: pagination,
+      sort: sort,
+      publicationState: publicationState,
+      locale: locale,
+    },
+  });
+
+  return (
+    <Grid>
+      <h1>test</h1>
+    </Grid>
+  );
+};

@@ -1,9 +1,12 @@
-query($id: ID!, $locale: I18NLocaleCode!) {
-  article(id: $id, locale: $locale) {
-    data {
+import { gql } from "@apollo/client"
+
+export const getArticles = gql`
+query($filters:ArticleFiltersInput,$pagination:PaginationArg!,$sort:[String],$publicationState:PublicationState,$locale:I18NLocaleCode!){
+  articles(filters:$filters,pagination:$pagination,sort:$sort,publicationState:$publicationState,locale:$locale){
+    data{
       id
-      attributes {
-        title
+      attributes{
+                title
         content
         thumbnail {
           data {
@@ -55,5 +58,14 @@ query($id: ID!, $locale: I18NLocaleCode!) {
         locale
       }
     }
+    meta{
+      pagination{
+        total
+        page
+        pageSize
+        pageCount
+      }
+    }
   }
 }
+`

@@ -1,4 +1,6 @@
-query($id:ID!,$locale:I18NLocaleCode!){
+import { gql } from "@apollo/client"
+
+export const getCategories = gql`query($id:ID!,$locale:I18NLocaleCode!){
   category(id:$id,locale:$locale){
     data{
       id
@@ -16,3 +18,4 @@ query($id:ID!,$locale:I18NLocaleCode!){
     }
   }
 }
+`
