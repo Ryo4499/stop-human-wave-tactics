@@ -25,6 +25,23 @@ services:
   #    networks:
   #      app_net:
   #        ipv4_address: 172.49.0.2
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus:/etc/prometheus
+    command: "--config.file=/etc/prometheus/protheus.yml"
+    restart: always
+
+  grafana:
+    image: grafana/grafana
+    restart: always
+
+  alertmanager:
+    image: prom/alertmanager
+    volumes:
+      - ./alertmanager:/etc/alertmanager
+    command: "--config.file=/etc/alertmanager/config.yml"
+    restart: always
 
   db:
     image: postgres:14-alpine
@@ -114,14 +131,14 @@ services:
         target: "/home/${USER}/stop-human-wave-tactics-frontend"
     tty: true
     entrypoint: sh
-    command:
-      - -c
-      - |
-        if [ "${MODE}" = "PRODUCTION" ]; then \
-          yarn build && yarn start; \
-        else \
-          yarn build && yarn dev; \
-        fi
+    #command:
+    #  - -c
+    #  - |
+    #    if [ "${MODE}" = "PRODUCTION" ]; then \
+    #      yarn build && yarn start; \
+    #    else \
+    #      yarn build && yarn dev; \
+    #    fi
     depends_on:
       - back
       - db
