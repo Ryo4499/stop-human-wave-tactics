@@ -1,31 +1,32 @@
-import { Articles } from "../../components/Articles"
-
 import Grid from "@mui/material/Grid";
 import React from "react";
-import type { InferGetStaticPropsType } from "next";
+import type { NextPage } from "next";
+import { addApolloState, initializeApollo } from "../../lib/apollo-client";
+import {
+  getArticlesQuery,
+  getArticlesQueryVariables,
+} from "../../types/apollo_client";
+import { getArticles } from "../../graphql/getArticles";
+import { useRouter } from "next/router";
+
+const ArticlesPage: NextPage = () => {
+  const { query } = useRouter();
+  const page = parseInt(query?.page as string, 10);
+  return <Grid></Grid>;
+};
 
 export async function getStaticProps() {
-        return {
-                //ここにAPIから記事一覧を取得
-                props: {
-                        time: new Date().toLocaleString()
-                },
-                // ISR
-                revalidate: 4 * 60 * 60,
-        };
+  const client = initializeApollo();
+  try {
+    await client.query<getArticlesQuery, getArticlesQueryVariables>({
+      query: getArticles,
+    });
+    return addApolloState(client, { props: {}, revalidate: 60 });
+  } catch {
+    return {
+      notFound: true,
+    };
+  }
 }
 
-//記事のTYPE
-type Props = {
-        time: string;
-}
-
-//引数はpropsの変数名に合わせる
-export default function App({
-        time,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
-        return (
-                <Grid>
-                </Grid>
-        );
-}
+export default ArticlesPage;
