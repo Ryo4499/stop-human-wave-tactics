@@ -20,4 +20,4 @@ RUN if [ "${MODE}" = "PRODUCTION" ]; then \
   yarn install --production=false --no-lockfile --pre-lockfile ; \
   fi
 
-USER node
+USER $USER
