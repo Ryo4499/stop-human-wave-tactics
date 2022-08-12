@@ -1,4 +1,4 @@
-import gql from "@apollo/client"
+import { gql } from "@apollo/client"
 
 export const getArticle = gql`query($id: ID!, $locale: I18NLocaleCode!) {
   article(id: $id, locale: $locale) {
