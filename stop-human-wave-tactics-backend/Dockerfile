@@ -14,9 +14,9 @@ COPY package.json .
 COPY yarn.lock .
 
 RUN if [ "${MODE}" = "PRODUCTION" ]; then \
-  yarn install --production=true --frozen-lockfile --force --update-checksums && chown -R $USER:$GROUP ./; \
+  yarn install --production=true --frozen-lockfile --force --update-checksums ; \
   else \
-  yarn install --production=false --no-lockfile --pre-lockfile && chown -R $USER:$GROUP ./; \
+  yarn install --production=false --no-lockfile --pre-lockfile ; \
   fi
 
-USER $USER
+USER node
