@@ -30,7 +30,7 @@ const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
         };
 
         const httpLink = new HttpLink({
-                uri: `${process.env.BACKEND_URL}/graphql`,
+                uri: process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost/graphql",
                 credentials: "same-origin",
         });
 
