@@ -1,18 +1,22 @@
 import Grid from "@mui/material/Grid";
-import React from "react";
+import React, { useState } from "react";
 import type { NextPage } from "next";
-import { addApolloState, initializeApollo } from "../../lib/apollo-client";
+import { addApolloState, initializeApollo } from "../../lib/apollo";
 import {
   getArticlesQuery,
   getArticlesQueryVariables,
 } from "../../types/apollo_client";
 import { getArticles } from "../../graphql/getArticles";
 import { useRouter } from "next/router";
+import { Pagination } from "@mui/material";
+import { Articles } from "../../components/Articles/Articles";
 
 const ArticlesPage: NextPage = () => {
-  const { query } = useRouter();
-  const page = parseInt(query?.page as string, 10);
-  return <Grid></Grid>;
+  return (
+    <Grid>
+      <Articles></Articles>
+    </Grid>
+  );
 };
 
 export async function getStaticProps() {
