@@ -14,7 +14,6 @@ const nextConfig = {
   domains: [
     {
       domain: "localhost",
-      defaultLocale: "ja",
     },
   ],
 };
