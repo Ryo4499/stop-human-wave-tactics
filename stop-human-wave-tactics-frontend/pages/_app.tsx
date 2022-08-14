@@ -5,7 +5,7 @@ import Layout from "../components/Layouts/Layout";
 import { AppProps } from "next/app";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { ApolloProvider } from "@apollo/client";
-import { useApollo } from "../lib/apollo-client";
+import { useApollo } from "../lib/apollo";
 
 export default function App({ Component, pageProps }: AppProps) {
         const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
