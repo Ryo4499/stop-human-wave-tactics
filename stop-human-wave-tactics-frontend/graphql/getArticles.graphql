@@ -1,11 +1,20 @@
-import { gql } from "@apollo/client"
-
-export const getArticles = gql`
-query($filters:ArticleFiltersInput,$pagination:PaginationArg!,$sort:[String],$publicationState:PublicationState,$locale:I18NLocaleCode!){
-  articles(filters:$filters,pagination:$pagination,sort:$sort,publicationState:$publicationState,locale:$locale){
-    data{
+query (
+  $filters: ArticleFiltersInput
+  $pagination: PaginationArg!
+  $sort: [String]
+  $publicationState: PublicationState
+  $locale: I18NLocaleCode!
+) {
+  articles(
+    filters: $filters
+    pagination: $pagination
+    sort: $sort
+    publicationState: $publicationState
+    locale: $locale
+  ) {
+    data {
       id
-      attributes{
+      attributes {
         title
         summary
         content
@@ -59,8 +68,8 @@ query($filters:ArticleFiltersInput,$pagination:PaginationArg!,$sort:[String],$pu
         locale
       }
     }
-    meta{
-      pagination{
+    meta {
+      pagination {
         total
         page
         pageSize
@@ -69,4 +78,3 @@ query($filters:ArticleFiltersInput,$pagination:PaginationArg!,$sort:[String],$pu
     }
   }
 }
-`
