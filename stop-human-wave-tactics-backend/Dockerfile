@@ -10,6 +10,7 @@ RUN apk update && apk add libressl-dev libffi-dev tzdata && yes | addgroup -g $G
 
 WORKDIR "/home/${USER}/stop-human-wave-tactics-backend"
 
+RUN rm -fr ./dist/
 COPY package.json .
 COPY yarn.lock .
 

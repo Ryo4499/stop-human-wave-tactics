@@ -133,7 +133,7 @@ services:
     command:
       - -c
       - |
-        yarn build ; \
+        yarn build && chown -R ${USER}:${GROUP} ./ && \
         if [ "${MODE}" = "PRODUCTION" ]; then \
           yarn start; \
         else \
@@ -178,7 +178,7 @@ services:
     command:
       - -c
       - |
-        yarn build ; \
+        yarn build && chown -R ${USER}:${GROUP} ./ && \
         if [ "${MODE}" = "PRODUCTION" ]; then \
           yarn start; \
         else \
