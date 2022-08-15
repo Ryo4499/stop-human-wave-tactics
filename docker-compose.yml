@@ -125,9 +125,6 @@ services:
       - type: volume
         source: backModules
         target: /home/${USER}/stop-human-wave-tactics-backend/node_modules
-        volume:
-          nocopy: true
-
       - type: bind
         source: "./stop-human-wave-tactics-backend"
         target: "/home/${USER}/stop-human-wave-tactics-backend"
@@ -173,8 +170,6 @@ services:
       - type: volume
         source: frontModules
         target: /home/${USER}/stop-human-wave-tactics-frontend/node_modules
-        volume:
-          nocopy: true
       - type: bind
         source: "./stop-human-wave-tactics-frontend"
         target: "/home/${USER}/stop-human-wave-tactics-frontend"
