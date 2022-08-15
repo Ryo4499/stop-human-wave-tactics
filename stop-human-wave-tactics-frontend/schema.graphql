@@ -576,6 +576,7 @@ type UsersPermissionsUserRelationResponseCollection {
 input ArticleFiltersInput {
   id: IDFilterInput
   title: StringFilterInput
+  summary: StringFilterInput
   content: StringFilterInput
   slug: StringFilterInput
   category: CategoryFiltersInput
@@ -592,6 +593,7 @@ input ArticleFiltersInput {
 
 input ArticleInput {
   title: String
+  summary: String
   content: String
   thumbnail: ID
   slug: String
@@ -602,6 +604,7 @@ input ArticleInput {
 
 type Article {
   title: String!
+  summary: String!
   content: String!
   thumbnail: UploadFileEntityResponse
   category: CategoryEntityResponse

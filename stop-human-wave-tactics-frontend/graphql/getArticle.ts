@@ -6,6 +6,7 @@ export const getArticle = gql`query($id: ID!, $locale: I18NLocaleCode!) {
       id
       attributes {
         title
+        summary
         content
         thumbnail {
           data {
