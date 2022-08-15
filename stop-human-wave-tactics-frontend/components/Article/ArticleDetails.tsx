@@ -1,49 +1,34 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import { Article } from '../../types/apollo_client';
+import { useQuery } from "@apollo/client";
+import { LocalSee } from "@mui/icons-material";
+import { NextRouter, Router } from "next/router";
+import { DisplayError } from "../../components/Common/DisplayError";
+import { Loading } from "../../components/Common/Loading";
+import { getArticle } from "../../graphql/getArticle";
+import {
+  getArticleQuery,
+  getArticleQueryVariables,
+} from "../../types/apollo_client";
+import { Container, Grid } from "@mui/material";
 
-const bull = (
-        <Box
-                component="span"
-                sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
-        >
-                •
-        </Box>
-);
-
-const card = (
-        <Box sx={{ minHeight: "100%", display: "flex", flexGrow: 1, flexDirection: "column", flexShrink: 1 }}>
-                <CardContent>
-                        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                                Word of the Day
-                        </Typography>
-                        <Typography variant="h5" component="div">
-                                be{bull}nev{bull}o{bull}lent
-                        </Typography>
-                        <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                                adjective
-                        </Typography>
-                        <Typography variant="body2">
-                                well meaning and kindly.
-                                <br />
-                                {'"a benevolent smile"'}
-                        </Typography>
-                </CardContent>
-                <CardActions>
-                        <Button size="small">Learn More</Button>
-                </CardActions>
-        </Box>
-);
-
-export default function Articles(articles: Article[]) {
-        return (
-                <Grid>
-                </Grid>
-        );
+interface ArticleProps {
+  id: string;
+  router: NextRouter;
 }
+
+export const ArticleDetails: React.FC<ArticleProps> = ({ id, router }) => {
+  const { data, loading, error } = useQuery<
+    getArticleQuery,
+    getArticleQueryVariables
+  >(getArticle, {
+    fetchPolicy: "cache-and-network",
+    nextFetchPolicy: "cache-first",
+    variables: {
+      id: id,
+      locale: router.locale,
+    },
+  });
+  console.log(data);
+  if (loading) return <Loading />;
+  if (error) return <DisplayError error={error} />;
+  return <Container></Container>;
+};

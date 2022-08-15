@@ -12,9 +12,15 @@ import { Pagination } from "@mui/material";
 import { Articles } from "../../components/Articles/Articles";
 
 const ArticlesPage: NextPage = () => {
+  const router = useRouter();
+  const [page, setPage] = useState(
+    router.query.page === undefined
+      ? 1
+      : parseInt(router.query.page as string, 10)
+  );
   return (
     <Grid>
-      <Articles></Articles>
+      <Articles page={page} setPage={setPage} router={router}></Articles>
     </Grid>
   );
 };
