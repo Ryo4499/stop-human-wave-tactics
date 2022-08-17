@@ -23,6 +23,7 @@ import {
   Typography,
   CardActions,
   Button,
+  alertTitleClasses,
 } from "@mui/material";
 import { getArticles } from "../../graphql/getArticles";
 import {
@@ -38,6 +39,7 @@ import {
 import { Loading } from "../Common/Loading";
 import { DisplayError } from "../Common/DisplayError";
 import { NextRouter } from "next/router";
+import { AlignHorizontalCenter } from "@mui/icons-material";
 
 interface ArticlesProps {
   page: number;
@@ -45,7 +47,7 @@ interface ArticlesProps {
   router: NextRouter;
 }
 
-const perPage = parseInt(process.env.PER_PAGE || "1");
+const perPage = parseInt(process.env.PER_PAGE || "2");
 
 export const Articles: React.FC<ArticlesProps> = ({
   page,
@@ -95,49 +97,55 @@ export const Articles: React.FC<ArticlesProps> = ({
 
   return (
     <Container>
-      <Grid>
+      <Grid container spacing={2}>
         {data?.articles?.data.map((article) => {
           if (!article) return null;
           else {
             return (
-              <Card key={article.id}>
-                <Link href={`/article/${article.id}`}>
-                  <CardMedia
-                    component="img"
-                    image={article.attributes?.thumbnail?.data?.attributes?.url}
-                  />
-                </Link>
-                <CardContent></CardContent>
-                <Typography variant="h5" component="div">
-                  {article.attributes?.title}
-                </Typography>
-                <Typography>{article.attributes?.summary}</Typography>
-                <Typography>
-                  {article.attributes?.updatedAt
-                    .replace("T", " ")
-                    .replace(/\..*$/g, "")
-                    .replace(/\-/g, "/")}
-                </Typography>
-                <CardActions>
+              <Grid item xs={12} md={6} key={article.id}>
+                <Card>
                   <Link href={`/article/${article.id}`}>
-                    <Button size="small">More Details</Button>
+                    <CardMedia
+                      component="img"
+                      image={
+                        article.attributes?.thumbnail?.data?.attributes?.url
+                      }
+                    />
                   </Link>
-                </CardActions>
-              </Card>
+                  <CardContent></CardContent>
+                  <Typography variant="h5" component="div">
+                    {article.attributes?.title}
+                  </Typography>
+                  <Typography>{article.attributes?.summary}</Typography>
+                  <Typography>
+                    {article.attributes?.updatedAt
+                      .replace("T", " ")
+                      .replace(/\..*$/g, "")
+                      .replace(/\-/g, "/")}
+                  </Typography>
+                  <CardActions>
+                    <Link href={`/article/${article.id}`}>
+                      <Button size="small">More Details</Button>
+                    </Link>
+                  </CardActions>
+                </Card>
+              </Grid>
             );
           }
         })}
       </Grid>
-      <Pagination
-        page={page}
-        count={data?.articles?.meta.pagination.pageCount}
-        onChange={handleChange}
-        renderItem={(item) => (
-          <Link href={`/articles/${item.page}`} key={item.page} passHref>
-            <PaginationItem {...item} />
-          </Link>
-        )}
-      ></Pagination>
+      <Grid container alignItems="flex-end" justifyContent="center">
+        <Pagination
+          page={page}
+          count={data?.articles?.meta.pagination.pageCount}
+          onChange={handleChange}
+          renderItem={(item) => (
+            <Link href={`/articles/${item.page}`} key={item.page} passHref>
+              <PaginationItem {...item} />
+            </Link>
+          )}
+        ></Pagination>
+      </Grid>
     </Container>
   );
 };
