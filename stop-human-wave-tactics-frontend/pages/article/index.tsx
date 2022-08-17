@@ -13,7 +13,8 @@ import { DisplayError } from "../../components/Common/DisplayError";
 const ArticlePage: NextPage = () => {
   const router = useRouter();
   console.log(router);
-  if (router.query.id === undefined) {
+
+  if (router.query.id === undefined || Array.isArray(router.query.id)) {
     return (
       <DisplayError
         error={{
