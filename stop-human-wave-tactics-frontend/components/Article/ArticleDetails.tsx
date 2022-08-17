@@ -30,5 +30,7 @@ export const ArticleDetails: React.FC<ArticleProps> = ({ id, router }) => {
   console.log(data);
   if (loading) return <Loading />;
   if (error) return <DisplayError error={error} />;
-  return <Container></Container>;
+  return <Container>
+    
+  </Container>;
 };
