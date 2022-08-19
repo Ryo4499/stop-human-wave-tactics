@@ -1,14 +1,12 @@
 FROM node:16-alpine
 
-ARG UID
-ARG GID
-ARG USER
-ARG GROUP
+ARG MY_USER
+ARG MY_GROUP
 ARG MODE
 
-RUN apk update && apk add libressl-dev libffi-dev tzdata && yes | addgroup -g $GID $GROUP && yes | adduser -u $UID -G $GROUP $USER
+RUN apk update && apk add libressl-dev libffi-dev tzdata shadow && groupadd $MY_GROUP
 
-WORKDIR "/home/${USER}/stop-human-wave-tactics-backend"
+WORKDIR "/home/${MY_USER}/stop-human-wave-tactics-backend"
 
 RUN rm -fr ./dist/
 COPY package.json .
@@ -20,4 +18,4 @@ RUN if [ "${MODE}" = "PRODUCTION" ]; then \
   yarn install --production=false --no-lockfile --pre-lockfile ; \
   fi
 
-USER $USER
+USER $MY_USER
