@@ -3,7 +3,7 @@
 ## 実行環境
 
 ```txt
-Docker version 20.10.17, build 100c701
+Docker version 20.10.17, build 100c701 Rootless
 Docker Compose version v2.10.0
 ```
 
