@@ -4,7 +4,7 @@ ARG MY_USER
 ARG MY_GROUP
 ARG MODE
 
-RUN apk update && apk add libressl-dev libffi-dev tzdata shadow && groupadd $MY_GROUP
+RUN apk update && apk add libressl-dev libffi-dev tzdata shadow
 
 WORKDIR "/home/${MY_USER}/stop-human-wave-tactics-frontend"
 
