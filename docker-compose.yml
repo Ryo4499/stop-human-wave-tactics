@@ -102,10 +102,8 @@ services:
       context: ./stop-human-wave-tactics-backend
       dockerfile: Dockerfile
       args:
-        UID: $UID
-        GID: $GID
-        USER: $USER
-        GROUP: $GROUP
+        MY_USER: $MY_USER
+        MY_GROUP: $MY_GROUP
         MODE: $MODE
     env_file:
       - ./.env
@@ -119,23 +117,23 @@ services:
       - POSTGRES_DB
       - DB_SSL
       - DOCKER_CONTENT_TRUST
-    user: "${UID}:${GID}"
-    working_dir: "/home/${USER}/stop-human-wave-tactics-backend"
+    working_dir: "/home/${MY_USER}/stop-human-wave-tactics-backend"
+    user: $MY_USER
     volumes:
       - type: volume
         source: backModules
-        target: /home/${USER}/stop-human-wave-tactics-backend/node_modules
+        target: /home/${MY_USER}/stop-human-wave-tactics-backend/node_modules
       - type: bind
         source: "./stop-human-wave-tactics-backend"
-        target: "/home/${USER}/stop-human-wave-tactics-backend"
+        target: "/home/${MY_USER}/stop-human-wave-tactics-backend"
     tty: true
     entrypoint: sh
     command:
       - -c
       - |
-        yarn build && chown -R ${USER}:${GROUP} ./ && \
+        chown -R $MY_USER:$MY_GROUP ./ ; \
         if [ "${MODE}" = "PRODUCTION" ]; then \
-          yarn start; \
+          yarn build && yarn start; \
         else \
           yarn dev; \
         fi
@@ -153,10 +151,8 @@ services:
       context: ./stop-human-wave-tactics-frontend
       dockerfile: Dockerfile
       args:
-        UID: $UID
-        GID: $GID
-        USER: $USER
-        GROUP: $GROUP
+        MY_USER: $MY_USER
+        MY_GROUP: $MY_GROUP
         MODE: $MODE
     env_file:
       - ./.env
@@ -164,23 +160,23 @@ services:
     environment:
       - TZ
       - DOCKER_CONTENT_TRUST
-    user: "${UID}:${GID}"
-    working_dir: "/home/${USER}/stop-human-wave-tactics-frontend"
+    working_dir: "/home/${MY_USER}/stop-human-wave-tactics-frontend"
+    user: $MY_USER
     volumes:
       - type: volume
         source: frontModules
-        target: /home/${USER}/stop-human-wave-tactics-frontend/node_modules
+        target: /home/${MY_USER}/stop-human-wave-tactics-frontend/node_modules
       - type: bind
         source: "./stop-human-wave-tactics-frontend"
-        target: "/home/${USER}/stop-human-wave-tactics-frontend"
+        target: "/home/${MY_USER}/stop-human-wave-tactics-frontend"
     tty: true
     entrypoint: sh
     command:
       - -c
       - |
-        yarn build && chown -R ${USER}:${GROUP} ./ && \
+        chown -R $MY_USER:$MY_GROUP ./ ; \
         if [ "${MODE}" = "PRODUCTION" ]; then \
-          yarn start; \
+          yarn build && yarn start; \
         else \
           yarn dev; \
         fi
