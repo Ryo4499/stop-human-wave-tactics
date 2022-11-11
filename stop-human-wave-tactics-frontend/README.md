@@ -6,5 +6,5 @@ graphqlフォルダ以下に使用するQuery,Mutationを定義し、codegen.yml
 graphql playgroundからダウンロードしたSDLのスキーマのパスを指定して下記のコマンドを実行
 
 ```bash
-yarn run graphql-codegen
+npm run graphql-codegen
 ```
