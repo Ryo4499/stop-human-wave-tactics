@@ -24,7 +24,10 @@ docker-compose down
 cd stop-human-wave-tactics
 docker-compose down
 docker-compose exec back
-yarn upgrade-interactive
+# major update
+ncu  
+# minor update
+ncu -u --target patch
 ```
 
 ## トラブルシューティング
@@ -32,5 +35,5 @@ yarn upgrade-interactive
 1. .envの確認
 2. dceでSWCの確認
 3. docker volumeの削除
-4. node_modules,yarn.lockを削除して再ビルド
+4. node_modules,package-lock.jsonを削除して再ビルド
 5. DevDependency等の確認

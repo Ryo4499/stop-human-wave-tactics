@@ -1,5 +1,5 @@
 #!/bin/sh
 cd stop-human-wave-tactics-backend
-yarn upgrade --latest
+ncu -u target patch && npm audit fix --force
 cd ../stop-human-wave-tactics-frontend
-yarn upgrade --latest
+ncu -u target patch && npm audit fix --force
