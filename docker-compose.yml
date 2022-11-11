@@ -133,9 +133,9 @@ services:
       - |
         chown -R $MY_USER:$MY_GROUP ./ ; \
         if [ "${MODE}" = "PRODUCTION" ]; then \
-          yarn build && yarn start; \
+          npm run build && npm run start; \
         else \
-          yarn dev; \
+          npm run dev; \
         fi
     depends_on:
       - db
@@ -176,9 +176,9 @@ services:
       - |
         chown -R $MY_USER:$MY_GROUP ./ ; \
         if [ "${MODE}" = "PRODUCTION" ]; then \
-          yarn build && yarn start; \
+          npm run build && npm run start; \
         else \
-          yarn dev; \
+          npm run dev; \
         fi
     depends_on:
       - back
