@@ -23,8 +23,12 @@ docker-compose down
 ```bash
 cd stop-human-wave-tactics
 docker-compose down
-docker-compose exec back
+docker-compose exec back sh
 yarn upgrade-interactive
+exit
+docker-compose exec front sh
+yarn upgrade-interactive
+exit
 ```
 
 ## トラブルシューティング
