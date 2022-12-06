@@ -4,17 +4,17 @@ ARG MY_USER
 ARG MY_GROUP
 ARG MODE
 
-RUN apk update && apk add libressl-dev libffi-dev tzdata shadow && npm install -g npm-check-updates
+RUN apk update && apk add libressl-dev libffi-dev tzdata shadow
 
 WORKDIR "/home/${MY_USER}/stop-human-wave-tactics-frontend"
 
 COPY package.json .
-COPY package-lock.json .
+COPY yarn.lock .
 
 RUN if [ "${MODE}" = "PRODUCTION" ]; then \
-  npm ci ; \
+  yarn install --production=true --frozen-lockfile --force --update-checksums ; \
   else \
-  npm install && npm audit fix --force ; \
+  yarn install --production=false --no-lockfile --pre-lockfile ; \
   fi
 
 RUN mkdir ./.next
