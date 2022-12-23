@@ -19,11 +19,12 @@ jobs:
             sudo mv ~/docker-compose /usr/local/bin/docker-compose
             sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
       - run:
-          name: copy env
-          command: cp ~/repo/.env.sample ~/repo/.env
-      - run:
           name: Build images of services declared in docker-compose.yml
           command: docker-compose build
+          environment:
+            MY_USER: node
+            MY_GROUP: node
+            MODE: PRODUCTION
       - run:
           name: Start all services declared in docker-compose.yml
           command: docker-compose up -d
