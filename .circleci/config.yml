@@ -3,7 +3,6 @@ jobs:
   build:
     docker:
       - image: cimg/base:stable
-      - image: postgres:14-alpine
     working_directory: ~/repo
     steps:
       - checkout
