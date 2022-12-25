@@ -1,4 +1,4 @@
-query ($id: ID!, $locale: I18NLocaleCode!) {
+query getCategory($id: ID!, $locale: I18NLocaleCode!) {
   category(id: $id, locale: $locale) {
     data {
       id

@@ -1,4 +1,4 @@
-query (
+query getCategories(
   $filters: CategoryFiltersInput
   $pagination: PaginationArg!
   $sort: [String]
