@@ -1,4 +1,4 @@
-query (
+query getArticles(
   $filters: ArticleFiltersInput
   $pagination: PaginationArg!
   $sort: [String]

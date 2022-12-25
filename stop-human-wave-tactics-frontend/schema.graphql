@@ -28,6 +28,7 @@ input IDFilterInput {
   or: [ID]
   not: IDFilterInput
   eq: ID
+  eqi: ID
   ne: ID
   startsWith: ID
   endsWith: ID
@@ -51,6 +52,7 @@ input BooleanFilterInput {
   or: [Boolean]
   not: BooleanFilterInput
   eq: Boolean
+  eqi: Boolean
   ne: Boolean
   startsWith: Boolean
   endsWith: Boolean
@@ -74,6 +76,7 @@ input StringFilterInput {
   or: [String]
   not: StringFilterInput
   eq: String
+  eqi: String
   ne: String
   startsWith: String
   endsWith: String
@@ -97,6 +100,7 @@ input IntFilterInput {
   or: [Int]
   not: IntFilterInput
   eq: Int
+  eqi: Int
   ne: Int
   startsWith: Int
   endsWith: Int
@@ -120,6 +124,7 @@ input FloatFilterInput {
   or: [Float]
   not: FloatFilterInput
   eq: Float
+  eqi: Float
   ne: Float
   startsWith: Float
   endsWith: Float
@@ -143,6 +148,7 @@ input DateTimeFilterInput {
   or: [DateTime]
   not: DateTimeFilterInput
   eq: DateTime
+  eqi: DateTime
   ne: DateTime
   startsWith: DateTime
   endsWith: DateTime
@@ -166,6 +172,7 @@ input JSONFilterInput {
   or: [JSON]
   not: JSONFilterInput
   eq: JSON
+  eqi: JSON
   ne: JSON
   startsWith: JSON
   endsWith: JSON
@@ -917,6 +924,13 @@ type Mutation {
     password: String!
     passwordConfirmation: String!
     code: String!
+  ): UsersPermissionsLoginPayload
+
+  # Change user password. Confirm with the current password.
+  changePassword(
+    currentPassword: String!
+    password: String!
+    passwordConfirmation: String!
   ): UsersPermissionsLoginPayload
 
   # Confirm an email users email address
