@@ -1,7 +1,14 @@
-import { Avatar, Grid, Typography } from "@mui/material";
-import { styled, alpha } from "@mui/material/styles";
+import { Avatar, Typography } from "@mui/material";
+import { styled, alpha, ThemeProvider } from "@mui/material/styles";
+import Stack from "@mui/material/Stack";
+import Grid from "@mui/material/Unstable_Grid2";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import { source_code_pro } from "../../src/font";
 
 export default function Sidebar() {
   const Search = styled("div")(({ theme }) => ({
@@ -47,12 +54,7 @@ export default function Sidebar() {
   }));
 
   return (
-    <Grid
-      container
-      direction="column"
-      justifyContent="center"
-      alignContent="stretch"
-    >
+    <Stack direction="column" sx={{ flexGrow: 1 }}>
       <Search>
         <SearchIconWrapper>
           <SearchIcon />
@@ -66,8 +68,42 @@ export default function Sidebar() {
         <Avatar alt="AR44" src="/favicon.ico" />
       </Grid>
       <Grid item>
-        <Typography>test</Typography>
+        <Grid container>
+          <ThemeProvider theme={source_code_pro}>
+            <Grid item>
+              <Typography>AR44</Typography>
+            </Grid>
+            <Grid item>
+              <Typography>Jobs: AI Enginner/Full Stack Enginner</Typography>
+            </Grid>
+            <Grid item>
+              <Typography>Social Media:</Typography>
+            </Grid>
+          </ThemeProvider>
+        </Grid>
+        <Grid container direction="row" justifyContent="flex-start" xs={12}>
+          <Grid item sx={{ xs: 1 }}>
+            <a href="https://github.com/Ryo4499">
+              <GitHubIcon />
+            </a>
+          </Grid>
+          <Grid item sx={{ xs: 1 }}>
+            <a href="">
+              <TwitterIcon />
+            </a>
+          </Grid>
+          <Grid item sx={{ xs: 1 }}>
+            <a href="">
+              <FacebookIcon />
+            </a>
+          </Grid>
+          <Grid item sx={{ xs: 1 }}>
+            <a href="">
+              <InstagramIcon />
+            </a>
+          </Grid>
+        </Grid>
       </Grid>
-    </Grid>
+    </Stack>
   );
 }
