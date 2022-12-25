@@ -1,4 +1,4 @@
-query ($id: ID!, $locale: I18NLocaleCode!) {
+query getArticle($id: ID!, $locale: I18NLocaleCode!) {
   article(id: $id, locale: $locale) {
     data {
       id
