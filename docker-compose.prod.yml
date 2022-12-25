@@ -130,9 +130,6 @@ services:
     ports:
       - 1337:1337
     volumes:
-      - type: bind
-        source: stop-human-wave-tactics-backend
-        target: /home/${MY_USER}/stop-human-wave-tactics-backend
       - type: volume
         source: backModules
         target: /home/${MY_USER}/stop-human-wave-tactics-backend/node_modules
@@ -141,7 +138,7 @@ services:
     command:
       - -c
       - |
-        chown -R $MY_USER:$MY_GROUP ./ ; \
+        yarn build ; \
         if [ "${MODE}" = "PRODUCTION" ]; then \
           yarn start; \
         else \
@@ -173,9 +170,6 @@ services:
     working_dir: "/home/${MY_USER}/stop-human-wave-tactics-frontend"
     user: $MY_USER
     volumes:
-      - type: bind
-        source: stop-human-wave-tactics-frontend
-        target: /home/${MY_USER}/stop-human-wave-tactics-frontend
       - type: volume
         source: frontModules
         target: /home/${MY_USER}/stop-human-wave-tactics-frontend/node_modules
