@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { Grid } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2";
 import { addApolloState, initializeApollo } from "../../lib/apollo";
 import {
   getArticleQuery,
@@ -12,7 +12,6 @@ import { DisplayError } from "../../components/Common/DisplayError";
 
 const ArticlePage: NextPage = () => {
   const router = useRouter();
-  console.log(router);
 
   if (router.query.id === undefined || Array.isArray(router.query.id)) {
     return (

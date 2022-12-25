@@ -1,29 +1,20 @@
-import React, { SetStateAction } from "react";
+import React from "react";
 import Link from "next/link";
-import NextLink from "next/link";
-import Image from "next/image";
-import parse, {
-  attributesToProps,
-  DOMNode,
-  domToReact,
-  HTMLReactParserOptions,
-  Element,
-} from "html-react-parser";
 import { useState, ChangeEvent } from "react";
 import { useQuery } from "@apollo/client";
+import Grid from "@mui/material/Unstable_Grid2";
 import {
   Card,
   CardContent,
   CardMedia,
-  Grid,
+  Container,
   Pagination,
   PaginationItem,
-  Container,
+  Stack,
   Link as MuiLink,
   Typography,
   CardActions,
   Button,
-  alertTitleClasses,
 } from "@mui/material";
 import { getArticles } from "../../graphql/getArticles";
 import {
@@ -31,32 +22,27 @@ import {
   ArticleEntity,
   ArticleFiltersInput,
   ArticleLocalizationsArgs,
-  getArticlesQuery,
-  getArticlesQueryVariables,
+  GetArticlesQuery,
+  GetArticlesQueryVariables,
   PaginationArg,
   PublicationState,
 } from "../../types/apollo_client";
 import { Loading } from "../Common/Loading";
 import { DisplayError } from "../Common/DisplayError";
 import { NextRouter } from "next/router";
-import { AlignHorizontalCenter } from "@mui/icons-material";
 
-interface ArticlesProps {
+type ArticlesProps = {
   page: number;
   setPage: (value: number) => void;
   router: NextRouter;
-}
+};
 
 const perPage = parseInt(process.env.PER_PAGE || "2");
 
-export const Articles: React.FC<ArticlesProps> = ({
-  page,
-  setPage,
-  router,
-}) => {
+export const Articles = ({ page, setPage, router }: ArticlesProps) => {
   const { data, loading, error } = useQuery<
-    getArticlesQuery,
-    getArticlesQueryVariables
+    GetArticlesQuery,
+    GetArticlesQueryVariables
   >(getArticles, {
     fetchPolicy: "cache-and-network",
     nextFetchPolicy: "cache-first",
@@ -76,29 +62,11 @@ export const Articles: React.FC<ArticlesProps> = ({
     setPage(value);
     router.push(`/articles/${value}`);
   };
-  console.log(data);
-  const options: HTMLReactParserOptions = {
-    replace: (domNode: DOMNode) => {
-      if (domNode instanceof Element && domNode.type === "tag") {
-        const elem = domNode;
-        const props = attributesToProps(domNode.attribs);
-        if (domNode.attribs && domNode.name === "a") {
-          return (
-            <Link href={props.href}>
-              {domToReact(domNode.children, options)}
-            </Link>
-          );
-        } else if (domNode.attribs && domNode.name == "img") {
-          return <CardMedia component="img" src={props.src}></CardMedia>;
-        }
-      }
-    },
-  };
 
   return (
-    <Container>
+    <Stack direction="column" sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
-        {data?.articles?.data.map((article) => {
+        {data?.articles?.data.map((article: ArticleEntity) => {
           if (!article) return null;
           else {
             return (
@@ -134,7 +102,7 @@ export const Articles: React.FC<ArticlesProps> = ({
           }
         })}
       </Grid>
-      <Grid container alignItems="flex-end" justifyContent="center">
+      <Grid container alignItems="flex-end">
         <Pagination
           page={page}
           count={data?.articles?.meta.pagination.pageCount}
@@ -146,6 +114,6 @@ export const Articles: React.FC<ArticlesProps> = ({
           )}
         ></Pagination>
       </Grid>
-    </Container>
+    </Stack>
   );
 };

@@ -1,4 +1,4 @@
-import Grid from "@mui/material/Grid";
+import { GetStaticProps } from "next";
 import React, { useState } from "react";
 import type { NextPage } from "next";
 import { addApolloState, initializeApollo } from "../../lib/apollo";
@@ -8,7 +8,6 @@ import {
 } from "../../types/apollo_client";
 import { getArticles } from "../../graphql/getArticles";
 import { useRouter } from "next/router";
-import { Pagination } from "@mui/material";
 import { Articles } from "../../components/Articles/Articles";
 
 const ArticlesPage: NextPage = () => {
@@ -18,25 +17,24 @@ const ArticlesPage: NextPage = () => {
       ? 1
       : parseInt(router.query.page as string, 10)
   );
-  return (
-    <Grid>
-      <Articles page={page} setPage={setPage} router={router}></Articles>
-    </Grid>
-  );
+  return <Articles page={page} setPage={setPage} router={router}></Articles>;
 };
 
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps = async () => {
   const client = initializeApollo();
   try {
     await client.query<getArticlesQuery, getArticlesQueryVariables>({
       query: getArticles,
     });
-    return addApolloState(client, { props: {}, revalidate: 60 });
+    return addApolloState(client, {
+      props: {},
+      revalidate: 60,
+    });
   } catch {
     return {
       notFound: true,
     };
   }
-}
+};
 
 export default ArticlesPage;

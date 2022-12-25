@@ -1,76 +1,50 @@
-import { styled, alpha } from '@mui/material/styles';
-import AppBar from '@mui/material/AppBar';
-import Grid from '@mui/material/Grid';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import InputBase from '@mui/material/InputBase';
-import SearchIcon from '@mui/icons-material/Search';
+import { useRouter } from "next/router";
+import Grid from "@mui/material/Unstable_Grid2";
+import Select from "@mui/material/Select";
+import AppBar from "@mui/material/AppBar";
+import FormControl from "@mui/material/FormControl";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import TranslateIcon from "@mui/icons-material/Translate";
+import MenuItem from "@mui/material/MenuItem";
+import { useLocale, handleLocaleChange } from "../../lib/locale";
+import { useQuery } from "@apollo/client";
+import { Loading } from "../Common/Loading";
+import { DisplayError } from "../Common/DisplayError";
+import { addApolloState, initializeApollo } from "../../lib/apollo";
 
-const Search = styled('div')(({ theme }) => ({
-        position: 'relative',
-        borderRadius: theme.shape.borderRadius,
-        backgroundColor: alpha(theme.palette.common.white, 0.15),
-        '&:hover': {
-                backgroundColor: alpha(theme.palette.common.white, 0.25),
-        },
-        marginLeft: 0,
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-                marginLeft: theme.spacing(1),
-                width: 'auto',
-        },
-}));
-
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-        padding: theme.spacing(0, 2),
-        height: '100%',
-        position: 'absolute',
-        pointerEvents: 'none',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-        color: 'inherit',
-        '& .MuiInputBase-input': {
-                padding: theme.spacing(1, 1, 1, 0),
-                // vertical padding + font size from searchIcon
-                paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-                transition: theme.transitions.create('width'),
-                width: '100%',
-                [theme.breakpoints.up('sm')]: {
-                        width: '12ch',
-                        '&:focus': {
-                                width: '20ch',
-                        },
-                },
-        },
-}));
-
-export default function Header() {
-        return (
-                <Grid sx={{ flexGrow: 1 }}>
-                        <AppBar position="static">
-                                <Toolbar>
-                                        <Typography
-                                                variant="h5"
-                                                component="div"
-                                                sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-                                        >
-                                                脱・人海戦術
-                                        </Typography>
-                                        <Search>
-                                                <SearchIconWrapper>
-                                                        <SearchIcon />
-                                                </SearchIconWrapper>
-                                                <StyledInputBase
-                                                        placeholder="Search…"
-                                                        inputProps={{ 'aria-label': 'search' }}
-                                                />
-                                        </Search>
-                                </Toolbar>
-                        </AppBar>
-                </Grid>
-        );
-}
+export const Header = () => {
+  const { locale, locales, t } = useLocale();
+  return (
+    <Grid container sx={{ flexGrow: 1 }}>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography
+            variant="h5"
+            component="div"
+            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+          >
+            {t.site_name}
+          </Typography>
+          <Grid display="flex" spacing={2} alignItems="center">
+            <TranslateIcon fontSize="large" sx={{ mx: 1 }} />
+          </Grid>
+          <Grid>
+            <FormControl required>
+              <Select>
+                {locales.map((locale: string) => {
+                  return (
+                    <MenuItem key={locale} value={locale}>
+                      {locale}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+          </Grid>
+        </Toolbar>
+      </AppBar>
+    </Grid>
+  );
+};
+export default Header;
