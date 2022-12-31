@@ -9,8 +9,10 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import { source_code_pro } from "../../src/font";
+import { useLocale } from "../../lib/locale"
 
 export default function Sidebar() {
+  const { locale, locales, t } = useLocale();
   const Search = styled("div")(({ theme }) => ({
     position: "relative",
     borderRadius: theme.shape.borderRadius,
@@ -54,20 +56,20 @@ export default function Sidebar() {
   }));
 
   return (
-    <Stack direction="column" sx={{ flexGrow: 1 }}>
+    <Grid container direction="column">
       <Search>
         <SearchIconWrapper>
           <SearchIcon />
         </SearchIconWrapper>
         <StyledInputBase
-          placeholder="Search…"
+          placeholder={t.search}
           inputProps={{ "aria-label": "search" }}
         />
       </Search>
-      <Grid item>
+      <Grid >
         <Avatar alt="AR44" src="/favicon.ico" />
       </Grid>
-      <Grid item>
+      <Grid >
         <Grid container>
           <ThemeProvider theme={source_code_pro}>
             <Grid item>
@@ -104,6 +106,6 @@ export default function Sidebar() {
           </Grid>
         </Grid>
       </Grid>
-    </Stack>
+    </Grid>
   );
 }

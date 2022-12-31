@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import type { NextPage } from "next";
 import { addApolloState, initializeApollo } from "../../lib/apollo";
 import {
-  getArticlesQuery,
-  getArticlesQueryVariables,
+  GetArticlesQuery,
+  GetArticlesQueryVariables,
 } from "../../types/apollo_client";
 import { getArticles } from "../../graphql/getArticles";
 import { useRouter } from "next/router";
@@ -23,7 +23,7 @@ const ArticlesPage: NextPage = () => {
 export const getStaticProps: GetStaticProps = async () => {
   const client = initializeApollo();
   try {
-    await client.query<getArticlesQuery, getArticlesQueryVariables>({
+    await client.query({
       query: getArticles,
     });
     return addApolloState(client, {

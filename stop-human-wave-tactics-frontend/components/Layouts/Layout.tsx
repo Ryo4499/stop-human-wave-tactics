@@ -6,31 +6,46 @@ import Container from "@mui/material/Container";
 import React, { ReactNode } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import Stack from "@mui/material/Stack";
+import { BrowserView, MobileView } from "react-device-detect"
 
-export default function Layout({ children }: { children?: ReactNode }) {
+export default function Layout({ dark, setDark, children }: { dark: boolean, setDark: (dark: boolean) => void, children?: ReactNode }) {
   return (
-    <Stack direction="column" alignContent="space-between">
-      <Grid justifyContent="center" alignItems="flex-start">
-        <Header />
+    <Grid container direction="row">
+      <Grid container item xs={12}>
+        <Header dark={dark} setDark={setDark} />
       </Grid>
-      <Grid
-        contaienr
-        columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-        p={1.5}
-        sx={{ flexGrow: 1 }}
-      >
-        <Grid contaienr>
-          <Grid contaienr xs={9} md={9}>
-            <main>{children}</main>
+      <MobileView>
+        <Grid
+          container
+          direction="column"
+          sx={{ flexGrow: 1 }}
+        >
+          <Grid container>
+            <Sidebar />
           </Grid>
-          <Grid container xs={9} md={3}>
+          <Grid container>
+            {children}
+          </Grid>
+        </Grid>
+      </MobileView>
+      <BrowserView>
+        <Grid
+          container
+          item
+          direction="row"
+          sx={{ flexGrow: 1 }}
+        >
+          <Grid container p={1.5} md={10}>
+            {children}
+          </Grid>
+          <Grid container p={1.5} md={2}>
             <Sidebar />
           </Grid>
         </Grid>
-      </Grid>
-      <Grid container justifyContent="center" alignItems="flex-end">
+      </BrowserView>
+      <Grid container item xs={12}>
         <Footer />
       </Grid>
-    </Stack>
+    </Grid >
   );
 }

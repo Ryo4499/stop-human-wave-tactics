@@ -64,13 +64,13 @@ export const Articles = ({ page, setPage, router }: ArticlesProps) => {
   };
 
   return (
-    <Stack direction="column" sx={{ flexGrow: 1 }}>
-      <Grid container spacing={2}>
+    <Grid container direction="column" >
+      <Grid container>
         {data?.articles?.data.map((article: ArticleEntity) => {
           if (!article) return null;
           else {
             return (
-              <Grid item xs={12} md={6} key={article.id}>
+              <Grid xs={12} md={6} key={article.id}>
                 <Card>
                   <Link href={`/article/${article.id}`}>
                     <CardMedia
@@ -114,6 +114,6 @@ export const Articles = ({ page, setPage, router }: ArticlesProps) => {
           )}
         ></Pagination>
       </Grid>
-    </Stack>
+    </Grid>
   );
 };
