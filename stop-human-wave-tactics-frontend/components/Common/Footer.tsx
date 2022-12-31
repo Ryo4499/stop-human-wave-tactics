@@ -8,9 +8,9 @@ import { useLocale } from "../../lib/locale";
 export default function ButtonAppBar() {
   const { locale, locales, t } = useLocale();
   return (
-    <Grid container sx={{ flexGrow: 1 }}>
+    <Grid container xs={12} >
       <AppBar position="static">
-        <Toolbar>
+        <Toolbar justifyContent="center" alignItems="center">
           <Button>
             <Link href="/">{t.top}</Link>
           </Button>
