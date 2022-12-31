@@ -64,8 +64,8 @@ export const Articles = ({ page, setPage, router }: ArticlesProps) => {
   };
 
   return (
-    <Grid container direction="column" >
-      <Grid container>
+    <Grid container direction="column" sx={{ flexGrow: 1 }} xs={12}>
+      <Grid container direction="column" sx={{ flexGrow: 1 }} xs={12}>
         {data?.articles?.data.map((article: ArticleEntity) => {
           if (!article) return null;
           else {
@@ -102,7 +102,7 @@ export const Articles = ({ page, setPage, router }: ArticlesProps) => {
           }
         })}
       </Grid>
-      <Grid container alignItems="flex-end">
+      <Grid container direction="row" justifyContent="center">
         <Pagination
           page={page}
           count={data?.articles?.meta.pagination.pageCount}

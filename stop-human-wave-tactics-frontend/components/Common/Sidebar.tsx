@@ -1,6 +1,5 @@
 import { Avatar, Typography } from "@mui/material";
 import { styled, alpha, ThemeProvider } from "@mui/material/styles";
-import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Unstable_Grid2";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
