@@ -30,6 +30,7 @@ import {
 import { Loading } from "../Common/Loading";
 import { DisplayError } from "../Common/DisplayError";
 import { NextRouter } from "next/router";
+import { isMobile } from "react-device-detect"
 
 type ArticlesProps = {
   page: number;
@@ -65,43 +66,83 @@ export const Articles = ({ page, setPage, router }: ArticlesProps) => {
 
   return (
     <Grid container direction="column" sx={{ flexGrow: 1 }} xs={12}>
-      <Grid container direction="column" sx={{ flexGrow: 1 }} xs={12}>
-        {data?.articles?.data.map((article: ArticleEntity) => {
-          if (!article) return null;
-          else {
-            return (
-              <Grid xs={12} md={6} key={article.id}>
-                <Card>
-                  <Link href={`/article/${article.id}`}>
-                    <CardMedia
-                      component="img"
-                      image={
-                        article.attributes?.thumbnail?.data?.attributes?.url
-                      }
-                    />
-                  </Link>
-                  <CardContent></CardContent>
-                  <Typography variant="h5" component="div">
-                    {article.attributes?.title}
-                  </Typography>
-                  <Typography>{article.attributes?.summary}</Typography>
-                  <Typography>
-                    {article.attributes?.updatedAt
-                      .replace("T", " ")
-                      .replace(/\..*$/g, "")
-                      .replace(/\-/g, "/")}
-                  </Typography>
-                  <CardActions>
+      {isMobile ?
+        <Grid container direction="column" sx={{ flexGrow: 1 }} spacing={2}>
+          {data?.articles?.data.map((article: ArticleEntity) => {
+            if (!article) return null;
+            else {
+              return (
+                <Grid xs={12} key={article.id}>
+                  <Card>
                     <Link href={`/article/${article.id}`}>
-                      <Button size="small">More Details</Button>
+                      <CardMedia
+                        component="img"
+                        image={
+                          article.attributes?.thumbnail?.data?.attributes?.url
+                        }
+                      />
                     </Link>
-                  </CardActions>
-                </Card>
-              </Grid>
-            );
-          }
-        })}
-      </Grid>
+                    <CardContent></CardContent>
+                    <Typography variant="h5" component="div">
+                      {article.attributes?.title}
+                    </Typography>
+                    <Typography>{article.attributes?.summary}</Typography>
+                    <Typography>
+                      {article.attributes?.updatedAt
+                        .replace("T", " ")
+                        .replace(/\..*$/g, "")
+                        .replace(/\-/g, "/")}
+                    </Typography>
+                    <CardActions>
+                      <Link href={`/article/${article.id}`}>
+                        <Button size="small">More Details</Button>
+                      </Link>
+                    </CardActions>
+                  </Card>
+                </Grid>
+              )
+            }
+          })}
+        </Grid>
+        :
+        <Grid container direction="row" sx={{ flexGrow: 1 }} spacing={2}>
+          {data?.articles?.data.map((article: ArticleEntity) => {
+            if (!article) return null;
+            else {
+              return (
+                <Grid xs={6} key={article.id}>
+                  <Card>
+                    <Link href={`/article/${article.id}`}>
+                      <CardMedia
+                        component="img"
+                        image={
+                          article.attributes?.thumbnail?.data?.attributes?.url
+                        }
+                      />
+                    </Link>
+                    <CardContent></CardContent>
+                    <Typography variant="h5" component="div">
+                      {article.attributes?.title}
+                    </Typography>
+                    <Typography>{article.attributes?.summary}</Typography>
+                    <Typography>
+                      {article.attributes?.updatedAt
+                        .replace("T", " ")
+                        .replace(/\..*$/g, "")
+                        .replace(/\-/g, "/")}
+                    </Typography>
+                    <CardActions>
+                      <Link href={`/article/${article.id}`}>
+                        <Button size="small">More Details</Button>
+                      </Link>
+                    </CardActions>
+                  </Card>
+                </Grid>
+              )
+            }
+          })}
+        </Grid>
+      }
       <Grid container direction="row" justifyContent="center">
         <Pagination
           page={page}
