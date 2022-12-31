@@ -21,3 +21,14 @@ ADMIN_JWT_SECRET
 JWT_SECRET
 SENTRY_DNS
 ```
+
+### PLUGINについて
+
+ckeditorプラグインは下記の方法で追加
+
+```sh
+# clone plugin
+git clone git@github.com:ckeditor/strapi-plugin-ckeditor.git src/plugins/strapi-plugin-ckeditor
+# "workspaces": ["./src/plugins/strapi-plugin-ckeditor"]
+vim src/plugins/strapi-plugin-ckeditor/package.json
+```
