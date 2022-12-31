@@ -16,6 +16,9 @@ services:
     tty: true
     volumes:
       - type: bind
+        source: ./nginx/nginx.conf
+        target: /etc/nginx/nginx.conf
+      - type: bind
         source: ./nginx/conf.d/default.conf
         target: /etc/nginx/conf.d/default.conf
     depends_on:
@@ -127,8 +130,6 @@ services:
       - DOCKER_CONTENT_TRUST
     working_dir: "/home/${MY_USER}/stop-human-wave-tactics-backend"
     user: $MY_USER
-    ports:
-      - 1337:1337
     volumes:
       - type: bind
         source: stop-human-wave-tactics-backend
