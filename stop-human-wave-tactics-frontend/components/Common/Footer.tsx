@@ -10,13 +10,15 @@ export default function ButtonAppBar() {
   return (
     <Grid container xs={12} >
       <AppBar position="static">
-        <Toolbar justifyContent="center" alignItems="center">
-          <Button>
-            <Link href="/">{t.top}</Link>
-          </Button>
-          <Button>
-            <Link href="/privacy-policy">{t.privacy_policy}</Link>
-          </Button>
+        <Toolbar >
+          <Grid container justifyContent="center" alignItems="center" xs={12}>
+            <Button>
+              <Link href="/">{t.top}</Link>
+            </Button>
+            <Button>
+              <Link href="/privacy-policy">{t.privacy_policy}</Link>
+            </Button>
+          </Grid>
         </Toolbar>
       </AppBar>
     </Grid>
