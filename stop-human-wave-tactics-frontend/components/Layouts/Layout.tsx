@@ -23,7 +23,7 @@ export default function Layout({ dark, setDark, children }: { dark: boolean, set
           sx={{ flexGrow: 1 }}
         >
           <Grid container p={1.5} xs={12}>
-            <MobileSidebar />
+            <Sidebar />
           </Grid>
           <Grid container direction="column" p={1.5} xs={12} sx={{ flexGrow: 1 }}>
             {children}
