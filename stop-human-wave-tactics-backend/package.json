@@ -11,20 +11,20 @@
   },
   "dependencies": {
     "@ckeditor/strapi-plugin-ckeditor": "^0.0.5",
-    "@strapi/plugin-graphql": "4.5.4",
-    "@strapi/plugin-i18n": "4.5.4",
-    "@strapi/plugin-sentry": "4.5.4",
-    "@strapi/plugin-users-permissions": "4.5.4",
-    "@strapi/strapi": "4.5.4",
-    "@strapi/typescript-utils": "4.5.4",
+    "@strapi/plugin-graphql": "4.5.5",
+    "@strapi/plugin-i18n": "4.5.5",
+    "@strapi/plugin-sentry": "4.5.5",
     "@strapi/plugin-seo": "^1.7.7",
+    "@strapi/plugin-users-permissions": "4.5.5",
+    "@strapi/strapi": "4.5.5",
+    "@strapi/typescript-utils": "4.5.5",
     "pg": "8.8.0",
     "strapi-plugin-preview-button": "^1.1.1"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^2.16.1",
-    "@graphql-codegen/typescript": "^2.8.5",
-    "@graphql-codegen/typescript-resolvers": "^2.7.10"
+    "@graphql-codegen/cli": "^2.16.2",
+    "@graphql-codegen/typescript": "^2.8.6",
+    "@graphql-codegen/typescript-resolvers": "^2.7.11"
   },
   "author": {
     "name": "A Strapi developer"
