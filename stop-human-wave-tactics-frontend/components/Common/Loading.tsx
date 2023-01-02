@@ -1,5 +1,6 @@
 import { CircularProgress } from "@mui/material";
 
-export const Loading = () => {
+const Loading = () => {
   return <CircularProgress />;
 };
+export default Loading

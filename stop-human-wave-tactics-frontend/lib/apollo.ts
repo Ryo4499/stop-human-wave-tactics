@@ -15,8 +15,18 @@ const APOLLO_STATE_PROP_NAME = "__APOLLO_STATE__";
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
-const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
-        // isomorphic fetch for passing the cookies along with each GraphQL request
+/**
+ * Apollo Clientを返す
+ * @param headers 
+ * @returns ApolloClient
+ */
+const createApolloClient = (headers: IncomingHttpHeaders | null = null): ApolloClient => {
+        /**
+         * 
+         * @param url 
+         * @param init 
+         * @returns 
+         */
         const enhancedFetch = (url: RequestInfo, init: RequestInit) => {
                 return fetch(url, {
                         ...init,
@@ -49,12 +59,17 @@ interface IInitializeApollo {
         initialState?: InitialState | null;
 }
 
+/**
+ * Apollo Clientを初期化する
+ * @param param0 
+ * @returns 初期化したApollo Client
+ */
 export const initializeApollo = (
         { headers, initialState }: IInitializeApollo = {
                 headers: null,
                 initialState: null,
         }
-) => {
+): ApolloClient => {
         const _apolloClient = apolloClient ?? createApolloClient(headers);
 
         // If your page has Next.js data fetching methods that use Apollo Client, the initial state
@@ -86,6 +101,12 @@ export const initializeApollo = (
         return _apolloClient;
 };
 
+/**
+ * 
+ * @param client 
+ * @param pageProps 
+ * @returns 
+ */
 export const addApolloState = (
         client: ApolloClient<NormalizedCacheObject>,
         pageProps: AppProps["pageProps"]
@@ -97,6 +118,11 @@ export const addApolloState = (
         return pageProps;
 };
 
+/**
+ * 
+ * @param pageProps 
+ * @returns 
+ */
 export function useApollo(pageProps: AppProps["pageProps"]) {
         const state = pageProps[APOLLO_STATE_PROP_NAME];
         const store = useMemo(

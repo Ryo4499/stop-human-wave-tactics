@@ -14,10 +14,15 @@ import Stack from "@mui/material/Stack";
 import { source_code_pro } from "../../src/font";
 import { useLocale } from "../../lib/locale"
 import { isMobile } from "react-device-detect"
+import Categories from "../Category/Categories"
+import { getCategories } from "../../graphql/getCategories";
+import { useQuery } from "@apollo/client"
+import { GetCategoriesQuery, GetCategoriesQueryVariables } from "../../types/apollo_client";
+import Loading from "./Loading";
+import DisplayError from "./DisplayError";
 
-export default function Sidebar() {
+const Sidebar = () => {
   const { locale, locales, t } = useLocale();
-
   return (
     <Grid container direction="column">
       < Grid container direction="row" justifyContent="stretch" alignItems="center">
@@ -27,7 +32,7 @@ export default function Sidebar() {
       {!isMobile ?
         <Grid container direction="row" justifyContent="center">
           <Grid container justifyContent="center" py={2}>
-            <Avatar xs={12} sx={{ width: "8rem", height: "8rem" }} alt="AR44" src="/ar44.jpg" />
+            <Avatar xs={12} sx={{ width: "8rem", height: "8rem" }} alt="Avater" src="/ar44.jpg" />
           </Grid>
           <Grid container ml={"2rem"}>
             <ThemeProvider theme={source_code_pro}>
@@ -77,3 +82,5 @@ export default function Sidebar() {
     </Grid >
   );
 }
+
+export default Sidebar
