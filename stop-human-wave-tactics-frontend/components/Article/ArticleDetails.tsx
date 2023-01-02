@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
-import { NextRouter } from "next/router";
-import { DisplayError } from "../../components/Common/DisplayError";
-import { Loading } from "../../components/Common/Loading";
+import type { NextRouter } from "next/router";
+import DisplayError from "../../components/Common/DisplayError";
+import Loading from "../../components/Common/Loading";
 import { getArticle } from "../../graphql/getArticle";
 import {
   Article,

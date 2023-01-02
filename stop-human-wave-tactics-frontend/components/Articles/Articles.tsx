@@ -1,8 +1,9 @@
 import React from "react";
 import Link from "next/link";
-import { useState, ChangeEvent } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import { useQuery } from "@apollo/client";
 import Grid from "@mui/material/Unstable_Grid2";
+import { useRouter } from "next/router"
 import {
   Card,
   CardContent,
@@ -24,12 +25,14 @@ import {
   ArticleLocalizationsArgs,
   GetArticlesQuery,
   GetArticlesQueryVariables,
+  GetCategoriesQuery,
+  GetCategoriesQueryVariables,
   PaginationArg,
   PublicationState,
 } from "../../types/apollo_client";
-import { Loading } from "../Common/Loading";
-import { DisplayError } from "../Common/DisplayError";
-import { NextRouter } from "next/router";
+import Loading from "../Common/Loading";
+import DisplayError from "../Common/DisplayError";
+import type { NextRouter } from "next/router";
 import { isMobile } from "react-device-detect"
 
 type ArticlesProps = {
@@ -40,7 +43,8 @@ type ArticlesProps = {
 
 const perPage = parseInt(process.env.PER_PAGE || "2");
 
-export const Articles = ({ page, setPage, router }: ArticlesProps) => {
+export const Articles = ({ page, setPage }: ArticlesProps) => {
+  const router = useRouter()
   const { data, loading, error } = useQuery<
     GetArticlesQuery,
     GetArticlesQueryVariables
@@ -60,10 +64,10 @@ export const Articles = ({ page, setPage, router }: ArticlesProps) => {
   if (loading) return <Loading />;
   if (error) return <DisplayError error={error} />;
   const handleChange = (event: ChangeEvent<unknown>, value: number) => {
+    console.log(value)
     setPage(value);
     router.push(`/articles/${value}`);
   };
-
   return (
     <Grid container direction="column" sx={{ flexGrow: 1 }} xs={12}>
       {isMobile ?

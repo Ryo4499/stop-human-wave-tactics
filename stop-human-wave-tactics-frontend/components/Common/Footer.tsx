@@ -5,7 +5,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Grid from "@mui/material/Unstable_Grid2";
 import { useLocale } from "../../lib/locale";
 
-export default function ButtonAppBar() {
+const Footer = () => {
   const { locale, locales, t } = useLocale();
   return (
     <Grid container xs={12} >
@@ -24,3 +24,4 @@ export default function ButtonAppBar() {
     </Grid>
   );
 }
+export default Footer

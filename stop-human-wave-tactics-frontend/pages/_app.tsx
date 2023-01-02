@@ -1,19 +1,25 @@
 import "../styles/globals.css";
+import type { GetStaticProps, NextPage } from "next";
 import { useMediaQuery } from "@mui/material";
-import { useState } from "react"
+import { useReducer, createContext, useContext } from "react"
 import { useRouter } from "next/router";
 import React from "react";
 import Layout from "../components/Layouts/Layout";
 import { AppProps } from "next/app";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { ApolloProvider } from "@apollo/client";
-import { useApollo } from "../lib/apollo";
+import { ApolloProvider, useQuery } from "@apollo/client";
+import { addApolloState, initializeApollo, useApollo } from "../lib/apollo";
+import { GetCategoriesQuery, GetCategoriesQueryVariables } from "../types/apollo_client";
+import { getCategories } from "../graphql/getCategories";
+import { useLocale } from "../lib/locale";
+import DisplayError from "../components/Common/DisplayError";
+import Loading from "../components/Common/Loading";
 
-function App({ Component, pageProps }: AppProps) {
-  const [dark, setDark] = useState<boolean>(true)
+const App: NextPage = ({ Component, pageProps }: AppProps) => {
+  const [dark, toggleDark] = useReducer<boolean>((dark: boolean) => { return !dark }, true)
   const prefersDarkMode = useMediaQuery(`(prefers-color-scheme: ${dark ? "dark" : "light"})`, { noSsr: true });
+  const { locale, locales, t } = useLocale()
   const client = useApollo(pageProps);
-
   const theme = React.useMemo(
     () =>
       createTheme({
@@ -92,7 +98,7 @@ function App({ Component, pageProps }: AppProps) {
   return (
     <ApolloProvider client={client}>
       <ThemeProvider theme={theme}>
-        <Layout dark={dark} setDark={setDark}>
+        <Layout dark={dark} toggleDark={toggleDark}>
           <Component {...pageProps} />
         </Layout>
       </ThemeProvider>
