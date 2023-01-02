@@ -1,14 +1,11 @@
-import { NextPage } from "next";
+import type { GetStaticProps, NextPage } from "next";
 import Grid from "@mui/material/Unstable_Grid2";
 import { addApolloState, initializeApollo } from "../../lib/apollo";
-import {
-  getArticleQuery,
-  getArticleQueryVariables,
-} from "../../types/apollo_client";
 import { getArticle } from "../../graphql/getArticle";
 import { useRouter } from "next/router";
 import { ArticleDetails } from "../../components/Article/ArticleDetails";
-import { DisplayError } from "../../components/Common/DisplayError";
+import DisplayError from "../../components/Common/DisplayError";
+import { useLocale } from "../../lib/locale";
 
 const ArticlePage: NextPage = () => {
   const router = useRouter();
@@ -32,13 +29,14 @@ const ArticlePage: NextPage = () => {
   }
 };
 
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps = async () => {
   const client = initializeApollo();
+  const { locale, locales, t } = useLocale()
   try {
-    await client.query<getArticleQuery, getArticleQueryVariables>({
+    const article = await client.query({
       query: getArticle,
     });
-    return addApolloState(client, { props: {}, revalidate: 60 });
+    return addApolloState(client, { props: { article: article }, revalidate: 3600 });
   } catch {
     return {
       notFound: true,

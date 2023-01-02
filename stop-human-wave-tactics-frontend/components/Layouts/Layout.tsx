@@ -10,11 +10,11 @@ import { isMobile } from "react-device-detect"
 import { useState, useEffect } from "react"
 import MobileSidebar from "../Common/MobileSidebar";
 
-export default function Layout({ dark, setDark, children }: { dark: boolean, setDark: (dark: boolean) => void, children?: ReactNode }) {
+const Layout = ({ dark, toggleDark, children }: { dark: boolean, toggleDark: () => void, children?: ReactNode }) => {
   return (
     <Grid container direction="column">
       <Grid container xs={12}>
-        <Header dark={dark} setDark={setDark} />
+        <Header dark={dark} toggleDark={toggleDark} />
       </Grid>
       {isMobile ?
         <Grid
@@ -47,3 +47,4 @@ export default function Layout({ dark, setDark, children }: { dark: boolean, set
     </Grid >
   );
 }
+export default Layout

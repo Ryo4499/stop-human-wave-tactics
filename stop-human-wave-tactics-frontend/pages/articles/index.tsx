@@ -1,14 +1,11 @@
-import { GetStaticProps } from "next";
+import type { GetStaticProps, NextPage } from "next";
 import React, { useState } from "react";
-import type { NextPage } from "next";
 import { addApolloState, initializeApollo } from "../../lib/apollo";
-import {
-  GetArticlesQuery,
-  GetArticlesQueryVariables,
-} from "../../types/apollo_client";
 import { getArticles } from "../../graphql/getArticles";
 import { useRouter } from "next/router";
 import { Articles } from "../../components/Articles/Articles";
+import { useLocale } from "../../lib/locale";
+import { getCategories } from "../../graphql/getCategories";
 
 const ArticlesPage: NextPage = () => {
   const router = useRouter();
@@ -21,13 +18,18 @@ const ArticlesPage: NextPage = () => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
+  const { locale, locales, t } = useLocale()
   const client = initializeApollo();
   try {
-    await client.query({
+    const articles = await client.query({
       query: getArticles,
     });
+    const categories = await client.query({ query: getCategories })
     return addApolloState(client, {
-      props: {},
+      props: {
+        articles: articles,
+        categories: categories,
+      },
       revalidate: 3600,
     });
   } catch {
