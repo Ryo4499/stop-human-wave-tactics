@@ -14,16 +14,20 @@ const Footer = () => {
       <AppBar position="static">
         <Toolbar >
           <Grid container justifyContent="center" alignItems="center" xs={12}>
-            <Link href="/">
-              {t.top}
-            </Link>
-            <Link href="/privacy-policy">
-              {t.privacy_policy}
-            </Link>
+            <Grid container mx={1}>
+              <Link href="/">
+                {t.top}
+              </Link>
+            </Grid>
+            <Grid container mx={1}>
+              <Link href="/privacy-policy">
+                {t.privacy_policy}
+              </Link>
+            </Grid>
           </Grid>
         </Toolbar>
       </AppBar>
-    </Grid>
+    </Grid >
   );
 }
 export default Footer

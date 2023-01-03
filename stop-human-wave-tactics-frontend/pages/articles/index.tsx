@@ -33,7 +33,7 @@ export const getStaticProps: GetStaticProps = async () => {
         articles: articles,
         categories: categories,
       },
-      revalidate: 10,
+      revalidate: 300,
     });
   } catch {
     return {
