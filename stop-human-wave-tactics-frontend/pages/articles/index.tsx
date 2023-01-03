@@ -1,4 +1,4 @@
-import type { GetStaticProps, NextPage } from "next";
+import type { GetStaticProps, GetStaticPaths, NextPage } from "next";
 import React, { useState } from "react";
 import { addApolloState, initializeApollo } from "../../lib/apollo";
 import { getArticles } from "../../graphql/getArticles";
@@ -17,8 +17,11 @@ const ArticlesPage: NextPage = () => {
   return <Articles page={page} setPage={setPage} router={router}></Articles>;
 };
 
+export const getStaticPaths: GetStaticPaths = async () => {
+  return { paths: [], fallback: "blocking" }
+};
+
 export const getStaticProps: GetStaticProps = async () => {
-  const { locale, locales, t } = useLocale()
   const client = initializeApollo();
   try {
     const articles = await client.query({
@@ -30,7 +33,7 @@ export const getStaticProps: GetStaticProps = async () => {
         articles: articles,
         categories: categories,
       },
-      revalidate: 3600,
+      revalidate: 10,
     });
   } catch {
     return {

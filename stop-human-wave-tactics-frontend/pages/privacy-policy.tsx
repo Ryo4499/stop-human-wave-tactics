@@ -2,23 +2,6 @@ import { Box, Typography, ListItemText } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import { useLocale } from "../lib/locale"
 import type { GetStaticProps, NextPage } from "next";
-import { getCategories } from "../graphql/getCategories";
-import { initializeApollo, addApolloState } from "../lib/apollo";
-
-export const getStaticProps: GetStaticProps = async () => {
-  const client = initializeApollo();
-  const { locale, locales, t } = useLocale()
-  try {
-    await client.query({
-      query: getCategories
-    })
-    return addApolloState(client, { props: {}, revalidate: 3600 });
-  } catch {
-    return {
-      notFound: true,
-    };
-  }
-}
 
 const PrivacyPolicy: NextPage = () => {
   const { locale, locales, t } = useLocale();

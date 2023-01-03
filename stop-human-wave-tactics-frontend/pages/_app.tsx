@@ -36,7 +36,7 @@ const App: NextPage = ({ Component, pageProps }: AppProps) => {
                 disabledBackground: "#339388",
               },
               background: {
-                default: "#000000",
+                default: "#888888",
                 paper: "#000000",
               },
               text: {

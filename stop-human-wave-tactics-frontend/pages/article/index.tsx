@@ -1,4 +1,4 @@
-import type { GetStaticProps, NextPage } from "next";
+import type { GetStaticProps, GetStaticPaths, NextPage } from "next";
 import Grid from "@mui/material/Unstable_Grid2";
 import { addApolloState, initializeApollo } from "../../lib/apollo";
 import { getArticle } from "../../graphql/getArticle";
@@ -28,6 +28,9 @@ const ArticlePage: NextPage = () => {
     );
   }
 };
+export const getStaticPaths: GetStaticPaths = async () => {
+  return { paths: [], fallback: "blocking" }
+};
 
 export const getStaticProps: GetStaticProps = async () => {
   const client = initializeApollo();
@@ -36,7 +39,7 @@ export const getStaticProps: GetStaticProps = async () => {
     const article = await client.query({
       query: getArticle,
     });
-    return addApolloState(client, { props: { article: article }, revalidate: 3600 });
+    return addApolloState(client, { props: { article: article }, revalidate: 10 });
   } catch {
     return {
       notFound: true,
