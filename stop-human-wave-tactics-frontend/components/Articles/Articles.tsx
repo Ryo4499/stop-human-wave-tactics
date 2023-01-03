@@ -62,10 +62,17 @@ export const Articles = ({ page, setPage }: ArticlesProps) => {
       locale: router.locale,
     },
   });
+  useEffect(() => {
+    router.beforePopState(({ url, as }: { url: string, as: string }) => {
+      if (router.route === url) {
+        setPage(parseInt(as.split("/").slice(-1)[0], 10))
+        router.push(as)
+      }
+    })
+  }, [router.query.page])
   if (loading) return <Loading />;
   if (error) return <DisplayError error={error} />;
   const handleChange = (event: ChangeEvent<unknown>, value: number) => {
-    console.log(value)
     setPage(value);
     router.push(`/articles/${value}`);
   };
@@ -157,11 +164,11 @@ export const Articles = ({ page, setPage }: ArticlesProps) => {
           page={page}
           count={data?.articles?.meta.pagination.pageCount}
           onChange={handleChange}
-          renderItem={(item) => (
+          renderItem={(item: Object) =>
             <Link href={`/articles/${item.page}`} key={item.page} passHref>
               <PaginationItem {...item} />
             </Link>
-          )}
+          }
         ></Pagination>
       </Grid>
     </Grid>
