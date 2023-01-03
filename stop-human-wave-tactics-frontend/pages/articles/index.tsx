@@ -7,13 +7,13 @@ import { Articles } from "../../components/Articles/Articles";
 import { getCategories } from "../../graphql/getCategories";
 
 const ArticlesPage: NextPage = () => {
-  const router = useRouter();
+  const router = useRouter()
   const [page, setPage] = useState(
     router.query.page === undefined
       ? 1
       : parseInt(router.query.page as string, 10)
   );
-  return <Articles page={page} setPage={setPage} router={router}></Articles>;
+  return <Articles page={page} setPage={setPage}></Articles>;
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {

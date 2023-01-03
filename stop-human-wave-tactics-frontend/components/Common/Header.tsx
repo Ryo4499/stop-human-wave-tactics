@@ -1,5 +1,4 @@
 import { useState, SyntheticBaseEvent } from "react"
-import { useRouter } from "next/router"
 import Button from "@mui/material/Button"
 import Link from "next/link";
 import Grid from "@mui/material/Unstable_Grid2";
@@ -11,15 +10,16 @@ import Typography from "@mui/material/Typography";
 import TranslateIcon from "@mui/icons-material/Translate";
 import MenuItem from "@mui/material/MenuItem";
 import { useLocale } from "../../lib/locale";
+import { useRouter } from "next/router"
 import Switch from "@mui/material/Switch"
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import MenuIcon from '@mui/icons-material/Menu';
 import IconButton from "@mui/material/IconButton"
 import { BrowserView, MobileView, isMobile } from "react-device-detect"
 
-const Header = ({ dark, toggleDark }: { dark: boolean, toggleDark: () => void }) => {
-  const { locale, locales, t } = useLocale();
+const Header = ({ dark, toggleDark }: { dark: boolean, toggleDark: () => void, }) => {
   const router = useRouter()
+  const { locale, locales, t } = useLocale();
   const handleLocaleChange = (event: SyntheticBaseEvent) => {
     const selectLocale = event.target.innerText;
     router.push("/", "/", { locale: selectLocale })
