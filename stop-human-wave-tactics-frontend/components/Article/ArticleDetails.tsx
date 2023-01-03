@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import type { NextRouter } from "next/router";
+import { useRouter } from "next/router";
 import DisplayError from "../../components/Common/DisplayError";
 import Loading from "../../components/Common/Loading";
 import { getArticle } from "../../graphql/getArticle";
@@ -13,10 +13,10 @@ import conv_md from "../../lib/md";
 
 type ArticleProps = {
   id: string;
-  router: NextRouter;
 };
 
-export const ArticleDetails = ({ id, router }: ArticleProps) => {
+export const ArticleDetails = ({ id }: ArticleProps) => {
+  const router = useRouter()
   const { data, loading, error } = useQuery<
     getArticleQuery,
     getArticleQueryVariables

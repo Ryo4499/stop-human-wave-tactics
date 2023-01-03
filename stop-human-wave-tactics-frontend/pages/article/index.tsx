@@ -2,14 +2,13 @@ import type { GetStaticProps, GetStaticPaths, NextPage } from "next";
 import Grid from "@mui/material/Unstable_Grid2";
 import { addApolloState, initializeApollo } from "../../lib/apollo";
 import { getArticle } from "../../graphql/getArticle";
-import { useRouter } from "next/router";
 import { ArticleDetails } from "../../components/Article/ArticleDetails";
 import DisplayError from "../../components/Common/DisplayError";
 import { useLocale } from "../../lib/locale";
+import { useRouter } from "next/router"
 
 const ArticlePage: NextPage = () => {
-  const router = useRouter();
-
+  const router = useRouter()
   if (router.query.id === undefined || Array.isArray(router.query.id)) {
     return (
       <DisplayError
@@ -23,7 +22,7 @@ const ArticlePage: NextPage = () => {
   } else {
     return (
       <Grid>
-        <ArticleDetails id={router.query.id} router={router}></ArticleDetails>
+        <ArticleDetails id={router.query.id} ></ArticleDetails>
       </Grid>
     );
   }

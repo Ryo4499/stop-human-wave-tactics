@@ -3,7 +3,6 @@ import Link from "next/link";
 import { useState, useEffect, ChangeEvent } from "react";
 import { useQuery } from "@apollo/client";
 import Grid from "@mui/material/Unstable_Grid2";
-import { useRouter } from "next/router"
 import {
   Card,
   CardActionArea,
@@ -33,13 +32,12 @@ import {
 } from "../../types/apollo_client";
 import Loading from "../Common/Loading";
 import DisplayError from "../Common/DisplayError";
-import type { NextRouter } from "next/router";
+import { useRouter } from "next/router";
 import { isMobile } from "react-device-detect"
 
 type ArticlesProps = {
   page: number;
   setPage: (value: number) => void;
-  router: NextRouter;
 };
 
 const perPage = parseInt(process.env.PER_PAGE || "2");
