@@ -37,7 +37,7 @@ const Header = ({ dark, toggleDark }: { dark: boolean, toggleDark: () => void })
               </Grid>
               <Grid container direction="row" xs={12} justifyContent="flex-end">
                 <Grid container alignItems="center">
-                  <TranslateIcon fontSize="medium" />
+                  <TranslateIcon />
                   <FormControl required sx={{ m: 1, minWidth: 60 }} size="small">
                     <Select defaultValue={locale} value={locale}>
                       {locales.map((locale: string) => {
@@ -51,8 +51,8 @@ const Header = ({ dark, toggleDark }: { dark: boolean, toggleDark: () => void })
                   </FormControl>
                 </Grid>
                 <Grid container alignItems="center">
-                  <IconButton onClick={() => toggleDark()}>
-                    <Brightness4Icon color="primary" />
+                  <IconButton color="secondary" onClick={() => toggleDark()}>
+                    <Brightness4Icon />
                   </IconButton>
                 </Grid>
               </Grid>
@@ -66,8 +66,8 @@ const Header = ({ dark, toggleDark }: { dark: boolean, toggleDark: () => void })
               </Link>
             </Grid>
             <Grid container alignItems="center">
-              <TranslateIcon fontSize="large" sx={{ mx: 1 }} />
-              <FormControl required>
+              <TranslateIcon sx={{ mx: 1 }} />
+              <FormControl required size="small">
                 <Select defaultValue={locale} value={locale}>
                   {locales.map((locale: string) => {
                     return (
@@ -79,9 +79,10 @@ const Header = ({ dark, toggleDark }: { dark: boolean, toggleDark: () => void })
                 </Select>
               </FormControl>
             </Grid>
-            <Grid container sx={{ ml: 2 }} alignItems="center" >
-              <Brightness4Icon />
-              <Switch checked={dark} onChange={() => { toggleDark() }}></Switch>
+            <Grid container alignItems="center" >
+              <IconButton color="secondary" onClick={() => toggleDark()}>
+                <Brightness4Icon />
+              </IconButton>
             </Grid>
           </Toolbar>
         }

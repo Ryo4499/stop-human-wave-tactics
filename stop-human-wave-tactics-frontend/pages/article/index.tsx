@@ -39,7 +39,7 @@ export const getStaticProps: GetStaticProps = async () => {
     const article = await client.query({
       query: getArticle,
     });
-    return addApolloState(client, { props: { article: article }, revalidate: 10 });
+    return addApolloState(client, { props: { article: article }, revalidate: 300 });
   } catch {
     return {
       notFound: true,
