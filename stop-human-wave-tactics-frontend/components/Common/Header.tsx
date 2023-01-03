@@ -19,7 +19,6 @@ import { BrowserView, MobileView, isMobile } from "react-device-detect"
 const Header = ({ dark, toggleDark }: { dark: boolean, toggleDark: () => void }) => {
   const { locale, locales, t } = useLocale();
   const router = useRouter()
-  const [expandMenu, setExpandMenu] = useState(false)
   const handleLocaleChange = (event: SyntheticBaseEvent) => {
     const selectLocale = event.target.innerText;
     router.push("/", "/", { locale: selectLocale })

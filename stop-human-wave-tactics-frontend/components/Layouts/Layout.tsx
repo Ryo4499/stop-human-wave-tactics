@@ -37,7 +37,7 @@ const Layout = ({ dark, toggleDark, children }: { dark: boolean, toggleDark: () 
           <Grid container p={1.5} md={10}>
             {children}
           </Grid>
-          <Grid container p={1.5} md={2}>
+          <Grid container md={2}>
             <Sidebar />
           </Grid>
         </Grid>}
