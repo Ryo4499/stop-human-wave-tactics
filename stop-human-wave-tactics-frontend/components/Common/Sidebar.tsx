@@ -24,60 +24,65 @@ import DisplayError from "./DisplayError";
 const Sidebar = () => {
   const { locale, locales, t } = useLocale();
   return (
-    <Grid container direction="column" sx={{ backgroundColor: 'background.default' }}>
-      < Grid container direction="row" justifyContent="stretch" alignItems="center" mt={2} ml={3}>
-        <SearchIcon xs={1} fontSize="large" />
-        <TextField xs={11} id="outlined-basic" label={t.search} variant="outlined" />
-      </Grid >
-      {!isMobile ?
-        <Grid container direction="row" justifyContent="center" >
-          <Grid container justifyContent="center" py={2}>
-            <Avatar xs={12} sx={{ width: "8rem", height: "8rem" }} alt="Avater" src="/ar44.jpg" />
-          </Grid>
-          <Grid container ml={"2rem"}>
-            <ThemeProvider theme={source_code_pro}>
-              <Grid container xs={12}>
-                <Typography variant="h6">AR44</Typography>
-              </Grid>
-              <Grid container direciton="row" py={0.5}>
+    <Grid container direction="column" sx={{ backgroundColor: 'background.default', flexGrow: 1 }} >
+      {
+        !isMobile ?
+          <Grid container direction="row" justifyContent="center" >
+            < Grid container direction="row" justifyContent="stretch" alignItems="center" my={2} px={2} xs={12}>
+              <SearchIcon xs={1} fontSize="large" />
+              <TextField xs={11} sx={{ flexGrow: 1 }} id="outlined-basic" label={t.search} variant="outlined" />
+            </Grid >
+            <Grid container justifyContent="center" py={2}>
+              <Avatar xs={12} sx={{ width: "8rem", height: "8rem" }} alt="Avater" src="/ar44.jpg" />
+            </Grid>
+            <Grid container ml={"2rem"}>
+              <ThemeProvider theme={source_code_pro}>
                 <Grid container xs={12}>
-                  <Typography variant="subtitle1">Jobs</Typography>
+                  <Typography variant="h6">AR44</Typography>
                 </Grid>
-                <Grid container xs={1}></Grid>
-                <Grid container xs={11}>
-                  <Typography variant="subtitle2">AI Enginner</Typography>
+                <Grid container direciton="row" py={0.5}>
+                  <Grid container xs={12}>
+                    <Typography variant="subtitle1">Jobs</Typography>
+                  </Grid>
+                  <Grid container xs={1}></Grid>
+                  <Grid container xs={11}>
+                    <Typography variant="subtitle2">AI Enginner</Typography>
+                  </Grid>
+                  <Grid container xs={1}></Grid>
+                  <Grid container xs={11}>
+                    <Typography variant="subtitle2">Full Stack Enginner</Typography>
+                  </Grid>
                 </Grid>
-                <Grid container xs={1}></Grid>
-                <Grid container xs={11}>
-                  <Typography variant="subtitle2">Full Stack Enginner</Typography>
+                <Grid container direction="row" xs={12} py={0.5}>
+                  <Grid container xs={12} py={0.5}>
+                    <Typography variant="subtitle1">Social Media</Typography>
+                  </Grid>
+                  <Grid container xs={1}></Grid>
+                  <Grid container xs={11}>
+                    <Stack direction="row" spacing={0.8}>
+                      <a href="https://github.com/Ryo4499">
+                        <GitHubIcon sx={{ fontSize: "1.4rem" }} />
+                      </a>
+                      <a href="">
+                        <TwitterIcon sx={{ fontSize: "1.4rem" }} />
+                      </a>
+                      <a href="">
+                        <FacebookIcon sx={{ fontSize: "1.4rem" }} />
+                      </a>
+                      <a href="">
+                        <InstagramIcon sx={{ fontSize: "1.4rem" }} />
+                      </a>
+                    </Stack>
+                  </Grid>
                 </Grid>
-              </Grid>
-              <Grid container direction="row" xs={12} py={0.5}>
-                <Grid container xs={12} py={0.5}>
-                  <Typography variant="subtitle1">Social Media</Typography>
-                </Grid>
-                <Grid container xs={1}></Grid>
-                <Grid container xs={11}>
-                  <Stack direction="row" spacing={0.8}>
-                    <a href="https://github.com/Ryo4499">
-                      <GitHubIcon sx={{ fontSize: "1.4rem" }} />
-                    </a>
-                    <a href="">
-                      <TwitterIcon sx={{ fontSize: "1.4rem" }} />
-                    </a>
-                    <a href="">
-                      <FacebookIcon sx={{ fontSize: "1.4rem" }} />
-                    </a>
-                    <a href="">
-                      <InstagramIcon sx={{ fontSize: "1.4rem" }} />
-                    </a>
-                  </Stack>
-                </Grid>
-              </Grid>
-            </ThemeProvider>
+              </ThemeProvider>
+            </Grid>
           </Grid>
-        </Grid>
-        : null
+          :
+          < Grid container direction="row" justifyContent="stretch" alignItems="center" my={2} px={2} sx={{ flexGrow: 1 }}>
+            <SearchIcon xs={1} fontSize="large" />
+            <TextField xs={11} sx={{ flexGrow: 1 }} id="outlined-basic" label={t.search} variant="outlined" />
+          </Grid >
       }
     </Grid >
   );

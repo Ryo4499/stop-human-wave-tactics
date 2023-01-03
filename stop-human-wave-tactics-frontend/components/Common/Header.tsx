@@ -1,5 +1,6 @@
 import { useState, SyntheticBaseEvent } from "react"
 import { useRouter } from "next/router"
+import Button from "@mui/material/Button"
 import Link from "next/link";
 import Grid from "@mui/material/Unstable_Grid2";
 import Select from "@mui/material/Select";
@@ -31,12 +32,7 @@ const Header = ({ dark, toggleDark }: { dark: boolean, toggleDark: () => void })
             <Grid container direction="row" alignItems="center" >
               <Grid container mt={2} xs={12}>
                 <Link href="/">
-                  <Typography
-                    variant="h5"
-                    component="div"
-                  >
-                    {t.site_name}
-                  </Typography>
+                  {t.site_name}
                 </Link>
               </Grid>
               <Grid container direction="row" xs={12} justifyContent="flex-end">
@@ -64,14 +60,12 @@ const Header = ({ dark, toggleDark }: { dark: boolean, toggleDark: () => void })
           </Toolbar>
           :
           <Toolbar>
-            <Typography
-              variant="h5"
-              component="div"
-              sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-            >
-              {t.site_name}
-            </Typography>
-            <Grid container alignItems="center" >
+            <Grid container sx={{ flexGrow: 1 }}>
+              <Link href="/">
+                {t.site_name}
+              </Link>
+            </Grid>
+            <Grid container alignItems="center">
               <TranslateIcon fontSize="large" sx={{ mx: 1 }} />
               <FormControl required>
                 <Select defaultValue={locale} value={locale}>

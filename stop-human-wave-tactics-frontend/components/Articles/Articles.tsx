@@ -6,6 +6,7 @@ import Grid from "@mui/material/Unstable_Grid2";
 import { useRouter } from "next/router"
 import {
   Card,
+  CardActionArea,
   CardContent,
   CardMedia,
   Container,
@@ -78,29 +79,32 @@ export const Articles = ({ page, setPage }: ArticlesProps) => {
               return (
                 <Grid xs={12} key={article.id}>
                   <Card>
-                    <Link href={`/article/${article.id}`}>
-                      <CardMedia
-                        component="img"
-                        image={
-                          article.attributes?.thumbnail?.data?.attributes?.url
-                        }
-                      />
-                    </Link>
-                    <CardContent></CardContent>
-                    <Typography variant="h5" component="div">
-                      {article.attributes?.title}
-                    </Typography>
-                    <Typography>{article.attributes?.summary}</Typography>
-                    <Typography>
-                      {article.attributes?.updatedAt
-                        .replace("T", " ")
-                        .replace(/\..*$/g, "")
-                        .replace(/\-/g, "/")}
-                    </Typography>
-                    <CardActions>
+                    <CardActionArea>
                       <Link href={`/article/${article.id}`}>
-                        <Button size="small">More Details</Button>
+                        <CardMedia
+                          component="img"
+                          image={
+                            article.attributes?.thumbnail?.data?.attributes?.url
+                          }
+                        />
                       </Link>
+                      <CardContent>
+                        <Typography variant="h5" component="div">
+                          {article.attributes?.title}
+                        </Typography>
+                        <Typography>{article.attributes?.summary}</Typography>
+                        <Typography>
+                          {article.attributes?.updatedAt
+                            .replace("T", " ")
+                            .replace(/\..*$/g, "")
+                            .replace(/\-/g, "/")}
+                        </Typography>
+                      </CardContent>
+                    </CardActionArea>
+                    <CardActions >
+                      <Button onClick={() => { router.push(`/article/${article.id}`) }} size="small">
+                        More Details
+                      </Button>
                     </CardActions>
                   </Card>
                 </Grid>
@@ -114,7 +118,7 @@ export const Articles = ({ page, setPage }: ArticlesProps) => {
             if (!article) return null;
             else {
               return (
-                <Grid xs={6} key={article.id}>
+                <Grid xs={6} key={article.id} >
                   <Card>
                     <Link href={`/article/${article.id}`}>
                       <CardMedia
@@ -124,21 +128,22 @@ export const Articles = ({ page, setPage }: ArticlesProps) => {
                         }
                       />
                     </Link>
-                    <CardContent></CardContent>
-                    <Typography variant="h5" component="div">
-                      {article.attributes?.title}
-                    </Typography>
-                    <Typography>{article.attributes?.summary}</Typography>
-                    <Typography>
-                      {article.attributes?.updatedAt
-                        .replace("T", " ")
-                        .replace(/\..*$/g, "")
-                        .replace(/\-/g, "/")}
-                    </Typography>
-                    <CardActions>
-                      <Link href={`/article/${article.id}`}>
-                        <Button size="small">More Details</Button>
-                      </Link>
+                    <CardContent>
+                      <Typography variant="h5" py={2}>
+                        {article.attributes?.title}
+                      </Typography>
+                      <Typography>{article.attributes?.summary}</Typography>
+                      <Typography>
+                        {article.attributes?.updatedAt
+                          .replace("T", " ")
+                          .replace(/\..*$/g, "")
+                          .replace(/\-/g, "/")}
+                      </Typography>
+                    </CardContent>
+                    <CardActions >
+                      <Button onClick={() => { router.push(`/article/${article.id}`) }} size="small">
+                        More Details
+                      </Button>
                     </CardActions>
                   </Card>
                 </Grid>
