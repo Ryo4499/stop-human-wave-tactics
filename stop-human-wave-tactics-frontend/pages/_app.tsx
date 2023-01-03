@@ -2,7 +2,6 @@ import "../styles/globals.css";
 import type { GetStaticProps, NextPage } from "next";
 import { useMediaQuery } from "@mui/material";
 import { useReducer, createContext, useContext } from "react"
-import { useRouter } from "next/router";
 import React from "react";
 import Layout from "../components/Layouts/Layout";
 import { AppProps } from "next/app";
@@ -98,7 +97,7 @@ const App: NextPage = ({ Component, pageProps }: AppProps) => {
   return (
     <ApolloProvider client={client}>
       <ThemeProvider theme={theme}>
-        <Layout dark={dark} toggleDark={toggleDark}>
+        <Layout dark={dark} toggleDark={toggleDark} >
           <Component {...pageProps} />
         </Layout>
       </ThemeProvider>

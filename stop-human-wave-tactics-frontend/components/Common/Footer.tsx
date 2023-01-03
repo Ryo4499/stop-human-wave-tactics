@@ -1,5 +1,4 @@
 import Link from "next/link"
-import { useRouter } from "next/router"
 import { Typography, Button } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -8,7 +7,6 @@ import { useLocale } from "../../lib/locale";
 
 const Footer = () => {
   const { locale, locales, t } = useLocale();
-  const router = useRouter()
   return (
     <Grid container xs={12} >
       <AppBar position="static">
