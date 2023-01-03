@@ -34,7 +34,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async () => {
   const client = initializeApollo();
-  const { locale, locales, t } = useLocale()
   try {
     const article = await client.query({
       query: getArticle,

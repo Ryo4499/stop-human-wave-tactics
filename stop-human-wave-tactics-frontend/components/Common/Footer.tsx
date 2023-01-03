@@ -24,6 +24,11 @@ const Footer = () => {
                 {t.privacy_policy}
               </Link>
             </Grid>
+            <Grid container mx={1}>
+              <Link href="/portofolios">
+                {t.portofolios}
+              </Link>
+            </Grid>
           </Grid>
         </Toolbar>
       </AppBar>
