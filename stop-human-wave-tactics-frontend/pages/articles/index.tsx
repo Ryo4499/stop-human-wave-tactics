@@ -4,7 +4,6 @@ import { addApolloState, initializeApollo } from "../../lib/apollo";
 import { getArticles } from "../../graphql/getArticles";
 import { useRouter } from "next/router";
 import { Articles } from "../../components/Articles/Articles";
-import { useLocale } from "../../lib/locale";
 import { getCategories } from "../../graphql/getCategories";
 
 const ArticlesPage: NextPage = () => {
@@ -22,7 +21,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const client = initializeApollo();
+  const client = initializeApollo()
   try {
     const articles = await client.query({
       query: getArticles,
