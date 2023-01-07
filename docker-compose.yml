@@ -12,7 +12,8 @@ services:
       - BASIC_AUTH_PASSWORD
       - DOCKER_CONTENT_TRUST
     ports:
-      - "80:80"
+      - 80:80
+      - 443:443
     tty: true
     volumes:
       - type: bind
