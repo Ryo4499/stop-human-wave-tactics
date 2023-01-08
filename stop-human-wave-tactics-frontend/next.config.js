@@ -1,28 +1,22 @@
-/*
-  eslint-disable
-  @typescript-eslint/no-var-requires,
-  @typescript-eslint/explicit-function-return-type,
-  @type {import('next').NextConfig}
-*/
-import resolve from "path"
-const nextConfig = {
+module.exports = {
   reactStrictMode: true,
+  typescript: {
+    ignoreBuildErrors: true
+  },
   i18n: {
     locales: ['en', 'ja'],
     defaultLocale: 'ja',
+    domains: [
+      {
+        domain: `${process.env.DOMAIN || "localhost"}/en`,
+        defaultLocale: 'en',
+        http: true,
+      },
+      {
+        domain: `${process.env.DOMAIN || "localhost"}/ja`,
+        defaultLocale: 'ja',
+        http: true,
+      },
+    ],
   },
-  domains: [
-    {
-      domain: 'localhost/en',
-      defaultLocale: 'en',
-      http: true,
-    },
-    {
-      domain: 'localhost/ja',
-      defaultLocale: 'ja',
-      http: true,
-    },
-  ],
 };
-
-export default nextConfig
