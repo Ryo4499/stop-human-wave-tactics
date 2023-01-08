@@ -6,8 +6,8 @@ import { useLocale } from "../../lib/locale";
 import Loading from "../Common/Loading";
 import DisplayError from "../Common/DisplayError";
 
-const Categories = ({ categories }) => {
-  return <Grid container direciton="column" sx={{ flexGrow: 1 }}>
+const Categories = () => {
+  return <Grid container direction="column" sx={{ flexGrow: 1 }}>
   </Grid>;
 };
 

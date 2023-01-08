@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect, useCallback, ChangeEvent } from "react";
 import { useQuery } from "@apollo/client";
 import Grid from "@mui/material/Unstable_Grid2";
 import {
@@ -34,6 +34,10 @@ import Loading from "../Common/Loading";
 import DisplayError from "../Common/DisplayError";
 import { useRouter } from "next/router";
 import { isMobile } from "react-device-detect"
+import Particles from "react-tsparticles";
+import { loadFull } from "tsparticles"
+import type { Engine } from "tsparticles-engine"
+import PaticleParams from "../../styles/presets/nyancat2-articles.json"
 
 type ArticlesProps = {
   page: number;
@@ -60,27 +64,42 @@ export const Articles = ({ page, setPage }: ArticlesProps) => {
       locale: router.locale,
     },
   });
+
+  // load particles
+  const particlesInit = useCallback(async (engine: Engine) => {
+    await loadFull(engine);
+  }, []);
+
   useEffect(() => {
-    router.beforePopState(({ url, as }: { url: string, as: string }) => {
+    router.beforePopState(({ url, as }: { url: string, as: string }): boolean => {
       if (router.route === url) {
         setPage(parseInt(as.split("/").slice(-1)[0], 10))
         router.push(as)
+        return true
+      } else {
+        return false
       }
     })
-  }, [router.query.page])
+  })
+
   if (loading) return <Loading />;
   if (error) return <DisplayError error={error} />;
+
   const handleChange = (event: ChangeEvent<unknown>, value: number) => {
     setPage(value);
     router.push(`/articles/${value}`);
   };
-  return (
-    <Grid container direction="column" sx={{ flexGrow: 1 }} xs={12}>
-      {isMobile ?
-        <Grid container direction="column" sx={{ flexGrow: 1 }} spacing={2}>
-          {data?.articles?.data.map((article: ArticleEntity) => {
-            if (!article) return null;
-            else {
+
+  if (data?.articles?.data != null) {
+    return (
+      <Grid container direction="column" sx={{ flexGrow: 1 }} xs={12}>
+        {/* @ts-ignore */}
+        <Particles
+          init={particlesInit}
+          params={PaticleParams} />
+        {isMobile ?
+          <Grid container direction="column" sx={{ flexGrow: 1 }} spacing={2}>
+            {data?.articles?.data.map((article) => {
               return (
                 <Grid xs={12} key={article.id}>
                   <Card>
@@ -114,14 +133,11 @@ export const Articles = ({ page, setPage }: ArticlesProps) => {
                   </Card>
                 </Grid>
               )
-            }
-          })}
-        </Grid>
-        :
-        <Grid container direction="row" sx={{ flexGrow: 1 }} spacing={2}>
-          {data?.articles?.data.map((article: ArticleEntity) => {
-            if (!article) return null;
-            else {
+            })}
+          </Grid>
+          :
+          <Grid container direction="row" sx={{ flexGrow: 1 }} spacing={2}>
+            {data?.articles?.data.map((article) => {
               return (
                 <Grid xs={6} key={article.id} >
                   <Card>
@@ -153,22 +169,25 @@ export const Articles = ({ page, setPage }: ArticlesProps) => {
                   </Card>
                 </Grid>
               )
+            })}
+          </Grid>
+        }
+        <Grid container direction="row" justifyContent="center">
+          <Pagination
+            page={page}
+            count={data?.articles?.meta.pagination.pageCount}
+            onChange={handleChange}
+            renderItem={(item) => {
+              return (<Link href={`/articles/${item.page}`} key={item.page} passHref>
+                <PaginationItem {...item} />
+              </Link>)
             }
-          })}
+            }
+          ></Pagination>
         </Grid>
-      }
-      <Grid container direction="row" justifyContent="center">
-        <Pagination
-          page={page}
-          count={data?.articles?.meta.pagination.pageCount}
-          onChange={handleChange}
-          renderItem={(item: Object) =>
-            <Link href={`/articles/${item.page}`} key={item.page} passHref>
-              <PaginationItem {...item} />
-            </Link>
-          }
-        ></Pagination>
       </Grid>
-    </Grid>
-  );
+    );
+  } else {
+    return null
+  }
 };

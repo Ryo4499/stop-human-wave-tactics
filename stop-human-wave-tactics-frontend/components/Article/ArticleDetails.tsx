@@ -5,11 +5,17 @@ import Loading from "../../components/Common/Loading";
 import { getArticle } from "../../graphql/getArticle";
 import {
   Article,
-  getArticleQuery,
-  getArticleQueryVariables,
+  GetArticleQuery,
+  GetArticleQueryVariables,
 } from "../../types/apollo_client";
-import { Container, Skeleton, Typography } from "@mui/material";
-import conv_md from "../../lib/md";
+import Grid from "@mui/material/Unstable_Grid2";
+import { useCallback } from "react";
+import { Skeleton, Typography } from "@mui/material";
+import MdContent from "../Common/MdContent";
+import Particles from "react-tsparticles";
+import { loadFull } from "tsparticles"
+import type { Engine } from "tsparticles-engine"
+import PaticleParams from "../../styles/presets/nyancat2-article-details.json"
 
 type ArticleProps = {
   id: string;
@@ -18,8 +24,8 @@ type ArticleProps = {
 export const ArticleDetails = ({ id }: ArticleProps) => {
   const router = useRouter()
   const { data, loading, error } = useQuery<
-    getArticleQuery,
-    getArticleQueryVariables
+    GetArticleQuery,
+    GetArticleQueryVariables
   >(getArticle, {
     fetchPolicy: "cache-and-network",
     nextFetchPolicy: "cache-first",
@@ -28,15 +34,35 @@ export const ArticleDetails = ({ id }: ArticleProps) => {
       locale: router.locale,
     },
   });
+  // load particles
+  const particlesInit = useCallback(async (engine: Engine) => {
+    await loadFull(engine);
+  }, []);
+
   if (loading) return <Loading />;
+
   if (error) return <DisplayError error={error} />;
-  const article = data.article.data.attributes;
-  return (
-    <Container>
-      <Typography variant="h1">
-        {loading ? <Skeleton /> : article.title}
-      </Typography>
-      <div dangerouslySetInnerHTML={{ __html: conv_md(article) }}></div>
-    </Container>
-  );
+
+  if (data?.article?.data?.attributes != null) {
+    const article = data.article.data.attributes;
+    return (
+      <Grid container xs={12} sx={{ flexGrow: 1 }}>
+        {/* @ts-ignore */}
+        <Particles
+          init={particlesInit}
+          params={PaticleParams} />
+        <Grid container direction="column" sx={{ flexGrow: 1, backgroundColor: "white", }}>
+          <Grid>
+            <Typography variant="h1">
+              {article.title}
+            </Typography></Grid>
+          <Grid>
+            <MdContent content={article.content}></MdContent>
+          </Grid>
+        </Grid>
+      </Grid>
+    );
+  } else {
+    return null
+  }
 };
