@@ -20,7 +20,7 @@ let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
  * @param headers 
  * @returns ApolloClient
  */
-const createApolloClient = (headers: IncomingHttpHeaders | null = null): ApolloClient => {
+const createApolloClient = (headers: IncomingHttpHeaders | null = null): ApolloClient<NormalizedCacheObject> => {
         /**
          * 
          * @param url 
@@ -69,7 +69,7 @@ export const initializeApollo = (
                 headers: null,
                 initialState: null,
         }
-): ApolloClient => {
+): ApolloClient<NormalizedCacheObject> => {
         const _apolloClient = apolloClient ?? createApolloClient(headers);
 
         // If your page has Next.js data fetching methods that use Apollo Client, the initial state
