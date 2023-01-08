@@ -12,7 +12,8 @@ services:
       - BASIC_AUTH_PASSWORD
       - DOCKER_CONTENT_TRUST
     ports:
-      - "80:80"
+      - 80:80
+      - 443:443
     tty: true
     volumes:
       - type: bind
@@ -21,6 +22,12 @@ services:
       - type: bind
         source: ./nginx/conf.d/default.conf
         target: /etc/nginx/conf.d/default.conf
+      - type: bind
+        source: ./nginx/ssl
+        target: /etc/nginx/ssl
+      - type: bind
+        source: ./nginx/log
+        target: /var/log/nginx
     depends_on:
       - db
       - front
@@ -130,8 +137,6 @@ services:
       - DOCKER_CONTENT_TRUST
     working_dir: "/home/${MY_USER}/stop-human-wave-tactics-backend"
     user: $MY_USER
-    ports:
-      - 1337:1337
     volumes:
       - type: volume
         source: backModules
@@ -141,7 +146,7 @@ services:
     command:
       - -c
       - |
-        yarn build ; \
+        chown -R $MY_USER:$MY_GROUP ./ ; \
         if [ "${MODE}" = "PRODUCTION" ]; then \
           yarn start; \
         else \

@@ -1,3 +1,6 @@
 .env
+*.key
+*.crt
+*.log
 .exec-onece
 .vscode
