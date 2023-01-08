@@ -1,19 +1,29 @@
 version: "3.9"
 services:
+  #https-portal:
+  #  image: steveltn/https-portal:latest
+  #  ports:
+  #    - 80:80
+  #    - 443:443
+  #  restart: always
+  #  environment:
+  #    - DOMAINS
+  #    - STAGE
+  #  env_file:
+  #    - ./.env
+
   proxy:
     build:
       context: ./nginx
       dockerfile: Dockerfile
+    ports:
+      - 80:80
+      - 443:443
     env_file:
       - ./.env
     environment:
       - TZ
-      - BASIC_AUTH_USERNAME
-      - BASIC_AUTH_PASSWORD
       - DOCKER_CONTENT_TRUST
-    ports:
-      - 80:80
-      - 443:443
     tty: true
     volumes:
       - type: bind
