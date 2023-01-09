@@ -46,6 +46,7 @@ const createApolloClient = (headers: IncomingHttpHeaders | null = null): ApolloC
 
         return new ApolloClient({
                 // SSR only for Node.js
+                // detect server side
                 ssrMode: typeof window === "undefined",
                 link: httpLink,
                 cache: new InMemoryCache(),
