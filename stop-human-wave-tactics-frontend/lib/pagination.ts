@@ -1,6 +1,9 @@
+import config from "dotenv"
+
 export const getPageSize = (): number => {
-    if (process.env.PAGESIZE != null) {
-        return parseInt(process.env.PAGESIZE, 10)
+    const pagesize = process.env.PAGESIZE
+    if (pagesize != null) {
+        return parseInt(pagesize, 10)
     } else {
         return 10
     }
