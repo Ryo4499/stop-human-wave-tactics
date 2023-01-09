@@ -38,16 +38,16 @@ import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles"
 import type { Engine } from "tsparticles-engine"
 import PaticleParams from "../../styles/presets/nyancat2-articles.json"
+import { getPageSize } from "../../lib/pagination";
 
 type ArticlesProps = {
   page: number;
   setPage: (value: number) => void;
 };
 
-const perPage = parseInt(process.env.PER_PAGE || "2");
-
 export const Articles = ({ page, setPage }: ArticlesProps) => {
   const router = useRouter()
+  const pagesize = getPageSize()
   const { data, loading, error } = useQuery<
     GetArticlesQuery,
     GetArticlesQueryVariables
@@ -58,7 +58,7 @@ export const Articles = ({ page, setPage }: ArticlesProps) => {
       filters: {},
       pagination: {
         page: page,
-        pageSize: perPage,
+        pageSize: pagesize,
       },
       sort: ["publishedAt:desc", "createdAt:desc"],
       locale: router.locale,
