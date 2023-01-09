@@ -3,6 +3,10 @@ module.exports = {
   typescript: {
     ignoreBuildErrors: true
   },
+  env: {
+    PAGESIZE: 2,
+    NEXT_PUBLIC_BACKEND_URL: `http://${process.env.DOMAIN}/graphql`
+  },
   i18n: {
     locales: ['en', 'ja'],
     defaultLocale: 'ja',
