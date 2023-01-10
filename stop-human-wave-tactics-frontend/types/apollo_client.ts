@@ -28,6 +28,7 @@ export type Article = {
   locale?: Maybe<Scalars['String']>;
   localizations?: Maybe<ArticleRelationResponseCollection>;
   publishedAt?: Maybe<Scalars['DateTime']>;
+  slug: Scalars['String'];
   summary: Scalars['String'];
   thumbnail?: Maybe<UploadFileEntityResponse>;
   title: Scalars['String'];
@@ -124,6 +125,7 @@ export type Category = {
   locale?: Maybe<Scalars['String']>;
   localizations?: Maybe<CategoryRelationResponseCollection>;
   name: Scalars['String'];
+  slug: Scalars['String'];
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
 
@@ -317,7 +319,7 @@ export type FloatFilterInput = {
   startsWith?: InputMaybe<Scalars['Float']>;
 };
 
-export type GenericMorph = Article | Category | ComponentSharedMetaSocial | ComponentSharedSeo | I18NLocale | UploadFile | UploadFolder | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
+export type GenericMorph = Article | Category | ComponentSharedMetaSocial | ComponentSharedSeo | I18NLocale | TodoTask | UploadFile | UploadFolder | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
 
 export type I18NLocale = {
   __typename?: 'I18NLocale';
@@ -434,12 +436,14 @@ export type Mutation = {
   createArticleLocalization?: Maybe<ArticleEntityResponse>;
   createCategory?: Maybe<CategoryEntityResponse>;
   createCategoryLocalization?: Maybe<CategoryEntityResponse>;
+  createTodoTask?: Maybe<TodoTaskEntityResponse>;
   createUploadFile?: Maybe<UploadFileEntityResponse>;
   createUploadFolder?: Maybe<UploadFolderEntityResponse>;
   createUsersPermissionsRole?: Maybe<UsersPermissionsCreateRolePayload>;
   createUsersPermissionsUser: UsersPermissionsUserEntityResponse;
   deleteArticle?: Maybe<ArticleEntityResponse>;
   deleteCategory?: Maybe<CategoryEntityResponse>;
+  deleteTodoTask?: Maybe<TodoTaskEntityResponse>;
   deleteUploadFile?: Maybe<UploadFileEntityResponse>;
   deleteUploadFolder?: Maybe<UploadFolderEntityResponse>;
   deleteUsersPermissionsRole?: Maybe<UsersPermissionsDeleteRolePayload>;
@@ -454,6 +458,7 @@ export type Mutation = {
   updateArticle?: Maybe<ArticleEntityResponse>;
   updateCategory?: Maybe<CategoryEntityResponse>;
   updateFileInfo: UploadFileEntityResponse;
+  updateTodoTask?: Maybe<TodoTaskEntityResponse>;
   updateUploadFile?: Maybe<UploadFileEntityResponse>;
   updateUploadFolder?: Maybe<UploadFolderEntityResponse>;
   updateUsersPermissionsRole?: Maybe<UsersPermissionsUpdateRolePayload>;
@@ -495,6 +500,11 @@ export type MutationCreateCategoryLocalizationArgs = {
 };
 
 
+export type MutationCreateTodoTaskArgs = {
+  data: TodoTaskInput;
+};
+
+
 export type MutationCreateUploadFileArgs = {
   data: UploadFileInput;
 };
@@ -524,6 +534,11 @@ export type MutationDeleteArticleArgs = {
 export type MutationDeleteCategoryArgs = {
   id: Scalars['ID'];
   locale?: InputMaybe<Scalars['I18NLocaleCode']>;
+};
+
+
+export type MutationDeleteTodoTaskArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -607,6 +622,12 @@ export type MutationUpdateFileInfoArgs = {
 };
 
 
+export type MutationUpdateTodoTaskArgs = {
+  data: TodoTaskInput;
+  id: Scalars['ID'];
+};
+
+
 export type MutationUpdateUploadFileArgs = {
   data: UploadFileInput;
   id: Scalars['ID'];
@@ -668,6 +689,8 @@ export type Query = {
   i18NLocale?: Maybe<I18NLocaleEntityResponse>;
   i18NLocales?: Maybe<I18NLocaleEntityResponseCollection>;
   me?: Maybe<UsersPermissionsMe>;
+  todoTask?: Maybe<TodoTaskEntityResponse>;
+  todoTasks?: Maybe<TodoTaskEntityResponseCollection>;
   uploadFile?: Maybe<UploadFileEntityResponse>;
   uploadFiles?: Maybe<UploadFileEntityResponseCollection>;
   uploadFolder?: Maybe<UploadFolderEntityResponse>;
@@ -715,6 +738,18 @@ export type QueryI18NLocaleArgs = {
 
 export type QueryI18NLocalesArgs = {
   filters?: InputMaybe<I18NLocaleFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
+export type QueryTodoTaskArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+};
+
+
+export type QueryTodoTasksArgs = {
+  filters?: InputMaybe<TodoTaskFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
@@ -794,6 +829,48 @@ export type StringFilterInput = {
   null?: InputMaybe<Scalars['Boolean']>;
   or?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   startsWith?: InputMaybe<Scalars['String']>;
+};
+
+export type TodoTask = {
+  __typename?: 'TodoTask';
+  createdAt?: Maybe<Scalars['DateTime']>;
+  isDone?: Maybe<Scalars['Boolean']>;
+  name: Scalars['String'];
+  related?: Maybe<GenericMorph>;
+  updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+export type TodoTaskEntity = {
+  __typename?: 'TodoTaskEntity';
+  attributes?: Maybe<TodoTask>;
+  id?: Maybe<Scalars['ID']>;
+};
+
+export type TodoTaskEntityResponse = {
+  __typename?: 'TodoTaskEntityResponse';
+  data?: Maybe<TodoTaskEntity>;
+};
+
+export type TodoTaskEntityResponseCollection = {
+  __typename?: 'TodoTaskEntityResponseCollection';
+  data: Array<TodoTaskEntity>;
+  meta: ResponseCollectionMeta;
+};
+
+export type TodoTaskFiltersInput = {
+  and?: InputMaybe<Array<InputMaybe<TodoTaskFiltersInput>>>;
+  createdAt?: InputMaybe<DateTimeFilterInput>;
+  id?: InputMaybe<IdFilterInput>;
+  isDone?: InputMaybe<BooleanFilterInput>;
+  name?: InputMaybe<StringFilterInput>;
+  not?: InputMaybe<TodoTaskFiltersInput>;
+  or?: InputMaybe<Array<InputMaybe<TodoTaskFiltersInput>>>;
+  updatedAt?: InputMaybe<DateTimeFilterInput>;
+};
+
+export type TodoTaskInput = {
+  isDone?: InputMaybe<Scalars['Boolean']>;
+  name?: InputMaybe<Scalars['String']>;
 };
 
 export type UploadFile = {
@@ -1175,7 +1252,7 @@ export type GetArticleQueryVariables = Exact<{
 }>;
 
 
-export type GetArticleQuery = { __typename?: 'Query', article?: { __typename?: 'ArticleEntityResponse', data?: { __typename?: 'ArticleEntity', id?: string | null, attributes?: { __typename?: 'Article', title: string, summary: string, content: string, createdAt?: any | null, updatedAt?: any | null, publishedAt?: any | null, locale?: string | null, thumbnail?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', name: string, alternativeText?: string | null, caption?: string | null, width?: number | null, height?: number | null, url: string, previewUrl?: string | null } | null } | null } | null, category?: { __typename?: 'CategoryEntityResponse', data?: { __typename?: 'CategoryEntity', id?: string | null, attributes?: { __typename?: 'Category', name: string } | null } | null } | null, Seo?: { __typename?: 'ComponentSharedSeo', id: string, metaTitle: string, metaDescription: string, keywords?: string | null, metaRobots?: string | null, structuredData?: any | null, metaViewport?: string | null, canonicalURL?: string | null, metaImage: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', name: string, alternativeText?: string | null, caption?: string | null, width?: number | null, height?: number | null, url: string, previewUrl?: string | null } | null } | null } } | null } | null } | null } | null };
+export type GetArticleQuery = { __typename?: 'Query', article?: { __typename?: 'ArticleEntityResponse', data?: { __typename?: 'ArticleEntity', id?: string | null, attributes?: { __typename?: 'Article', slug: string, title: string, summary: string, content: string, createdAt?: any | null, updatedAt?: any | null, publishedAt?: any | null, locale?: string | null, thumbnail?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', name: string, alternativeText?: string | null, caption?: string | null, width?: number | null, height?: number | null, url: string, previewUrl?: string | null } | null } | null } | null, category?: { __typename?: 'CategoryEntityResponse', data?: { __typename?: 'CategoryEntity', id?: string | null, attributes?: { __typename?: 'Category', name: string } | null } | null } | null, Seo?: { __typename?: 'ComponentSharedSeo', id: string, metaTitle: string, metaDescription: string, keywords?: string | null, metaRobots?: string | null, structuredData?: any | null, metaViewport?: string | null, canonicalURL?: string | null, metaImage: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', name: string, alternativeText?: string | null, caption?: string | null, width?: number | null, height?: number | null, url: string, previewUrl?: string | null } | null } | null } } | null } | null } | null } | null };
 
 export type GetArticlesQueryVariables = Exact<{
   filters?: InputMaybe<ArticleFiltersInput>;
@@ -1186,18 +1263,7 @@ export type GetArticlesQueryVariables = Exact<{
 }>;
 
 
-export type GetArticlesQuery = { __typename?: 'Query', articles?: { __typename?: 'ArticleEntityResponseCollection', data: Array<{ __typename?: 'ArticleEntity', id?: string | null, attributes?: { __typename?: 'Article', title: string, summary: string, content: string, createdAt?: any | null, updatedAt?: any | null, publishedAt?: any | null, locale?: string | null, thumbnail?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', name: string, alternativeText?: string | null, caption?: string | null, width?: number | null, height?: number | null, url: string, previewUrl?: string | null } | null } | null } | null, category?: { __typename?: 'CategoryEntityResponse', data?: { __typename?: 'CategoryEntity', id?: string | null, attributes?: { __typename?: 'Category', name: string } | null } | null } | null, Seo?: { __typename?: 'ComponentSharedSeo', id: string, metaTitle: string, metaDescription: string, keywords?: string | null, metaRobots?: string | null, structuredData?: any | null, metaViewport?: string | null, canonicalURL?: string | null, metaImage: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', name: string, alternativeText?: string | null, caption?: string | null, width?: number | null, height?: number | null, url: string, previewUrl?: string | null } | null } | null } } | null } | null }>, meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number } } } | null };
-
-export type GetArticlesIdsQueryVariables = Exact<{
-  filters?: InputMaybe<ArticleFiltersInput>;
-  pagination: PaginationArg;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>> | InputMaybe<Scalars['String']>>;
-  publicationState?: InputMaybe<PublicationState>;
-  locale: Scalars['I18NLocaleCode'];
-}>;
-
-
-export type GetArticlesIdsQuery = { __typename?: 'Query', articles?: { __typename?: 'ArticleEntityResponseCollection', data: Array<{ __typename?: 'ArticleEntity', id?: string | null }> } | null };
+export type GetArticlesQuery = { __typename?: 'Query', articles?: { __typename?: 'ArticleEntityResponseCollection', data: Array<{ __typename?: 'ArticleEntity', id?: string | null, attributes?: { __typename?: 'Article', slug: string, title: string, summary: string, content: string, createdAt?: any | null, updatedAt?: any | null, publishedAt?: any | null, locale?: string | null, thumbnail?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', name: string, alternativeText?: string | null, caption?: string | null, width?: number | null, height?: number | null, url: string, previewUrl?: string | null } | null } | null } | null, category?: { __typename?: 'CategoryEntityResponse', data?: { __typename?: 'CategoryEntity', id?: string | null, attributes?: { __typename?: 'Category', name: string } | null } | null } | null, Seo?: { __typename?: 'ComponentSharedSeo', id: string, metaTitle: string, metaDescription: string, keywords?: string | null, metaRobots?: string | null, structuredData?: any | null, metaViewport?: string | null, canonicalURL?: string | null, metaImage: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', name: string, alternativeText?: string | null, caption?: string | null, width?: number | null, height?: number | null, url: string, previewUrl?: string | null } | null } | null } } | null } | null }>, meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number } } } | null };
 
 export type GetArticlesPagesQueryVariables = Exact<{
   filters?: InputMaybe<ArticleFiltersInput>;
@@ -1210,6 +1276,17 @@ export type GetArticlesPagesQueryVariables = Exact<{
 
 export type GetArticlesPagesQuery = { __typename?: 'Query', articles?: { __typename?: 'ArticleEntityResponseCollection', meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number } } } | null };
 
+export type GetArticlesSlugsQueryVariables = Exact<{
+  filters?: InputMaybe<ArticleFiltersInput>;
+  pagination: PaginationArg;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>> | InputMaybe<Scalars['String']>>;
+  publicationState?: InputMaybe<PublicationState>;
+  locale: Scalars['I18NLocaleCode'];
+}>;
+
+
+export type GetArticlesSlugsQuery = { __typename?: 'Query', articles?: { __typename?: 'ArticleEntityResponseCollection', data: Array<{ __typename?: 'ArticleEntity', attributes?: { __typename?: 'Article', slug: string } | null }> } | null };
+
 export type GetCategoriesQueryVariables = Exact<{
   filters?: InputMaybe<CategoryFiltersInput>;
   pagination: PaginationArg;
@@ -1218,7 +1295,7 @@ export type GetCategoriesQueryVariables = Exact<{
 }>;
 
 
-export type GetCategoriesQuery = { __typename?: 'Query', categories?: { __typename?: 'CategoryEntityResponseCollection', data: Array<{ __typename?: 'CategoryEntity', id?: string | null, attributes?: { __typename?: 'Category', name: string, createdAt?: any | null, updatedAt?: any | null, locale?: string | null, articles?: { __typename?: 'ArticleRelationResponseCollection', data: Array<{ __typename?: 'ArticleEntity', id?: string | null }> } | null } | null }>, meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number } } } | null };
+export type GetCategoriesQuery = { __typename?: 'Query', categories?: { __typename?: 'CategoryEntityResponseCollection', data: Array<{ __typename?: 'CategoryEntity', id?: string | null, attributes?: { __typename?: 'Category', slug: string, name: string, createdAt?: any | null, updatedAt?: any | null, locale?: string | null, articles?: { __typename?: 'ArticleRelationResponseCollection', data: Array<{ __typename?: 'ArticleEntity', id?: string | null, attributes?: { __typename?: 'Article', slug: string } | null }> } | null } | null }>, meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number } } } | null };
 
 export type GetCategoryQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -1226,7 +1303,7 @@ export type GetCategoryQueryVariables = Exact<{
 }>;
 
 
-export type GetCategoryQuery = { __typename?: 'Query', category?: { __typename?: 'CategoryEntityResponse', data?: { __typename?: 'CategoryEntity', id?: string | null, attributes?: { __typename?: 'Category', name: string, createdAt?: any | null, updatedAt?: any | null, locale?: string | null, articles?: { __typename?: 'ArticleRelationResponseCollection', data: Array<{ __typename?: 'ArticleEntity', id?: string | null }> } | null } | null } | null } | null };
+export type GetCategoryQuery = { __typename?: 'Query', category?: { __typename?: 'CategoryEntityResponse', data?: { __typename?: 'CategoryEntity', id?: string | null, attributes?: { __typename?: 'Category', slug: string, name: string, createdAt?: any | null, updatedAt?: any | null, locale?: string | null, articles?: { __typename?: 'ArticleRelationResponseCollection', data: Array<{ __typename?: 'ArticleEntity', id?: string | null, attributes?: { __typename?: 'Article', slug: string } | null }> } | null } | null } | null } | null };
 
 export type GetI18NLocalesQueryVariables = Exact<{
   filters?: InputMaybe<I18NLocaleFiltersInput>;
@@ -1244,6 +1321,7 @@ export const GetArticleDocument = gql`
     data {
       id
       attributes {
+        slug
         title
         summary
         content
@@ -1312,6 +1390,7 @@ export const GetArticlesDocument = gql`
     data {
       id
       attributes {
+        slug
         title
         summary
         content
@@ -1376,21 +1455,6 @@ export const GetArticlesDocument = gql`
   }
 }
     `;
-export const GetArticlesIdsDocument = gql`
-    query getArticlesIds($filters: ArticleFiltersInput, $pagination: PaginationArg!, $sort: [String], $publicationState: PublicationState, $locale: I18NLocaleCode!) {
-  articles(
-    filters: $filters
-    pagination: $pagination
-    sort: $sort
-    publicationState: $publicationState
-    locale: $locale
-  ) {
-    data {
-      id
-    }
-  }
-}
-    `;
 export const GetArticlesPagesDocument = gql`
     query getArticlesPages($filters: ArticleFiltersInput, $pagination: PaginationArg!, $sort: [String], $publicationState: PublicationState, $locale: I18NLocaleCode!) {
   articles(
@@ -1411,6 +1475,23 @@ export const GetArticlesPagesDocument = gql`
   }
 }
     `;
+export const GetArticlesSlugsDocument = gql`
+    query getArticlesSlugs($filters: ArticleFiltersInput, $pagination: PaginationArg!, $sort: [String], $publicationState: PublicationState, $locale: I18NLocaleCode!) {
+  articles(
+    filters: $filters
+    pagination: $pagination
+    sort: $sort
+    publicationState: $publicationState
+    locale: $locale
+  ) {
+    data {
+      attributes {
+        slug
+      }
+    }
+  }
+}
+    `;
 export const GetCategoriesDocument = gql`
     query getCategories($filters: CategoryFiltersInput, $pagination: PaginationArg!, $sort: [String], $locale: I18NLocaleCode!) {
   categories(
@@ -1422,10 +1503,14 @@ export const GetCategoriesDocument = gql`
     data {
       id
       attributes {
+        slug
         name
         articles {
           data {
             id
+            attributes {
+              slug
+            }
           }
         }
         createdAt
@@ -1450,10 +1535,14 @@ export const GetCategoryDocument = gql`
     data {
       id
       attributes {
+        slug
         name
         articles {
           data {
             id
+            attributes {
+              slug
+            }
           }
         }
         createdAt
@@ -1478,7 +1567,7 @@ export const GetI18NLocalesDocument = gql`
 }
     `;
 
-export type SdkFunctionWrapper = <T>(action: (requestHeaders?: Record<string, string>) => Promise<T>, operationName: string, operationType?: string) => Promise<T>;
+export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string) => Promise<T>;
 
 
 const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType) => action();
@@ -1486,25 +1575,25 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
     getArticle(variables: GetArticleQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetArticleQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetArticleQuery>(GetArticleDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getArticle', 'query');
+      return withWrapper((wrappedRequestHeaders) => client.request<GetArticleQuery>(GetArticleDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getArticle', 'query');
     },
     getArticles(variables: GetArticlesQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetArticlesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetArticlesQuery>(GetArticlesDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getArticles', 'query');
-    },
-    getArticlesIds(variables: GetArticlesIdsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetArticlesIdsQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetArticlesIdsQuery>(GetArticlesIdsDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getArticlesIds', 'query');
+      return withWrapper((wrappedRequestHeaders) => client.request<GetArticlesQuery>(GetArticlesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getArticles', 'query');
     },
     getArticlesPages(variables: GetArticlesPagesQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetArticlesPagesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetArticlesPagesQuery>(GetArticlesPagesDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getArticlesPages', 'query');
+      return withWrapper((wrappedRequestHeaders) => client.request<GetArticlesPagesQuery>(GetArticlesPagesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getArticlesPages', 'query');
+    },
+    getArticlesSlugs(variables: GetArticlesSlugsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetArticlesSlugsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetArticlesSlugsQuery>(GetArticlesSlugsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getArticlesSlugs', 'query');
     },
     getCategories(variables: GetCategoriesQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetCategoriesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetCategoriesQuery>(GetCategoriesDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getCategories', 'query');
+      return withWrapper((wrappedRequestHeaders) => client.request<GetCategoriesQuery>(GetCategoriesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCategories', 'query');
     },
     getCategory(variables: GetCategoryQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetCategoryQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetCategoryQuery>(GetCategoryDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getCategory', 'query');
+      return withWrapper((wrappedRequestHeaders) => client.request<GetCategoryQuery>(GetCategoryDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCategory', 'query');
     },
     getI18NLocales(variables?: GetI18NLocalesQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetI18NLocalesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetI18NLocalesQuery>(GetI18NLocalesDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getI18NLocales', 'query');
+      return withWrapper((wrappedRequestHeaders) => client.request<GetI18NLocalesQuery>(GetI18NLocalesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getI18NLocales', 'query');
     }
   };
 }

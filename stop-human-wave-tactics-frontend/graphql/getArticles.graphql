@@ -15,6 +15,7 @@ query getArticles(
     data {
       id
       attributes {
+        slug
         title
         summary
         content

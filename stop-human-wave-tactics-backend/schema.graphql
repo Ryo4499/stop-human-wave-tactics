@@ -28,6 +28,7 @@ input IDFilterInput {
   or: [ID]
   not: IDFilterInput
   eq: ID
+  eqi: ID
   ne: ID
   startsWith: ID
   endsWith: ID
@@ -51,6 +52,7 @@ input BooleanFilterInput {
   or: [Boolean]
   not: BooleanFilterInput
   eq: Boolean
+  eqi: Boolean
   ne: Boolean
   startsWith: Boolean
   endsWith: Boolean
@@ -74,6 +76,7 @@ input StringFilterInput {
   or: [String]
   not: StringFilterInput
   eq: String
+  eqi: String
   ne: String
   startsWith: String
   endsWith: String
@@ -97,6 +100,7 @@ input IntFilterInput {
   or: [Int]
   not: IntFilterInput
   eq: Int
+  eqi: Int
   ne: Int
   startsWith: Int
   endsWith: Int
@@ -120,6 +124,7 @@ input FloatFilterInput {
   or: [Float]
   not: FloatFilterInput
   eq: Float
+  eqi: Float
   ne: Float
   startsWith: Float
   endsWith: Float
@@ -143,6 +148,7 @@ input DateTimeFilterInput {
   or: [DateTime]
   not: DateTimeFilterInput
   eq: DateTime
+  eqi: DateTime
   ne: DateTime
   startsWith: DateTime
   endsWith: DateTime
@@ -166,6 +172,7 @@ input JSONFilterInput {
   or: [JSON]
   not: JSONFilterInput
   eq: JSON
+  eqi: JSON
   ne: JSON
   startsWith: JSON
   endsWith: JSON
@@ -256,6 +263,130 @@ type ComponentSharedSeo {
   structuredData: JSON
   metaViewport: String
   canonicalURL: String
+}
+
+input ArticleFiltersInput {
+  id: IDFilterInput
+  slug: StringFilterInput
+  title: StringFilterInput
+  summary: StringFilterInput
+  content: StringFilterInput
+  category: CategoryFiltersInput
+  Seo: ComponentSharedSeoFiltersInput
+  createdAt: DateTimeFilterInput
+  updatedAt: DateTimeFilterInput
+  publishedAt: DateTimeFilterInput
+  localizations: ArticleFiltersInput
+  locale: StringFilterInput
+  and: [ArticleFiltersInput]
+  or: [ArticleFiltersInput]
+  not: ArticleFiltersInput
+}
+
+input ArticleInput {
+  slug: String
+  title: String
+  summary: String
+  content: String
+  thumbnail: ID
+  category: ID
+  Seo: ComponentSharedSeoInput
+  publishedAt: DateTime
+}
+
+type Article {
+  slug: String!
+  title: String!
+  summary: String!
+  content: String!
+  thumbnail: UploadFileEntityResponse
+  category: CategoryEntityResponse
+  Seo: ComponentSharedSeo
+  createdAt: DateTime
+  updatedAt: DateTime
+  publishedAt: DateTime
+  localizations(
+    filters: ArticleFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+    publicationState: PublicationState = LIVE
+  ): ArticleRelationResponseCollection
+  locale: String
+}
+
+type ArticleEntity {
+  id: ID
+  attributes: Article
+}
+
+type ArticleEntityResponse {
+  data: ArticleEntity
+}
+
+type ArticleEntityResponseCollection {
+  data: [ArticleEntity!]!
+  meta: ResponseCollectionMeta!
+}
+
+type ArticleRelationResponseCollection {
+  data: [ArticleEntity!]!
+}
+
+input CategoryFiltersInput {
+  id: IDFilterInput
+  slug: StringFilterInput
+  name: StringFilterInput
+  articles: ArticleFiltersInput
+  createdAt: DateTimeFilterInput
+  updatedAt: DateTimeFilterInput
+  localizations: CategoryFiltersInput
+  locale: StringFilterInput
+  and: [CategoryFiltersInput]
+  or: [CategoryFiltersInput]
+  not: CategoryFiltersInput
+}
+
+input CategoryInput {
+  slug: String
+  name: String
+  articles: [ID]
+}
+
+type Category {
+  slug: String!
+  name: String!
+  articles(
+    filters: ArticleFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+    publicationState: PublicationState = LIVE
+  ): ArticleRelationResponseCollection
+  createdAt: DateTime
+  updatedAt: DateTime
+  localizations(
+    filters: CategoryFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+  ): CategoryRelationResponseCollection
+  locale: String
+}
+
+type CategoryEntity {
+  id: ID
+  attributes: Category
+}
+
+type CategoryEntityResponse {
+  data: CategoryEntity
+}
+
+type CategoryEntityResponseCollection {
+  data: [CategoryEntity!]!
+  meta: ResponseCollectionMeta!
+}
+
+type CategoryRelationResponseCollection {
+  data: [CategoryEntity!]!
 }
 
 input UploadFileFiltersInput {
@@ -573,136 +704,56 @@ type UsersPermissionsUserRelationResponseCollection {
   data: [UsersPermissionsUserEntity!]!
 }
 
-input ArticleFiltersInput {
-  id: IDFilterInput
-  title: StringFilterInput
-  content: StringFilterInput
-  slug: StringFilterInput
-  category: CategoryFiltersInput
-  Seo: ComponentSharedSeoFiltersInput
-  createdAt: DateTimeFilterInput
-  updatedAt: DateTimeFilterInput
-  publishedAt: DateTimeFilterInput
-  localizations: ArticleFiltersInput
-  locale: StringFilterInput
-  and: [ArticleFiltersInput]
-  or: [ArticleFiltersInput]
-  not: ArticleFiltersInput
-}
-
-input ArticleInput {
-  title: String
-  content: String
-  thumbnail: ID
-  slug: String
-  category: ID
-  Seo: ComponentSharedSeoInput
-  publishedAt: DateTime
-}
-
-type Article {
-  title: String!
-  content: String!
-  thumbnail: UploadFileEntityResponse
-  category: CategoryEntityResponse
-  Seo: ComponentSharedSeo
-  createdAt: DateTime
-  updatedAt: DateTime
-  publishedAt: DateTime
-  localizations(
-    filters: ArticleFiltersInput
-    pagination: PaginationArg = {}
-    sort: [String] = []
-    publicationState: PublicationState = LIVE
-  ): ArticleRelationResponseCollection
-  locale: String
-}
-
-type ArticleEntity {
-  id: ID
-  attributes: Article
-}
-
-type ArticleEntityResponse {
-  data: ArticleEntity
-}
-
-type ArticleEntityResponseCollection {
-  data: [ArticleEntity!]!
-  meta: ResponseCollectionMeta!
-}
-
-type ArticleRelationResponseCollection {
-  data: [ArticleEntity!]!
-}
-
-input CategoryFiltersInput {
+input TodoTaskFiltersInput {
   id: IDFilterInput
   name: StringFilterInput
-  slug: StringFilterInput
-  articles: ArticleFiltersInput
+  isDone: BooleanFilterInput
   createdAt: DateTimeFilterInput
   updatedAt: DateTimeFilterInput
-  localizations: CategoryFiltersInput
-  locale: StringFilterInput
-  and: [CategoryFiltersInput]
-  or: [CategoryFiltersInput]
-  not: CategoryFiltersInput
+  and: [TodoTaskFiltersInput]
+  or: [TodoTaskFiltersInput]
+  not: TodoTaskFiltersInput
 }
 
-input CategoryInput {
+input TodoTaskInput {
   name: String
-  slug: String
-  articles: [ID]
+  isDone: Boolean
 }
 
-type Category {
+type TodoTask {
   name: String!
-  articles(
-    filters: ArticleFiltersInput
-    pagination: PaginationArg = {}
-    sort: [String] = []
-    publicationState: PublicationState = LIVE
-  ): ArticleRelationResponseCollection
+  isDone: Boolean
+  related: GenericMorph
   createdAt: DateTime
   updatedAt: DateTime
-  localizations(
-    filters: CategoryFiltersInput
-    pagination: PaginationArg = {}
-    sort: [String] = []
-  ): CategoryRelationResponseCollection
-  locale: String
 }
 
-type CategoryEntity {
+type TodoTaskEntity {
   id: ID
-  attributes: Category
+  attributes: TodoTask
 }
 
-type CategoryEntityResponse {
-  data: CategoryEntity
+type TodoTaskEntityResponse {
+  data: TodoTaskEntity
 }
 
-type CategoryEntityResponseCollection {
-  data: [CategoryEntity!]!
+type TodoTaskEntityResponseCollection {
+  data: [TodoTaskEntity!]!
   meta: ResponseCollectionMeta!
-}
-
-type CategoryRelationResponseCollection {
-  data: [CategoryEntity!]!
 }
 
 union GenericMorph =
     ComponentSharedMetaSocial
   | ComponentSharedSeo
+  | Article
+  | Category
   | UploadFile
   | UploadFolder
   | I18NLocale
   | UsersPermissionsPermission
   | UsersPermissionsRole
   | UsersPermissionsUser
-  | Article
-  | Category
+  | TodoTask
 
 input FileInfoInput {
   name: String
@@ -770,6 +821,21 @@ input PaginationArg {
 }
 
 type Query {
+  article(id: ID, locale: I18NLocaleCode): ArticleEntityResponse
+  articles(
+    filters: ArticleFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+    publicationState: PublicationState = LIVE
+    locale: I18NLocaleCode
+  ): ArticleEntityResponseCollection
+  category(id: ID, locale: I18NLocaleCode): CategoryEntityResponse
+  categories(
+    filters: CategoryFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+    locale: I18NLocaleCode
+  ): CategoryEntityResponseCollection
   uploadFile(id: ID): UploadFileEntityResponse
   uploadFiles(
     filters: UploadFileFiltersInput
@@ -800,34 +866,16 @@ type Query {
     pagination: PaginationArg = {}
     sort: [String] = []
   ): UsersPermissionsUserEntityResponseCollection
-  article(id: ID, locale: I18NLocaleCode): ArticleEntityResponse
-  articles(
-    filters: ArticleFiltersInput
+  todoTask(id: ID): TodoTaskEntityResponse
+  todoTasks(
+    filters: TodoTaskFiltersInput
     pagination: PaginationArg = {}
     sort: [String] = []
-    publicationState: PublicationState = LIVE
-    locale: I18NLocaleCode
-  ): ArticleEntityResponseCollection
-  category(id: ID, locale: I18NLocaleCode): CategoryEntityResponse
-  categories(
-    filters: CategoryFiltersInput
-    pagination: PaginationArg = {}
-    sort: [String] = []
-    locale: I18NLocaleCode
-  ): CategoryEntityResponseCollection
+  ): TodoTaskEntityResponseCollection
   me: UsersPermissionsMe
 }
 
 type Mutation {
-  createUploadFile(data: UploadFileInput!): UploadFileEntityResponse
-  updateUploadFile(id: ID!, data: UploadFileInput!): UploadFileEntityResponse
-  deleteUploadFile(id: ID!): UploadFileEntityResponse
-  createUploadFolder(data: UploadFolderInput!): UploadFolderEntityResponse
-  updateUploadFolder(
-    id: ID!
-    data: UploadFolderInput!
-  ): UploadFolderEntityResponse
-  deleteUploadFolder(id: ID!): UploadFolderEntityResponse
   createArticle(
     data: ArticleInput!
     locale: I18NLocaleCode
@@ -848,6 +896,18 @@ type Mutation {
     locale: I18NLocaleCode
   ): CategoryEntityResponse
   deleteCategory(id: ID!, locale: I18NLocaleCode): CategoryEntityResponse
+  createUploadFile(data: UploadFileInput!): UploadFileEntityResponse
+  updateUploadFile(id: ID!, data: UploadFileInput!): UploadFileEntityResponse
+  deleteUploadFile(id: ID!): UploadFileEntityResponse
+  createUploadFolder(data: UploadFolderInput!): UploadFolderEntityResponse
+  updateUploadFolder(
+    id: ID!
+    data: UploadFolderInput!
+  ): UploadFolderEntityResponse
+  deleteUploadFolder(id: ID!): UploadFolderEntityResponse
+  createTodoTask(data: TodoTaskInput!): TodoTaskEntityResponse
+  updateTodoTask(id: ID!, data: TodoTaskInput!): TodoTaskEntityResponse
+  deleteTodoTask(id: ID!): TodoTaskEntityResponse
   upload(
     refId: ID
     ref: String
@@ -914,6 +974,13 @@ type Mutation {
     password: String!
     passwordConfirmation: String!
     code: String!
+  ): UsersPermissionsLoginPayload
+
+  # Change user password. Confirm with the current password.
+  changePassword(
+    currentPassword: String!
+    password: String!
+    passwordConfirmation: String!
   ): UsersPermissionsLoginPayload
 
   # Confirm an email users email address
