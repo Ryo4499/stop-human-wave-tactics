@@ -5,6 +5,7 @@ export const getArticle = gql`query($id: ID!, $locale: I18NLocaleCode!) {
     data {
       id
       attributes {
+        slug
         title
         summary
         content
@@ -67,6 +68,7 @@ export const getArticleLocal = gql`query($id: ID!, $locale: I18NLocaleCode!) {
     data {
       id
       attributes {
+        slug
         title
         summary
         content

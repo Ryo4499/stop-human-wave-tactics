@@ -1,20 +1,24 @@
 import { gql } from "@apollo/client"
 
-export const getArticlesIds = gql`
+export const getArticlesSlugs = gql`
 query($filters:ArticleFiltersInput,$pagination:PaginationArg!,$sort:[String],$publicationState:PublicationState,$locale:I18NLocaleCode!){
   articles(filters:$filters,pagination:$pagination,sort:$sort,publicationState:$publicationState,locale:$locale){
     data{
-      id
+      attributes{
+        slug
+      }
     }
   }
 }
 `
 
-export const getArticlesIdsLocal = gql`
+export const getArticlesSlugsLocal = gql`
 query($filters:ArticleFiltersInput,$pagination:PaginationArg!,$sort:[String],$publicationState:PublicationState,$locale:I18NLocaleCode!){
   articles(filters:$filters,pagination:$pagination,sort:$sort,publicationState:$publicationState,locale:$locale) @client {
     data{
-      id
+      attributes{
+        slug
+      }
     }
   }
 }

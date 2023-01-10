@@ -1,4 +1,4 @@
-query getArticlesIds(
+query getArticlesSlugs(
   $filters: ArticleFiltersInput
   $pagination: PaginationArg!
   $sort: [String]
@@ -13,7 +13,9 @@ query getArticlesIds(
     locale: $locale
   ) {
     data {
-      id
+      attributes {
+        slug
+      }
     }
   }
 }

@@ -7,10 +7,11 @@ import { ArticleDetails } from "../../components/Article/ArticleDetails";
 import DisplayError from "../../components/Common/DisplayError";
 import { useLocale } from "../../lib/locale";
 import { useRouter } from "next/router"
-import { ArticleEntity, ArticleEntityResponseCollection, GetArticleQuery, GetArticleQueryVariables, GetArticlesIdsQuery, GetArticlesIdsQueryVariables, GetArticlesQuery, GetArticlesQueryVariables, GetI18NLocalesQuery, GetI18NLocalesQueryVariables } from "../../types/apollo_client";
+import { ArticleEntity, ArticleEntityResponseCollection, GetArticleQuery, GetArticleQueryVariables, GetArticlesSlugsQuery, GetArticlesQuery, GetArticlesQueryVariables, GetArticlesSlugsQueryVariables, GetI18NLocalesQuery, GetI18NLocalesQueryVariables } from "../../types/apollo_client";
 import { getI18NLocales } from "../../graphql/getI18NLocales";
-import { getArticlesIds } from "../../graphql/getArticlesIds";
 import chalk from "chalk";
+import React from "react";
+import { getArticlesSlugs } from "../../graphql/getArticlesSlugs";
 
 const client = initializeApollo()
 
@@ -19,35 +20,36 @@ export const getStaticPaths = async ({ locales }: { locales: Array<string> }) =>
     console.log(chalk.blue(locales));
     if (locales != null) {
         for (const locale of locales) {
-            console.log(chalk.blue(locale));
-            const { data } = await client.query<GetArticlesIdsQuery, GetArticlesIdsQueryVariables>({ query: getArticlesIds, variables: { pagination: {}, locale: locale } })
-            const ids = data.articles?.data.map((article) => article.id)
-            if (ids != null) {
-                for (const id of ids) {
-                    paths.push({ params: { id: id }, locale: locale })
+            const { data } = await client.query<GetArticlesSlugsQuery, GetArticlesSlugsQueryVariables>({ query: getArticlesSlugs, variables: { pagination: {}, locale: locale } })
+            const slugs = data.articles?.data.map((article) => article.attributes?.slug)
+            if (slugs != null) {
+                for (const slug of slugs) {
+                    paths.push({ params: { slug: slug?.toString() }, locale: locale })
                 }
             }
-            console.log(chalk.blue(paths));
         }
-        console.log(chalk.blue(paths));
     }
     // getStaticPropsに渡される
     return { paths: paths, fallback: "blocking" }
 };
 
 type IStaticProps = {
-    params: { id: string; },
+    params: { slug: string; },
     locale: string;
 }
 
 export const getStaticProps = async ({ params, locale }: IStaticProps) => {
     try {
-        const { data } = await client.query<GetArticleQuery, GetArticleQueryVariables>({ query: getArticle, variables: { id: params.id, locale: locale } })
+        const { data } = await client.query<GetArticlesQuery, GetArticlesQueryVariables>({
+            query: getArticles, variables: {
+                pagination: {}, filters: { slug: { eq: params.slug } }, locale: locale
+            }
+        })
         return {
             props: {
-                article: data
+                "slug": params.slug
             },
-            revaridate: 300,
+            revalidate: 300,
         }
     }
     catch {
@@ -57,10 +59,11 @@ export const getStaticProps = async ({ params, locale }: IStaticProps) => {
         }
     }
 }
+interface SlugStaticProps { slug: string }
 
-const ArticlePage: NextPage<ArticleEntity> = (article) => {
+const ArticlePage: NextPage<SlugStaticProps> = ({ slug }) => {
     const router = useRouter()
-    if (article.id == null) {
+    if (slug == null) {
         return (
             <DisplayError
                 error={{
@@ -73,7 +76,7 @@ const ArticlePage: NextPage<ArticleEntity> = (article) => {
     } else {
         return (
             <Grid>
-                <ArticleDetails id={article.id} ></ArticleDetails>
+                <ArticleDetails slug={slug} ></ArticleDetails>
             </Grid>
         );
     }

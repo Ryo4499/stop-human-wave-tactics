@@ -3,10 +3,14 @@ query getCategory($id: ID!, $locale: I18NLocaleCode!) {
     data {
       id
       attributes {
+        slug
         name
         articles {
           data {
             id
+            attributes {
+              slug
+            }
           }
         }
         createdAt

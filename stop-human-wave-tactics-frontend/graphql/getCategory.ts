@@ -6,10 +6,14 @@ query($filters: CategoryFiltersInput, $pagination: PaginationArg!, $sort: [Strin
     data{
       id
       attributes{
+        slug
         name
         articles{
           data{
             id
+            attributes{
+              slug
+            }
           }
         }
         createdAt
@@ -33,12 +37,16 @@ export const getCategoryLocal = gql`
 query($filters: CategoryFiltersInput, $pagination: PaginationArg!, $sort: [String], $locale: I18NLocaleCode!){
   categories(filters:$filters,pagination:$pagination,sort:$sort,locale:$locale) @client {
     data{
+      slug
       id
       attributes{
         name
         articles{
           data{
             id
+            attributes{
+              slug
+            }
           }
         }
         createdAt
