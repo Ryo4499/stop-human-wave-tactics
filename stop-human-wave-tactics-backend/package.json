@@ -20,13 +20,15 @@
     "@strapi/strapi": "4.5.5",
     "@strapi/typescript-utils": "4.5.5",
     "pg": "8.8.0",
+    "slugify": "^1.6.5",
     "strapi-plugin-preview-button": "^1.1.1",
     "strapi-plugin-todo": "^0.0.9"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^2.16.2",
     "@graphql-codegen/typescript": "^2.8.6",
-    "@graphql-codegen/typescript-resolvers": "^2.7.11"
+    "@graphql-codegen/typescript-resolvers": "^2.7.11",
+    "@types/node": "^18.11.18"
   },
   "author": {
     "name": "A Strapi developer"

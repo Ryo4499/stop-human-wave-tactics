@@ -16,7 +16,7 @@
     }
   },
   "attributes": {
-    "uuid": {
+    "slug": {
       "pluginOptions": {
         "i18n": {
           "localized": false
@@ -24,7 +24,9 @@
       },
       "type": "string",
       "unique": false,
-      "required": true
+      "required": true,
+      "regex": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "targetField": "title"
     },
     "title": {
       "pluginOptions": {
@@ -64,9 +66,7 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": [
-        "images"
-      ],
+      "allowedTypes": ["images"],
       "pluginOptions": {
         "i18n": {
           "localized": true

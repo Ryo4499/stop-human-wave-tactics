@@ -16,6 +16,18 @@
     }
   },
   "attributes": {
+    "slug": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "string",
+      "unique": false,
+      "required": true,
+      "regex": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "targetField": "name"
+    },
     "name": {
       "pluginOptions": {
         "i18n": {
@@ -33,17 +45,6 @@
       "relation": "oneToMany",
       "target": "api::article.article",
       "mappedBy": "category"
-    },
-    "uuid": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": false
-        }
-      },
-      "type": "string",
-      "unique": false,
-      "required": true,
-      "targetField": "name"
     }
   }
 }
