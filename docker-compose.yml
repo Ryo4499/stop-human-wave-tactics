@@ -184,7 +184,6 @@ services:
         MODE: $MODE
     env_file:
       - ./.env
-      - ./stop-human-wave-tactics-frontend/.env
     environment:
       - TZ
       - DOCKER_CONTENT_TRUST
