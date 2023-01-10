@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import DisplayError from "../../components/Common/DisplayError";
 import Loading from "../../components/Common/Loading";
@@ -23,7 +23,7 @@ type ArticleProps = {
 
 export const ArticleDetails = ({ id }: ArticleProps) => {
   const router = useRouter()
-  const { data, loading, error } = useQuery<
+  const { data, loading, error } = useLazyQuery<
     GetArticleQuery,
     GetArticleQueryVariables
   >(getArticle, {

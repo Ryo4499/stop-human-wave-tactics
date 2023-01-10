@@ -22,6 +22,7 @@
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.1",
     "@sentry/nextjs": "^7.28.1",
+    "chalk": "^5.2.0",
     "deepmerge": "^4.2.2",
     "github-markdown-css": "^5.1.0",
     "graphql": "^16.6.0",
