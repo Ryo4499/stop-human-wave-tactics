@@ -28,6 +28,7 @@ const App: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
     [prefersDarkMode]
   );
 
+
   return (
     <ApolloProvider client={client}>
       <ThemeProvider theme={theme}>

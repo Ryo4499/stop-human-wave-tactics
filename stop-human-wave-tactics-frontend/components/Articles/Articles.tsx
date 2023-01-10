@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { useState, useEffect, useCallback, ChangeEvent } from "react";
-import { useQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import Grid from "@mui/material/Unstable_Grid2";
 import {
   Card,
@@ -48,7 +48,7 @@ type ArticlesProps = {
 export const Articles = ({ page, setPage }: ArticlesProps) => {
   const router = useRouter()
   const pagesize = getPageSize()
-  const { data, loading, error } = useQuery<
+  const { data, loading, error } = useLazyQuery<
     GetArticlesQuery,
     GetArticlesQueryVariables
   >(getArticles, {
