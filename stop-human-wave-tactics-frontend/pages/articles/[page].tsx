@@ -1,39 +1,32 @@
-import type { GetStaticProps } from "next";
+import type { GetStaticProps, NextPage } from "next";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { Articles } from "../../components/Articles";
 import { getArticles } from "../../graphql/getArticles";
 import { getArticlesPages } from "../../graphql/getArticlesPages";
 import { getI18NLocales } from "../../graphql/getI18NLocales";
-import { initializeApollo } from "../../lib/apollo";
+import { addApolloState, initializeApollo } from "../../lib/apollo";
 import { getPageSize } from "../../lib/pagination";
 import { GetArticlesPagesQuery, GetArticlesPagesQueryVariables, GetArticlesQuery, GetArticlesQueryVariables, GetI18NLocalesQuery, GetI18NLocalesQueryVariables } from "../../types/apollo_client";
+import chalk from 'chalk';
 
-export { default } from "./index";
-
-export const getStaticPaths = async () => {
+export const getStaticPaths = async ({ locales }: { locales: Array<string> }) => {
     const client = initializeApollo()
     const paths = []
-    try {
-        const locale_res = await client.query<GetI18NLocalesQuery, GetI18NLocalesQueryVariables>({
-            query: getI18NLocales
-        })
-        const locales = locale_res.data.i18NLocales?.data.map((locale) => locale.attributes?.code)
-        if (locales != null) {
-            for (const locale of locales) {
-                const { data } = await client.query<GetArticlesPagesQuery, GetArticlesPagesQueryVariables>({ query: getArticlesPages, variables: { pagination: { pageSize: getPageSize() }, locale: locale } })
-                if (data.articles?.meta.pagination.pageCount != null) {
-                    const pages = Array.from({ length: data.articles?.meta.pagination.pageCount }, (v, k) => k + 1)
-                    console.warn(pages)
-                    if (pages != null) {
-                        for (const page of pages) {
-                            paths.push(({ params: { page: page }, locale }))
-                        }
-                    }
+    if (locales != null) {
+        for (const locale of locales) {
+            const { data } = await client.query<GetArticlesPagesQuery, GetArticlesPagesQueryVariables>({ query: getArticlesPages, variables: { pagination: { pageSize: getPageSize() }, locale: locale } })
+            const pageCount = data.articles?.meta.pagination.pageCount
+            if (pageCount != null) {
+                const pages = Array.from({ length: pageCount }, (v, k) => k + 1)
+                for (const page of pages) {
+                    paths.push({ params: { page: page.toString() }, locale: locale })
                 }
             }
         }
-        return { paths: paths, fallback: "blocking" }
-    } catch {
-        return { paths: [], fallback: "blocking" }
     }
+    console.log(chalk.blue(paths));
+    return { paths: paths, fallback: "blocking" }
 }
 
 type IStaticProps = {
@@ -47,20 +40,30 @@ export const getStaticProps = async ({ params, locale }: IStaticProps) => {
         const { data } = await client.query({
             query: getArticles,
             variables: {
-                paginaiton: { page: params.page, pagesize: process.env.PAGESIZE },
+                paginaiton: { page: parseInt(params.page, 10), pagesize: getPageSize() },
                 locale: locale
             }
         });
-        return {
-            props: {
-                articles: data,
-
-            },
-            revalidate: 1,
-        }
+        return addApolloState(client, {
+            props: {},
+            revalidate: 300,
+        })
     } catch {
         return {
             notFound: true,
+            revalidate: 1,
         };
     }
 };
+
+const ArticlesPage: NextPage = () => {
+    const router = useRouter()
+    const [page, setPage] = useState(
+        router.query.page === undefined
+            ? 1
+            : parseInt(router.query.page as string, 10)
+    );
+    return <Articles page={page} setPage={setPage} ></Articles>;
+};
+
+export default ArticlesPage;
