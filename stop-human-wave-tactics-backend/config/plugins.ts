@@ -1,4 +1,4 @@
-export default{
+export default {
   graphql: {
     enabled: true,
     config: {
