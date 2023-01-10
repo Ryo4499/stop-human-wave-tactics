@@ -6,6 +6,7 @@ query($filters:ArticleFiltersInput,$pagination:PaginationArg!,$sort:[String],$pu
     data{
       id
       attributes{
+        slug
         title
         summary
         content
@@ -77,6 +78,7 @@ query($filters:ArticleFiltersInput,$pagination:PaginationArg!,$sort:[String],$pu
     data{
       id
       attributes{
+        slug
         title
         summary
         content

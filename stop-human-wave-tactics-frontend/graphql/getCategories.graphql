@@ -13,10 +13,14 @@ query getCategories(
     data {
       id
       attributes {
+        slug
         name
         articles {
           data {
             id
+            attributes {
+              slug
+            }
           }
         }
         createdAt

@@ -1,12 +1,12 @@
-import { useLazyQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import DisplayError from "../../components/Common/DisplayError";
 import Loading from "../../components/Common/Loading";
-import { getArticle } from "../../graphql/getArticle";
+import { getArticles } from "../../graphql/getArticles";
 import {
   Article,
-  GetArticleQuery,
-  GetArticleQueryVariables,
+  GetArticlesQuery,
+  GetArticlesQueryVariables,
 } from "../../types/apollo_client";
 import Grid from "@mui/material/Unstable_Grid2";
 import { useCallback } from "react";
@@ -18,19 +18,20 @@ import type { Engine } from "tsparticles-engine"
 import PaticleParams from "../../styles/presets/nyancat2-article-details.json"
 
 type ArticleProps = {
-  id: string;
+  slug: string;
 };
 
-export const ArticleDetails = ({ id }: ArticleProps) => {
+export const ArticleDetails = ({ slug }: ArticleProps) => {
   const router = useRouter()
-  const { data, loading, error } = useLazyQuery<
-    GetArticleQuery,
-    GetArticleQueryVariables
-  >(getArticle, {
+  const { data, loading, error } = useQuery<
+    GetArticlesQuery,
+    GetArticlesQueryVariables
+  >(getArticles, {
     fetchPolicy: "cache-and-network",
     nextFetchPolicy: "cache-first",
     variables: {
-      id: id,
+      filters: { slug: { eq: slug } },
+      pagination: {},
       locale: router.locale,
     },
   });
@@ -43,8 +44,8 @@ export const ArticleDetails = ({ id }: ArticleProps) => {
 
   if (error) return <DisplayError error={error} />;
 
-  if (data?.article?.data?.attributes != null) {
-    const article = data.article.data.attributes;
+  if (data?.articles?.data[0]?.attributes != null) {
+    const article = data.articles.data[0]?.attributes;
     return (
       <Grid container xs={12} sx={{ flexGrow: 1 }}>
         {/* @ts-ignore */}
