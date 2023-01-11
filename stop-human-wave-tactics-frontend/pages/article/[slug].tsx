@@ -55,7 +55,7 @@ export const getStaticProps = async ({ params, locale }: IStaticProps) => {
     catch {
         return {
             notFound: true,
-            revalidate: 1,
+            revalidate: 300,
         }
     }
 }
