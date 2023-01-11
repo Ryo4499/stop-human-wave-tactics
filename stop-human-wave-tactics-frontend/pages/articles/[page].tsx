@@ -8,7 +8,6 @@ import { getI18NLocales } from "../../graphql/getI18NLocales";
 import { addApolloState, initializeApollo } from "../../lib/apollo";
 import { getPageSize } from "../../lib/pagination";
 import { GetArticlesPagesQuery, GetArticlesPagesQueryVariables, GetArticlesQuery, GetArticlesQueryVariables, GetI18NLocalesQuery, GetI18NLocalesQueryVariables } from "../../types/apollo_client";
-import chalk from 'chalk';
 
 export const getStaticPaths = async ({ locales }: { locales: Array<string> }) => {
     const client = initializeApollo()
@@ -25,7 +24,6 @@ export const getStaticPaths = async ({ locales }: { locales: Array<string> }) =>
             }
         }
     }
-    console.log(chalk.blue(paths));
     return { paths: paths, fallback: "blocking" }
 }
 
