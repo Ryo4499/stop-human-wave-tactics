@@ -1,7 +1,7 @@
 import { Box, Typography, ListItemText } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import { useLocale } from "../lib/locale"
-import type { GetStaticProps, NextPage } from "next";
+import type { NextPage } from "next";
 
 const PrivacyPolicy: NextPage = () => {
   const { locale, locales, t } = useLocale();
