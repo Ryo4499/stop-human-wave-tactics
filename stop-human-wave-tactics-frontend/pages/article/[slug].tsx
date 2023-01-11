@@ -9,7 +9,6 @@ import { useLocale } from "../../lib/locale";
 import { useRouter } from "next/router"
 import { ArticleEntity, ArticleEntityResponseCollection, GetArticleQuery, GetArticleQueryVariables, GetArticlesSlugsQuery, GetArticlesQuery, GetArticlesQueryVariables, GetArticlesSlugsQueryVariables, GetI18NLocalesQuery, GetI18NLocalesQueryVariables } from "../../types/apollo_client";
 import { getI18NLocales } from "../../graphql/getI18NLocales";
-import chalk from "chalk";
 import React from "react";
 import { getArticlesSlugs } from "../../graphql/getArticlesSlugs";
 
@@ -17,7 +16,6 @@ const client = initializeApollo()
 
 export const getStaticPaths = async ({ locales }: { locales: Array<string> }) => {
     const paths = []
-    console.log(chalk.blue(locales));
     if (locales != null) {
         for (const locale of locales) {
             const { data } = await client.query<GetArticlesSlugsQuery, GetArticlesSlugsQueryVariables>({ query: getArticlesSlugs, variables: { pagination: {}, locale: locale } })
