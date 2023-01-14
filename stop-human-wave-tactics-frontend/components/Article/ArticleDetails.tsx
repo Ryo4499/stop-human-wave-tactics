@@ -1,10 +1,10 @@
 import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
-import DisplayError from "../../components/Common/DisplayError";
 import Loading from "../../components/Common/Loading";
 import { getArticles } from "../../graphql/getArticles";
 import {
   Article,
+  ArticleEntityResponseCollection,
   GetArticlesQuery,
   GetArticlesQueryVariables,
 } from "../../types/apollo_client";
@@ -21,15 +21,15 @@ type ArticleProps = {
   uuid: string;
 };
 
-export const ArticleDetails = () => {
+export const ArticleDetails = ({ articles }: { articles: ArticleEntityResponseCollection }) => {
   const router = useRouter()
   // load particles
   const particlesInit = useCallback(async (engine: Engine) => {
     await loadFull(engine);
   }, []);
 
-  if (data?.articles?.data[0]?.attributes != null) {
-    const article = data.articles.data[0]?.attributes;
+  if (articles?.data[0]?.attributes != null) {
+    const article = articles.data[0]?.attributes;
     return (
       <Grid container xs={12} sx={{ flexGrow: 1 }}>
         {/* @ts-ignore */}

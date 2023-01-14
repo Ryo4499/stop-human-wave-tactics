@@ -4,7 +4,7 @@ import { GetCategoriesQuery, GetCategoriesQueryVariables } from "../../types/apo
 import { getCategories } from "../../graphql/getCategories";
 import { useLocale } from "../../lib/locale";
 import Loading from "../Common/Loading";
-import DisplayError from "../Common/DisplayError";
+import GraphqlError from "../Common/DisplayError";
 
 const Categories = () => {
   return <Grid container direction="column" sx={{ flexGrow: 1 }}>

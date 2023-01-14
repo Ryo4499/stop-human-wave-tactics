@@ -9,7 +9,13 @@ interface MutationError {
 interface DisplayErrorProps {
   error?: ApolloError | MutationError;
 }
-const DisplayError = ({ error }: DisplayErrorProps) => {
+export const DisplayError = ({ error }: { error: string }) => {
+  return <div>
+    Shoot{error}
+  </div>
+}
+
+export const GraphqlError = ({ error }: DisplayErrorProps) => {
   if (!error || !error.message) return null;
   if (
     error instanceof ApolloError &&
@@ -41,4 +47,3 @@ const DisplayError = ({ error }: DisplayErrorProps) => {
   );
 };
 
-export default DisplayError

@@ -6,8 +6,6 @@ import React from "react";
 import Layout from "../components/Layouts/Layout";
 import { AppProps } from "next/app";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { ApolloProvider } from "@apollo/client";
-import { useApollo } from "../lib/graphqlClient";
 import { useLocale } from "../lib/locale";
 import { darkPallete, lightPallete } from "../lib/theme";
 
