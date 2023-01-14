@@ -1,9 +1,38 @@
 import { Box, Typography, ListItemText } from "@mui/material";
+import { request } from "graphql-request"
 import Grid from "@mui/material/Unstable_Grid2";
 import { useLocale } from "../lib/locale"
 import type { NextPage } from "next";
+import Sidebar from "../components/Common/Sidebar";
+import { isMobile } from "react-device-detect";
+import { getCategories } from "../graphql/getCategories";
+import { getBackendURL } from "../lib/graphqlClient";
+import { CategoryEntityResponseCollection } from "../types/apollo_client";
+import { DisplayError } from "../components/Common/DisplayError";
+import { CategoriesProps, IStaticProps } from "../types/general";
 
-const PrivacyPolicy: NextPage = () => {
+export const getStaticProps = async ({ locales, locale, defaultLocale }: IStaticProps) => {
+  const variables = { pagination: {}, locale: locale }
+  const result = await request(getBackendURL(), getCategories, variables).then(({ categories }: { categories: CategoryEntityResponseCollection }) => {
+    return {
+      props: {
+        categories: categories
+      },
+      notFound: false,
+      revalidate: 300,
+    };
+  })
+  if (result != null) {
+    return result
+  } else {
+    return {
+      notFound: true,
+      revalidate: 300
+    }
+  }
+};
+
+const PrivacyPolicyContent: NextPage = () => {
   const { locale, locales, t } = useLocale();
   const site_text = t.site_text
   const site_info = site_text.split("\n").map((line, key) => (
@@ -84,6 +113,42 @@ const PrivacyPolicy: NextPage = () => {
       </Box>
     </Grid>
   );
+}
+
+const PrivacyPolicy: NextPage<CategoriesProps> = ({ categories }) => {
+  if (categories) {
+    return <>
+      {isMobile ?
+        <Grid
+          container
+          direction="column"
+          sx={{ flexGrow: 1 }}
+        >
+          <Grid container p={1.5} xs={12}>
+            <Sidebar categories={categories} />
+          </Grid>
+          <Grid container direction="column" p={1.5} xs={12} sx={{ flexGrow: 1 }}>
+            <PrivacyPolicyContent />
+          </Grid>
+        </Grid> :
+        <Grid
+          container
+          direction="row"
+          sx={{ flexGrow: 1 }}
+        >
+          <Grid container xs={10} sx={{ flexGrow: 1 }}>
+            <PrivacyPolicyContent />
+          </Grid>
+          <Grid container xs={2} sx={{ flexGrow: 1 }}>
+            <Sidebar categories={categories} />
+          </Grid>
+        </Grid>
+      }
+    </>
+  } else {
+    return <DisplayError error={"page"} />
+  }
+
 }
 
 export default PrivacyPolicy

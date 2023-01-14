@@ -1,9 +1,8 @@
-import React from "react";
 import Link from "next/link";
 import { useEffect, useCallback, ChangeEvent } from "react";
-import { Link as reactLink, MemoryRouter, Route, Routes, } from 'react-router-dom';
 import Grid from "@mui/material/Unstable_Grid2";
 import {
+  Box,
   Card,
   CardActionArea,
   CardContent,
@@ -17,14 +16,6 @@ import {
 import {
   ArticleEntity,
   ArticleEntityResponseCollection,
-  ArticleFiltersInput,
-  ArticleLocalizationsArgs,
-  GetArticlesQuery,
-  GetArticlesQueryVariables,
-  GetCategoriesQuery,
-  GetCategoriesQueryVariables,
-  PaginationArg,
-  PublicationState,
 } from "../../types/apollo_client";
 import { useRouter } from "next/router";
 import { isMobile } from "react-device-detect"
@@ -59,7 +50,7 @@ const Content = ({ page, setPage, pageCount }: ArticlesPropsContent) => {
       onChange={handleChange}
       renderItem={(item) => {
         return (
-          <PaginationItem component={reactLink} to={`/articles/${item.page}`} {...item} />
+          <PaginationItem  {...item} />
         )
       }
       }
@@ -70,6 +61,7 @@ const Content = ({ page, setPage, pageCount }: ArticlesPropsContent) => {
 
 export const Articles = ({ page, setPage, articles }: ArticlesProps) => {
   const router = useRouter()
+
   // load particles
   const particlesInit = useCallback(async (engine: Engine) => {
     await loadFull(engine);
@@ -86,11 +78,8 @@ export const Articles = ({ page, setPage, articles }: ArticlesProps) => {
       }
     })
   })
-  console.log(articles.articles)
-  console.log(articles.data == null)
 
-  if (articles?.data != null) {
-    console.log(true)
+  if (articles.data != null) {
     const pageCount = articles.meta.pagination.pageCount
     return (
       <Grid container direction="column" sx={{ flexGrow: 1 }} xs={12}>
@@ -99,7 +88,7 @@ export const Articles = ({ page, setPage, articles }: ArticlesProps) => {
           init={particlesInit}
           params={PaticleParams} />
         {isMobile ?
-          <Grid container direction="column" sx={{ flexGrow: 1 }} spacing={2}>
+          <Grid container direction="column" sx={{ flexGrow: 1 }} spacing={2} m={2}>
             {articles?.data.map((article) => {
               return (
                 <Grid xs={12} key={article.id}>
@@ -137,10 +126,10 @@ export const Articles = ({ page, setPage, articles }: ArticlesProps) => {
             })}
           </Grid>
           :
-          <Grid container direction="row" sx={{ flexGrow: 1 }} spacing={2}>
+          <Grid container direction="row" xs={10} sx={{ flexGrow: 1 }} spacing={2} m={2}>
             {articles?.data.map((article) => {
               return (
-                <Grid xs={6} key={article.id} >
+                <Grid container direction="column" key={article.id} xs={6} p={2}>
                   <Card>
                     <Link href={`/article/${article.attributes?.uuid}`}>
                       <CardMedia
@@ -173,12 +162,8 @@ export const Articles = ({ page, setPage, articles }: ArticlesProps) => {
             })}
           </Grid>
         }
-        <Grid container direction="row" justifyContent="center">
-          <MemoryRouter initialEntries={['/']} initialIndex={0}>
-            <Routes>
-              <Route path="*" element={<Content page={page} setPage={setPage} pageCount={pageCount} />} />
-            </Routes>
-          </MemoryRouter>
+        <Grid container direction="row" justifyContent="center" my={2}>
+          <Content page={page} setPage={setPage} pageCount={pageCount}></Content>
         </Grid>
       </Grid>
     );

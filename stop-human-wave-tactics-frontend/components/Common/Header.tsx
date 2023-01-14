@@ -15,7 +15,7 @@ import Switch from "@mui/material/Switch"
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import MenuIcon from '@mui/icons-material/Menu';
 import IconButton from "@mui/material/IconButton"
-import { BrowserView, MobileView, isMobile } from "react-device-detect"
+import { isMobile } from "react-device-detect"
 
 const Header = ({ dark, toggleDark }: { dark: boolean, toggleDark: () => void, }) => {
   const router = useRouter()

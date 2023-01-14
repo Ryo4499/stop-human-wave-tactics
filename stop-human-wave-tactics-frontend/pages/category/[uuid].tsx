@@ -1,45 +1,43 @@
-import { GraphQLAbstractType } from "graphql";
-import type { GetStaticProps, NextPage } from "next";
-import Grid from "@mui/material/Unstable_Grid2"
-import { useRouter } from "next/router";
-import { useState } from "react";
+import Grid from "@mui/material/Unstable_Grid2";
+import { NextPage } from "next"
+import { useRouter } from "next/router"
 import { request } from "graphql-request"
-import { Articles } from "../../components/Articles";
+import { getBackendURL } from "../../lib/graphqlClient";
+import { ArticleEntity, ArticleEntityResponseCollection } from "../../types/apollo_client";
+import { useState } from "react";
 import { getArticles } from "../../graphql/getArticles";
-import { getArticlesPages } from "../../graphql/getArticlesPages";
-import { getBackendURL, getClient, getProxyURL } from "../../lib/graphqlClient";
-import { getPageSize } from "../../lib/pagination";
-import { ArticleEntityResponseCollection } from "../../types/apollo_client";
-import { DisplayError } from "../../components/Common/DisplayError";
 import Sidebar from "../../components/Common/Sidebar";
 import { isMobile } from "react-device-detect";
-import { ArticlesProps, PageParams, PagesStaticProps } from "../../types/general";
+import { ArticlesProps, UUIDParams, UUIDStaticProps } from "../../types/general";
 import { getCategories } from "../../graphql/getCategories";
-
-const client = getClient()
+import { getCategoriesUUID } from "../../graphql/getCategoriesUUID";
+import { Articles } from "../../components/Articles";
+import { DisplayError } from "../../components/Common/DisplayError";
 
 export const getStaticPaths = async ({ locales }: { locales: Array<string> }) => {
-    const paths: Array<PageParams> = []
+    const paths: Array<UUIDParams> = []
     if (locales != null) {
         for (const locale of locales) {
-            const variables = { pagination: { pageSize: getPageSize() }, locale: locale }
-            await request(getBackendURL(), getArticlesPages, variables).then(({ articles }: { articles: ArticleEntityResponseCollection }) => {
-                const pageCount = articles?.meta.pagination.pageCount
-                if (pageCount != null) {
-                    const pages = Array.from({ length: pageCount }, (v, k) => k + 1)
-                    for (const page of pages) {
-                        // numberだとStaticPathできない
-                        paths.push({ params: { page: page.toString() }, locale: locale })
-                    }
-                }
+            const variables = { pagination: {}, locale: locale }
+            await request(getBackendURL(), getCategoriesUUID, variables).then(({ categories }) => {
+                categories.data.map((category: ArticleEntity) => paths.push({ params: { uuid: category.attributes?.uuid }, locale: locale }))
             })
         }
     }
     return { paths: paths, fallback: "blocking" }
 }
 
-export const getStaticProps = async ({ params, locale }: PagesStaticProps) => {
-    const articles_variables = { pagination: { page: parseInt(params.page, 10), pageSize: getPageSize() }, locale: locale }
+
+export const getStaticProps = async ({ params, locale }: UUIDStaticProps) => {
+    const articles_variables = {
+        filters: {
+            category: {
+                uuid: { eq: params.uuid }
+            }
+        },
+        pagination: {},
+        locale: locale
+    }
     const categories_variables = { pagination: {}, locale: locale }
     const categoriws_result = await request(getBackendURL(), getCategories, categories_variables).then(({ categories }) => {
         return categories
@@ -65,8 +63,6 @@ export const getStaticProps = async ({ params, locale }: PagesStaticProps) => {
         }
     }
 };
-
-
 const ArticlesPage: NextPage<ArticlesProps> = ({ articles, categories }) => {
     const router = useRouter()
     const [page, setPage] = useState(
