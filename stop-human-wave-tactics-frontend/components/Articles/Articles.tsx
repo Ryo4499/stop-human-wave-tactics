@@ -1,26 +1,20 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import Link from "next/link";
-import { useState, useEffect, useCallback, ChangeEvent } from "react";
+import { useEffect, useCallback, ChangeEvent } from "react";
 import { Link as reactLink, MemoryRouter, Route, Routes, } from 'react-router-dom';
-import { useQuery } from "@apollo/client";
 import Grid from "@mui/material/Unstable_Grid2";
 import {
   Card,
   CardActionArea,
   CardContent,
   CardMedia,
-  Container,
   Pagination,
   PaginationItem,
-  Stack,
-  Link as MuiLink,
   Typography,
   CardActions,
   Button,
 } from "@mui/material";
-import { getArticles } from "../../graphql/getArticles";
 import {
-  Article,
   ArticleEntity,
   ArticleEntityResponseCollection,
   ArticleFiltersInput,
@@ -32,14 +26,12 @@ import {
   PaginationArg,
   PublicationState,
 } from "../../types/apollo_client";
-import Loading from "../Common/Loading";
 import { useRouter } from "next/router";
 import { isMobile } from "react-device-detect"
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles"
 import type { Engine } from "tsparticles-engine"
 import PaticleParams from "../../styles/presets/nyancat2-articles.json"
-import { getPageSize } from "../../lib/pagination";
 
 type ArticlesProps = {
   page: number;
@@ -94,9 +86,11 @@ export const Articles = ({ page, setPage, articles }: ArticlesProps) => {
       }
     })
   })
+  console.log(articles.articles)
+  console.log(articles.data == null)
 
-  console.log(articles)
   if (articles?.data != null) {
+    console.log(true)
     const pageCount = articles.meta.pagination.pageCount
     return (
       <Grid container direction="column" sx={{ flexGrow: 1 }} xs={12}>

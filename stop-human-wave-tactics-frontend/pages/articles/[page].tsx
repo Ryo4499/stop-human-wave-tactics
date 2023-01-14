@@ -47,24 +47,29 @@ type IStaticProps = {
 
 export const getStaticProps = async ({ params, locale }: IStaticProps) => {
     const variables = { pagination: { page: parseInt(params.page, 10), pageSize: getPageSize() }, locale: locale }
-    const result = await request(getBackendURL(), getArticles, variables).then(data => {
+    const result = await request(getBackendURL(), getArticles, variables).then(({ articles }: { articles: ArticleEntityResponseCollection }) => {
         return {
             props: {
-                articles: data
+                articles: articles
             },
+            notFound: false,
             revalidate: 300,
         };
-    }).catch(error => {
+    })
+    if (result != null) {
+        return result
+    } else {
         return {
             notFound: true,
-            revalidate: 300,
+            revalidate: 300
         }
-    })
-    return result
+    }
 };
+
 interface ArticlesProps {
     articles: ArticleEntityResponseCollection
 }
+
 const ArticlesPage: NextPage<ArticlesProps> = ({ articles }) => {
     const router = useRouter()
     const [page, setPage] = useState(
@@ -75,7 +80,7 @@ const ArticlesPage: NextPage<ArticlesProps> = ({ articles }) => {
     if (articles) {
         return <Articles page={page} setPage={setPage} articles={articles} ></Articles>;
     } else {
-        return <DisplayError error={"error"} />
+        return <DisplayError error={"page"} />
     }
 };
 

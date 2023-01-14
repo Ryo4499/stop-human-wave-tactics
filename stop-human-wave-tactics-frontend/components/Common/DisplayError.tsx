@@ -11,7 +11,7 @@ interface DisplayErrorProps {
 }
 export const DisplayError = ({ error }: { error: string }) => {
   return <div>
-    Shoot{error}
+    Shoot {error}
   </div>
 }
 

@@ -5,7 +5,7 @@
   "description": "A NextJS application",
   "scripts": {
     "dev": "next dev",
-    "build": "next build --debug",
+    "build": "next build --profile --debug",
     "start": "next start",
     "lint": "next lint",
     "export": "next export"
