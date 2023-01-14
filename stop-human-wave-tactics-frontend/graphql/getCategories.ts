@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client"
+import { gql } from "graphql-request"
 
 export const getCategories = gql`query($id:ID!,$locale:I18NLocaleCode!){
   category(id:$id,locale:$locale){

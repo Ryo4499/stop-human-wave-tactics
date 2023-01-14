@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client"
+import { gql } from "graphql-request"
 
 export const getCategory = gql`
 query($filters: CategoryFiltersInput, $pagination: PaginationArg!, $sort: [String], $locale: I18NLocaleCode!){
@@ -6,13 +6,13 @@ query($filters: CategoryFiltersInput, $pagination: PaginationArg!, $sort: [Strin
     data{
       id
       attributes{
-        slug
+        uuid
         name
         articles{
           data{
             id
             attributes{
-              slug
+              uuid
             }
           }
         }
@@ -37,7 +37,7 @@ export const getCategoryLocal = gql`
 query($filters: CategoryFiltersInput, $pagination: PaginationArg!, $sort: [String], $locale: I18NLocaleCode!){
   categories(filters:$filters,pagination:$pagination,sort:$sort,locale:$locale) @client {
     data{
-      slug
+      uuid
       id
       attributes{
         name
@@ -45,7 +45,7 @@ query($filters: CategoryFiltersInput, $pagination: PaginationArg!, $sort: [Strin
           data{
             id
             attributes{
-              slug
+              uuid
             }
           }
         }

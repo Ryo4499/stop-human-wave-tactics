@@ -1,23 +1,23 @@
-import { gql } from "@apollo/client"
+import { gql } from "graphql-request"
 
-export const getArticlesSlugs = gql`
+export const getArticlesUUID = gql`
 query($filters:ArticleFiltersInput,$pagination:PaginationArg!,$sort:[String],$publicationState:PublicationState,$locale:I18NLocaleCode!){
   articles(filters:$filters,pagination:$pagination,sort:$sort,publicationState:$publicationState,locale:$locale){
     data{
       attributes{
-        slug
+        uuid
       }
     }
   }
 }
 `
 
-export const getArticlesSlugsLocal = gql`
+export const getArticlesUUIDLocal = gql`
 query($filters:ArticleFiltersInput,$pagination:PaginationArg!,$sort:[String],$publicationState:PublicationState,$locale:I18NLocaleCode!){
   articles(filters:$filters,pagination:$pagination,sort:$sort,publicationState:$publicationState,locale:$locale) @client {
     data{
       attributes{
-        slug
+        uuid
       }
     }
   }
