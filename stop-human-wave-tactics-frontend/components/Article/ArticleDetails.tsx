@@ -18,31 +18,15 @@ import type { Engine } from "tsparticles-engine"
 import PaticleParams from "../../styles/presets/nyancat2-article-details.json"
 
 type ArticleProps = {
-  slug: string;
+  uuid: string;
 };
 
-export const ArticleDetails = ({ slug }: ArticleProps) => {
+export const ArticleDetails = () => {
   const router = useRouter()
-  const { data, loading, error } = useQuery<
-    GetArticlesQuery,
-    GetArticlesQueryVariables
-  >(getArticles, {
-    fetchPolicy: "cache-and-network",
-    nextFetchPolicy: "cache-first",
-    variables: {
-      filters: { slug: { eq: slug } },
-      pagination: {},
-      locale: router.locale,
-    },
-  });
   // load particles
   const particlesInit = useCallback(async (engine: Engine) => {
     await loadFull(engine);
   }, []);
-
-  if (loading) return <Loading />;
-
-  if (error) return <DisplayError error={error} />;
 
   if (data?.articles?.data[0]?.attributes != null) {
     const article = data.articles.data[0]?.attributes;

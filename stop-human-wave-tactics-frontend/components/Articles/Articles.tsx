@@ -1,6 +1,7 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import Link from "next/link";
 import { useState, useEffect, useCallback, ChangeEvent } from "react";
+import { Link as reactLink, MemoryRouter, Route, Routes, } from 'react-router-dom';
 import { useQuery } from "@apollo/client";
 import Grid from "@mui/material/Unstable_Grid2";
 import {
@@ -21,6 +22,7 @@ import { getArticles } from "../../graphql/getArticles";
 import {
   Article,
   ArticleEntity,
+  ArticleEntityResponseCollection,
   ArticleFiltersInput,
   ArticleLocalizationsArgs,
   GetArticlesQuery,
@@ -43,28 +45,41 @@ import { getPageSize } from "../../lib/pagination";
 type ArticlesProps = {
   page: number;
   setPage: (value: number) => void;
+  props: ArticleEntityResponseCollection
 };
 
-export const Articles = ({ page, setPage }: ArticlesProps) => {
+type ArticlesPropsContent = {
+  page: number;
+  setPage: (value: number) => void;
+  pageCount: number | undefined;
+};
+
+
+const Content = ({ page, setPage, pageCount }: ArticlesPropsContent) => {
+  const router = useRouter()
+  const handleChange = (event: ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+    router.push(`/articles/${value}`);
+  };
+  return (
+    <Pagination
+      page={page}
+      count={pageCount}
+      onChange={handleChange}
+      renderItem={(item) => {
+        return (
+          <PaginationItem component={reactLink} to={`/articles/${item.page}`} {...item} />
+        )
+      }
+      }
+    ></Pagination>
+  );
+}
+
+
+export const Articles = ({ page, setPage, articles }: ArticlesProps) => {
   const router = useRouter()
   const pagesize = getPageSize()
-  const { data, loading, error } = useQuery<
-    GetArticlesQuery,
-    GetArticlesQueryVariables
-  >(getArticles, {
-    fetchPolicy: "cache-and-network",
-    nextFetchPolicy: "cache-first",
-    variables: {
-      filters: {},
-      pagination: {
-        page: page,
-        pageSize: pagesize,
-      },
-      sort: ["publishedAt:desc", "createdAt:desc"],
-      locale: router.locale,
-    },
-  });
-
   // load particles
   const particlesInit = useCallback(async (engine: Engine) => {
     await loadFull(engine);
@@ -82,15 +97,8 @@ export const Articles = ({ page, setPage }: ArticlesProps) => {
     })
   })
 
-  if (loading) return <Loading />;
-  if (error) return <DisplayError error={error} />;
-
-  const handleChange = (event: ChangeEvent<unknown>, value: number) => {
-    setPage(value);
-    router.push(`/articles/${value}`);
-  };
-
-  if (data?.articles?.data != null) {
+  console.log(articles)
+  if (articles?.data != null) {
     return (
       <Grid container direction="column" sx={{ flexGrow: 1 }} xs={12}>
         {/* @ts-ignore */}
@@ -104,7 +112,7 @@ export const Articles = ({ page, setPage }: ArticlesProps) => {
                 <Grid xs={12} key={article.id}>
                   <Card>
                     <CardActionArea>
-                      <Link href={`/article/${article.id}`}>
+                      <Link href={`/article/${article.attributes?.uuid}`}>
                         <CardMedia
                           component="img"
                           image={
@@ -126,7 +134,7 @@ export const Articles = ({ page, setPage }: ArticlesProps) => {
                       </CardContent>
                     </CardActionArea>
                     <CardActions >
-                      <Button onClick={() => { router.push(`/article/${article.id}`) }} size="small">
+                      <Button onClick={() => { router.push(`/article/${article.attributes?.uuid}`) }} size="small">
                         More Details
                       </Button>
                     </CardActions>
@@ -141,7 +149,7 @@ export const Articles = ({ page, setPage }: ArticlesProps) => {
               return (
                 <Grid xs={6} key={article.id} >
                   <Card>
-                    <Link href={`/article/${article.id}`}>
+                    <Link href={`/article/${article.attributes?.uuid}`}>
                       <CardMedia
                         component="img"
                         image={
@@ -162,7 +170,7 @@ export const Articles = ({ page, setPage }: ArticlesProps) => {
                       </Typography>
                     </CardContent>
                     <CardActions >
-                      <Button onClick={() => { router.push(`/article/${article.id}`) }} size="small">
+                      <Button onClick={() => { router.push(`/article/${article.attributes?.uuid}`) }} size="small">
                         More Details
                       </Button>
                     </CardActions>
@@ -173,17 +181,11 @@ export const Articles = ({ page, setPage }: ArticlesProps) => {
           </Grid>
         }
         <Grid container direction="row" justifyContent="center">
-          <Pagination
-            page={page}
-            count={data?.articles?.meta.pagination.pageCount}
-            onChange={handleChange}
-            renderItem={(item) => {
-              return (<Link href={`/articles/${item.page}`} key={item.page} passHref>
-                <PaginationItem {...item} />
-              </Link>)
-            }
-            }
-          ></Pagination>
+          <MemoryRouter initialEntries={['/']} initialIndex={0}>
+            <Routes>
+              <Route path="*" element={<Content page={page} setPage={setPage} pageCount={pageCount} />} />
+            </Routes>
+          </MemoryRouter>
         </Grid>
       </Grid>
     );
