@@ -1,4 +1,4 @@
-query getArticlesSlugs(
+query getArticlesUUID(
   $filters: ArticleFiltersInput
   $pagination: PaginationArg!
   $sort: [String]
@@ -14,7 +14,7 @@ query getArticlesSlugs(
   ) {
     data {
       attributes {
-        slug
+        uuid
       }
     }
   }

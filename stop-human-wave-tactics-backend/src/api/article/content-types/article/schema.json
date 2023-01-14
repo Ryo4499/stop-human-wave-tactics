@@ -16,7 +16,7 @@
     }
   },
   "attributes": {
-    "slug": {
+    "uuid": {
       "pluginOptions": {
         "i18n": {
           "localized": false

@@ -3,7 +3,7 @@ query getArticle($id: ID!, $locale: I18NLocaleCode!) {
     data {
       id
       attributes {
-        slug
+        uuid
         title
         summary
         content

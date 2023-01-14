@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client"
+import { gql } from "graphql-request"
 
 export const getArticles = gql`
 query($filters:ArticleFiltersInput,$pagination:PaginationArg!,$sort:[String],$publicationState:PublicationState,$locale:I18NLocaleCode!){
@@ -6,7 +6,7 @@ query($filters:ArticleFiltersInput,$pagination:PaginationArg!,$sort:[String],$pu
     data{
       id
       attributes{
-        slug
+        uuid
         title
         summary
         content
@@ -78,7 +78,7 @@ query($filters:ArticleFiltersInput,$pagination:PaginationArg!,$sort:[String],$pu
     data{
       id
       attributes{
-        slug
+        uuid
         title
         summary
         content

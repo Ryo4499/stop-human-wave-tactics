@@ -267,7 +267,7 @@ type ComponentSharedSeo {
 
 input ArticleFiltersInput {
   id: IDFilterInput
-  slug: StringFilterInput
+  uuid: StringFilterInput
   title: StringFilterInput
   summary: StringFilterInput
   content: StringFilterInput
@@ -284,7 +284,7 @@ input ArticleFiltersInput {
 }
 
 input ArticleInput {
-  slug: String
+  uuid: String
   title: String
   summary: String
   content: String
@@ -295,7 +295,7 @@ input ArticleInput {
 }
 
 type Article {
-  slug: String!
+  uuid: String!
   title: String!
   summary: String!
   content: String!
@@ -334,7 +334,7 @@ type ArticleRelationResponseCollection {
 
 input CategoryFiltersInput {
   id: IDFilterInput
-  slug: StringFilterInput
+  uuid: StringFilterInput
   name: StringFilterInput
   articles: ArticleFiltersInput
   createdAt: DateTimeFilterInput
@@ -347,13 +347,13 @@ input CategoryFiltersInput {
 }
 
 input CategoryInput {
-  slug: String
+  uuid: String
   name: String
   articles: [ID]
 }
 
 type Category {
-  slug: String!
+  uuid: String!
   name: String!
   articles(
     filters: ArticleFiltersInput
