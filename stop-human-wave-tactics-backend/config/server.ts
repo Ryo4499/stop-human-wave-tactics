@@ -1,8 +1,8 @@
-export default {
-  host: process.env.HOST,
-  port: parseInt(process.env.PORT),
-  url: process.env.URL,
+export default ({ env }) => ({
+  host: env('HOST'),
+  port: parseInt(env('PORT'), 10),
+  url: env('URL'),
   app: {
-    keys: process.env.APP_KEYS.split(","),
+    keys: env('APP_KEYS').split(","),
   },
-};
+});

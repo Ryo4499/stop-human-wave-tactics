@@ -1,13 +1,13 @@
-export default {
+export default ({ env }) => ({
   connection: {
     client: "postgres",
     connection: {
-      host: process.env.POSTGRES_HOST,
-      port: parseInt(process.env.POSTGRES_PORT),
-      database: process.env.POSTGRES_DB,
-      user: process.env.POSTGRES_USER,
-      password: process.env.POSTGRES_PASSWORD,
-      ssl: (process.env.DB_SSL.toLocaleLowerCase() == "true"),
+      host: env('POSTGRES_HOST'),
+      port: parseInt(env('POSTGRES_PORT'), 10),
+      database: env('POSTGRES_DB'),
+      user: env('POSTGRES_USER'),
+      password: env('POSTGRES_PASSWORD'),
+      ssl: (env('DB_SSL').toLocaleLowerCase() == "true"),
     },
   },
-};
+});
