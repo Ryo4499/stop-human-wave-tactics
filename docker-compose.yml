@@ -39,9 +39,10 @@ services:
         source: ./nginx/log
         target: /var/log/nginx
     depends_on:
-      - db
-      - front
-      - back
+      db:
+        condition: service_started
+      back:
+        condition: service_started
     restart: unless-stopped
     networks:
       app_net:
@@ -166,7 +167,8 @@ services:
           yarn dev; \
         fi
     depends_on:
-      - db
+      db:
+        condition: service_started
     restart: unless-stopped
     networks:
       app_net:
@@ -182,6 +184,7 @@ services:
         MY_USER: $MY_USER
         MY_GROUP: $MY_GROUP
         MODE: $MODE
+        DOMAIN: $DOMAIN
     env_file:
       - ./.env
     environment:
@@ -201,15 +204,20 @@ services:
     command:
       - -c
       - |
-        chown -R $MY_USER:$MY_GROUP ./ ; \
+        dockerize -timeout 60s -wait tcp://back:1337 -wait tcp://proxy:80 yarn build; \
+        chown -R $MY_USER:$MY_GROUP ./; \
         if [ "${MODE}" = "PRODUCTION" ]; then \
-          yarn build && yarn start; \
+          yarn start; \
         else \
           yarn dev; \
         fi
     depends_on:
-      - back
-      - db
+      proxy:
+        condition: service_started
+      back:
+        condition: service_started
+      db:
+        condition: service_started
     restart: unless-stopped
     networks:
       app_net:
@@ -225,18 +233,21 @@ networks:
     external: false
   app_net:
     driver: bridge
+    internal: false
     ipam:
       driver: default
       config:
         - subnet: 172.30.0.0/24
   db_net:
     driver: bridge
+    internal: true
     ipam:
       driver: default
       config:
         - subnet: 172.30.3.0/24
   monitor_net:
     driver: bridge
+    internal: false
     ipam:
       driver: default
       config:

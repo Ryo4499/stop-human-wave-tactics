@@ -7,7 +7,7 @@ import Layout from "../components/Layouts/Layout";
 import { AppProps } from "next/app";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { ApolloProvider } from "@apollo/client";
-import { useApollo } from "../lib/apollo";
+import { useApollo } from "../lib/graphqlClient";
 import { useLocale } from "../lib/locale";
 import { darkPallete, lightPallete } from "../lib/theme";
 
@@ -15,7 +15,6 @@ const App: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
   const [dark, toggleDark] = useReducer((dark: boolean) => { return !dark }, true)
   const prefersDarkMode = useMediaQuery(`(prefers-color-scheme: ${dark ? "dark" : "light"})`, { noSsr: true });
   const { locale, locales, t } = useLocale()
-  const client = useApollo(pageProps);
   const theme = React.useMemo(
     () =>
       createTheme({
@@ -30,13 +29,11 @@ const App: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
 
 
   return (
-    <ApolloProvider client={client}>
-      <ThemeProvider theme={theme}>
-        <Layout dark={dark} toggleDark={toggleDark} >
-          <Component {...pageProps} />
-        </Layout>
-      </ThemeProvider>
-    </ApolloProvider>
+    <ThemeProvider theme={theme}>
+      <Layout dark={dark} toggleDark={toggleDark} >
+        <Component {...pageProps} />
+      </Layout>
+    </ThemeProvider>
   );
 }
 
