@@ -33,7 +33,6 @@ import {
   PublicationState,
 } from "../../types/apollo_client";
 import Loading from "../Common/Loading";
-import DisplayError from "../Common/DisplayError";
 import { useRouter } from "next/router";
 import { isMobile } from "react-device-detect"
 import Particles from "react-tsparticles";
@@ -45,7 +44,7 @@ import { getPageSize } from "../../lib/pagination";
 type ArticlesProps = {
   page: number;
   setPage: (value: number) => void;
-  props: ArticleEntityResponseCollection
+  articles: ArticleEntityResponseCollection
 };
 
 type ArticlesPropsContent = {
@@ -79,7 +78,6 @@ const Content = ({ page, setPage, pageCount }: ArticlesPropsContent) => {
 
 export const Articles = ({ page, setPage, articles }: ArticlesProps) => {
   const router = useRouter()
-  const pagesize = getPageSize()
   // load particles
   const particlesInit = useCallback(async (engine: Engine) => {
     await loadFull(engine);
@@ -99,6 +97,7 @@ export const Articles = ({ page, setPage, articles }: ArticlesProps) => {
 
   console.log(articles)
   if (articles?.data != null) {
+    const pageCount = articles.meta.pagination.pageCount
     return (
       <Grid container direction="column" sx={{ flexGrow: 1 }} xs={12}>
         {/* @ts-ignore */}
@@ -107,7 +106,7 @@ export const Articles = ({ page, setPage, articles }: ArticlesProps) => {
           params={PaticleParams} />
         {isMobile ?
           <Grid container direction="column" sx={{ flexGrow: 1 }} spacing={2}>
-            {data?.articles?.data.map((article) => {
+            {articles?.data.map((article) => {
               return (
                 <Grid xs={12} key={article.id}>
                   <Card>
@@ -145,7 +144,7 @@ export const Articles = ({ page, setPage, articles }: ArticlesProps) => {
           </Grid>
           :
           <Grid container direction="row" sx={{ flexGrow: 1 }} spacing={2}>
-            {data?.articles?.data.map((article) => {
+            {articles?.data.map((article) => {
               return (
                 <Grid xs={6} key={article.id} >
                   <Card>
