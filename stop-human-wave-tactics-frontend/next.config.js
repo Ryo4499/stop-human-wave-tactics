@@ -5,7 +5,16 @@ module.exports = {
   },
   env: {
     PAGESIZE: 2,
-    NEXT_PUBLIC_BACKEND_URL: `http://back:1337/graphql`
+    //NEXT_PUBLIC_BACKEND_URL: `${process.env.NEXT_PUBLIC_BACKEND_URL}`
+    NEXT_PUBLIC_BACKEND_URL: "http://localhost/graphql"
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/graphql',
+        destination: 'http://back:1337/graphql*' // Proxy to Backend
+      }
+    ]
   },
   i18n: {
     locales: ['en', 'ja'],

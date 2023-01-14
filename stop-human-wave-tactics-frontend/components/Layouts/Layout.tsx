@@ -4,11 +4,10 @@ import Sidebar from "../Common/Sidebar";
 import React, { ReactNode, useCallback } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import { isMobile } from "react-device-detect"
+import { request } from "graphql-request"
 import { useRouter } from "next/router"
 
 const Layout = ({ dark, toggleDark, children }: { dark: boolean, toggleDark: () => void, children?: ReactNode }) => {
-  const router = useRouter()
-  const targetPath = "articles"
 
   return (
     <Grid container direction="column">
