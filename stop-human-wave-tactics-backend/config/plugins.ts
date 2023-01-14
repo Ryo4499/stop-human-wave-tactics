@@ -1,4 +1,4 @@
-export default {
+export default ({ env }) => ({
   graphql: {
     enabled: true,
     config: {
@@ -17,8 +17,8 @@ export default {
   sentry: {
     enabled: true,
     config: {
-      dsn: process.env.SENTRY_DNS,
+      dsn: env('SENTRY_DNS'),
       sendMetadata: true,
     }
   }
-};
+});
