@@ -1,14 +1,29 @@
 import { gql } from "graphql-request"
 
-export const getCategories = gql`query($id:ID!,$locale:I18NLocaleCode!){
-  category(id:$id,locale:$locale){
-    data{
+export const getCategories = gql`
+query getCategories(
+  $filters: CategoryFiltersInput
+  $pagination: PaginationArg!
+  $sort: [String]
+  $locale: I18NLocaleCode!
+) {
+  categories(
+    filters: $filters
+    pagination: $pagination
+    sort: $sort
+    locale: $locale
+  ) {
+    data {
       id
-      attributes{
+      attributes {
+        uuid
         name
-        articles{
-          data{
+        articles {
+          data {
             id
+            attributes {
+              uuid
+            }
           }
         }
         createdAt
@@ -16,26 +31,15 @@ export const getCategories = gql`query($id:ID!,$locale:I18NLocaleCode!){
         locale
       }
     }
+    meta {
+      pagination {
+        total
+        page
+        pageSize
+        pageCount
+      }
+    }
   }
 }
-`
 
-export const getCategoriesLocal = gql`query($id:ID!,$locale:I18NLocaleCode!){
-  category(id:$id,locale:$locale) @client {
-    data{
-      id
-      attributes{
-        name
-        articles{
-          data{
-            id
-          }
-        }
-        createdAt
-        updatedAt
-        locale
-      }
-    }
-  }
-}
 `
