@@ -15,7 +15,7 @@ export const getStaticPaths = async ({ locales }: { locales: Array<string> }) =>
     const paths: Array<UUIDParams> = []
     if (locales != null) {
         for (const locale of locales) {
-            const variables = { pagination: { pageSize: getPageSize() }, locale: locale }
+            const variables = { pagination: {}, locale: locale }
             await request(getBackendURL(), getArticlesUUID, variables).then(({ articles }) => {
                 articles.data.map((article: ArticleEntity) => paths.push({ params: { uuid: article.attributes?.uuid }, locale: locale }))
             })
@@ -36,15 +36,18 @@ export const getStaticProps = async ({ params, locale }: IStaticProps) => {
             props: {
                 articles: articles
             },
+            notFound: false,
             revalidate: 300,
         };
-    }).catch(error => {
+    })
+    if (result != null) {
+        return result
+    } else {
         return {
             notFound: true,
-            revalidate: 300,
+            revalidate: 300
         }
-    })
-    return result
+    }
 };
 
 interface ArticlesProps {

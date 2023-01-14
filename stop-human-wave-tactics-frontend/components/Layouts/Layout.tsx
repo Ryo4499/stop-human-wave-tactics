@@ -14,30 +14,21 @@ const Layout = ({ dark, toggleDark, children }: { dark: boolean, toggleDark: () 
       <Grid container xs={12}>
         <Header dark={dark} toggleDark={toggleDark} />
       </Grid>
+
       {isMobile ?
         <Grid
           container
           direction="column"
           sx={{ flexGrow: 1 }}
         >
-          <Grid container p={1.5} xs={12}>
-            <Sidebar />
-          </Grid>
-          <Grid container direction="column" p={1.5} xs={12} sx={{ flexGrow: 1 }}>
-            {children}
-          </Grid>
+          {children}
         </Grid> :
         <Grid
           container
           direction="row"
           sx={{ flexGrow: 1 }}
         >
-          <Grid container xs={10} sx={{ flexGrow: 1 }}>
-            {children}
-          </Grid>
-          <Grid container xs={2} sx={{ flexGrow: 1 }}>
-            <Sidebar />
-          </Grid>
+          {children}
         </Grid>
       }
       <Grid container xs={12}>

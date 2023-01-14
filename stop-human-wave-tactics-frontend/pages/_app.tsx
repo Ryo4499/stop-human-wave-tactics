@@ -6,13 +6,11 @@ import React from "react";
 import Layout from "../components/Layouts/Layout";
 import { AppProps } from "next/app";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { useLocale } from "../lib/locale";
 import { darkPallete, lightPallete } from "../lib/theme";
 
-const App: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
+const MyApp: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
   const [dark, toggleDark] = useReducer((dark: boolean) => { return !dark }, true)
   const prefersDarkMode = useMediaQuery(`(prefers-color-scheme: ${dark ? "dark" : "light"})`, { noSsr: true });
-  const { locale, locales, t } = useLocale()
   const theme = React.useMemo(
     () =>
       createTheme({
@@ -25,7 +23,6 @@ const App: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
     [prefersDarkMode]
   );
 
-
   return (
     <ThemeProvider theme={theme}>
       <Layout dark={dark} toggleDark={toggleDark} >
@@ -35,4 +32,4 @@ const App: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
   );
 }
 
-export default App;
+export default MyApp;
