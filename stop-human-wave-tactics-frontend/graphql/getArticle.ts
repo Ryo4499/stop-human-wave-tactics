@@ -26,6 +26,7 @@ export const getArticle = gql`query($id: ID!, $locale: I18NLocaleCode!) {
           data {
             id
             attributes {
+              uuid
               name
             }
           }

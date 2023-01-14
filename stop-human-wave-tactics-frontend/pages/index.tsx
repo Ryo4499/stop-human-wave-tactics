@@ -1,42 +1,42 @@
-import { GraphQLAbstractType } from "graphql";
-import type { GetStaticProps, NextPage } from "next";
+import Grid from "@mui/material/Unstable_Grid2"
+import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import type { gql } from "graphql-request";
 import { request } from "graphql-request"
 import { Articles } from "../components/Articles";
 import { getArticles } from "../graphql/getArticles";
-import { getArticlesPages } from "../graphql/getArticlesPages";
 import { getBackendURL, getClient, getProxyURL } from "../lib/graphqlClient";
-import { getI18NLocales } from "../graphql/getI18NLocales";
 import { getPageSize } from "../lib/pagination";
-import useSWR from "swr"
-import { ArticleEntityResponseCollection, GetArticlesPagesQuery, GetArticlesPagesQueryVariables, GetArticlesQuery, GetArticlesQueryVariables, GetI18NLocalesQuery, GetI18NLocalesQueryVariables } from "../types/apollo_client";
+import { ArticleEntityResponseCollection } from "../types/apollo_client";
 import Loading from "../components/Common/Loading";
 import { DisplayError } from "../components/Common/DisplayError";
-
-interface PageParams { locale: string }
+import { isMobile } from "react-device-detect";
+import Sidebar from "../components/Common/Sidebar";
+import { ArticlesProps, IStaticProps } from "../types/general";
+import { getCategories } from "../graphql/getCategories";
+import { Categories } from "../components/Category";
 
 const client = getClient()
 
-type IStaticProps = { locales: Array<string>
-    locale: string
-    defaultLocale: string
-}
-
 export const getStaticProps = async ({ locales, locale, defaultLocale }: IStaticProps) => {
-    const variables = { pagination: { page: 1, pageSize: getPageSize() }, locale: locale }
-    console.log(variables)
-    const result = await request(getBackendURL(), getArticles, variables).then(({ articles }: { articles: ArticleEntityResponseCollection }) => {
-        return {
+    const articles_variables = { pagination: { pageSize: getPageSize() }, locale: locale }
+    const categories_variables = { pagination: {}, locale: locale }
+    const categoriws_result = await request(getBackendURL(), getCategories, categories_variables).then(({ categories }) => {
+        return categories
+
+    })
+    const articles_result = await request(getBackendURL(), getArticles, articles_variables).then(({ articles }) => {
+        return articles
+    })
+    if (articles_result != null && categoriws_result != null) {
+        const result = {
             props: {
-                articles: articles
+                articles: articles_result,
+                categories: categoriws_result
             },
             notFound: false,
             revalidate: 300,
-        };
-    })
-    if (result != null) {
+        }
         return result
     } else {
         return {
@@ -46,11 +46,7 @@ export const getStaticProps = async ({ locales, locale, defaultLocale }: IStatic
     }
 };
 
-interface ArticlesProps {
-    articles: ArticleEntityResponseCollection
-}
-
-const ArticlesIndex: NextPage<ArticlesProps> = ({ articles }) => {
+const ArticlesIndex: NextPage<ArticlesProps> = ({ articles, categories }) => {
     const router = useRouter()
     const [page, setPage] = useState(
         router.query.page == null
@@ -58,7 +54,32 @@ const ArticlesIndex: NextPage<ArticlesProps> = ({ articles }) => {
             : parseInt(router.query.page as string, 10)
     )
     if (articles) {
-        return <Articles page={page} setPage={setPage} articles={articles} />
+        return (
+            <Grid
+                container
+                direction="row"
+                sx={{ flexGrow: 1 }}
+            >
+                {isMobile ?
+                    <>
+                        <Grid container xs={12} sx={{ flexGrow: 1 }}>
+                            <Sidebar categories={categories} />
+                        </Grid>
+                        <Grid container direction="column" xs={12} sx={{ flexGrow: 1 }}>
+                            <Articles page={page} setPage={setPage} articles={articles} />
+                        </Grid>
+                    </>
+                    :
+                    <>
+                        <Grid container xs={10} sx={{ flexGrow: 1 }}>
+                            <Articles page={page} setPage={setPage} articles={articles} />
+                        </Grid>
+                        <Grid container xs={2} sx={{ flexGrow: 1 }}>
+                            <Sidebar categories={categories} />
+                        </Grid>
+                    </>
+                }
+            </Grid>)
     } else {
         return <DisplayError error={"page"} />
     }

@@ -5,16 +5,13 @@ import type { NextPage } from "next"
 import { getBackendURL } from "../lib/graphqlClient"
 import { getCategories } from "../graphql/getCategories"
 import { CategoryEntityResponseCollection } from "../types/apollo_client"
-
-type IStaticProps = {
-    locales: Array<string>
-    locale: string
-    defaultLocale: string
-}
+import Sidebar from "../components/Common/Sidebar"
+import { isMobile } from "react-device-detect"
+import { DisplayError } from "../components/Common/DisplayError"
+import { CategoriesProps, IStaticProps } from "../types/general"
 
 export const getStaticProps = async ({ locales, locale, defaultLocale }: IStaticProps) => {
     const variables = { pagination: {}, locale: locale }
-    console.log(variables)
     const result = await request(getBackendURL(), getCategories, variables).then(({ categories }: { categories: CategoryEntityResponseCollection }) => {
         return {
             props: {
@@ -34,7 +31,7 @@ export const getStaticProps = async ({ locales, locale, defaultLocale }: IStatic
     }
 };
 
-const Portofolio: NextPage = () => {
+const PortofolioContent = () => {
     return (
         <Grid container direction="column" px={4}>
             <Grid>
@@ -69,6 +66,41 @@ const Portofolio: NextPage = () => {
             </Grid>
         </Grid>
     )
+}
+
+const Portofolio: NextPage<CategoriesProps> = ({ categories }) => {
+    if (categories) {
+        return <>
+            {isMobile ?
+                <Grid
+                    container
+                    direction="column"
+                    sx={{ flexGrow: 1 }}
+                >
+                    <Grid container p={1.5} xs={12}>
+                        <Sidebar categories={categories} />
+                    </Grid>
+                    <Grid container direction="column" p={1.5} xs={12} sx={{ flexGrow: 1 }}>
+                        <PortofolioContent />
+                    </Grid>
+                </Grid> :
+                <Grid
+                    container
+                    direction="row"
+                    sx={{ flexGrow: 1 }}
+                >
+                    <Grid container xs={10} sx={{ flexGrow: 1 }}>
+                        <PortofolioContent />
+                    </Grid>
+                    <Grid container xs={2} sx={{ flexGrow: 1 }}>
+                        <Sidebar categories={categories} />
+                    </Grid>
+                </Grid>
+            }
+        </>
+    } else {
+        return <DisplayError error={"page"} />
+    }
 }
 
 export default Portofolio

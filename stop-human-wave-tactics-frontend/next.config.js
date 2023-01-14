@@ -4,7 +4,7 @@ module.exports = {
     ignoreBuildErrors: true
   },
   env: {
-    PAGESIZE: 2,
+    PAGESIZE: 6,
     //NEXT_PUBLIC_BACKEND_URL: `${process.env.NEXT_PUBLIC_BACKEND_URL}`
     NEXT_PUBLIC_BACKEND_URL: "http://localhost/graphql",
     HTTP_PROXY: "http://localhost/graphql"
