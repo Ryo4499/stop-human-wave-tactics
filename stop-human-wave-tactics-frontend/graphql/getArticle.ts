@@ -1,11 +1,11 @@
-import { gql } from "@apollo/client"
+import { gql } from "graphql-request"
 
 export const getArticle = gql`query($id: ID!, $locale: I18NLocaleCode!) {
   article(id: $id, locale: $locale) {
     data {
       id
       attributes {
-        slug
+        uuid
         title
         summary
         content
@@ -68,7 +68,7 @@ export const getArticleLocal = gql`query($id: ID!, $locale: I18NLocaleCode!) {
     data {
       id
       attributes {
-        slug
+        uuid
         title
         summary
         content

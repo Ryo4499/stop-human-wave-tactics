@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client"
+import { gql } from "graphql-request"
 
 export const getArticlesPages = gql`
 query($filters:ArticleFiltersInput,$pagination:PaginationArg!,$sort:[String],$publicationState:PublicationState,$locale:I18NLocaleCode!){

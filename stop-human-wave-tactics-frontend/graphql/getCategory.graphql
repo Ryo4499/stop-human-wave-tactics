@@ -3,13 +3,13 @@ query getCategory($id: ID!, $locale: I18NLocaleCode!) {
     data {
       id
       attributes {
-        slug
+        uuid
         name
         articles {
           data {
             id
             attributes {
-              slug
+              uuid
             }
           }
         }
