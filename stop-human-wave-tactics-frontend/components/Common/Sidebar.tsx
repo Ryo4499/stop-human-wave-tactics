@@ -11,13 +11,24 @@ import Stack from "@mui/material/Stack";
 import { source_code_pro } from "../../src/font";
 import { useLocale } from "../../lib/locale"
 import { isMobile } from "react-device-detect"
+import { CategoriesProps } from "../../types/general";
+import { Categories } from "../Category";
 
-const Sidebar = () => {
+const Sidebar = ({ categories }: CategoriesProps) => {
   const { locale, locales, t } = useLocale();
   return (
     <Grid container direction="column" sx={{ backgroundColor: 'background.default', flexGrow: 1 }} >
       {
-        !isMobile ?
+        isMobile ?
+          < Grid container direction="row" justifyContent="stretch" alignItems="center" my={2} px={2} sx={{ flexGrow: 1 }}>
+            <Grid xs={1}>
+              <SearchIcon fontSize="large" />
+            </Grid>
+            <Grid xs={11}>
+              <TextField sx={{ flexGrow: 1 }} id="outlined-basic" label={t.search} variant="outlined" />
+            </Grid>
+          </Grid >
+          :
           <Grid container direction="row" justifyContent="center" >
             < Grid container direction="row" justifyContent="center" alignItems="center" my={2} xs={12}>
               <Grid container xs={1}>
@@ -76,16 +87,8 @@ const Sidebar = () => {
                 </Grid>
               </ThemeProvider>
             </Grid>
+            <Categories categories={categories} />
           </Grid>
-          :
-          < Grid container direction="row" justifyContent="stretch" alignItems="center" my={2} px={2} sx={{ flexGrow: 1 }}>
-            <Grid xs={1}>
-              <SearchIcon fontSize="large" />
-            </Grid>
-            <Grid xs={11}>
-              <TextField sx={{ flexGrow: 1 }} id="outlined-basic" label={t.search} variant="outlined" />
-            </Grid>
-          </Grid >
       }
     </Grid >
   );

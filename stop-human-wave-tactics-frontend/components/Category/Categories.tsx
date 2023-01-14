@@ -1,14 +1,28 @@
+import { Typography } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
-import { useQuery } from "@apollo/client";
-import { GetCategoriesQuery, GetCategoriesQueryVariables } from "../../types/apollo_client";
-import { getCategories } from "../../graphql/getCategories";
-import { useLocale } from "../../lib/locale";
-import Loading from "../Common/Loading";
-import GraphqlError from "../Common/DisplayError";
+import Link from "next/link";
+import { CategoryEntity, CategoryEntityResponseCollection } from "../../types/apollo_client";
+import { CategoriesProps } from "../../types/general";
+import { DisplayError } from "../Common/DisplayError";
 
-const Categories = () => {
-  return <Grid container direction="column" sx={{ flexGrow: 1 }}>
-  </Grid>;
+export const Categories = ({ categories }: CategoriesProps) => {
+  console.log(categories)
+  const CategoriesContent = categories.data.map(category => (
+    <Grid key={category.id}>
+      <Link href={`/category/${category.attributes?.uuid}`}>{category.attributes?.name} ({category.attributes?.articles?.data.length})</Link>
+    </Grid>
+  ))
+  if (categories.data.length === 0) {
+    console.log(true)
+    return (
+      null
+    )
+  } else {
+    console.log(false)
+    return (<>
+      <Grid container direction="column">{CategoriesContent}</Grid>
+    </>
+    )
+  }
 };
 
-export default Categories;

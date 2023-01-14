@@ -1,12 +1,6 @@
-import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
-import Loading from "../../components/Common/Loading";
-import { getArticles } from "../../graphql/getArticles";
 import {
-  Article,
   ArticleEntityResponseCollection,
-  GetArticlesQuery,
-  GetArticlesQueryVariables,
 } from "../../types/apollo_client";
 import Grid from "@mui/material/Unstable_Grid2";
 import { useCallback } from "react";
