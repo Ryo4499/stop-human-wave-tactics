@@ -40,7 +40,7 @@ services:
         target: /var/log/nginx
     depends_on:
       db:
-        condition: service_started
+        condition: service_healthy
       back:
         condition: service_started
     restart: unless-stopped
@@ -125,6 +125,11 @@ services:
     networks:
       db_net:
         ipv4_address: 172.30.3.2
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   back:
     build:
@@ -168,7 +173,7 @@ services:
         fi
     depends_on:
       db:
-        condition: service_started
+        condition: service_healthy
     restart: unless-stopped
     networks:
       app_net:
@@ -217,7 +222,7 @@ services:
       back:
         condition: service_started
       db:
-        condition: service_started
+        condition: service_healthy
     restart: unless-stopped
     networks:
       app_net:
