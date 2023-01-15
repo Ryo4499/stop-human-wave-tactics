@@ -16,11 +16,12 @@ import { ArticlesProps, IStaticProps } from "../types/general";
 import { getCategories } from "../graphql/getCategories";
 import { Categories } from "../components/Category";
 import { ParticlesContext } from "./_app";
+import { NotFound } from "../components/Common/NotFound";
 
 const client = getClient()
 
 export const getStaticProps = async ({ locales, locale, defaultLocale }: IStaticProps) => {
-    const articles_variables = { pagination: { pageSize: getPageSize() }, sort: ["updatedAt:Desc", "publishedAt:Desc"], locale: locale }
+    const articles_variables = { pagination: {}, sort: ["updatedAt:Desc", "publishedAt:Desc"], locale: locale }
     const categories_variables = { pagination: {}, locale: locale }
     const categoriws_result = await request(getBackendURL(), getCategories, categories_variables).then(({ categories }) => {
         return categories
@@ -49,13 +50,31 @@ export const getStaticProps = async ({ locales, locale, defaultLocale }: IStatic
 
 const ArticlesIndex: NextPage<ArticlesProps> = ({ articles, categories }) => {
     const router = useRouter()
+    const filter = router.query.title != null ? router.query.title : ""
     const { mainParticle } = useContext(ParticlesContext)
     const [page, setPage] = useState(
         router.query.page == null
             ? 1
             : parseInt(router.query.page as string, 10)
     )
-    if (articles) {
+    const filterArticles = articles.data.filter(
+        (article) => {
+            return article.attributes?.title.indexOf(filter) != -1;
+        })
+
+    const filterArticlesCollection = {
+        data: filterArticles,
+        meta: {
+            pagination: {
+                page: 1,
+                pageCount: 1,
+                pageSize: filterArticles.length,
+                total: 1,
+            }
+        }
+    }
+    const filterArticlesResponseCollection = Object.assign(articles, filterArticlesCollection)
+    if (filterArticles.length != 0) {
         return (
             <Grid
                 container
@@ -68,13 +87,13 @@ const ArticlesIndex: NextPage<ArticlesProps> = ({ articles, categories }) => {
                             <Sidebar categories={categories} />
                         </Grid>
                         <Grid container direction="column" xs={12} sx={{ flexGrow: 1 }}>
-                            <Articles page={page} setPage={setPage} articles={articles} mainParticle={mainParticle} />
+                            <Articles page={page} setPage={setPage} articles={filterArticlesResponseCollection} mainParticle={mainParticle} />
                         </Grid>
                     </>
                     :
                     <>
                         <Grid container xs={10} sx={{ flexGrow: 1 }}>
-                            <Articles page={page} setPage={setPage} articles={articles} mainParticle={mainParticle} />
+                            <Articles page={page} setPage={setPage} articles={filterArticlesResponseCollection} mainParticle={mainParticle} />
                         </Grid>
                         <Grid container xs={2} sx={{ flexGrow: 1 }}>
                             <Sidebar categories={categories} />
@@ -83,7 +102,7 @@ const ArticlesIndex: NextPage<ArticlesProps> = ({ articles, categories }) => {
                 }
             </Grid>)
     } else {
-        return <DisplayError error={"page"} />
+        return <NotFound />
     }
 }
 

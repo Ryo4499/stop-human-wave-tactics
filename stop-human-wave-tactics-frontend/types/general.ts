@@ -7,8 +7,8 @@ export interface CategoriesProps {
 export interface ArticlesProps {
     articles: ArticleEntityResponseCollection
     categories: CategoryEntityResponseCollection
+    mainParticles: object
 }
-
 export interface UUIDParams { params: { uuid: string | undefined }, locale: string }
 
 export type UUIDStaticProps = {
