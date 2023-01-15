@@ -11,6 +11,8 @@ import Sidebar from "../../components/Common/Sidebar";
 import { isMobile } from "react-device-detect";
 import { ArticlesProps, UUIDParams, UUIDStaticProps } from "../../types/general";
 import { getCategories } from "../../graphql/getCategories";
+import { ParticlesContext } from "../_app";
+import { useContext } from "react";
 
 export const getStaticPaths = async ({ locales }: { locales: Array<string> }) => {
     const paths: Array<UUIDParams> = []
@@ -27,7 +29,7 @@ export const getStaticPaths = async ({ locales }: { locales: Array<string> }) =>
 
 
 export const getStaticProps = async ({ params, locale }: UUIDStaticProps) => {
-    const articles_variables = { filters: { uuid: { eq: params.uuid } }, pagination: {}, locale: locale }
+    const articles_variables = { filters: { uuid: { eq: params.uuid } }, pagination: {}, sort: ["updatedAt:Desc", "publishedAt:Desc"], locale: locale }
     const categories_variables = { pagination: {}, locale: locale }
     const categoriws_result = await request(getBackendURL(), getCategories, categories_variables).then(({ categories }) => {
         return categories
@@ -56,6 +58,7 @@ export const getStaticProps = async ({ params, locale }: UUIDStaticProps) => {
 
 const ArticlePage: NextPage<ArticlesProps> = ({ articles, categories }) => {
     const router = useRouter()
+    const { mainParticle } = useContext(ParticlesContext)
     if (articles) {
         return <>
             {isMobile ?
@@ -68,7 +71,7 @@ const ArticlePage: NextPage<ArticlesProps> = ({ articles, categories }) => {
                         <Sidebar categories={categories} />
                     </Grid>
                     <Grid container direction="column" p={1.5} xs={12} sx={{ flexGrow: 1 }}>
-                        <ArticleDetails articles={articles} />
+                        <ArticleDetails articles={articles} mainParticle={mainParticle} />
                     </Grid>
                 </Grid> :
                 <Grid
@@ -77,7 +80,7 @@ const ArticlePage: NextPage<ArticlesProps> = ({ articles, categories }) => {
                     sx={{ flexGrow: 1 }}
                 >
                     <Grid container xs={10} sx={{ flexGrow: 1 }}>
-                        <ArticleDetails articles={articles} />
+                        <ArticleDetails articles={articles} mainParticle={mainParticle} />
                     </Grid>
                     <Grid container xs={2} sx={{ flexGrow: 1 }}>
                         <Sidebar categories={categories} />

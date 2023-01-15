@@ -9,6 +9,8 @@ import Sidebar from "../components/Common/Sidebar"
 import { isMobile } from "react-device-detect"
 import { DisplayError } from "../components/Common/DisplayError"
 import { CategoriesProps, IStaticProps } from "../types/general"
+import { ParticlesContext } from "./_app";
+import { useContext } from "react"
 
 export const getStaticProps = async ({ locales, locale, defaultLocale }: IStaticProps) => {
     const variables = { pagination: {}, locale: locale }
@@ -69,6 +71,7 @@ const PortofolioContent = () => {
 }
 
 const Portofolio: NextPage<CategoriesProps> = ({ categories }) => {
+    const { mainParticle } = useContext(ParticlesContext)
     if (categories) {
         return <>
             {isMobile ?

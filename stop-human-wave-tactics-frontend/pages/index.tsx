@@ -1,11 +1,11 @@
 import Grid from "@mui/material/Unstable_Grid2"
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { request } from "graphql-request"
 import { Articles } from "../components/Articles";
 import { getArticles } from "../graphql/getArticles";
-import { getBackendURL, getClient, getProxyURL } from "../lib/graphqlClient";
+import { getBackendURL, getClient } from "../lib/graphqlClient";
 import { getPageSize } from "../lib/pagination";
 import { ArticleEntityResponseCollection } from "../types/apollo_client";
 import Loading from "../components/Common/Loading";
@@ -15,11 +15,12 @@ import Sidebar from "../components/Common/Sidebar";
 import { ArticlesProps, IStaticProps } from "../types/general";
 import { getCategories } from "../graphql/getCategories";
 import { Categories } from "../components/Category";
+import { ParticlesContext } from "./_app";
 
 const client = getClient()
 
 export const getStaticProps = async ({ locales, locale, defaultLocale }: IStaticProps) => {
-    const articles_variables = { pagination: { pageSize: getPageSize() }, locale: locale }
+    const articles_variables = { pagination: { pageSize: getPageSize() }, sort: ["updatedAt:Desc", "publishedAt:Desc"], locale: locale }
     const categories_variables = { pagination: {}, locale: locale }
     const categoriws_result = await request(getBackendURL(), getCategories, categories_variables).then(({ categories }) => {
         return categories
@@ -48,6 +49,7 @@ export const getStaticProps = async ({ locales, locale, defaultLocale }: IStatic
 
 const ArticlesIndex: NextPage<ArticlesProps> = ({ articles, categories }) => {
     const router = useRouter()
+    const { mainParticle } = useContext(ParticlesContext)
     const [page, setPage] = useState(
         router.query.page == null
             ? 1
@@ -66,13 +68,13 @@ const ArticlesIndex: NextPage<ArticlesProps> = ({ articles, categories }) => {
                             <Sidebar categories={categories} />
                         </Grid>
                         <Grid container direction="column" xs={12} sx={{ flexGrow: 1 }}>
-                            <Articles page={page} setPage={setPage} articles={articles} />
+                            <Articles page={page} setPage={setPage} articles={articles} mainParticle={mainParticle} />
                         </Grid>
                     </>
                     :
                     <>
                         <Grid container xs={10} sx={{ flexGrow: 1 }}>
-                            <Articles page={page} setPage={setPage} articles={articles} />
+                            <Articles page={page} setPage={setPage} articles={articles} mainParticle={mainParticle} />
                         </Grid>
                         <Grid container xs={2} sx={{ flexGrow: 1 }}>
                             <Sidebar categories={categories} />

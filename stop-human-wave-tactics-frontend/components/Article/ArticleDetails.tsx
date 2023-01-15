@@ -9,13 +9,12 @@ import MdContent from "../Common/MdContent";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles"
 import type { Engine } from "tsparticles-engine"
-import PaticleParams from "../../styles/presets/nyancat2-article-details.json"
 
 type ArticleProps = {
   uuid: string;
 };
 
-export const ArticleDetails = ({ articles }: { articles: ArticleEntityResponseCollection }) => {
+export const ArticleDetails = ({ articles, mainParticle }: { articles: ArticleEntityResponseCollection, mainParticle: object }) => {
   const router = useRouter()
   // load particles
   const particlesInit = useCallback(async (engine: Engine) => {
@@ -29,7 +28,8 @@ export const ArticleDetails = ({ articles }: { articles: ArticleEntityResponseCo
         {/* @ts-ignore */}
         <Particles
           init={particlesInit}
-          params={PaticleParams} />
+          params={mainParticle}
+        />
         <Grid container direction="column" sx={{ flexGrow: 1, backgroundColor: "white", }}>
           <Grid>
             <Typography variant="h1">

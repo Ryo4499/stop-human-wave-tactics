@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useEffect, useCallback, ChangeEvent } from "react";
+import { useEffect, useCallback, ChangeEvent, useContext } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import {
   Box,
@@ -21,16 +21,17 @@ import { useRouter } from "next/router";
 import { isMobile } from "react-device-detect"
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles"
-import type { Engine } from "tsparticles-engine"
-import PaticleParams from "../../styles/presets/nyancat2-articles.json"
+import { Engine } from "tsparticles-engine"
+import { useLocale } from "../../lib/locale";
 
-type ArticlesProps = {
-  page: number;
-  setPage: (value: number) => void;
+interface ArticlesProps {
+  page: number
+  setPage: (value: number) => void
   articles: ArticleEntityResponseCollection
+  mainParticle: object
 };
 
-type ArticlesPropsContent = {
+interface ArticlesPropsContent {
   page: number;
   setPage: (value: number) => void;
   pageCount: number | undefined;
@@ -59,7 +60,8 @@ const Content = ({ page, setPage, pageCount }: ArticlesPropsContent) => {
 }
 
 
-export const Articles = ({ page, setPage, articles }: ArticlesProps) => {
+export const Articles = ({ page, setPage, articles, mainParticle }: ArticlesProps) => {
+  const { locale, locales, t } = useLocale()
   const router = useRouter()
 
   // load particles
@@ -79,6 +81,7 @@ export const Articles = ({ page, setPage, articles }: ArticlesProps) => {
     })
   })
 
+
   if (articles.data != null) {
     const pageCount = articles.meta.pagination.pageCount
     return (
@@ -86,7 +89,8 @@ export const Articles = ({ page, setPage, articles }: ArticlesProps) => {
         {/* @ts-ignore */}
         <Particles
           init={particlesInit}
-          params={PaticleParams} />
+          params={mainParticle}
+        />
         {isMobile ?
           <Grid container direction="column" sx={{ flexGrow: 1 }} spacing={2} m={2}>
             {articles?.data.map((article) => {
@@ -144,6 +148,7 @@ export const Articles = ({ page, setPage, articles }: ArticlesProps) => {
                         {article.attributes?.title}
                       </Typography>
                       <Typography>{article.attributes?.summary}</Typography>
+                      <Typography>{t.updated_at}</Typography>
                       <Typography>
                         {article.attributes?.updatedAt
                           .replace("T", " ")
@@ -162,9 +167,12 @@ export const Articles = ({ page, setPage, articles }: ArticlesProps) => {
             })}
           </Grid>
         }
-        <Grid container direction="row" justifyContent="center" my={2}>
-          <Content page={page} setPage={setPage} pageCount={pageCount}></Content>
-        </Grid>
+        {router.pathname === "/search" ?
+          null :
+          <Grid container direction="row" justifyContent="center" my={2}>
+            <Content page={page} setPage={setPage} pageCount={pageCount}></Content>
+          </Grid>
+        }
       </Grid>
     );
   } else {

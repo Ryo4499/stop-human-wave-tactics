@@ -1,12 +1,17 @@
 import "../styles/globals.css";
 import type { NextPage } from "next";
 import { useMediaQuery } from "@mui/material";
-import { useReducer } from "react"
+import { createContext, useReducer } from "react"
 import React from "react";
 import Layout from "../components/Layouts/Layout";
 import { AppProps } from "next/app";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { darkPallete, lightPallete } from "../lib/theme";
+import mainParticle from "../styles/presets/basic.json"
+
+export const ParticlesContext = createContext({} as {
+  mainParticle: object,
+});
 
 const MyApp: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
   const [dark, toggleDark] = useReducer((dark: boolean) => { return !dark }, true)
@@ -22,13 +27,13 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
       }),
     [prefersDarkMode]
   );
-
   return (
-    <ThemeProvider theme={theme}>
-      <Layout dark={dark} toggleDark={toggleDark} >
-        <Component {...pageProps} />
-      </Layout>
-    </ThemeProvider>
+    <ParticlesContext.Provider value={{ mainParticle: mainParticle, }}>
+      <ThemeProvider theme={theme}>
+        <Layout dark={dark} toggleDark={toggleDark} >
+          <Component {...pageProps} />
+        </Layout>
+      </ThemeProvider></ParticlesContext.Provider >
   );
 }
 

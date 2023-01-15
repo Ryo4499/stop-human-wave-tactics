@@ -4,7 +4,7 @@ import { useRouter } from "next/router"
 import { request } from "graphql-request"
 import { getBackendURL } from "../../lib/graphqlClient";
 import { ArticleEntity, ArticleEntityResponseCollection } from "../../types/apollo_client";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { getArticles } from "../../graphql/getArticles";
 import Sidebar from "../../components/Common/Sidebar";
 import { isMobile } from "react-device-detect";
@@ -13,6 +13,7 @@ import { getCategories } from "../../graphql/getCategories";
 import { getCategoriesUUID } from "../../graphql/getCategoriesUUID";
 import { Articles } from "../../components/Articles";
 import { DisplayError } from "../../components/Common/DisplayError";
+import { ParticlesContext } from "../_app"
 
 export const getStaticPaths = async ({ locales }: { locales: Array<string> }) => {
     const paths: Array<UUIDParams> = []
@@ -36,6 +37,7 @@ export const getStaticProps = async ({ params, locale }: UUIDStaticProps) => {
             }
         },
         pagination: {},
+        sort: ["updatedAt:Desc", "publishedAt:Desc"],
         locale: locale
     }
     const categories_variables = { pagination: {}, locale: locale }
@@ -65,6 +67,7 @@ export const getStaticProps = async ({ params, locale }: UUIDStaticProps) => {
 };
 const ArticlesPage: NextPage<ArticlesProps> = ({ articles, categories }) => {
     const router = useRouter()
+    const { mainParticle } = useContext(ParticlesContext)
     const [page, setPage] = useState(
         router.query.page === undefined
             ? 1
@@ -82,7 +85,7 @@ const ArticlesPage: NextPage<ArticlesProps> = ({ articles, categories }) => {
                         <Sidebar categories={categories} />
                     </Grid>
                     <Grid container direction="column" p={1.5} xs={12} sx={{ flexGrow: 1 }}>
-                        <Articles page={page} setPage={setPage} articles={articles} />
+                        <Articles page={page} setPage={setPage} articles={articles} mainParticle={mainParticle} />
                     </Grid>
                 </Grid> :
                 <Grid
@@ -91,7 +94,7 @@ const ArticlesPage: NextPage<ArticlesProps> = ({ articles, categories }) => {
                     sx={{ flexGrow: 1 }}
                 >
                     <Grid container xs={10} sx={{ flexGrow: 1 }}>
-                        <Articles page={page} setPage={setPage} articles={articles} />
+                        <Articles page={page} setPage={setPage} articles={articles} mainParticle={mainParticle} />
                     </Grid>
                     <Grid container xs={2} sx={{ flexGrow: 1 }}>
                         <Sidebar categories={categories} />

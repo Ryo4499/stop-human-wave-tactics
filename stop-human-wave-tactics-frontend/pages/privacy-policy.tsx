@@ -10,6 +10,8 @@ import { getBackendURL } from "../lib/graphqlClient";
 import { CategoryEntityResponseCollection } from "../types/apollo_client";
 import { DisplayError } from "../components/Common/DisplayError";
 import { CategoriesProps, IStaticProps } from "../types/general";
+import { ParticlesContext } from "./_app";
+import { useContext } from "react";
 
 export const getStaticProps = async ({ locales, locale, defaultLocale }: IStaticProps) => {
   const variables = { pagination: {}, locale: locale }
@@ -116,6 +118,7 @@ const PrivacyPolicyContent: NextPage = () => {
 }
 
 const PrivacyPolicy: NextPage<CategoriesProps> = ({ categories }) => {
+  const { mainParticle } = useContext(ParticlesContext)
   if (categories) {
     return <>
       {isMobile ?
