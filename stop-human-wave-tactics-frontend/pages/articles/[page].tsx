@@ -2,12 +2,12 @@ import { GraphQLAbstractType } from "graphql";
 import type { GetStaticProps, NextPage } from "next";
 import Grid from "@mui/material/Unstable_Grid2"
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { request } from "graphql-request"
 import { Articles } from "../../components/Articles";
 import { getArticles } from "../../graphql/getArticles";
 import { getArticlesPages } from "../../graphql/getArticlesPages";
-import { getBackendURL, getClient, getProxyURL } from "../../lib/graphqlClient";
+import { getBackendURL, getClient } from "../../lib/graphqlClient";
 import { getPageSize } from "../../lib/pagination";
 import { ArticleEntityResponseCollection } from "../../types/apollo_client";
 import { DisplayError } from "../../components/Common/DisplayError";
@@ -15,6 +15,7 @@ import Sidebar from "../../components/Common/Sidebar";
 import { isMobile } from "react-device-detect";
 import { ArticlesProps, PageParams, PagesStaticProps } from "../../types/general";
 import { getCategories } from "../../graphql/getCategories";
+import { ParticlesContext } from "../_app";
 
 const client = getClient()
 
@@ -39,7 +40,7 @@ export const getStaticPaths = async ({ locales }: { locales: Array<string> }) =>
 }
 
 export const getStaticProps = async ({ params, locale }: PagesStaticProps) => {
-    const articles_variables = { pagination: { page: parseInt(params.page, 10), pageSize: getPageSize() }, locale: locale }
+    const articles_variables = { pagination: { page: parseInt(params.page, 10), pageSize: getPageSize() }, sort: ["updatedAt:Desc", "publishedAt:Desc"], locale: locale }
     const categories_variables = { pagination: {}, locale: locale }
     const categoriws_result = await request(getBackendURL(), getCategories, categories_variables).then(({ categories }) => {
         return categories
@@ -69,6 +70,7 @@ export const getStaticProps = async ({ params, locale }: PagesStaticProps) => {
 
 const ArticlesPage: NextPage<ArticlesProps> = ({ articles, categories }) => {
     const router = useRouter()
+    const { mainParticle } = useContext(ParticlesContext)
     const [page, setPage] = useState(
         router.query.page === undefined
             ? 1
@@ -86,7 +88,7 @@ const ArticlesPage: NextPage<ArticlesProps> = ({ articles, categories }) => {
                         <Sidebar categories={categories} />
                     </Grid>
                     <Grid container direction="column" p={1.5} xs={12} sx={{ flexGrow: 1 }}>
-                        <Articles page={page} setPage={setPage} articles={articles} />
+                        <Articles page={page} setPage={setPage} articles={articles} mainParticle={mainParticle} />
                     </Grid>
                 </Grid> :
                 <Grid
@@ -95,7 +97,7 @@ const ArticlesPage: NextPage<ArticlesProps> = ({ articles, categories }) => {
                     sx={{ flexGrow: 1 }}
                 >
                     <Grid container xs={10} sx={{ flexGrow: 1 }}>
-                        <Articles page={page} setPage={setPage} articles={articles} />
+                        <Articles page={page} setPage={setPage} articles={articles} mainParticle={mainParticle} />
                     </Grid>
                     <Grid container xs={2} sx={{ flexGrow: 1 }}>
                         <Sidebar categories={categories} />

@@ -8,14 +8,34 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import Stack from "@mui/material/Stack";
-import { source_code_pro } from "../../src/font";
+import { source_code_pro } from "../../lib/font";
 import { useLocale } from "../../lib/locale"
 import { isMobile } from "react-device-detect"
 import { CategoriesProps } from "../../types/general";
 import { Categories } from "../Category";
+import { Particles } from "tsparticles-engine";
+import { loadFull } from "tsparticles"
+import { Engine } from "tsparticles-engine"
+import { useCallback } from "react";
+import { useRouter } from "next/router";
 
 const Sidebar = ({ categories }: CategoriesProps) => {
+  const router = useRouter()
   const { locale, locales, t } = useLocale();
+
+  const submitHandle = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    console.log("call")
+    if (e.key === "Enter") {
+      e.preventDefault()
+      console.log(e.target.value)
+      router.push({ pathname: "/search", query: { title: e.target.value } })
+    }
+  }
+
+  // load particles
+  const particlesInit = useCallback(async (engine: Engine) => {
+    await loadFull(engine);
+  }, []);
   return (
     <Grid container direction="column" sx={{ backgroundColor: 'background.default', flexGrow: 1 }} >
       {
@@ -25,7 +45,9 @@ const Sidebar = ({ categories }: CategoriesProps) => {
               <SearchIcon fontSize="large" />
             </Grid>
             <Grid xs={11}>
-              <TextField sx={{ flexGrow: 1 }} id="outlined-basic" label={t.search} variant="outlined" />
+              <TextField sx={{ flexGrow: 1 }} id="outlined-basic" label={t.search} variant="outlined"
+                onKeyDown={submitHandle}
+              />
             </Grid>
           </Grid >
           :
@@ -37,7 +59,7 @@ const Sidebar = ({ categories }: CategoriesProps) => {
                 <SearchIcon fontSize="large" />
               </Grid >
               <Grid container xs={8}>
-                <TextField sx={{ flexGrow: 1 }} id="outlined-basic" label={t.search} variant="outlined" />
+                <TextField sx={{ flexGrow: 1 }} id="outlined-basic" label={t.search} variant="outlined" onKeyDown={submitHandle} />
               </Grid>
               <Grid container xs={1}>
               </Grid>
@@ -47,8 +69,14 @@ const Sidebar = ({ categories }: CategoriesProps) => {
             </Grid>
             <Grid container ml={"2rem"}>
               <ThemeProvider theme={source_code_pro}>
-                <Grid container xs={12}>
-                  <Typography variant="h6">AR44</Typography>
+                <Grid container py={0.5}>
+                  <Grid container xs={12}>
+                    <Typography variant="subtitle1">Author</Typography>
+                  </Grid>
+                  <Grid container xs={1}></Grid>
+                  <Grid container xs={11} >
+                    <Typography variant="subtitle1">{t.user}</Typography>
+                  </Grid>
                 </Grid>
                 <Grid container py={0.5}>
                   <Grid container xs={12}>
@@ -85,9 +113,9 @@ const Sidebar = ({ categories }: CategoriesProps) => {
                     </Stack>
                   </Grid>
                 </Grid>
+                <Categories categories={categories} />
               </ThemeProvider>
             </Grid>
-            <Categories categories={categories} />
           </Grid>
       }
     </Grid >
