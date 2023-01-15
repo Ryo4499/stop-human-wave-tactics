@@ -7,7 +7,7 @@ export default ({ env }) => ({
       database: env('POSTGRES_DB'),
       user: env('POSTGRES_USER'),
       password: env('POSTGRES_PASSWORD'),
-      ssl: (env('DB_SSL').toLowerCase() == "true"),
+      ssl: env.bool('DB_SSL', false),
     },
   },
 });
