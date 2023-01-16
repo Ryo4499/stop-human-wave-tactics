@@ -5,7 +5,7 @@ module.exports = {
   },
   env: {
     PAGESIZE: 6,
-    NEXT_PUBLIC_BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL,
+    NEXT_PUBLIC_BACKEND_URL: "http://back:1337/graphql",
   },
   i18n: {
     locales: ['en', 'ja'],

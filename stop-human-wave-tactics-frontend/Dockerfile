@@ -22,7 +22,6 @@ ARG MY_USER
 ARG MY_GROUP
 ARG MODE
 
-ENV NEXT_PUBLIC_BACKEND_URL="http://back:1337/graphql"
 USER $MY_USER
 
 WORKDIR "/home/${MY_USER}/stop-human-wave-tactics-frontend"
