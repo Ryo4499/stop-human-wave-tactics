@@ -8,7 +8,6 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import Stack from "@mui/material/Stack";
-import { source_code_pro } from "../../lib/font";
 import { useLocale } from "../../lib/locale"
 import { isMobile } from "react-device-detect"
 import { CategoriesProps } from "../../types/general";
@@ -68,53 +67,51 @@ const Sidebar = ({ categories }: CategoriesProps) => {
               <Avatar sx={{ width: "8rem", height: "8rem" }} alt="Avater" src="/ar44.jpg" />
             </Grid>
             <Grid container ml={"2rem"}>
-              <ThemeProvider theme={source_code_pro}>
-                <Grid container py={0.5}>
-                  <Grid container xs={12}>
-                    <Typography variant="subtitle1">Author</Typography>
-                  </Grid>
-                  <Grid container xs={1}></Grid>
-                  <Grid container xs={11} >
-                    <Typography variant="subtitle1">{t.user}</Typography>
-                  </Grid>
+              <Grid container py={0.5}>
+                <Grid container xs={12}>
+                  <Typography variant="subtitle1">Author</Typography>
                 </Grid>
-                <Grid container py={0.5}>
-                  <Grid container xs={12}>
-                    <Typography variant="subtitle1">Jobs</Typography>
-                  </Grid>
-                  <Grid container xs={1}></Grid>
-                  <Grid container xs={11}>
-                    <Typography variant="subtitle2">AI Enginner</Typography>
-                  </Grid>
-                  <Grid container xs={1}></Grid>
-                  <Grid container xs={11}>
-                    <Typography variant="subtitle2">Full Stack Enginner</Typography>
-                  </Grid>
+                <Grid container xs={1}></Grid>
+                <Grid container xs={11} >
+                  <Typography variant="subtitle1">{t.user}</Typography>
                 </Grid>
-                <Grid container direction="row" xs={12} py={0.5}>
-                  <Grid container xs={12} py={0.5}>
-                    <Typography variant="subtitle1">Social Media</Typography>
-                  </Grid>
-                  <Grid container xs={1}></Grid>
-                  <Grid container xs={11}>
-                    <Stack direction="row" spacing={0.8}>
-                      <a href="https://github.com/Ryo4499">
-                        <GitHubIcon sx={{ fontSize: "1.4rem" }} />
-                      </a>
-                      <a href="">
-                        <TwitterIcon sx={{ fontSize: "1.4rem" }} />
-                      </a>
-                      <a href="">
-                        <FacebookIcon sx={{ fontSize: "1.4rem" }} />
-                      </a>
-                      <a href="">
-                        <InstagramIcon sx={{ fontSize: "1.4rem" }} />
-                      </a>
-                    </Stack>
-                  </Grid>
+              </Grid>
+              <Grid container py={0.5}>
+                <Grid container xs={12}>
+                  <Typography variant="subtitle1">Jobs</Typography>
                 </Grid>
-                <Categories categories={categories} />
-              </ThemeProvider>
+                <Grid container xs={1}></Grid>
+                <Grid container xs={11}>
+                  <Typography variant="subtitle2">AI Enginner</Typography>
+                </Grid>
+                <Grid container xs={1}></Grid>
+                <Grid container xs={11}>
+                  <Typography variant="subtitle2">Full Stack Enginner</Typography>
+                </Grid>
+              </Grid>
+              <Grid container direction="row" xs={12} py={0.5}>
+                <Grid container xs={12} py={0.5}>
+                  <Typography variant="subtitle1">Social Media</Typography>
+                </Grid>
+                <Grid container xs={1}></Grid>
+                <Grid container xs={11}>
+                  <Stack direction="row" spacing={0.8}>
+                    <a href="https://github.com/Ryo4499">
+                      <GitHubIcon sx={{ fontSize: "1.4rem" }} />
+                    </a>
+                    <a href="">
+                      <TwitterIcon sx={{ fontSize: "1.4rem" }} />
+                    </a>
+                    <a href="">
+                      <FacebookIcon sx={{ fontSize: "1.4rem" }} />
+                    </a>
+                    <a href="">
+                      <InstagramIcon sx={{ fontSize: "1.4rem" }} />
+                    </a>
+                  </Stack>
+                </Grid>
+              </Grid>
+              <Categories categories={categories} />
             </Grid>
           </Grid>
       }
