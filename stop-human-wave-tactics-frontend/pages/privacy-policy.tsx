@@ -10,8 +10,11 @@ import { getBackendURL } from "../lib/graphqlClient";
 import { CategoryEntityResponseCollection } from "../types/apollo_client";
 import { DisplayError } from "../components/Common/DisplayError";
 import { CategoriesProps, IStaticProps } from "../types/general";
+import { useCallback, useContext } from "react"
+import Particles from "react-tsparticles";
+import { loadFull } from "tsparticles"
+import { Engine } from "tsparticles-engine"
 import { ParticlesContext } from "./_app";
-import { useContext } from "react";
 
 export const getStaticProps = async ({ locales, locale, defaultLocale }: IStaticProps) => {
   const variables = { pagination: {}, locale: locale }
@@ -36,6 +39,12 @@ export const getStaticProps = async ({ locales, locale, defaultLocale }: IStatic
 
 const PrivacyPolicyContent: NextPage = () => {
   const { locale, locales, t } = useLocale();
+  // load particles
+  const particlesInit = useCallback(async (engine: Engine) => {
+    await loadFull(engine);
+  }, []);
+  const { mainParticle } = useContext(ParticlesContext)
+
   const site_text = t.site_text
   const site_info = site_text.split("\n").map((line, key) => (
     <span key={key}>
@@ -87,6 +96,11 @@ const PrivacyPolicyContent: NextPage = () => {
 
   return (
     <Grid container direction="row">
+      {/* @ts-ignore */}
+      <Particles
+        init={particlesInit}
+        params={mainParticle}
+      />
       <Box>
         <ListItemText primary={t.site_info} secondary={site_info} />
       </Box>
@@ -118,7 +132,6 @@ const PrivacyPolicyContent: NextPage = () => {
 }
 
 const PrivacyPolicy: NextPage<CategoriesProps> = ({ categories }) => {
-  const { mainParticle } = useContext(ParticlesContext)
   if (categories) {
     return <>
       {isMobile ?
