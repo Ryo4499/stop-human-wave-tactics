@@ -9,8 +9,11 @@ import Sidebar from "../components/Common/Sidebar"
 import { isMobile } from "react-device-detect"
 import { DisplayError } from "../components/Common/DisplayError"
 import { CategoriesProps, IStaticProps } from "../types/general"
-import { ParticlesContext } from "./_app";
-import { useContext } from "react"
+import { useCallback, useContext } from "react"
+import Particles from "react-tsparticles";
+import { loadFull } from "tsparticles"
+import { Engine } from "tsparticles-engine"
+import { ParticlesContext } from "./_app"
 
 export const getStaticProps = async ({ locales, locale, defaultLocale }: IStaticProps) => {
     const variables = { pagination: {}, locale: locale }
@@ -34,8 +37,18 @@ export const getStaticProps = async ({ locales, locale, defaultLocale }: IStatic
 };
 
 const PortofolioContent = () => {
+    // load particles
+    const particlesInit = useCallback(async (engine: Engine) => {
+        await loadFull(engine);
+    }, []);
+    const { mainParticle } = useContext(ParticlesContext)
     return (
         <Grid container direction="column" px={4}>
+            {/* @ts-ignore */}
+            <Particles
+                init={particlesInit}
+                params={mainParticle}
+            />
             <Grid>
                 <Typography>
                     Tech Map
@@ -71,7 +84,6 @@ const PortofolioContent = () => {
 }
 
 const Portofolio: NextPage<CategoriesProps> = ({ categories }) => {
-    const { mainParticle } = useContext(ParticlesContext)
     if (categories) {
         return <>
             {isMobile ?
