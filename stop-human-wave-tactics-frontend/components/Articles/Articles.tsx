@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useEffect, useCallback, ChangeEvent, useContext } from "react";
+import { useLayoutEffect, useCallback, ChangeEvent } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import {
   Box,
@@ -69,7 +69,7 @@ export const Articles = ({ page, setPage, articles, mainParticle }: ArticlesProp
     await loadFull(engine);
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     router.beforePopState(({ url, as }: { url: string, as: string }): boolean => {
       if (router.route === url) {
         setPage(parseInt(as.split("/").slice(-1)[0], 10))
