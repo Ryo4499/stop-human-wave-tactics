@@ -1,4 +1,5 @@
 import { ApolloError } from "@apollo/client";
+import Grid from "@mui/material/Unstable_Grid2"
 
 interface MutationError {
   __typename: string;
@@ -9,10 +10,15 @@ interface MutationError {
 interface DisplayErrorProps {
   error?: ApolloError | MutationError;
 }
+
 export const DisplayError = ({ error }: { error: string }) => {
-  return <div>
-    Shoot {error}
-  </div>
+  return (
+    <Grid container sx={{ flexGrow: 1 }}>
+      <Grid>
+        Shoot {error}
+      </Grid>
+    </Grid>
+  )
 }
 
 export const GraphqlError = ({ error }: DisplayErrorProps) => {
@@ -24,7 +30,7 @@ export const GraphqlError = ({ error }: DisplayErrorProps) => {
     error.networkError.result?.errors?.length
   ) {
     return (
-      <>
+      <Grid container sx={{ flexGrow: 1 }}>
         {error.networkError.result.errors.map((error: Error, i: string) => (
           // eslint-disable-next-line react/jsx-key
           <div>
@@ -34,16 +40,16 @@ export const GraphqlError = ({ error }: DisplayErrorProps) => {
             </p>
           </div>
         ))}
-      </>
+      </Grid>
     );
   }
   return (
-    <div>
+    <Grid container sx={{ flexGrow: 1 }}>
       <strong>Shoot!</strong>
       <p data-test="graphql-error">
         {error.message.replace("GraphQL error: ", "")}
       </p>
-    </div>
+    </Grid>
   );
 };
 

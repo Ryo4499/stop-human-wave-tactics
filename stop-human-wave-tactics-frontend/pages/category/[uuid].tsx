@@ -3,17 +3,17 @@ import { NextPage } from "next"
 import { useRouter } from "next/router"
 import { request } from "graphql-request"
 import { getBackendURL } from "../../lib/graphqlClient";
-import { ArticleEntity, ArticleEntityResponseCollection } from "../../types/apollo_client";
+import { ArticleEntity } from "../../types/apollo_client";
 import { useContext, useState } from "react";
-import { getArticles } from "../../graphql/getArticles";
 import Sidebar from "../../components/Common/Sidebar";
 import { isMobile } from "react-device-detect";
-import { ArticlesProps, UUIDParams, UUIDStaticProps } from "../../types/general";
-import { getCategories } from "../../graphql/getCategories";
+import { ArticlesCategorisProps, UUIDParams, UUIDStaticProps } from "../../types/general";
 import { getCategoriesUUID } from "../../graphql/getCategoriesUUID";
 import { Articles } from "../../components/Articles";
-import { DisplayError } from "../../components/Common/DisplayError";
-import { ParticlesContext } from "../_app"
+import { GraphqlError } from "../../components/Common/DisplayError";
+import { getArticlesCategories } from "../../graphql/getArticlesCategories";
+import useSWR from "swr"
+import Loading from "../../components/Common/Loading";
 
 export const getStaticPaths = async ({ locales }: { locales: Array<string> }) => {
     const paths: Array<UUIDParams> = []
@@ -30,7 +30,7 @@ export const getStaticPaths = async ({ locales }: { locales: Array<string> }) =>
 
 
 export const getStaticProps = async ({ params, locale }: UUIDStaticProps) => {
-    const articles_variables = {
+    const variables = {
         filters: {
             category: {
                 uuid: { eq: params.uuid }
@@ -40,19 +40,15 @@ export const getStaticProps = async ({ params, locale }: UUIDStaticProps) => {
         sort: ["updatedAt:Desc", "publishedAt:Desc"],
         locale: locale
     }
-    const categories_variables = { pagination: {}, locale: locale }
-    const categoriws_result = await request(getBackendURL(), getCategories, categories_variables).then(({ categories }) => {
-        return categories
-
+    const res = await request(getBackendURL(), getArticlesCategories, variables).then((result) => {
+        return result
     })
-    const articles_result = await request(getBackendURL(), getArticles, articles_variables).then(({ articles }) => {
-        return articles
-    })
-    if (articles_result != null && categoriws_result != null) {
+    if (res != null) {
         const result = {
             props: {
-                articles: articles_result,
-                categories: categoriws_result
+                articles: res.articles,
+                categories: res.categories,
+                variables: variables,
             },
             notFound: false,
             revalidate: 300,
@@ -65,15 +61,16 @@ export const getStaticProps = async ({ params, locale }: UUIDStaticProps) => {
         }
     }
 };
-const ArticlesPage: NextPage<ArticlesProps> = ({ articles, categories }) => {
+const ArticlesPage: NextPage<ArticlesCategorisProps> = ({ articles, categories, variables }) => {
+    const { data, error, isLoading } = useSWR([getArticlesCategories, variables], { fallbackData: { articles: articles, categories: categories, variables: variables }, revalidateOnMount: true })
     const router = useRouter()
-    const { mainParticle } = useContext(ParticlesContext)
     const [page, setPage] = useState(
         router.query.page === undefined
             ? 1
             : parseInt(router.query.page as string, 10)
     );
-    if (articles) {
+    if (isLoading) return <Loading />
+    if (data != null) {
         return <>
             {isMobile ?
                 <Grid
@@ -82,10 +79,10 @@ const ArticlesPage: NextPage<ArticlesProps> = ({ articles, categories }) => {
                     sx={{ flexGrow: 1 }}
                 >
                     <Grid container p={1.5} xs={12}>
-                        <Sidebar categories={categories} />
+                        <Sidebar categories={data.categories} />
                     </Grid>
                     <Grid container direction="column" p={1.5} xs={12} sx={{ flexGrow: 1 }}>
-                        <Articles page={page} setPage={setPage} articles={articles} mainParticle={mainParticle} />
+                        <Articles page={page} setPage={setPage} articles={data.articles} />
                     </Grid>
                 </Grid> :
                 <Grid
@@ -94,16 +91,16 @@ const ArticlesPage: NextPage<ArticlesProps> = ({ articles, categories }) => {
                     sx={{ flexGrow: 1 }}
                 >
                     <Grid container xs={10} sx={{ flexGrow: 1 }}>
-                        <Articles page={page} setPage={setPage} articles={articles} mainParticle={mainParticle} />
+                        <Articles page={page} setPage={setPage} articles={data.articles} />
                     </Grid>
                     <Grid container xs={2} sx={{ flexGrow: 1 }}>
-                        <Sidebar categories={categories} />
+                        <Sidebar categories={data.categories} />
                     </Grid>
                 </Grid>
             }
         </>
     } else {
-        return <DisplayError error={"page"} />
+        return <GraphqlError error={error} />
     }
 };
 

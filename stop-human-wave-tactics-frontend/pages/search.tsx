@@ -4,37 +4,28 @@ import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import { request } from "graphql-request"
 import { Articles } from "../components/Articles";
-import { getArticles } from "../graphql/getArticles";
-import { getBackendURL, getClient } from "../lib/graphqlClient";
-import { getPageSize } from "../lib/pagination";
-import { ArticleEntityResponseCollection } from "../types/apollo_client";
-import Loading from "../components/Common/Loading";
-import { DisplayError } from "../components/Common/DisplayError";
+import { getBackendURL } from "../lib/graphqlClient";
 import { isMobile } from "react-device-detect";
 import Sidebar from "../components/Common/Sidebar";
-import { ArticlesProps, IStaticProps } from "../types/general";
-import { getCategories } from "../graphql/getCategories";
-import { Categories } from "../components/Category";
-import { ParticlesContext } from "./_app";
+import { ArticlesCategorisProps, IStaticProps } from "../types/general";
 import { NotFound } from "../components/Common/NotFound";
+import { getArticlesCategories } from "../graphql/getArticlesCategories";
+import useSWR from "swr"
+import Loading from "../components/Common/Loading";
+import { GraphqlError } from "../components/Common/DisplayError";
 
-const client = getClient()
 
 export const getStaticProps = async ({ locales, locale, defaultLocale }: IStaticProps) => {
-    const articles_variables = { pagination: {}, sort: ["updatedAt:Desc", "publishedAt:Desc"], locale: locale }
-    const categories_variables = { pagination: {}, locale: locale }
-    const categoriws_result = await request(getBackendURL(), getCategories, categories_variables).then(({ categories }) => {
-        return categories
-
+    const variables = { pagination: {}, sort: ["updatedAt:Desc", "publishedAt:Desc"], locale: locale }
+    const res = await request(getBackendURL(), getArticlesCategories, variables).then((result) => {
+        return result
     })
-    const articles_result = await request(getBackendURL(), getArticles, articles_variables).then(({ articles }) => {
-        return articles
-    })
-    if (articles_result != null && categoriws_result != null) {
+    if (res != null) {
         const result = {
             props: {
-                articles: articles_result,
-                categories: categoriws_result
+                articles: res.articles,
+                categories: res.categories,
+                variables: variables,
             },
             notFound: false,
             revalidate: 300,
@@ -48,61 +39,68 @@ export const getStaticProps = async ({ locales, locale, defaultLocale }: IStatic
     }
 };
 
-const ArticlesIndex: NextPage<ArticlesProps> = ({ articles, categories }) => {
+const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({ articles, categories, variables }) => {
+    const { data, error, isLoading } = useSWR([getArticlesCategories, variables], { fallbackData: { articles: articles, categories: categories, variables: variables }, revalidateOnMount: true })
     const router = useRouter()
-    const filter = router.query.title != null ? router.query.title : ""
-    const { mainParticle } = useContext(ParticlesContext)
+    const filter = router.query.title != null && typeof router.query.title === "string" ? router.query.title : ""
     const [page, setPage] = useState(
         router.query.page == null
             ? 1
             : parseInt(router.query.page as string, 10)
     )
-    const filterArticles = articles.data.filter(
-        (article) => {
-            return article.attributes?.title.indexOf(filter) != -1;
-        })
 
-    const filterArticlesCollection = {
-        data: filterArticles,
-        meta: {
-            pagination: {
-                page: 1,
-                pageCount: 1,
-                pageSize: filterArticles.length,
-                total: 1,
+    if (isLoading) return <Loading />
+    if (data != null) {
+        const filterArticles = data.articles.data.filter(
+            (article) => {
+                return article.attributes?.title.includes(filter)
+            })
+
+        const filterArticlesCollection = {
+            data: filterArticles,
+            meta: {
+                pagination: {
+                    page: 1,
+                    pageCount: 1,
+                    pageSize: filterArticles.length,
+                    total: 1,
+                }
             }
         }
-    }
-    const filterArticlesResponseCollection = Object.assign(articles, filterArticlesCollection)
-    if (filterArticles.length != 0) {
-        return (
-            <Grid
-                container
-                direction="row"
-                sx={{ flexGrow: 1 }}
-            >
-                {isMobile ?
-                    <>
-                        <Grid container xs={12} sx={{ flexGrow: 1 }}>
-                            <Sidebar categories={categories} />
-                        </Grid>
-                        <Grid container direction="column" xs={12} sx={{ flexGrow: 1 }}>
-                            <Articles page={page} setPage={setPage} articles={filterArticlesResponseCollection} mainParticle={mainParticle} />
-                        </Grid>
-                    </>
-                    :
-                    <>
-                        <Grid container xs={10} sx={{ flexGrow: 1 }}>
-                            <Articles page={page} setPage={setPage} articles={filterArticlesResponseCollection} mainParticle={mainParticle} />
-                        </Grid>
-                        <Grid container xs={2} sx={{ flexGrow: 1 }}>
-                            <Sidebar categories={categories} />
-                        </Grid>
-                    </>
-                }
-            </Grid>)
+        const filterArticlesResponseCollection = Object.assign(data.articles, filterArticlesCollection)
+        if (filterArticles.length === 0) {
+            return (
+                <Grid
+                    container
+                    direction="row"
+                    sx={{ flexGrow: 1 }}
+                >
+                    {isMobile ?
+                        <>
+                            <Grid container xs={12} sx={{ flexGrow: 1 }}>
+                                <Sidebar categories={data.categories} />
+                            </Grid>
+                            <Grid container direction="column" xs={12} sx={{ flexGrow: 1 }}>
+                                <Articles page={page} setPage={setPage} articles={filterArticlesResponseCollection} />
+                            </Grid>
+                        </>
+                        :
+                        <>
+                            <Grid container xs={10} sx={{ flexGrow: 1 }}>
+                                <Articles page={page} setPage={setPage} articles={filterArticlesResponseCollection} />
+                            </Grid>
+                            <Grid container xs={2} sx={{ flexGrow: 1 }}>
+                                <Sidebar categories={data.categories} />
+                            </Grid>
+                        </>
+                    }
+                </Grid>)
+        }
+        else {
+            return <NotFound />
+        }
     } else {
-        return <NotFound />
+        return <GraphqlError error={error} />
     }
 }
 

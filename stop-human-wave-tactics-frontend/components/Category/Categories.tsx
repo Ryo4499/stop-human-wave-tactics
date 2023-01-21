@@ -8,11 +8,23 @@ import { DisplayError } from "../Common/DisplayError";
 
 export const Categories = ({ categories }: CategoriesProps) => {
   const { locale, locales, t } = useLocale()
-  const CategoriesContent = categories.data.map(category => (
-    <Grid key={category.id}>
-      <Link href={`/category/${category.attributes?.uuid}`}>{category.attributes?.name} ({category.attributes?.articles?.data.length})</Link>
-    </Grid>
-  ))
+  console.log(categories)
+
+  const CategoriesContent = <Grid>
+    {categories.data.map(category => {
+      if (category.attributes?.uuid != null) {
+        console.log("truw")
+        console.log(category)
+        return <Grid key={category.id} >
+          <Link href={`/category/${category.attributes?.uuid}`}>{category.attributes?.name} ({category.attributes?.articles?.data.length})</Link>
+        </Grid>
+      } else {
+        console.log("false")
+        return null
+      }
+    })}
+  </Grid>
+
   if (categories.data.length === 0) {
     return (
       null

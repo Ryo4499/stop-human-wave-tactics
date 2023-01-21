@@ -7,20 +7,19 @@ import { getCategories } from "../graphql/getCategories"
 import { CategoryEntityResponseCollection } from "../types/apollo_client"
 import Sidebar from "../components/Common/Sidebar"
 import { isMobile } from "react-device-detect"
-import { DisplayError } from "../components/Common/DisplayError"
-import { CategoriesProps, IStaticProps } from "../types/general"
+import { GraphqlError } from "../components/Common/DisplayError"
+import { CategoriesResponseProps, IStaticProps } from "../types/general"
 import { useCallback, useContext } from "react"
-import Particles from "react-tsparticles";
-import { loadFull } from "tsparticles"
-import { Engine } from "tsparticles-engine"
-import { ParticlesContext } from "./_app"
+import useSWR from "swr"
+import Loading from "../components/Common/Loading"
 
 export const getStaticProps = async ({ locales, locale, defaultLocale }: IStaticProps) => {
     const variables = { pagination: {}, locale: locale }
     const result = await request(getBackendURL(), getCategories, variables).then(({ categories }: { categories: CategoryEntityResponseCollection }) => {
         return {
             props: {
-                categories: categories
+                categories: categories,
+                variables: variables
             },
             notFound: false,
             revalidate: 300,
@@ -37,18 +36,8 @@ export const getStaticProps = async ({ locales, locale, defaultLocale }: IStatic
 };
 
 const PortofolioContent = () => {
-    // load particles
-    const particlesInit = useCallback(async (engine: Engine) => {
-        await loadFull(engine);
-    }, []);
-    const { mainParticle } = useContext(ParticlesContext)
     return (
         <Grid container direction="column" px={4}>
-            {/* @ts-ignore */}
-            <Particles
-                init={particlesInit}
-                params={mainParticle}
-            />
             <Grid>
                 <Typography>
                     Tech Map
@@ -83,8 +72,10 @@ const PortofolioContent = () => {
     )
 }
 
-const Portofolio: NextPage<CategoriesProps> = ({ categories }) => {
-    if (categories) {
+const Portofolio: NextPage<CategoriesResponseProps> = ({ categories, variables }) => {
+    const { data, error, isLoading } = useSWR([getCategories, variables], { fallbackData: { categories: categories, variables: variables }, revalidateOnMount: true })
+    if (isLoading) return <Loading />
+    if (data != null) {
         return <>
             {isMobile ?
                 <Grid
@@ -93,7 +84,7 @@ const Portofolio: NextPage<CategoriesProps> = ({ categories }) => {
                     sx={{ flexGrow: 1 }}
                 >
                     <Grid container p={1.5} xs={12}>
-                        <Sidebar categories={categories} />
+                        <Sidebar categories={data.categories} />
                     </Grid>
                     <Grid container direction="column" p={1.5} xs={12} sx={{ flexGrow: 1 }}>
                         <PortofolioContent />
@@ -108,13 +99,13 @@ const Portofolio: NextPage<CategoriesProps> = ({ categories }) => {
                         <PortofolioContent />
                     </Grid>
                     <Grid container xs={2} sx={{ flexGrow: 1 }}>
-                        <Sidebar categories={categories} />
+                        <Sidebar categories={data.categories} />
                     </Grid>
                 </Grid>
             }
         </>
     } else {
-        return <DisplayError error={"page"} />
+        return <GraphqlError error={error} />
     }
 }
 

@@ -1,14 +1,22 @@
+import { Categories } from './../components/Category/Categories';
+import { Articles } from './../components/Articles/Articles';
 import { ArticleEntityResponseCollection, CategoryEntityResponseCollection } from "./apollo_client";
 
 export interface CategoriesProps {
     categories: CategoryEntityResponseCollection
 }
 
-export interface ArticlesProps {
+export interface CategoriesResponseProps {
+    categories: CategoryEntityResponseCollection
+    variables: object
+}
+
+export interface ArticlesCategorisProps {
     articles: ArticleEntityResponseCollection
     categories: CategoryEntityResponseCollection
-    mainParticles: object
+    variables: object
 }
+
 export interface UUIDParams { params: { uuid: string | undefined }, locale: string }
 
 export type UUIDStaticProps = {

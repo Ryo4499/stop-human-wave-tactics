@@ -8,20 +8,19 @@ import { isMobile } from "react-device-detect";
 import { getCategories } from "../graphql/getCategories";
 import { getBackendURL } from "../lib/graphqlClient";
 import { CategoryEntityResponseCollection } from "../types/apollo_client";
-import { DisplayError } from "../components/Common/DisplayError";
-import { CategoriesProps, IStaticProps } from "../types/general";
+import { GraphqlError } from "../components/Common/DisplayError";
+import { CategoriesResponseProps, IStaticProps } from "../types/general";
 import { useCallback, useContext } from "react"
-import Particles from "react-tsparticles";
-import { loadFull } from "tsparticles"
-import { Engine } from "tsparticles-engine"
-import { ParticlesContext } from "./_app";
+import Loading from "../components/Common/Loading";
+import useSWR from "swr"
 
 export const getStaticProps = async ({ locales, locale, defaultLocale }: IStaticProps) => {
   const variables = { pagination: {}, locale: locale }
   const result = await request(getBackendURL(), getCategories, variables).then(({ categories }: { categories: CategoryEntityResponseCollection }) => {
     return {
       props: {
-        categories: categories
+        categories: categories,
+        variables: variables
       },
       notFound: false,
       revalidate: 300,
@@ -39,12 +38,6 @@ export const getStaticProps = async ({ locales, locale, defaultLocale }: IStatic
 
 const PrivacyPolicyContent: NextPage = () => {
   const { locale, locales, t } = useLocale();
-  // load particles
-  const particlesInit = useCallback(async (engine: Engine) => {
-    await loadFull(engine);
-  }, []);
-  const { mainParticle } = useContext(ParticlesContext)
-
   const site_text = t.site_text
   const site_info = site_text.split("\n").map((line, key) => (
     <span key={key}>
@@ -96,11 +89,6 @@ const PrivacyPolicyContent: NextPage = () => {
 
   return (
     <Grid container direction="row">
-      {/* @ts-ignore */}
-      <Particles
-        init={particlesInit}
-        params={mainParticle}
-      />
       <Box>
         <ListItemText primary={t.site_info} secondary={site_info} />
       </Box>
@@ -131,8 +119,10 @@ const PrivacyPolicyContent: NextPage = () => {
   );
 }
 
-const PrivacyPolicy: NextPage<CategoriesProps> = ({ categories }) => {
-  if (categories) {
+const PrivacyPolicy: NextPage<CategoriesResponseProps> = ({ categories, variables }) => {
+  const { data, error, isLoading } = useSWR([getCategories, variables], { fallbackData: { categories: categories, variables: variables }, revalidateOnMount: true })
+  if (isLoading) return <Loading />
+  if (data != null) {
     return <>
       {isMobile ?
         <Grid
@@ -141,7 +131,7 @@ const PrivacyPolicy: NextPage<CategoriesProps> = ({ categories }) => {
           sx={{ flexGrow: 1 }}
         >
           <Grid container p={1.5} xs={12}>
-            <Sidebar categories={categories} />
+            <Sidebar categories={data.categories} />
           </Grid>
           <Grid container direction="column" p={1.5} xs={12} sx={{ flexGrow: 1 }}>
             <PrivacyPolicyContent />
@@ -156,13 +146,13 @@ const PrivacyPolicy: NextPage<CategoriesProps> = ({ categories }) => {
             <PrivacyPolicyContent />
           </Grid>
           <Grid container xs={2} sx={{ flexGrow: 1 }}>
-            <Sidebar categories={categories} />
+            <Sidebar categories={data.categories} />
           </Grid>
         </Grid>
       }
     </>
   } else {
-    return <DisplayError error={"page"} />
+    return <GraphqlError error={error} />
   }
 
 }
