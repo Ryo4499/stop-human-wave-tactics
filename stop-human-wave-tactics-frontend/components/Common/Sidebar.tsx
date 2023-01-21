@@ -1,5 +1,4 @@
 import { Avatar, Typography } from "@mui/material";
-import { ThemeProvider } from "@mui/material/styles";
 import Grid from "@mui/material/Unstable_Grid2";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import TwitterIcon from "@mui/icons-material/Twitter";
@@ -10,13 +9,13 @@ import SearchIcon from "@mui/icons-material/Search";
 import Stack from "@mui/material/Stack";
 import { useLocale } from "../../lib/locale"
 import { isMobile } from "react-device-detect"
-import { CategoriesProps } from "../../types/general";
 import { Categories } from "../Category";
-import { Particles } from "tsparticles-engine";
-import { loadFull } from "tsparticles"
-import { Engine } from "tsparticles-engine"
-import { useCallback } from "react";
 import { useRouter } from "next/router";
+import { CategoryEntityResponseCollection } from "../../types/apollo_client";
+
+interface CategoriesProps {
+  categories: CategoryEntityResponseCollection
+}
 
 const Sidebar = ({ categories }: CategoriesProps) => {
   const router = useRouter()
@@ -26,15 +25,10 @@ const Sidebar = ({ categories }: CategoriesProps) => {
     console.log("call")
     if (e.key === "Enter") {
       e.preventDefault()
-      console.log(e.target.value)
       router.push({ pathname: "/search", query: { title: e.target.value } })
     }
   }
 
-  // load particles
-  const particlesInit = useCallback(async (engine: Engine) => {
-    await loadFull(engine);
-  }, []);
   return (
     <Grid container direction="column" sx={{ backgroundColor: 'background.default', flexGrow: 1 }} >
       {
