@@ -15,7 +15,7 @@ import { getArticlesCategories } from "../graphql/getArticlesCategories";
 import useSWR from "swr"
 
 export const getStaticProps = async ({ locales, locale, defaultLocale }: IStaticProps) => {
-    const variables = { filters: {}, pagination: { pageSize: getPageSize() }, sort: ["updatedAt:Desc", "publishedAt:Desc"], locale: locale }
+    const variables = { filters: {}, pagination: { page: 1, pageSize: getPageSize() }, sort: ["updatedAt:Desc", "publishedAt:Desc"], locale: locale }
     const res = await request(getBackendURL(), getArticlesCategories, variables).then((result) => {
         return result
     })
@@ -27,19 +27,19 @@ export const getStaticProps = async ({ locales, locale, defaultLocale }: IStatic
                 variables: variables,
             },
             notFound: false,
-            revalidate: 300,
+            revalidate: 3600,
         }
         return result
     } else {
         return {
             notFound: true,
-            revalidate: 300
+            revalidate: 3600
         }
     }
 };
 
 const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({ articles, categories, variables }) => {
-    const { data, error, isLoading } = useSWR([getArticlesCategories, variables], { fallbackData: { articles: articles, categories: categories }, revalidateOnMount: true })
+    const { data, error, isLoading } = useSWR([getArticlesCategories, variables], { fallbackData: { articles: articles, categories: categories }, })
     const router = useRouter()
     const [page, setPage] = useState(
         router.query.page == null
@@ -47,7 +47,6 @@ const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({ articles, categories,
             : parseInt(router.query.page as string, 10)
     )
     if (isLoading) return <Loading />
-    console.log(data)
     if (data != null) {
         return (
             <Grid

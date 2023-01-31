@@ -23,43 +23,49 @@ const Header = ({ dark, toggleDark }: { dark: boolean, toggleDark: () => void, }
   if (locales != null) {
     return (
       <Grid container sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
+        <AppBar position="static" sx={{ flexGrow: 1 }}>
           {isMobile ?
-            <Toolbar>
-              <Grid container direction="row" alignItems="center" >
-                <Grid container mt={2} xs={12}>
-                  <Link href="/">
-                    {t.site_name}
-                  </Link>
-                </Grid>
-                <Grid container direction="row" xs={12} justifyContent="flex-end">
-                  <Grid container alignItems="center">
-                    <TranslateIcon />
-                    <FormControl required sx={{ m: 1, minWidth: 60 }} size="small">
-                      <Select defaultValue={locale} value={locale}>
-                        {locales.map((locale: string) => {
-                          return (
-                            <MenuItem key={locale} value={locale}>
-                              {locale}
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
-                    </FormControl>
+            <Toolbar sx={{ flexGrow: 1 }} >
+              <Grid container direction="row" alignItems="center" sx={{ flexGrow: 1 }} m={1}>
+                <Grid container direction="row" xs={12}>
+                  <Grid container>
+                    <Link href="/">
+                      <Typography variant="h5">
+                        {t.site_name}
+                      </Typography>
+                    </Link>
                   </Grid>
-                  <Grid container alignItems="center">
-                    <IconButton color="secondary" onClick={() => toggleDark()}>
-                      <Brightness4Icon />
-                    </IconButton>
+                  <Grid container my={1} justifyContent="flex-end">
+                    <Grid container alignItems="center">
+                      <TranslateIcon />
+                      <FormControl required sx={{ mx: 1, minWidth: 60 }} size="small">
+                        <Select defaultValue={locale} value={locale}>
+                          {locales.map((locale: string) => {
+                            return (
+                              <MenuItem key={locale} value={locale}>
+                                {locale}
+                              </MenuItem>
+                            );
+                          })}
+                        </Select>
+                      </FormControl>
+                      <Grid container alignItems="center">
+                        <IconButton onClick={() => toggleDark()}>
+                          <Brightness4Icon sx={{ color: "text.primary" }} />
+                        </IconButton>
+                      </Grid>
+                    </Grid>
                   </Grid>
                 </Grid>
               </Grid>
             </Toolbar>
             :
-            <Toolbar>
+            <Toolbar sx={{ flexGrow: 1 }}>
               <Grid container sx={{ flexGrow: 1 }}>
                 <Link href="/">
-                  {t.site_name}
+                  <Typography variant="h6">
+                    {t.site_name}
+                  </Typography>
                 </Link>
               </Grid>
               <Grid container alignItems="center">
@@ -77,8 +83,8 @@ const Header = ({ dark, toggleDark }: { dark: boolean, toggleDark: () => void, }
                 </FormControl>
               </Grid>
               <Grid container alignItems="center" >
-                <IconButton color="secondary" onClick={() => toggleDark()}>
-                  <Brightness4Icon />
+                <IconButton onClick={() => toggleDark()}>
+                  <Brightness4Icon sx={{ color: "text.primary" }} />
                 </IconButton>
               </Grid>
             </Toolbar>

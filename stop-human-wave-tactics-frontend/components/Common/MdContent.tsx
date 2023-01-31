@@ -30,8 +30,8 @@ const components = {
 const MdContent = ({ content }: { content: string }) => {
     const codeblocks = require('remark-code-blocks')
     const utf8 = require("remark-utf8")
-    return <ReactMarkdown remarkPlugins={[utf8, codeblocks, remarkToc, ruby, remarkMath, remarkGemoji, remarkStringify, remarkGfm, remarkHighlightjs, remarkParse, remarkHtml, remarkCodeTitle, remarkRehype,]} rehypePlugins={[rehypeKatex, rehypeSanitize]} components={components} >{content}</ReactMarkdown>
-    //return <ReactMarkdown >{content}</ReactMarkdown>
+    //return <ReactMarkdown remarkPlugins={[utf8, codeblocks, remarkToc, ruby, remarkMath, remarkGemoji, remarkStringify, remarkGfm, remarkHighlightjs, remarkParse, remarkHtml, remarkCodeTitle, remarkRehype,]} rehypePlugins={[rehypeKatex, rehypeSanitize]} components={components} >{content}</ReactMarkdown>
+    return <ReactMarkdown remarkPlugins={[codeblocks, remarkMath]} rehypePlugins={[rehypeKatex]} components={components}>{content}</ReactMarkdown>
 }
 
 export default MdContent

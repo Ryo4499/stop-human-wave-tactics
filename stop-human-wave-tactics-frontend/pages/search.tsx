@@ -28,19 +28,19 @@ export const getStaticProps = async ({ locales, locale, defaultLocale }: IStatic
                 variables: variables,
             },
             notFound: false,
-            revalidate: 300,
+            revalidate: 3600,
         }
         return result
     } else {
         return {
             notFound: true,
-            revalidate: 300
+            revalidate: 3600
         }
     }
 };
 
 const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({ articles, categories, variables }) => {
-    const { data, error, isLoading } = useSWR([getArticlesCategories, variables], { fallbackData: { articles: articles, categories: categories, variables: variables }, revalidateOnMount: true })
+    const { data, error, isLoading } = useSWR([getArticlesCategories, variables], { fallbackData: { articles: articles, categories: categories, variables: variables }, })
     const router = useRouter()
     const filter = router.query.title != null && typeof router.query.title === "string" ? router.query.title : ""
     const [page, setPage] = useState(

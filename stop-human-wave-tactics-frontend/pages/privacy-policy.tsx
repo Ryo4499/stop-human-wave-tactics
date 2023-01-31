@@ -1,4 +1,4 @@
-import { Box, Typography, ListItemText } from "@mui/material";
+import { Box, Typography, ListItemText, Link } from "@mui/material";
 import { request } from "graphql-request"
 import Grid from "@mui/material/Unstable_Grid2";
 import { useLocale } from "../lib/locale"
@@ -23,7 +23,7 @@ export const getStaticProps = async ({ locales, locale, defaultLocale }: IStatic
         variables: variables
       },
       notFound: false,
-      revalidate: 300,
+      revalidate: 3600,
     };
   })
   if (result != null) {
@@ -31,7 +31,7 @@ export const getStaticProps = async ({ locales, locale, defaultLocale }: IStatic
   } else {
     return {
       notFound: true,
-      revalidate: 300
+      revalidate: 3600
     }
   }
 };
@@ -88,39 +88,55 @@ const PrivacyPolicyContent: NextPage = () => {
   ));
 
   return (
-    <Grid container direction="row">
-      <Box>
-        <ListItemText primary={t.site_info} secondary={site_info} />
-      </Box>
-      <Box>
-        <ListItemText
-          primary={t.google_ad}
-          secondary={google_ad_info}
-        />
-        <a href={google_ad_url}>{google_ad_url}</a>
-      </Box>
-      <Box>
-        <ListItemText
-          primary={t.google_analysis}
-          secondary={google_analysis_info}
-        />
-        <a href={google_analysis_url}>{google_analysis_url}</a>
-      </Box>
-      <Box>
-        <ListItemText primary={t.copy_right} secondary={copy_right_info} />
-      </Box>
-      <Box>
-        <ListItemText primary={t.link_free} secondary={link_free_info} />
-      </Box>
-      <Box>
-        <ListItemText primary={t.disclaimer} secondary={disclaimer_info} />
-      </Box>
+    <Grid container direction="column" py={2} px={4} spacing={3}>
+      <Grid>
+        <Typography color="text.primary" variant="h6">{t.site_info}</Typography>
+      </Grid>
+      <Grid>
+        <Typography color="text.secondary" variant="body1">{site_info}</Typography>
+      </Grid>
+      <Grid>
+        <Typography color="text.primary" variant="h6">{t.google_ad}</Typography>
+      </Grid>
+      <Grid>
+        <Typography color="text.secondary" variant="body1">{google_ad_info}</Typography>
+        <Link href={google_ad_url} color="text.secondary">
+          <a target="_blank" rel="noopener noreferrer">{google_ad_url}</a>
+        </Link>
+      </Grid>
+      <Grid>
+        <Typography color="text.primary" variant="h6">{t.google_analysis}</Typography>
+      </Grid>
+      <Grid>
+        <Typography color="text.secondary" variant="body1">{google_analysis_info}</Typography>
+        <Link href={google_analysis_url} color="text.secondary">
+          <a target="_blank" rel="noopener noreferrer">{google_analysis_url}</a>
+        </Link>
+      </Grid>
+      <Grid>
+        <Typography color="text.primary" variant="h6">{t.copy_right}</Typography>
+      </Grid>
+      <Grid>
+        <Typography color="text.secondary" variant="body1">{copy_right_info}</Typography>
+      </Grid>
+      <Grid>
+        <Typography color="text.primary" variant="h6">{t.link_free}</Typography>
+      </Grid>
+      <Grid>
+        <Typography color="text.secondary" variant="body1">{link_free_info}</Typography>
+      </Grid>
+      <Grid>
+        <Typography color="text.primary" variant="h6">{t.disclaimer}</Typography>
+      </Grid>
+      <Grid>
+        <Typography color="text.secondary" variant="body1">{disclaimer_info}</Typography>
+      </Grid>
     </Grid>
   );
 }
 
 const PrivacyPolicy: NextPage<CategoriesResponseProps> = ({ categories, variables }) => {
-  const { data, error, isLoading } = useSWR([getCategories, variables], { fallbackData: { categories: categories, variables: variables }, revalidateOnMount: true })
+  const { data, error, isLoading } = useSWR([getCategories, variables], { fallbackData: { categories: categories, variables: variables }, })
   if (isLoading) return <Loading />
   if (data != null) {
     return <>
@@ -141,6 +157,7 @@ const PrivacyPolicy: NextPage<CategoriesResponseProps> = ({ categories, variable
           container
           direction="row"
           sx={{ flexGrow: 1 }}
+          my={2}
         >
           <Grid container xs={10} sx={{ flexGrow: 1 }}>
             <PrivacyPolicyContent />

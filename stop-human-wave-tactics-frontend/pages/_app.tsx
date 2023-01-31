@@ -8,13 +8,16 @@ import React from "react";
 import Layout from "../components/Layouts/Layout";
 import { AppProps } from "next/app";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { darkPallete, lightPallete } from "../lib/theme";
+import { darkPalette, lightPalette } from "../lib/theme";
+import CssBaseline from "@mui/material/CssBaseline";
 import mainParticle from "../styles/presets/basic.json"
 import subParticle from "../styles/presets/collisions.json"
 
 export const ParticlesContext = createContext({} as {
   mainParticle: object,
 });
+
+export const DarkContext = createContext({} as { dark: boolean })
 
 const MyApp: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
   const [dark, toggleDark] = useReducer((dark: boolean) => { return !dark }, true)
@@ -24,23 +27,25 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
       createTheme({
         palette: {
           mode: prefersDarkMode ? "dark" : "light",
-          ...(prefersDarkMode === true
-            ? darkPallete : lightPallete)
+          ...(prefersDarkMode ? darkPalette : lightPalette)
         },
       }),
     [prefersDarkMode]
   );
   const fetcher = (query: any, variables: any) => client.request(query, variables)
   return (
-    <ParticlesContext.Provider value={{ mainParticle: dark ? mainParticle : subParticle }}>
-      <SWRConfig value={{ fetcher }}>
-        <ThemeProvider theme={theme}>
-          <Layout dark={dark} toggleDark={toggleDark} >
-            <Component {...pageProps} />
-          </Layout>
-        </ThemeProvider>
-      </SWRConfig >
-    </ParticlesContext.Provider >
+    <DarkContext.Provider value={{ dark: dark }}>
+      <ParticlesContext.Provider value={{ mainParticle: dark ? mainParticle : subParticle }}>
+        <CssBaseline />
+        <SWRConfig value={{ fetcher, suspense: true, errorRetryCount: 3, revalidateIfStale: true, revalidateOnMount: true, shouldRetryOnError: false }}>
+          <ThemeProvider theme={theme}>
+            <Layout dark={dark} toggleDark={toggleDark} >
+              <Component {...pageProps} />
+            </Layout>
+          </ThemeProvider>
+        </SWRConfig >
+      </ParticlesContext.Provider >
+    </DarkContext.Provider>
   );
 }
 

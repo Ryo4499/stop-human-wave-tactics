@@ -8,18 +8,18 @@ import { DisplayError } from "../Common/DisplayError";
 
 export const Categories = ({ categories }: CategoriesProps) => {
   const { locale, locales, t } = useLocale()
-  console.log(categories)
 
   const CategoriesContent = <Grid>
     {categories.data.map(category => {
       if (category.attributes?.uuid != null) {
-        console.log("truw")
-        console.log(category)
         return <Grid key={category.id} >
-          <Link href={`/category/${category.attributes?.uuid}`}>{category.attributes?.name} ({category.attributes?.articles?.data.length})</Link>
+          <Link href={`/category/${category.attributes?.uuid}`} >
+            <Typography color="text.secondary">
+              {category.attributes?.name} ({category.attributes?.articles?.data.length})
+            </Typography>
+          </Link>
         </Grid>
       } else {
-        console.log("false")
         return null
       }
     })}
@@ -33,7 +33,7 @@ export const Categories = ({ categories }: CategoriesProps) => {
     return (<>
       <Grid container direction="row" py={0.5}>
         <Grid container xs={12} py={0.5}>
-          <Typography>{t.categories}</Typography>
+          <Typography color="text.primary">{t.categories}</Typography>
         </Grid>
         <Grid container xs={1}></Grid>
         <Grid container xs={11}>
