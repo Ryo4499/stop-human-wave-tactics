@@ -43,6 +43,7 @@
     "react-router-dom": "^6.6.2",
     "react-tsparticles": "^2.7.1",
     "rehype-katex": "^6.0.2",
+    "rehype-raw": "^6.1.1",
     "rehype-sanitize": "^5.0.1",
     "remark": "^14.0.2",
     "remark-code-blocks": "^2.0.1",
@@ -51,10 +52,12 @@
     "remark-gfm": "^3.0.1",
     "remark-highlight.js": "^7.0.1",
     "remark-html": "^15.0.1",
+    "remark-html-katex": "^4.0.1",
     "remark-images": "^3.1.0",
     "remark-math": "^5.1.1",
     "remark-parse": "^10.0.1",
     "remark-ruby": "^0.4.0",
+    "remark-slug": "^7.0.1",
     "remark-stringify": "^10.0.2",
     "remark-toc": "^8.0.1",
     "remark-utf8": "^1.1.0",
@@ -62,6 +65,7 @@
     "tls": "^0.0.1",
     "tsparticles": "^2.7.1",
     "tsparticles-engine": "^2.7.1",
+    "unified": "^10.1.2",
     "unist-util-visit": "^4.1.1"
   },
   "peerDependencies": {

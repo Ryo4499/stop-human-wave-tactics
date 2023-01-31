@@ -1,6 +1,6 @@
 import { request } from "graphql-request"
 import Grid from "@mui/material/Unstable_Grid2"
-import { Typography } from "@mui/material"
+import { Link, ListItemText, Typography } from "@mui/material"
 import type { NextPage } from "next"
 import { getBackendURL } from "../lib/graphqlClient"
 import { getCategories } from "../graphql/getCategories"
@@ -12,6 +12,7 @@ import { CategoriesResponseProps, IStaticProps } from "../types/general"
 import { useCallback, useContext } from "react"
 import useSWR from "swr"
 import Loading from "../components/Common/Loading"
+import { useLocale } from "../lib/locale"
 
 export const getStaticProps = async ({ locales, locale, defaultLocale }: IStaticProps) => {
     const variables = { pagination: {}, locale: locale }
@@ -22,7 +23,7 @@ export const getStaticProps = async ({ locales, locale, defaultLocale }: IStatic
                 variables: variables
             },
             notFound: false,
-            revalidate: 300,
+            revalidate: 3600,
         };
     })
     if (result != null) {
@@ -30,50 +31,50 @@ export const getStaticProps = async ({ locales, locale, defaultLocale }: IStatic
     } else {
         return {
             notFound: true,
-            revalidate: 300
+            revalidate: 3600
         }
     }
 };
 
 const PortofolioContent = () => {
+    const { locale, locales, t } = useLocale();
+    const bookmemo = "BookMemo"
+    const techforward = "TechForward"
+    const abount_bookmemo = t.about_bookmemo.split("\n").map((line, key) => <span key={key}>{line}<br /></span>)
+    const abount_techforward = t.about_techforward.split("\n").map((line, key) => <span key={key}>{line}<br /></span>)
+    const bookmemo_url = "https://google.com"
+    const techforward_url = "https://google.com"
+
     return (
-        <Grid container direction="column" px={4}>
-            <Grid>
-                <Typography>
-                    Tech Map
-                </Typography>
-                <a href=""></a>
-                <ul>
-                    使用技術
-                    <li>
-                        Nuxtjs
-                    </li>
-                    <li>
-                        Flask
-                    </li>
-                    <li>
-                        Docker
-                    </li>
-                </ul>
+        <Grid container direction="column" px={4} py={2} spacing={3}>
+            <Grid spacing={2}>
+                <Grid>
+                    <Typography color="text.primary" variant="h6">{techforward}</Typography>
+                </Grid>
+                <Grid>
+                    <Typography color="text.secondary" variant="body1">{abount_techforward}</Typography>
+                    <Link href={techforward_url} color="text.secondary">
+                        <a target="_blank" rel="noopener noreferrer">{techforward_url}</a>
+                    </Link>
+                </Grid>
             </Grid>
-            <Grid>
-                <Typography>
-                    Bookmemo
-                </Typography>
-                <a href=""></a>
-                <ul>
-                    使用技術
-                    <li>
-                        Spring Boot
-                    </li>
-                </ul>
+            <Grid spacing={2}>
+                <Grid>
+                    <Typography color="text.primary" variant="h6">{bookmemo}</Typography>
+                </Grid>
+                <Grid>
+                    <Typography color="text.secondary" variant="body1">{abount_bookmemo}</Typography>
+                    <Link href={bookmemo_url} color="text.secondary">
+                        <a target="_blank" rel="noopener noreferrer">{bookmemo_url}</a>
+                    </Link>
+                </Grid>
             </Grid>
         </Grid>
     )
 }
 
 const Portofolio: NextPage<CategoriesResponseProps> = ({ categories, variables }) => {
-    const { data, error, isLoading } = useSWR([getCategories, variables], { fallbackData: { categories: categories, variables: variables }, revalidateOnMount: true })
+    const { data, error, isLoading } = useSWR([getCategories, variables], { fallbackData: { categories: categories, variables: variables }, })
     if (isLoading) return <Loading />
     if (data != null) {
         return <>

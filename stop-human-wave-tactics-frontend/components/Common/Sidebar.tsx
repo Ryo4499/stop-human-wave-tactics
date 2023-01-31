@@ -22,7 +22,6 @@ const Sidebar = ({ categories }: CategoriesProps) => {
   const { locale, locales, t } = useLocale();
 
   const submitHandle = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    console.log("call")
     if (e.key === "Enter") {
       e.preventDefault()
       router.push({ pathname: "/search", query: { title: e.target.value } })
@@ -30,15 +29,13 @@ const Sidebar = ({ categories }: CategoriesProps) => {
   }
 
   return (
-    <Grid container direction="column" sx={{ backgroundColor: 'background.default', flexGrow: 1 }} >
+    <Grid container direction="column" sx={{ backgroundColor: 'background.sidebar', flexGrow: 1 }} >
       {
         isMobile ?
           < Grid container direction="row" justifyContent="stretch" alignItems="center" my={2} px={2} sx={{ flexGrow: 1 }}>
-            <Grid xs={1}>
-              <SearchIcon fontSize="large" />
-            </Grid>
-            <Grid xs={11}>
-              <TextField sx={{ flexGrow: 1 }} id="outlined-basic" label={t.search} variant="outlined"
+            <Grid container xs={12} alignItems="center">
+              <SearchIcon fontSize="large" sx={{ color: "text.primary" }} />
+              <TextField sx={{ ml: 1, mr: 2, flexGrow: 1, color: "text.primary", "& label": { color: "text.primary" } }} id="outlined-basic" label={t.search} variant="outlined"
                 onKeyDown={submitHandle}
               />
             </Grid>
@@ -48,11 +45,11 @@ const Sidebar = ({ categories }: CategoriesProps) => {
             < Grid container direction="row" justifyContent="center" alignItems="center" my={2} xs={12}>
               <Grid container xs={1}>
               </Grid>
-              <Grid container xs={2} mr={"-1rem"}>
-                <SearchIcon fontSize="large" />
+              <Grid container xs={2}>
+                <SearchIcon fontSize="large" sx={{ color: "text.primary" }} />
               </Grid >
               <Grid container xs={8}>
-                <TextField sx={{ flexGrow: 1 }} id="outlined-basic" label={t.search} variant="outlined" onKeyDown={submitHandle} />
+                <TextField sx={{ flexGrow: 1, color: "text.primary", "& label": { color: "text.primary" } }} id="outlined-basic" label={t.search} variant="outlined" onKeyDown={submitHandle} />
               </Grid>
               <Grid container xs={1}>
               </Grid>
@@ -63,44 +60,44 @@ const Sidebar = ({ categories }: CategoriesProps) => {
             <Grid container ml={"2rem"}>
               <Grid container py={0.5}>
                 <Grid container xs={12}>
-                  <Typography variant="subtitle1">Author</Typography>
+                  <Typography variant="subtitle1" color="text.primary">Author</Typography>
                 </Grid>
                 <Grid container xs={1}></Grid>
                 <Grid container xs={11} >
-                  <Typography variant="subtitle1">{t.user}</Typography>
+                  <Typography variant="subtitle1" color="text.secondary">{t.user}</Typography>
                 </Grid>
               </Grid>
               <Grid container py={0.5}>
                 <Grid container xs={12}>
-                  <Typography variant="subtitle1">Jobs</Typography>
+                  <Typography variant="subtitle1" color="text.primary">Jobs</Typography>
                 </Grid>
                 <Grid container xs={1}></Grid>
                 <Grid container xs={11}>
-                  <Typography variant="subtitle2">AI Enginner</Typography>
+                  <Typography variant="subtitle2" color="text.secondary">AI Enginner</Typography>
                 </Grid>
                 <Grid container xs={1}></Grid>
                 <Grid container xs={11}>
-                  <Typography variant="subtitle2">Full Stack Enginner</Typography>
+                  <Typography variant="subtitle2" color="text.secondary">Full Stack Enginner</Typography>
                 </Grid>
               </Grid>
               <Grid container direction="row" xs={12} py={0.5}>
                 <Grid container xs={12} py={0.5}>
-                  <Typography variant="subtitle1">Social Media</Typography>
+                  <Typography variant="subtitle1" color="text.primary">Social Media</Typography>
                 </Grid>
                 <Grid container xs={1}></Grid>
                 <Grid container xs={11}>
                   <Stack direction="row" spacing={0.8}>
                     <a href="https://github.com/Ryo4499">
-                      <GitHubIcon sx={{ fontSize: "1.4rem" }} />
+                      <GitHubIcon sx={{ fontSize: "1.4rem", color: "text.secondary" }} />
                     </a>
                     <a href="">
-                      <TwitterIcon sx={{ fontSize: "1.4rem" }} />
+                      <TwitterIcon sx={{ fontSize: "1.4rem", color: "text.secondary" }} />
                     </a>
                     <a href="">
-                      <FacebookIcon sx={{ fontSize: "1.4rem" }} />
+                      <FacebookIcon sx={{ fontSize: "1.4rem", color: "text.secondary" }} />
                     </a>
                     <a href="">
-                      <InstagramIcon sx={{ fontSize: "1.4rem" }} />
+                      <InstagramIcon sx={{ fontSize: "1.4rem", color: "text.secondary" }} />
                     </a>
                   </Stack>
                 </Grid>
