@@ -22,6 +22,7 @@ export const darkPalette = {
     text: {
         primary: "#DA59D9",
         secondary: "#E3E3E3",
+        link: "#4889EE"
     },
     typography: {
         fontFamily: [
@@ -41,28 +42,29 @@ export const darkPalette = {
 
 export const lightPalette = {
     primary: {
-        main: "#DA59D9"
+        main: "#34B8C9",
     },
     secondary: {
-        main: "#FF8FFF"
+        main: "#3233AA"
     },
     divider: "#EEEEE9",
     action: {
-        active: "#484923",
+        active: "#FFFFFF",
         hover: "#ddda32",
-        selected: "#83f384",
+        selected: "#feeefe",
         disabled: "#382934",
         disabledBackground: "#339388",
     },
     background: {
         default: "#ffffff",
         paper: "#fffff8",
-        content: "#000000",
-        sidebar: "#000000",
+        content: "#407090",
+        sidebar: "#70a3b5",
     },
     text: {
-        primary: "#000000",
-        secondary: "#842900",
+        primary: "#EEF0EE",
+        secondary: "#ECECE5",
+        link: "#e1e119"
     },
     typography: {
         fontFamily: [

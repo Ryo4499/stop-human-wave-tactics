@@ -10,7 +10,6 @@ import { getBackendURL } from "../lib/graphqlClient";
 import { CategoryEntityResponseCollection } from "../types/apollo_client";
 import { GraphqlError } from "../components/Common/DisplayError";
 import { CategoriesResponseProps, IStaticProps } from "../types/general";
-import { useCallback, useContext } from "react"
 import Loading from "../components/Common/Loading";
 import useSWR from "swr"
 
@@ -100,7 +99,7 @@ const PrivacyPolicyContent: NextPage = () => {
       </Grid>
       <Grid>
         <Typography color="text.secondary" variant="body1">{google_ad_info}</Typography>
-        <Link href={google_ad_url} color="text.secondary">
+        <Link href={google_ad_url} color="text.link">
           <a target="_blank" rel="noopener noreferrer">{google_ad_url}</a>
         </Link>
       </Grid>
@@ -109,7 +108,7 @@ const PrivacyPolicyContent: NextPage = () => {
       </Grid>
       <Grid>
         <Typography color="text.secondary" variant="body1">{google_analysis_info}</Typography>
-        <Link href={google_analysis_url} color="text.secondary">
+        <Link href={google_analysis_url} color="text.link">
           <a target="_blank" rel="noopener noreferrer">{google_analysis_url}</a>
         </Link>
       </Grid>

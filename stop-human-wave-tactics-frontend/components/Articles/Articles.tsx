@@ -81,8 +81,8 @@ export const Articles = ({ page, setPage, articles }: ArticlesProps) => {
             {articles?.data.map((article) => {
               if (article.attributes?.uuid != null) {
                 return (
-                  <Grid xs={12} key={article.id}>
-                    <Card>
+                  <Grid xs={12} key={article.id} >
+                    <Card sx={{ backgroundColor: "background.content" }}>
                       <CardActionArea>
                         <CardContent>
                           <Grid container justifyContent="center" mb={4}>
@@ -126,7 +126,9 @@ export const Articles = ({ page, setPage, articles }: ArticlesProps) => {
                       </CardActionArea>
                       <CardActions >
                         <Button onClick={() => { router.push(`/article/${article.attributes?.uuid}`) }} size="small">
-                          More Details
+                          <Typography variant="body2" color="text.link">
+                            {t.more_details}
+                          </Typography>
                         </Button>
                       </CardActions>
                     </Card>
@@ -144,7 +146,7 @@ export const Articles = ({ page, setPage, articles }: ArticlesProps) => {
                 if (article.attributes?.uuid != null) {
                   return (
                     <Grid container direction="column" sx={{ flexGrow: 1 }} key={article.id} xs={6} p={2}>
-                      <Card sx={{ display: "flex", justifyContent: "stretch", alignContent: "stretch" }}>
+                      <Card sx={{ display: "flex", justifyContent: "stretch", alignContent: "stretch", backgroundColor: "background.content" }}>
                         <Stack sx={{ flexGrow: 1 }}>
                           <CardContent sx={{ flexGrow: 1 }}>
                             <Grid container justifyContent="center" mb={4}>
@@ -188,7 +190,9 @@ export const Articles = ({ page, setPage, articles }: ArticlesProps) => {
                           <CardActions sx={{ flexGrow: 1 }}>
                             <Grid container mb={2} ml={1}>
                               <Button onClick={() => { router.push(`/article/${article.attributes?.uuid}`) }} size="small">
-                                More Details
+                                <Typography variant="body2" color="text.link">
+                                  {t.more_details}
+                                </Typography>
                               </Button>
                             </Grid>
                           </CardActions>
