@@ -37,13 +37,15 @@ const Header = ({ dark, toggleDark }: { dark: boolean, toggleDark: () => void, }
                   </Grid>
                   <Grid container my={1} justifyContent="flex-end">
                     <Grid container alignItems="center">
-                      <TranslateIcon />
+                      <TranslateIcon sx={{ color: "text.primary" }} />
                       <FormControl required sx={{ mx: 1, minWidth: 60 }} size="small">
                         <Select defaultValue={locale} value={locale}>
                           {locales.map((locale: string) => {
                             return (
-                              <MenuItem key={locale} value={locale}>
-                                {locale}
+                              <MenuItem key={locale} value={locale} >
+                                <Typography color="text.primary" noWrap>
+                                  {locale}
+                                </Typography>
                               </MenuItem>
                             );
                           })}
@@ -51,7 +53,7 @@ const Header = ({ dark, toggleDark }: { dark: boolean, toggleDark: () => void, }
                       </FormControl>
                       <Grid container alignItems="center">
                         <IconButton onClick={() => toggleDark()}>
-                          <Brightness4Icon sx={{ color: "text.primary" }} />
+                          <Brightness4Icon />
                         </IconButton>
                       </Grid>
                     </Grid>
@@ -63,19 +65,21 @@ const Header = ({ dark, toggleDark }: { dark: boolean, toggleDark: () => void, }
             <Toolbar sx={{ flexGrow: 1 }}>
               <Grid container sx={{ flexGrow: 1 }}>
                 <Link href="/">
-                  <Typography variant="h6">
+                  <Typography variant="h6" color="text.primary">
                     {t.site_name}
                   </Typography>
                 </Link>
               </Grid>
               <Grid container alignItems="center">
-                <TranslateIcon sx={{ mx: 1 }} />
+                <TranslateIcon sx={{ mx: 1, color: "text.primary" }} />
                 <FormControl required size="small">
                   <Select defaultValue={locale} value={locale}>
                     {locales.map((locale: string) => {
                       return (
                         <MenuItem key={locale} value={locale} onClick={handleLocaleChange}>
-                          {locale}
+                          <Typography color="text.primary" noWrap>
+                            {locale}
+                          </Typography>
                         </MenuItem>
                       );
                     })}

@@ -11,7 +11,7 @@ const Footer = () => {
     <Grid container xs={12} >
       <AppBar position="static">
         <Toolbar >
-          <Grid container justifyContent="center" alignItems="center" xs={12}>
+          <Grid container justifyContent="center" alignItems="center" xs={12} sx={{ color: "text.primary" }}>
             <Grid container mx={1}>
               <Link href="/">
                 {t.top}
