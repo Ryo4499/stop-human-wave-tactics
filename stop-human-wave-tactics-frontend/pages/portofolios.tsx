@@ -53,7 +53,7 @@ const PortofolioContent = () => {
                 </Grid>
                 <Grid>
                     <Typography color="text.secondary" variant="body1">{abount_techforward}</Typography>
-                    <Link href={techforward_url} color="text.secondary">
+                    <Link href={techforward_url} color="text.link">
                         <a target="_blank" rel="noopener noreferrer">{techforward_url}</a>
                     </Link>
                 </Grid>
@@ -64,7 +64,7 @@ const PortofolioContent = () => {
                 </Grid>
                 <Grid>
                     <Typography color="text.secondary" variant="body1">{abount_bookmemo}</Typography>
-                    <Link href={bookmemo_url} color="text.secondary">
+                    <Link href={bookmemo_url} color="text.link">
                         <a target="_blank" rel="noopener noreferrer">{bookmemo_url}</a>
                     </Link>
                 </Grid>
