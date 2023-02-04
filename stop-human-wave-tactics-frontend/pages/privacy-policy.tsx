@@ -7,7 +7,7 @@ import Sidebar from "../components/Common/Sidebar";
 import { isMobile } from "react-device-detect";
 import { getCategories } from "../graphql/getCategories";
 import { getBackendURL } from "../lib/graphqlClient";
-import { CategoryEntityResponseCollection } from "../types/apollo_client";
+import { CategoryEntityResponseCollection } from "../types/graphql_res";
 import { GraphqlError } from "../components/Common/DisplayError";
 import { CategoriesResponseProps, IStaticProps } from "../types/general";
 import Loading from "../components/Common/Loading";

@@ -2,7 +2,7 @@ overwrite: true
 schema: schema.graphql
 documents: graphql/**/*.graphql
 generates:
-  types/apollo_client.ts:
+  types/graphql_res.ts:
     plugins:
       - typescript
       - typescript-operations

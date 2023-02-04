@@ -7,7 +7,7 @@ import { Articles } from "../../components/Articles";
 import { getArticlesPages } from "../../graphql/getArticlesPages";
 import { getBackendURL } from "../../lib/graphqlClient";
 import { getPageSize } from "../../lib/pagination";
-import { ArticleEntityResponseCollection } from "../../types/apollo_client";
+import { ArticleEntityResponseCollection } from "../../types/graphql_res";
 import { GraphqlError } from "../../components/Common/DisplayError";
 import Sidebar from "../../components/Common/Sidebar";
 import { isMobile } from "react-device-detect";

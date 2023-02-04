@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import {
   ArticleEntityResponseCollection,
-} from "../../types/apollo_client";
+} from "../../types/graphql_res";
 import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Unstable_Grid2";
 import { Typography } from "@mui/material";

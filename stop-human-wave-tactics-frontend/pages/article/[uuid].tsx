@@ -4,7 +4,7 @@ import { useRouter } from "next/router"
 import { request } from "graphql-request"
 import { ArticleDetails } from "../../components/Article"
 import { getBackendURL } from "../../lib/graphqlClient";
-import { ArticleEntity } from "../../types/apollo_client";
+import { ArticleEntity } from "../../types/graphql_res";
 import { getArticlesUUID } from "../../graphql/getArticlesUUID";
 import Sidebar from "../../components/Common/Sidebar";
 import { isMobile } from "react-device-detect";
