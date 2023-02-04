@@ -1,37 +1,64 @@
-import ReactMarkdown from 'react-markdown'
-import Image, { ImageLoaderProps } from "next/image"
+import React from "react";
 import remarkGfm from 'remark-gfm';
-import remarkHighlightjs from 'remark-highlight.js'
 import remarkParse from 'remark-parse/lib';
-import remarkHtml from 'remark-html';
-import remarkStringify from 'remark-stringify'
 import remarkCodeTitle from "remark-code-title"
 import remarkGemoji from "remark-gemoji"
 import remarkMath from "remark-math"
 import remarkRehype from 'remark-rehype'
-import ruby from 'remark-ruby';
-import remarkToc from "remark-toc";
-import rehypeSanitize from 'rehype-sanitize';
+import remarkUtf8 from "remark-utf8"
+import remarkPlantuml from "@akebifiky/remark-simple-plantuml"
+import rehypeFmt from "rehype-format"
+import rehypeHighlight from "rehype-highlight"
+import rehypeExternalLinks from 'rehype-external-links'
+import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
 import rehypeKatex from "rehype-katex"
-import "katex/dist/katex.css"
-import "github-markdown-css/github-markdown-dark.css"
-import "github-markdown-css/github-markdown-light.css"
-import Container from "@mui/material/Container"
+import rehypeToc, { HtmlElementNode } from "rehype-toc"
+import rehypeSlug from 'rehype-slug'
+import rehypeParse from "rehype-parse"
+import rehypeStringify from "rehype-stringify"
+import rehypeAutolinkHeadings from 'rehype-autolink-headings'
+import rehypeReact from "rehype-react"
+import Grid from "@mui/material/Unstable_Grid2"
+import { unified } from 'unified';
+import CustomImage from "./CustomImage";
+import CustomLink from "./CustomLink";
 
-const loader = ({ src }: ImageLoaderProps): string => {
-    return src
+const sanitizeSchema = {
+    ...defaultSchema,
+    attributes: {
+        ...defaultSchema.attributes,
+        div: [
+            ...(defaultSchema.attributes?.div || []),
+            ['className', 'math', 'math-display']
+        ],
+        span: [
+            ...(defaultSchema.attributes?.span || []),
+            ['className', 'math', 'math-inline', "katex", "katex-mathml", "katex-html", 'hljs-addition', 'hljs-attr', 'hljs-attribute', 'hljs-built_in', 'hljs-bullet', 'hljs-char', 'hljs-code', 'hljs-comment', 'hljs-deletion', 'hljs-doctag', 'hljs-emphasis', 'hljs-formula', 'hljs-keyword', 'hljs-link', 'hljs-literal', 'hljs-meta', 'hljs-name', 'hljs-number', 'hljs-operator', 'hljs-params', 'hljs-property', 'hljs-punctuation', 'hljs-quote', 'hljs-regexp', 'hljs-section', 'hljs-selector-attr', 'hljs-selector-class', 'hljs-selector-id', 'hljs-selector-pseudo', 'hljs-selector-tag', 'hljs-string', 'hljs-strong', 'hljs-subst', 'hljs-symbol', 'hljs-tag', 'hljs-template-tag', 'hljs-template-variable', 'hljs-title', 'hljs-type', 'hljs-variable']
+        ],
+    }
 }
 
-const components = {
-    img: (props: any) =>
-        <Container style={{ position: "relative" }}><Image loader={loader} src={props.node.properties.src} alt={props.alt} fill style={{ objectFit: "contain" }} /></Container>
-};
+// remark形式変換 > remark関連のPlugin適用 > rehype変換 > rehype関連のPlugin適用 > 
+const processor = (content: string) => unified().use(remarkParse).use(remarkGemoji).use(remarkGfm).use(remarkUtf8).use(remarkMath).use(remarkPlantuml).use(remarkCodeTitle).use(remarkRehype).use(rehypeHighlight).use(rehypeExternalLinks, {
+    rel: ['nofollow']
+}).use(rehypeFmt).use(rehypeKatex).use(rehypeSlug).use(rehypeToc).use(rehypeAutolinkHeadings).use(rehypeStringify).processSync(content).value
+
+// Nextのタグを使用したいので、変換
+const parseReact = (content: string) => unified().use(rehypeParse, { fragment: true }).use(rehypeReact, {
+    Fragment: React.Fragment,
+    createElement: React.createElement,
+    components: {
+        a: CustomLink,
+        img: CustomImage,
+    },
+    passNode: true,
+} as any).processSync(content).result
 
 const MdContent = ({ content }: { content: string }) => {
-    const codeblocks = require('remark-code-blocks')
-    const utf8 = require("remark-utf8")
-    //return <ReactMarkdown remarkPlugins={[utf8, codeblocks, remarkToc, ruby, remarkMath, remarkGemoji, remarkStringify, remarkGfm, remarkHighlightjs, remarkParse, remarkHtml, remarkCodeTitle, remarkRehype,]} rehypePlugins={[rehypeKatex, rehypeSanitize]} components={components} >{content}</ReactMarkdown>
-    return <ReactMarkdown remarkPlugins={[codeblocks, remarkMath]} rehypePlugins={[rehypeKatex]} components={components}>{content}</ReactMarkdown>
+    return <Grid>
+        {//parseReact(String(processor(content)))
+        }
+    </Grid >
 }
 
 export default MdContent
