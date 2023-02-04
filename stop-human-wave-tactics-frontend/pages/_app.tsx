@@ -17,35 +17,42 @@ export const ParticlesContext = createContext({} as {
   mainParticle: object,
 });
 
-export const DarkContext = createContext({} as { dark: boolean })
+export const ColorModeContext = createContext({ toggleColorMode: () => { } });
 
 const MyApp: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
-  const [dark, toggleDark] = useReducer((dark: boolean) => { return !dark }, true)
-  const prefersDarkMode = useMediaQuery(`(prefers-color-scheme: ${dark ? "dark" : "light"})`, { noSsr: true });
+  const [mode, setMode] = React.useState<'light' | 'dark'>('dark');
+  const colorMode = React.useMemo(
+    () => ({
+      toggleColorMode: () => {
+        setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+      },
+    }),
+    [],
+  );
   const theme = React.useMemo(
     () =>
       createTheme({
         palette: {
-          mode: prefersDarkMode ? "dark" : "light",
-          ...(prefersDarkMode ? darkPalette : lightPalette)
+          mode: mode,
+          ...(mode === "dark" ? darkPalette : lightPalette)
         },
       }),
-    [prefersDarkMode]
+    [mode]
   );
   const fetcher = (query: any, variables: any) => client.request(query, variables)
   return (
-    <DarkContext.Provider value={{ dark: dark }}>
-      <ParticlesContext.Provider value={{ mainParticle: dark ? mainParticle : subParticle }}>
+    <ColorModeContext.Provider value={colorMode}>
+      <ParticlesContext.Provider value={{ mainParticle: mode === "dark" ? mainParticle : subParticle }}>
         <CssBaseline />
         <SWRConfig value={{ fetcher, suspense: true, errorRetryCount: 3, revalidateIfStale: true, revalidateOnMount: true, shouldRetryOnError: false }}>
           <ThemeProvider theme={theme}>
-            <Layout dark={dark} toggleDark={toggleDark} >
+            <Layout>
               <Component {...pageProps} />
             </Layout>
           </ThemeProvider>
         </SWRConfig >
       </ParticlesContext.Provider >
-    </DarkContext.Provider>
+    </ColorModeContext.Provider>
   );
 }
 

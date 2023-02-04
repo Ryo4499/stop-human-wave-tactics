@@ -1,3 +1,5 @@
+import { alpha } from "@mui/material"
+
 export const darkPalette = {
     primary: {
         main: "#4889EE"
@@ -16,7 +18,7 @@ export const darkPalette = {
     background: {
         default: "#888888",
         paper: "#000000",
-        content: "#101010",
+        content: alpha("#202020", 0.7),
         sidebar: "#0C0C0C",
     },
     text: {

@@ -9,11 +9,17 @@ import MenuItem from "@mui/material/MenuItem";
 import { useLocale } from "../../lib/locale";
 import { useRouter } from "next/router"
 import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 import IconButton from "@mui/material/IconButton"
 import { isMobile } from "react-device-detect"
 import { Typography } from "@mui/material";
+import { ColorModeContext } from "../../pages/_app";
+import { useContext } from "react";
+import { useTheme } from "@mui/material/styles";
 
-const Header = ({ dark, toggleDark }: { dark: boolean, toggleDark: () => void, }) => {
+const Header = () => {
+  const theme = useTheme();
+  const colorMode = useContext(ColorModeContext)
   const router = useRouter()
   const { locale, locales, t } = useLocale();
   const handleLocaleChange = (event: any) => {
@@ -51,11 +57,14 @@ const Header = ({ dark, toggleDark }: { dark: boolean, toggleDark: () => void, }
                           })}
                         </Select>
                       </FormControl>
-                      <Grid container alignItems="center">
-                        <IconButton onClick={() => toggleDark()}>
-                          <Brightness4Icon />
-                        </IconButton>
-                      </Grid>
+                      {
+                        true ? null :
+                          <Grid container alignItems="center">
+                            <IconButton onClick={colorMode.toggleColorMode} sx={{ color: "text.primary" }}>
+                              {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+                            </IconButton>
+                          </Grid>
+                      }
                     </Grid>
                   </Grid>
                 </Grid>
@@ -86,11 +95,14 @@ const Header = ({ dark, toggleDark }: { dark: boolean, toggleDark: () => void, }
                   </Select>
                 </FormControl>
               </Grid>
-              <Grid container alignItems="center" >
-                <IconButton onClick={() => toggleDark()}>
-                  <Brightness4Icon sx={{ color: "text.primary" }} />
-                </IconButton>
-              </Grid>
+              {
+                true ? null :
+                  <Grid container alignItems="center">
+                    <IconButton onClick={colorMode.toggleColorMode} sx={{ color: "text.primary" }}>
+                      {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+                    </IconButton>
+                  </Grid>
+              }
             </Toolbar>
           }
         </AppBar>

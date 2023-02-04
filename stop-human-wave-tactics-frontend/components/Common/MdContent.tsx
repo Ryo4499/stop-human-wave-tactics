@@ -56,8 +56,7 @@ const parseReact = (content: string) => unified().use(rehypeParse, { fragment: t
 
 const MdContent = ({ content }: { content: string }) => {
     return <Grid>
-        {//parseReact(String(processor(content)))
-        }
+        {parseReact(String(processor(content)))}
     </Grid >
 }
 

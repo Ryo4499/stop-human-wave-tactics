@@ -7,7 +7,7 @@ import { loadFull } from "tsparticles"
 import type { Engine } from "tsparticles-engine"
 import { ParticlesContext } from "../../pages/_app";
 
-const Layout = ({ dark, toggleDark, children }: { dark: boolean, toggleDark: () => void, children?: ReactNode }) => {
+const Layout = ({  children }: {  children?: ReactNode }) => {
   // load particles
   const { mainParticle } = useContext(ParticlesContext)
   const particlesInit = useCallback(async (engine: Engine) => {
@@ -22,7 +22,7 @@ const Layout = ({ dark, toggleDark, children }: { dark: boolean, toggleDark: () 
         params={mainParticle}
       />
       <Grid container xs={12}>
-        <Header dark={dark} toggleDark={toggleDark} />
+        <Header />
       </Grid>
       {children}
       <Grid container xs={12}>

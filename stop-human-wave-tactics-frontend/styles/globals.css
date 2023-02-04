@@ -20,7 +20,12 @@ canvas {
   max-height: 100%;
   z-index: -3;
 }
+
 a {
   color: inherit;
   text-decoration: none;
+}
+
+pre .hljs {
+  background-color: rgba(38 38, 38, 0.9);
 }
