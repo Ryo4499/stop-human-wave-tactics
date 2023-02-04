@@ -7,9 +7,6 @@ export default ({ env }) => ({
       playgroundAlways: true,
       depthLimit: 25,
       amountLimit: 30,
-      apolloServer: {
-        tracing: false,
-      },
     }
   },
   ckeditor: true,
