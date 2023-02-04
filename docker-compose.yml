@@ -191,6 +191,9 @@ services:
     working_dir: "/home/${MY_USER}/stop-human-wave-tactics-frontend"
     user: $MY_USER
     volumes:
+      - type: bind
+        source: "./stop-human-wave-tactics-frontend/"
+        target: "/home/${MY_USER}/stop-human-wave-tactics-frontend/"
       - type: volume
         source: frontModules
         target: "/home/${MY_USER}/stop-human-wave-tactics-frontend/node_modules"
