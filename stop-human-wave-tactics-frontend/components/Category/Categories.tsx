@@ -2,9 +2,7 @@ import { Typography } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import Link from "next/link";
 import { useLocale } from "../../lib/locale";
-import { CategoryEntity, CategoryEntityResponseCollection } from "../../types/apollo_client";
 import { CategoriesProps } from "../../types/general";
-import { DisplayError } from "../Common/DisplayError";
 
 export const Categories = ({ categories }: CategoriesProps) => {
   const { locale, locales, t } = useLocale()

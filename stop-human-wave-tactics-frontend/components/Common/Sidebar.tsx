@@ -11,7 +11,7 @@ import { useLocale } from "../../lib/locale"
 import { isMobile } from "react-device-detect"
 import { Categories } from "../Category";
 import { useRouter } from "next/router";
-import { CategoryEntityResponseCollection } from "../../types/apollo_client";
+import { CategoryEntityResponseCollection } from "../../types/graphql_res";
 
 interface CategoriesProps {
   categories: CategoryEntityResponseCollection

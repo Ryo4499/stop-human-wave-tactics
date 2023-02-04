@@ -1,6 +1,6 @@
 import { Categories } from './../components/Category/Categories';
 import { Articles } from './../components/Articles/Articles';
-import { ArticleEntityResponseCollection, CategoryEntityResponseCollection } from "./apollo_client";
+import { ArticleEntityResponseCollection, CategoryEntityResponseCollection } from "./graphql_res";
 
 export interface CategoriesProps {
     categories: CategoryEntityResponseCollection
