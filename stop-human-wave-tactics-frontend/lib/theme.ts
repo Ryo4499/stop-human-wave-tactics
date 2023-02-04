@@ -42,7 +42,7 @@ export const darkPalette = {
 
 export const lightPalette = {
     primary: {
-        main: "#34B8C9",
+        main: "#6498c9",
     },
     secondary: {
         main: "#3233AA"
@@ -58,13 +58,13 @@ export const lightPalette = {
     background: {
         default: "#ffffff",
         paper: "#fffff8",
-        content: "#407090",
-        sidebar: "#70a3b5",
+        content: "#ddd8dF",
+        sidebar: "#80a3c5",
     },
     text: {
-        primary: "#EEF0EE",
-        secondary: "#ECECE5",
-        link: "#e1e119"
+        primary: "#131313",
+        secondary: "#212121",
+        link: "#E88244"
     },
     typography: {
         fontFamily: [
