@@ -3,7 +3,7 @@ import { NextPage } from "next"
 import { useRouter } from "next/router"
 import { request } from "graphql-request"
 import { getBackendURL } from "../../lib/graphqlClient";
-import { ArticleEntity } from "../../types/apollo_client";
+import { ArticleEntity } from "../../types/graphql_res";
 import { useContext, useState } from "react";
 import Sidebar from "../../components/Common/Sidebar";
 import { isMobile } from "react-device-detect";

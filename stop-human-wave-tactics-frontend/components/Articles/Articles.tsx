@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import {
   ArticleEntityResponseCollection,
-} from "../../types/apollo_client";
+} from "../../types/graphql_res";
 import { useRouter } from "next/router";
 import { isMobile } from "react-device-detect"
 import { useLocale } from "../../lib/locale";
