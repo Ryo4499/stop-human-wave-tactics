@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import { request } from "graphql-request"
 import { Articles } from "../components/Articles";
-import { getBackendURL } from "../lib/graphqlClient";
+import { getBackendGraphqlURL } from "../lib/graphqlClient";
 import { getPageSize } from "../lib/pagination";
 import Loading from "../components/Common/Loading";
 import { GraphqlError } from "../components/Common/DisplayError";
@@ -16,7 +16,7 @@ import useSWR from "swr"
 
 export const getStaticProps = async ({ locales, locale, defaultLocale }: IStaticProps) => {
     const variables = { filters: {}, pagination: { page: 1, pageSize: getPageSize() }, sort: ["updatedAt:Desc", "publishedAt:Desc"], locale: locale }
-    const res = await request(getBackendURL(), getArticlesCategories, variables).then((result) => {
+    const res = await request(getBackendGraphqlURL(), getArticlesCategories, variables).then((result) => {
         return result
     })
     if (res != null) {
