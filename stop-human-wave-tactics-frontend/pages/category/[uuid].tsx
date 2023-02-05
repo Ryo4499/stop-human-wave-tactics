@@ -2,7 +2,7 @@ import Grid from "@mui/material/Unstable_Grid2";
 import { NextPage } from "next"
 import { useRouter } from "next/router"
 import { request } from "graphql-request"
-import { getBackendURL } from "../../lib/graphqlClient";
+import { getBackendGraphqlURL } from "../../lib/graphqlClient";
 import { ArticleEntity } from "../../types/graphql_res";
 import { useContext, useState } from "react";
 import Sidebar from "../../components/Common/Sidebar";
@@ -20,7 +20,7 @@ export const getStaticPaths = async ({ locales }: { locales: Array<string> }) =>
     if (locales != null) {
         for (const locale of locales) {
             const variables = { pagination: {}, locale: locale }
-            await request(getBackendURL(), getCategoriesUUID, variables).then(({ categories }) => {
+            await request(getBackendGraphqlURL(), getCategoriesUUID, variables).then(({ categories }) => {
                 categories.data.map((category: ArticleEntity) => paths.push({ params: { uuid: category.attributes?.uuid }, locale: locale }))
             })
         }
@@ -40,7 +40,7 @@ export const getStaticProps = async ({ params, locale }: UUIDStaticProps) => {
         sort: ["updatedAt:Desc", "publishedAt:Desc"],
         locale: locale
     }
-    const res = await request(getBackendURL(), getArticlesCategories, variables).then((result) => {
+    const res = await request(getBackendGraphqlURL(), getArticlesCategories, variables).then((result) => {
         return result
     })
     if (res != null) {

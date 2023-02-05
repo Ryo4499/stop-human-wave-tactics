@@ -6,7 +6,7 @@ import type { NextPage } from "next";
 import Sidebar from "../components/Common/Sidebar";
 import { isMobile } from "react-device-detect";
 import { getCategories } from "../graphql/getCategories";
-import { getBackendURL } from "../lib/graphqlClient";
+import { getBackendGraphqlURL } from "../lib/graphqlClient";
 import { CategoryEntityResponseCollection } from "../types/graphql_res";
 import { GraphqlError } from "../components/Common/DisplayError";
 import { CategoriesResponseProps, IStaticProps } from "../types/general";
@@ -15,7 +15,7 @@ import useSWR from "swr"
 
 export const getStaticProps = async ({ locales, locale, defaultLocale }: IStaticProps) => {
   const variables = { pagination: {}, locale: locale }
-  const result = await request(getBackendURL(), getCategories, variables).then(({ categories }: { categories: CategoryEntityResponseCollection }) => {
+  const result = await request(getBackendGraphqlURL(), getCategories, variables).then(({ categories }: { categories: CategoryEntityResponseCollection }) => {
     return {
       props: {
         categories: categories,

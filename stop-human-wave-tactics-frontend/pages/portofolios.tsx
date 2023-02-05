@@ -2,7 +2,7 @@ import { request } from "graphql-request"
 import Grid from "@mui/material/Unstable_Grid2"
 import { Link, ListItemText, Typography } from "@mui/material"
 import type { NextPage } from "next"
-import { getBackendURL } from "../lib/graphqlClient"
+import { getBackendGraphqlURL } from "../lib/graphqlClient"
 import { getCategories } from "../graphql/getCategories"
 import { CategoryEntityResponseCollection } from "../types/graphql_res"
 import Sidebar from "../components/Common/Sidebar"
@@ -16,7 +16,7 @@ import { useLocale } from "../lib/locale"
 
 export const getStaticProps = async ({ locales, locale, defaultLocale }: IStaticProps) => {
     const variables = { pagination: {}, locale: locale }
-    const result = await request(getBackendURL(), getCategories, variables).then(({ categories }: { categories: CategoryEntityResponseCollection }) => {
+    const result = await request(getBackendGraphqlURL(), getCategories, variables).then(({ categories }: { categories: CategoryEntityResponseCollection }) => {
         return {
             props: {
                 categories: categories,

@@ -156,6 +156,7 @@ services:
       - type: volume
         source: backModules
         target: "/home/${MY_USER}/stop-human-wave-tactics-backend/node_modules"
+    command: "yarn dev"
     tty: true
     depends_on:
       db:

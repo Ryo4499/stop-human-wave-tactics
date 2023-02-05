@@ -5,8 +5,10 @@ import { useLocale } from "../../lib/locale"
 export const NotFound = () => {
     const { t } = useLocale()
     return (
-        <Grid>
-            <Typography >{t.not_found}</Typography>
+        <Grid container direction="column" sx={{ flexGrow: 1, backgroundColor: "background.content" }} m={2}>
+            <Grid container mx={2}>
+                <Typography variant="h4" color="text.primary">{t.not_found}</Typography>
+            </Grid>
         </Grid>
     )
 }

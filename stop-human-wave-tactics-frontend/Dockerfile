@@ -1,8 +1,10 @@
-FROM node:16-alpine as base
+FROM node:16-alpine
 
 ARG MY_USER
 ARG MY_GROUP
 ARG MODE
+
+RUN apk update && apk add libressl-dev libffi-dev tzdata curl
 
 WORKDIR "/home/${MY_USER}/stop-human-wave-tactics-frontend"
 RUN chown $MY_USER:$MY_GROUP ./
@@ -16,13 +18,3 @@ RUN if [ "${MODE}" = "PRODUCTION" ]; then \
   yarn install --production=false --no-lockfile --pre-lockfile ; \
   fi
 
-FROM node:16-alpine as builder
-
-ARG MY_USER
-ARG MY_GROUP
-ARG MODE
-
-USER $MY_USER
-
-WORKDIR "/home/${MY_USER}/stop-human-wave-tactics-frontend"
-COPY --from=base --chown=$MY_USER:$MY_GROUP "/home/${MY_USER}/stop-human-wave-tactics-frontend" "/home/${MY_USER}/stop-human-wave-tactics-frontend"

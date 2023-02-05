@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import { request } from "graphql-request"
 import { Articles } from "../components/Articles";
-import { getBackendURL } from "../lib/graphqlClient";
+import { getBackendGraphqlURL } from "../lib/graphqlClient";
 import { isMobile } from "react-device-detect";
 import Sidebar from "../components/Common/Sidebar";
 import { ArticlesCategorisProps, IStaticProps } from "../types/general";
@@ -13,11 +13,12 @@ import { getArticlesCategories } from "../graphql/getArticlesCategories";
 import useSWR from "swr"
 import Loading from "../components/Common/Loading";
 import { GraphqlError } from "../components/Common/DisplayError";
+import { ArticleEntity } from "../types/graphql_res";
 
 
 export const getStaticProps = async ({ locales, locale, defaultLocale }: IStaticProps) => {
     const variables = { pagination: {}, sort: ["updatedAt:Desc", "publishedAt:Desc"], locale: locale }
-    const res = await request(getBackendURL(), getArticlesCategories, variables).then((result) => {
+    const res = await request(getBackendGraphqlURL(), getArticlesCategories, variables).then((result) => {
         return result
     })
     if (res != null) {
@@ -52,7 +53,7 @@ const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({ articles, categories,
     if (isLoading) return <Loading />
     if (data != null) {
         const filterArticles = data.articles.data.filter(
-            (article) => {
+            (article: ArticleEntity) => {
                 return article.attributes?.title.includes(filter)
             })
 
@@ -81,6 +82,33 @@ const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({ articles, categories,
                                 <Sidebar categories={data.categories} />
                             </Grid>
                             <Grid container direction="column" xs={12} sx={{ flexGrow: 1 }}>
+                                <NotFound />
+                            </Grid>
+                        </>
+                        :
+                        <>
+                            <Grid container xs={10} sx={{ flexGrow: 1 }}>
+                                <NotFound />
+                            </Grid>
+                            <Grid container xs={2} sx={{ flexGrow: 1 }}>
+                                <Sidebar categories={data.categories} />
+                            </Grid>
+                        </>
+                    }
+                </Grid>)
+        } else {
+            return (
+                <Grid
+                    container
+                    direction="row"
+                    sx={{ flexGrow: 1 }}
+                >
+                    {isMobile ?
+                        <>
+                            <Grid container xs={12} sx={{ flexGrow: 1 }}>
+                                <Sidebar categories={data.categories} />
+                            </Grid>
+                            <Grid container direction="column" xs={12} sx={{ flexGrow: 1 }}>
                                 <Articles page={page} setPage={setPage} articles={filterArticlesResponseCollection} />
                             </Grid>
                         </>
@@ -95,9 +123,6 @@ const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({ articles, categories,
                         </>
                     }
                 </Grid>)
-        }
-        else {
-            return <NotFound />
         }
     } else {
         return <GraphqlError error={error} />
