@@ -5,7 +5,7 @@ import { useState } from "react";
 import { request } from "graphql-request"
 import { Articles } from "../../components/Articles";
 import { getArticlesPages } from "../../graphql/getArticlesPages";
-import { getBackendURL } from "../../lib/graphqlClient";
+import { getBackendGraphqlURL } from "../../lib/graphqlClient";
 import { getPageSize } from "../../lib/pagination";
 import { ArticleEntityResponseCollection } from "../../types/graphql_res";
 import { GraphqlError } from "../../components/Common/DisplayError";
@@ -22,7 +22,7 @@ export const getStaticPaths = async ({ locales }: { locales: Array<string> }) =>
     if (locales != null) {
         for (const locale of locales) {
             const variables = { pagination: { pageSize: getPageSize() }, locale: locale }
-            await request(getBackendURL(), getArticlesPages, variables).then(({ articles }: { articles: ArticleEntityResponseCollection }) => {
+            await request(getBackendGraphqlURL(), getArticlesPages, variables).then(({ articles }: { articles: ArticleEntityResponseCollection }) => {
                 const pageCount = articles?.meta.pagination.pageCount
                 if (pageCount != null) {
                     const pages = Array.from({ length: pageCount }, (v, k) => k + 1)
@@ -39,7 +39,7 @@ export const getStaticPaths = async ({ locales }: { locales: Array<string> }) =>
 
 export const getStaticProps = async ({ params, locale }: PagesStaticProps) => {
     const variables = { pagination: { page: parseInt(params.page, 10), pageSize: getPageSize() }, sort: ["updatedAt:Desc", "publishedAt:Desc"], locale: locale }
-    const res = await request(getBackendURL(), getArticlesCategories, variables).then((result) => {
+    const res = await request(getBackendGraphqlURL(), getArticlesCategories, variables).then((result) => {
         return result
     })
     if (res != null) {

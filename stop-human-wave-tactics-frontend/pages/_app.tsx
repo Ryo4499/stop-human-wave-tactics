@@ -3,10 +3,10 @@ import type { NextPage } from "next";
 import { SWRConfig } from "swr"
 import { client } from "../lib/graphqlClient"
 import { useMediaQuery } from "@mui/material";
-import { createContext, useReducer } from "react"
+import { createContext, useMemo, useState } from "react"
 import React from "react";
 import Layout from "../components/Layouts/Layout";
-import { AppProps } from "next/app";
+import { AppProps, NextWebVitalsMetric } from "next/app";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { darkPalette, lightPalette } from "../lib/theme";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -18,10 +18,13 @@ export const ParticlesContext = createContext({} as {
 });
 
 export const ColorModeContext = createContext({ toggleColorMode: () => { } });
+export function reportWebVitals(metric: NextWebVitalsMetric) {
+  console.log(metric)
+}
 
 const MyApp: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
-  const [mode, setMode] = React.useState<'light' | 'dark'>('dark');
-  const colorMode = React.useMemo(
+  const [mode, setMode] = useState<'light' | 'dark'>('dark');
+  const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
         setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
@@ -29,7 +32,8 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
     }),
     [],
   );
-  const theme = React.useMemo(
+
+  const theme = useMemo(
     () =>
       createTheme({
         palette: {
@@ -39,6 +43,7 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
       }),
     [mode]
   );
+
   const fetcher = (query: any, variables: any) => client.request(query, variables)
   return (
     <ColorModeContext.Provider value={colorMode}>
