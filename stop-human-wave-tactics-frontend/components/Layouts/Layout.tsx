@@ -7,7 +7,7 @@ import { loadFull } from "tsparticles"
 import type { Engine } from "tsparticles-engine"
 import { ParticlesContext } from "../../pages/_app";
 
-const Layout = ({  children }: {  children?: ReactNode }) => {
+const Layout = ({ children }: { children?: ReactNode }) => {
   // load particles
   const { mainParticle } = useContext(ParticlesContext)
   const particlesInit = useCallback(async (engine: Engine) => {
@@ -21,11 +21,13 @@ const Layout = ({  children }: {  children?: ReactNode }) => {
         init={particlesInit}
         params={mainParticle}
       />
-      <Grid container xs={12}>
+      <Grid container>
         <Header />
       </Grid>
-      {children}
-      <Grid container xs={12}>
+      <Grid container sx={{ flexGrow: 1 }}>
+        {children}
+      </Grid>
+      <Grid container>
         <Footer />
       </Grid>
     </Grid >

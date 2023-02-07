@@ -1,11 +1,10 @@
 import Grid from "@mui/material/Unstable_Grid2"
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { request } from "graphql-request"
 import { Articles } from "../components/Articles";
 import { getBackendGraphqlURL } from "../lib/graphqlClient";
-import { isMobile } from "react-device-detect";
 import Sidebar from "../components/Common/Sidebar";
 import { ArticlesCategorisProps, IStaticProps } from "../types/general";
 import { NotFound } from "../components/Common/NotFound";
@@ -89,24 +88,12 @@ const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({ articles, categories,
                 sx={{ flexGrow: 1 }}
             >
                 <Meta title="Searched articles by title" description="This page published articles searched by title." keyword={filter} />
-                {isMobile ?
-                    <>
-                        <Grid container xs={12} sx={{ flexGrow: 1 }}>
-                            <Sidebar categories={data.categories} />
-                        </Grid>
-                        <Grid container direction="column" xs={12} sx={{ flexGrow: 1 }}>
-                            {filterArticles.length === 0 ? <NotFound /> : <Articles page={page} setPage={setPage} articles={filterArticlesResponseCollection} filter={filter} />}
-                        </Grid>
-                    </>
-                    :
-                    <>
-                        <Grid container xs={10} sx={{ flexGrow: 1 }}>
-                            {filterArticles.length === 0 ? <NotFound /> : <Articles page={page} setPage={setPage} articles={filterArticlesResponseCollection} filter={filter} />}
-                        </Grid>
-                        <Grid container xs={2} sx={{ flexGrow: 1 }}>
-                            <Sidebar categories={data.categories} />
-                        </Grid>
-                    </>
+                <Grid container xs={10} sx={{ flexGrow: 1 }}>
+                    {filterArticles.length === 0 ? <NotFound /> : <Articles page={page} setPage={setPage} articles={filterArticlesResponseCollection} filter={filter} />}
+                </Grid>
+                <Grid container xs={2} sx={{ flexGrow: 1 }}>
+                    <Sidebar categories={data.categories} />
+                </Grid>
                 }
             </Grid >)
     } else {

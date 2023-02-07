@@ -10,7 +10,6 @@ import { getPageSize } from "../../lib/pagination";
 import { ArticleEntityResponseCollection } from "../../types/graphql_res";
 import { GraphqlError } from "../../components/Common/DisplayError";
 import Sidebar from "../../components/Common/Sidebar";
-import { isMobile } from "react-device-detect";
 import { ArticlesCategorisProps, PageParams, PagesStaticProps } from "../../types/general";
 import { getArticlesCategories } from "../../graphql/getArticlesCategories";
 import useSWR from "swr"
@@ -73,34 +72,19 @@ const ArticlesPage: NextPage<ArticlesCategorisProps> = ({ articles, categories, 
     );
     if (isLoading) return <Loading />
     if (data != null) {
-        return <Grid container sx={{flexGrow:1}}>
+        return <Grid container sx={{ flexGrow: 1 }}>
             <Meta title="Articles Page" description="This page published articles sorted in descing ordered of the latest modified date." keyword={categories.data.map((value) => value.attributes?.name).join(" ")} />
-            {isMobile ?
-                <Grid
-                    container
-                    direction="column"
-                    sx={{ flexGrow: 1 }}
-                >
-                    <Grid container p={1.5} xs={12}>
-                        <Sidebar categories={data.categories} />
-                    </Grid>
-                    <Grid container direction="column" p={1.5} xs={12} sx={{ flexGrow: 1 }}>
-                        <Articles page={page} setPage={setPage} articles={data.articles} filter={null} />
-                    </Grid>
-                </Grid> :
-                <Grid
-                    container
-                    direction="row"
-                    sx={{ flexGrow: 1 }}
-                >
-                    <Grid container xs={10} sx={{ flexGrow: 1 }}>
-                        <Articles page={page} setPage={setPage} articles={data.articles} filter={null} />
-                    </Grid>
-                    <Grid container xs={2} sx={{ flexGrow: 1 }}>
-                        <Sidebar categories={data.categories} />
-                    </Grid>
+            <Grid
+                container
+                direction="row"
+            >
+                <Grid container xs={12} md={10}>
+                    <Articles page={page} setPage={setPage} articles={data.articles} filter={null} />
                 </Grid>
-            }
+                <Grid container xs={12} md={2}>
+                    <Sidebar categories={data.categories} />
+                </Grid>
+            </Grid>
         </Grid>
     } else {
         return <GraphqlError error={error} />
