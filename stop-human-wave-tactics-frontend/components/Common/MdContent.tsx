@@ -5,14 +5,13 @@ import remarkCodeTitle from "remark-code-title"
 import remarkGemoji from "remark-gemoji"
 import remarkMath from "remark-math"
 import remarkRehype from 'remark-rehype'
-import remarkUtf8 from "remark-utf8"
 import remarkPlantuml from "@akebifiky/remark-simple-plantuml"
 import rehypeFmt from "rehype-format"
 import rehypeHighlight from "rehype-highlight"
 import rehypeExternalLinks from 'rehype-external-links'
 import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
 import rehypeKatex from "rehype-katex"
-import rehypeToc, { HtmlElementNode } from "rehype-toc"
+import rehypeToc from "rehype-toc"
 import rehypeSlug from 'rehype-slug'
 import rehypeParse from "rehype-parse"
 import rehypeStringify from "rehype-stringify"
@@ -39,7 +38,7 @@ const sanitizeSchema = {
 }
 
 // remark形式変換 > remark関連のPlugin適用 > rehype変換 > rehype関連のPlugin適用 > 
-const processor = (content: string) => unified().use(remarkParse).use(remarkGemoji).use(remarkGfm).use(remarkUtf8).use(remarkMath).use(remarkPlantuml).use(remarkCodeTitle).use(remarkRehype).use(rehypeHighlight).use(rehypeExternalLinks, {
+const processor = (content: string) => unified().use(remarkParse).use(remarkGemoji).use(remarkGfm).use(remarkMath).use(remarkPlantuml).use(remarkCodeTitle).use(remarkRehype).use(rehypeHighlight).use(rehypeExternalLinks, {
     rel: ['nofollow']
 }).use(rehypeFmt).use(rehypeKatex).use(rehypeSlug).use(rehypeToc).use(rehypeAutolinkHeadings).use(rehypeStringify).processSync(content).value
 
