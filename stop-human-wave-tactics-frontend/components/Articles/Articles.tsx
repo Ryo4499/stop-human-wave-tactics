@@ -38,7 +38,7 @@ const Content = ({ page, setPage, pageCount }: ArticlesPropsContent) => {
   const router = useRouter()
   const handleChange = (event: ChangeEvent<unknown>, value: number) => {
     setPage(value);
-    router.push(`/articles/${value}`);
+    router.push("/articles/[page]", `/articles/${value}`);
   };
   return (
     <Pagination
@@ -59,18 +59,6 @@ const Content = ({ page, setPage, pageCount }: ArticlesPropsContent) => {
 export const Articles = ({ page, setPage, articles, filter }: ArticlesProps) => {
   const { locale, locales, t } = useLocale()
   const router = useRouter()
-
-  useLayoutEffect(() => {
-    router.beforePopState(({ url, as }: { url: string, as: string }): boolean => {
-      if (router.route === url) {
-        setPage(parseInt(as.split("/").slice(-1)[0], 10))
-        router.push(as)
-        return true
-      } else {
-        return false
-      }
-    })
-  })
 
   if (articles.data != null) {
     const pageCount = articles.meta.pagination.pageCount
@@ -93,7 +81,7 @@ export const Articles = ({ page, setPage, articles, filter }: ArticlesProps) => 
                         <CardContent sx={{ flexGrow: 1 }}>
                           <Grid container justifyContent="center" mb={4} sx={{ position: "relative", flexGrow: 1 }}>
                             {article.attributes.thumbnail?.data?.attributes?.url != null && article.attributes.thumbnail?.data?.attributes?.alternativeText != null ?
-                              <Link href={`/article/${article.attributes.uuid}`}>
+                              <Link href={`/article/${article.attributes.uuid}`} as="/article/[uuid]">
                                 <Image src={article.attributes.thumbnail.data.attributes.url} className="nextimage" fill alt={article.attributes.thumbnail.data.attributes.alternativeText} />
                               </Link>
                               : null
@@ -126,7 +114,7 @@ export const Articles = ({ page, setPage, articles, filter }: ArticlesProps) => 
                         </CardContent>
                         <CardActions sx={{ flexGrow: 1 }}>
                           <Grid container mb={2} ml={1}>
-                            <Button onClick={() => { router.push(`/article/${article.attributes?.uuid}`) }} size="small">
+                            <Button onClick={() => { router.push("/article/[uuid]", `/article/${article.attributes?.uuid}`) }} size="small">
                               <Typography variant="body2" color="text.link">
                                 {t.more_details}
                               </Typography>

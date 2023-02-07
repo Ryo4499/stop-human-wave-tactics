@@ -31,7 +31,7 @@ const Header = () => {
         <AppBar position="static" sx={{ flexGrow: 1 }}>
           <Toolbar sx={{ flexGrow: 1, justifyContent: "space-between" }} >
             <Grid container>
-              <Link href="/">
+              <Link href="/" as="/">
                 <Typography variant="h6" color="text.primary">
                   {t.site_name}
                 </Typography>
