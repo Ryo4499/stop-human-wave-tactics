@@ -18,33 +18,31 @@ export const ArticleDetails = ({ articles }: { articles: ArticleEntityResponseCo
   if (articles?.data[0]?.attributes != null) {
     const article = articles.data[0]?.attributes;
     return (
-      <Grid container xs={12} sx={{ flexGrow: 1 }}>
-        <Grid container direction="column" sx={{ flexGrow: 1, backgroundColor: "background.content" }} mx={5}>
-          <Grid m={3}>
-            <Grid container justifyContent="space-between">
-              <Grid container>
-                <Typography variant="h2" color={"text.primary"}>
-                  {article.title}
-                </Typography>
-              </Grid>
-              <Stack>
-                <Typography variant="body1" color={"text.secondary"} align="right">
-                  {t.updated_at}: {article.updatedAt
-                    .replace("T", " ")
-                    .replace(/\..*$/g, "")
-                    .replace(/\-/g, "/")
-                  }
-                </Typography>
-                <Typography variant="body1" color={"text.secondary"} align="right">
-                  {t.created_at}: {article.createdAt
-                    .replace("T", " ")
-                    .replace(/\..*$/g, "")
-                    .replace(/\-/g, "/")
-                  }
-                </Typography>
-              </Stack>
-            </Grid>
+      <Grid container direction="column" xs={12} sx={{ flexGrow: 1 }}>
+        <Grid container direction="column" sx={{ flexGrow: 1, backgroundColor: "background.content" }} mx={5} justifyContent="space-between">
+          <Grid container direction="column" mx={5} my={2}>
             <Grid container>
+              <Typography variant="h2" color={"text.primary"}>
+                {article.title}
+              </Typography>
+            </Grid>
+            <Stack my={2}>
+              <Typography variant="body1" color={"text.secondary"} align="right">
+                {t.updated_at}: {article.updatedAt
+                  .replace("T", " ")
+                  .replace(/\..*$/g, "")
+                  .replace(/\-/g, "/")
+                }
+              </Typography>
+              <Typography variant="body1" color={"text.secondary"} align="right">
+                {t.created_at}: {article.createdAt
+                  .replace("T", " ")
+                  .replace(/\..*$/g, "")
+                  .replace(/\-/g, "/")
+                }
+              </Typography>
+            </Stack>
+            <Grid container direction="row">
               <Typography variant="body1" color={"text.secondary"} >
                 <MdContent content={article.content}></MdContent>
               </Typography>

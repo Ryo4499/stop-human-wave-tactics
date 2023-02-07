@@ -99,10 +99,10 @@ const Portofolio: NextPage<CategoriesResponseProps> = ({ categories, variables }
                 direction="row"
                 sx={{ flexGrow: 1 }}
             >
-                <Grid container xs={12} md={10}>
+                <Grid container xs={12} md={10} sx={{ flexGrow: 1 }}>
                     <PortofolioContent />
                 </Grid>
-                <Grid container xs={12} md={2}>
+                <Grid container xs={12} md={2} sx={{ flexGrow: 1 }}>
                     <Sidebar categories={data.categories} />
                 </Grid>
             </Grid>
