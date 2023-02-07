@@ -1,4 +1,5 @@
 import Grid from "@mui/material/Unstable_Grid2"
+import Meta from "../utils/Head";
 
 interface MutationError {
   __typename: string;
@@ -24,6 +25,7 @@ export const GraphqlError = ({ error }: DisplayErrorProps) => {
   if (!error || !error.message) return null;
   return (
     <Grid container sx={{ flexGrow: 1 }}>
+      <Meta title="Error Page" description="This page is network error page." keyword={""} />
       <strong>Shoot!</strong>
       <p data-test="graphql-error">
         {error.message.replace("GraphQL error: ", "")}

@@ -1,6 +1,5 @@
 import Grid from "@mui/material/Unstable_Grid2";
 import { NextPage } from "next"
-import { useRouter } from "next/router"
 import { request } from "graphql-request"
 import { ArticleDetails } from "../../components/Article"
 import { getBackendGraphqlURL } from "../../lib/graphqlClient";
@@ -13,6 +12,8 @@ import { getArticlesCategories } from "../../graphql/getArticlesCategories";
 import Loading from "../../components/Common/Loading"
 import { GraphqlError } from "../../components/Common/DisplayError";
 import useSWR from "swr"
+import Meta from "../../components/utils/Head";
+import { Category } from "@mui/icons-material";
 
 export const getStaticPaths = async ({ locales }: { locales: Array<string> }) => {
     const paths: Array<UUIDParams> = []
@@ -54,10 +55,10 @@ export const getStaticProps = async ({ params, locale }: UUIDStaticProps) => {
 
 const ArticlePage: NextPage<ArticlesCategorisProps> = ({ articles, categories, variables }) => {
     const { data, error, isLoading } = useSWR([getArticlesCategories, variables], { fallbackData: { articles: articles, categories: categories, variables: variables }, })
-    const router = useRouter()
     if (isLoading) return <Loading />
     if (data != null) {
         return <>
+            <Meta title="Article Details Page" description="This page published article details." keyword={categories.data.map((value) => value.attributes?.name).join(" ")} />
             {isMobile ?
                 <Grid
                     container

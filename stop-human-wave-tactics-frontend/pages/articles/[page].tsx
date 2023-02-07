@@ -15,6 +15,7 @@ import { ArticlesCategorisProps, PageParams, PagesStaticProps } from "../../type
 import { getArticlesCategories } from "../../graphql/getArticlesCategories";
 import useSWR from "swr"
 import Loading from "../../components/Common/Loading";
+import Meta from "../../components/utils/Head";
 
 
 export const getStaticPaths = async ({ locales }: { locales: Array<string> }) => {
@@ -73,6 +74,7 @@ const ArticlesPage: NextPage<ArticlesCategorisProps> = ({ articles, categories, 
     if (isLoading) return <Loading />
     if (data != null) {
         return <>
+            <Meta title="Articles Page" description="This page published articles sorted in descing ordered of the latest modified date." keyword={categories.data.map((value) => value.attributes?.name).join(" ")} />
             {isMobile ?
                 <Grid
                     container
@@ -83,7 +85,7 @@ const ArticlesPage: NextPage<ArticlesCategorisProps> = ({ articles, categories, 
                         <Sidebar categories={data.categories} />
                     </Grid>
                     <Grid container direction="column" p={1.5} xs={12} sx={{ flexGrow: 1 }}>
-                        <Articles page={page} setPage={setPage} articles={data.articles} />
+                        <Articles page={page} setPage={setPage} articles={data.articles} filter={null} />
                     </Grid>
                 </Grid> :
                 <Grid
@@ -92,7 +94,7 @@ const ArticlesPage: NextPage<ArticlesCategorisProps> = ({ articles, categories, 
                     sx={{ flexGrow: 1 }}
                 >
                     <Grid container xs={10} sx={{ flexGrow: 1 }}>
-                        <Articles page={page} setPage={setPage} articles={data.articles} />
+                        <Articles page={page} setPage={setPage} articles={data.articles} filter={null} />
                     </Grid>
                     <Grid container xs={2} sx={{ flexGrow: 1 }}>
                         <Sidebar categories={data.categories} />

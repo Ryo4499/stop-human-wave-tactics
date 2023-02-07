@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Unstable_Grid2"
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { request } from "graphql-request"
 import { Articles } from "../components/Articles";
 import { getBackendGraphqlURL } from "../lib/graphqlClient";
@@ -13,6 +13,7 @@ import Sidebar from "../components/Common/Sidebar";
 import { ArticlesCategorisProps, IStaticProps } from "../types/general";
 import { getArticlesCategories } from "../graphql/getArticlesCategories";
 import useSWR from "swr"
+import Meta from "../components/utils/Head";
 
 export const getStaticProps = async ({ locales, locale, defaultLocale }: IStaticProps) => {
     const variables = { filters: {}, pagination: { page: 1, pageSize: getPageSize() }, sort: ["updatedAt:Desc", "publishedAt:Desc"], locale: locale }
@@ -46,6 +47,19 @@ const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({ articles, categories,
             ? 1
             : parseInt(router.query.page as string, 10)
     )
+    useEffect(() => {
+        router.beforePopState(({ as }) => {
+            if (as !== router.asPath) {
+                // Will run when leaving the current page; on back/forward actions
+                // Add your logic here, like toggling the modal state
+            }
+            return true;
+        });
+
+        return () => {
+            router.beforePopState(() => true);
+        };
+    }, [router]);
     if (isLoading) return <Loading />
     if (data != null) {
         return (
@@ -54,19 +68,20 @@ const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({ articles, categories,
                 direction="row"
                 sx={{ flexGrow: 1 }}
             >
+                <Meta title="Top Page" description="This page published latest articles." keyword={categories.data.map((value) => value.attributes?.name).join(" ")} />
                 {isMobile ?
                     <>
                         <Grid container xs={12} sx={{ flexGrow: 1 }}>
                             <Sidebar categories={data.categories} />
                         </Grid>
                         <Grid container direction="column" xs={12} sx={{ flexGrow: 1 }}>
-                            <Articles page={page} setPage={setPage} articles={data.articles} />
+                            <Articles page={page} setPage={setPage} articles={data.articles} filter={null} />
                         </Grid>
                     </>
                     :
                     <>
                         <Grid container xs={10} sx={{ flexGrow: 1 }}>
-                            <Articles page={page} setPage={setPage} articles={data.articles} />
+                            <Articles page={page} setPage={setPage} articles={data.articles} filter={null} />
                         </Grid>
                         <Grid container xs={2} sx={{ flexGrow: 1 }}>
                             <Sidebar categories={data.categories} />

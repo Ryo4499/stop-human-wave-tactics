@@ -25,6 +25,7 @@ interface ArticlesProps {
   page: number
   setPage: (value: number) => void
   articles: ArticleEntityResponseCollection
+  filter: string | string[] | null | undefined
 };
 
 interface ArticlesPropsContent {
@@ -56,7 +57,7 @@ const Content = ({ page, setPage, pageCount }: ArticlesPropsContent) => {
 }
 
 
-export const Articles = ({ page, setPage, articles }: ArticlesProps) => {
+export const Articles = ({ page, setPage, articles, filter }: ArticlesProps) => {
   const { locale, locales, t } = useLocale()
   const router = useRouter()
 
@@ -72,13 +73,18 @@ export const Articles = ({ page, setPage, articles }: ArticlesProps) => {
     })
   })
 
-
   if (articles.data != null) {
     const pageCount = articles.meta.pagination.pageCount
     return (
       <Grid container direction="column" sx={{ flexGrow: 1 }} xs={12}>
         {isMobile ?
           <Grid container direction="column" sx={{ flexGrow: 1 }} spacing={2} m={2}>
+            {
+              filter != null ?
+                <Grid xs={12}>
+                  <Typography variant="h6" color="text.primary">{t.keyword + ": " + filter}</Typography>
+                </Grid> : null
+            }
             {articles?.data.map((article) => {
               if (article.attributes?.uuid != null) {
                 return (
@@ -137,6 +143,12 @@ export const Articles = ({ page, setPage, articles }: ArticlesProps) => {
           </Grid>
           :
           <Grid container direction="row" xs={12} sx={{ flexGrow: 1 }} spacing={0.2}>
+            {
+              filter != null ?
+                <Grid xs={12}>
+                  <Typography variant="h6" color="text.primary">{t.keyword + ": " + filter}</Typography>
+                </Grid> : null
+            }
             <Grid container xs={6} sx={{ flexGrow: 1 }}>
               {articles?.data.map((article) => {
                 if (article.attributes?.uuid != null) {

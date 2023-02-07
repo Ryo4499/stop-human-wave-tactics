@@ -32,4 +32,7 @@ module.exports = {
     config.resolve.fallback = { fs: false };
     return config;
   },
+  experimental: {
+    scrollRestoration: true,
+  },
 };

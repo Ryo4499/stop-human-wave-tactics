@@ -14,6 +14,7 @@ import { GraphqlError } from "../../components/Common/DisplayError";
 import { getArticlesCategories } from "../../graphql/getArticlesCategories";
 import useSWR from "swr"
 import Loading from "../../components/Common/Loading";
+import Meta from "../../components/utils/Head";
 
 export const getStaticPaths = async ({ locales }: { locales: Array<string> }) => {
     const paths: Array<UUIDParams> = []
@@ -72,6 +73,7 @@ const ArticlesPage: NextPage<ArticlesCategorisProps> = ({ articles, categories, 
     if (isLoading) return <Loading />
     if (data != null) {
         return <>
+            <Meta title="Searched articles by category name" description="This page published articles searched by category name." keyword={categories.data.map((value) => value.attributes?.name).join(" ")} />
             {isMobile ?
                 <Grid
                     container
@@ -82,7 +84,7 @@ const ArticlesPage: NextPage<ArticlesCategorisProps> = ({ articles, categories, 
                         <Sidebar categories={data.categories} />
                     </Grid>
                     <Grid container direction="column" p={1.5} xs={12} sx={{ flexGrow: 1 }}>
-                        <Articles page={page} setPage={setPage} articles={data.articles} />
+                        <Articles page={page} setPage={setPage} articles={data.articles} filter={router.query.name} />
                     </Grid>
                 </Grid> :
                 <Grid
@@ -91,7 +93,7 @@ const ArticlesPage: NextPage<ArticlesCategorisProps> = ({ articles, categories, 
                     sx={{ flexGrow: 1 }}
                 >
                     <Grid container xs={10} sx={{ flexGrow: 1 }}>
-                        <Articles page={page} setPage={setPage} articles={data.articles} />
+                        <Articles page={page} setPage={setPage} articles={data.articles} filter={router.query.name} />
                     </Grid>
                     <Grid container xs={2} sx={{ flexGrow: 1 }}>
                         <Sidebar categories={data.categories} />
