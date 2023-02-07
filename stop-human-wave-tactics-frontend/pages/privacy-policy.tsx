@@ -139,7 +139,7 @@ const PrivacyPolicy: NextPage<CategoriesResponseProps> = ({ categories, variable
   const { data, error, isLoading } = useSWR([getCategories, variables], { fallbackData: { categories: categories, variables: variables }, })
   if (isLoading) return <Loading />
   if (data != null) {
-    return <>
+    return <Grid container sx={{ flexGrow: 1 }}>
       <Meta title="Privacy Policy Page" description="This page published about privacy policy." keyword={categories.data.map((value) => value.attributes?.name).join(" ")} />
       {isMobile ?
         <Grid
@@ -168,7 +168,7 @@ const PrivacyPolicy: NextPage<CategoriesResponseProps> = ({ categories, variable
           </Grid>
         </Grid>
       }
-    </>
+    </Grid>
   } else {
     return <GraphqlError error={error} />
   }
