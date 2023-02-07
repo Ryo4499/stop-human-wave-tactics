@@ -12,6 +12,7 @@ import { GraphqlError } from "../components/Common/DisplayError";
 import { CategoriesResponseProps, IStaticProps } from "../types/general";
 import Loading from "../components/Common/Loading";
 import useSWR from "swr"
+import Meta from "../components/utils/Head";
 
 export const getStaticProps = async ({ locales, locale, defaultLocale }: IStaticProps) => {
   const variables = { pagination: {}, locale: locale }
@@ -139,6 +140,7 @@ const PrivacyPolicy: NextPage<CategoriesResponseProps> = ({ categories, variable
   if (isLoading) return <Loading />
   if (data != null) {
     return <>
+      <Meta title="Privacy Policy Page" description="This page published about privacy policy." keyword={categories.data.map((value) => value.attributes?.name).join(" ")} />
       {isMobile ?
         <Grid
           container

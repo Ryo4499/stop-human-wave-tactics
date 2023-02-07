@@ -1,6 +1,6 @@
 import { request } from "graphql-request"
 import Grid from "@mui/material/Unstable_Grid2"
-import { Link, ListItemText, Typography } from "@mui/material"
+import { Link, Typography } from "@mui/material"
 import type { NextPage } from "next"
 import { getBackendGraphqlURL } from "../lib/graphqlClient"
 import { getCategories } from "../graphql/getCategories"
@@ -9,10 +9,12 @@ import Sidebar from "../components/Common/Sidebar"
 import { isMobile } from "react-device-detect"
 import { GraphqlError } from "../components/Common/DisplayError"
 import { CategoriesResponseProps, IStaticProps } from "../types/general"
-import { useCallback, useContext } from "react"
 import useSWR from "swr"
 import Loading from "../components/Common/Loading"
 import { useLocale } from "../lib/locale"
+import { useRouter } from "next/router"
+import { useEffect } from "react"
+import Meta from "../components/utils/Head"
 
 export const getStaticProps = async ({ locales, locale, defaultLocale }: IStaticProps) => {
     const variables = { pagination: {}, locale: locale }
@@ -75,9 +77,24 @@ const PortofolioContent = () => {
 
 const Portofolio: NextPage<CategoriesResponseProps> = ({ categories, variables }) => {
     const { data, error, isLoading } = useSWR([getCategories, variables], { fallbackData: { categories: categories, variables: variables }, })
+    const router = useRouter()
+    useEffect(() => {
+        router.beforePopState(({ as }) => {
+            if (as !== router.asPath) {
+                // Will run when leaving the current page; on back/forward actions
+                // Add your logic here, like toggling the modal state
+            }
+            return true;
+        });
+
+        return () => {
+            router.beforePopState(() => true);
+        };
+    }, [router]);
     if (isLoading) return <Loading />
     if (data != null) {
         return <>
+            <Meta title="Portfolios Page" description="This page introduce my portfolios." keyword={categories.data.map((value) => value.attributes?.name).join(" ")} />
             {isMobile ?
                 <Grid
                     container
