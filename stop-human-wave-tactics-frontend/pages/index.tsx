@@ -8,7 +8,6 @@ import { getBackendGraphqlURL } from "../lib/graphqlClient";
 import { getPageSize } from "../lib/pagination";
 import Loading from "../components/Common/Loading";
 import { GraphqlError } from "../components/Common/DisplayError";
-import { isMobile } from "react-device-detect";
 import Sidebar from "../components/Common/Sidebar";
 import { ArticlesCategorisProps, IStaticProps } from "../types/general";
 import { getArticlesCategories } from "../graphql/getArticlesCategories";
@@ -66,28 +65,14 @@ const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({ articles, categories,
             <Grid
                 container
                 direction="row"
-                sx={{ flexGrow: 1 }}
             >
                 <Meta title="Top Page" description="This page published latest articles." keyword={categories.data.map((value) => value.attributes?.name).join(" ")} />
-                {isMobile ?
-                    <>
-                        <Grid container xs={12} sx={{ flexGrow: 1 }}>
-                            <Sidebar categories={data.categories} />
-                        </Grid>
-                        <Grid container direction="column" xs={12} sx={{ flexGrow: 1 }}>
-                            <Articles page={page} setPage={setPage} articles={data.articles} filter={null} />
-                        </Grid>
-                    </>
-                    :
-                    <>
-                        <Grid container xs={10} sx={{ flexGrow: 1 }}>
-                            <Articles page={page} setPage={setPage} articles={data.articles} filter={null} />
-                        </Grid>
-                        <Grid container xs={2} sx={{ flexGrow: 1 }}>
-                            <Sidebar categories={data.categories} />
-                        </Grid>
-                    </>
-                }
+                <Grid container xs={12} md={10}>
+                    <Articles page={page} setPage={setPage} articles={data.articles} filter={null} />
+                </Grid>
+                <Grid container xs={12} md={2}>
+                    <Sidebar categories={data.categories} />
+                </Grid>
             </Grid>)
     } else {
         return <GraphqlError error={error} />

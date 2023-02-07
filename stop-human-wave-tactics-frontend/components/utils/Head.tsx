@@ -1,6 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
-import path from "path"
+import Script from 'next/script';
 import { getProxyURL } from '../../lib/graphqlClient';
 
 interface Props {
@@ -26,18 +26,6 @@ const Meta = ({ title, description, keyword }: Props): JSX.Element => {
             <link rel="canonical" href={getProxyURL()} />
             <link rel="shortcut icon" href="/favicon.ico" />
             <link rel="apple-touch-icon" href={getProxyURL()} />
-            <script async
-                src="https://www.googletagmanager.com/gtag/js?id=G-884NEPFPMJ"
-            />
-            <script
-                dangerouslySetInnerHTML={{
-                    __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-          `,
-                }}
-            />
         </Head>
     );
 };
