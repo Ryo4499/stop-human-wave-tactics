@@ -73,7 +73,7 @@ const ArticlesPage: NextPage<ArticlesCategorisProps> = ({ articles, categories, 
     );
     if (isLoading) return <Loading />
     if (data != null) {
-        return <>
+        return <Grid container sx={{flexGrow:1}}>
             <Meta title="Articles Page" description="This page published articles sorted in descing ordered of the latest modified date." keyword={categories.data.map((value) => value.attributes?.name).join(" ")} />
             {isMobile ?
                 <Grid
@@ -101,7 +101,7 @@ const ArticlesPage: NextPage<ArticlesCategorisProps> = ({ articles, categories, 
                     </Grid>
                 </Grid>
             }
-        </>
+        </Grid>
     } else {
         return <GraphqlError error={error} />
     }
