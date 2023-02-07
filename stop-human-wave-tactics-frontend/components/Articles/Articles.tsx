@@ -18,7 +18,6 @@ import {
   ArticleEntityResponseCollection,
 } from "../../types/graphql_res";
 import { useRouter } from "next/router";
-import { isMobile } from "react-device-detect"
 import { useLocale } from "../../lib/locale";
 
 interface ArticlesProps {
@@ -77,25 +76,25 @@ export const Articles = ({ page, setPage, articles, filter }: ArticlesProps) => 
     const pageCount = articles.meta.pagination.pageCount
     return (
       <Grid container direction="column" sx={{ flexGrow: 1 }} xs={12}>
-        {isMobile ?
-          <Grid container direction="column" sx={{ flexGrow: 1 }} spacing={2} m={2}>
-            {
-              filter != null ?
-                <Grid xs={12}>
-                  <Typography variant="h6" color="text.primary">{t.keyword + ": " + filter}</Typography>
-                </Grid> : null
-            }
+        <Grid container direction="row" xs={12} sx={{ flexGrow: 1 }} spacing={0.2}>
+          {
+            filter != null ?
+              <Grid xs={12}>
+                <Typography variant="h6" color="text.primary">{t.keyword + ": " + filter}</Typography>
+              </Grid> : null
+          }
+          <Grid container xs={6} sx={{ flexGrow: 1 }}>
             {articles?.data.map((article) => {
               if (article.attributes?.uuid != null) {
                 return (
-                  <Grid xs={12} key={article.id} >
-                    <Card sx={{ backgroundColor: "background.content" }}>
-                      <CardActionArea>
-                        <CardContent>
-                          <Grid container justifyContent="center" mb={4} sx={{ position: "relative" }}>
+                  <Grid container direction="column" sx={{ flexGrow: 1 }} key={article.id} xs={12} md={6} p={2}>
+                    <Card sx={{ display: "flex", justifyContent: "stretch", alignContent: "stretch", backgroundColor: "background.content" }}>
+                      <Stack sx={{ flexGrow: 1 }}>
+                        <CardContent sx={{ flexGrow: 1 }}>
+                          <Grid container justifyContent="center" mb={4} sx={{ position: "relative", flexGrow: 1 }}>
                             {article.attributes.thumbnail?.data?.attributes?.url != null && article.attributes.thumbnail?.data?.attributes?.alternativeText != null ?
                               <Link href={`/article/${article.attributes.uuid}`}>
-                                <Image src={article.attributes.thumbnail.data.attributes.url} alt={article.attributes.thumbnail.data.attributes.alternativeText} className="nextimage" />
+                                <Image src={article.attributes.thumbnail.data.attributes.url} className="nextimage" fill alt={article.attributes.thumbnail.data.attributes.alternativeText} />
                               </Link>
                               : null
                             }
@@ -125,14 +124,16 @@ export const Articles = ({ page, setPage, articles, filter }: ArticlesProps) => 
                             <Typography variant="body1">{article.attributes.summary}</Typography>
                           </Grid>
                         </CardContent>
-                      </CardActionArea>
-                      <CardActions >
-                        <Button onClick={() => { router.push(`/article/${article.attributes?.uuid}`) }} size="small">
-                          <Typography variant="body2" color="text.link">
-                            {t.more_details}
-                          </Typography>
-                        </Button>
-                      </CardActions>
+                        <CardActions sx={{ flexGrow: 1 }}>
+                          <Grid container mb={2} ml={1}>
+                            <Button onClick={() => { router.push(`/article/${article.attributes?.uuid}`) }} size="small">
+                              <Typography variant="body2" color="text.link">
+                                {t.more_details}
+                              </Typography>
+                            </Button>
+                          </Grid>
+                        </CardActions>
+                      </Stack>
                     </Card>
                   </Grid>
                 )
@@ -141,75 +142,7 @@ export const Articles = ({ page, setPage, articles, filter }: ArticlesProps) => 
               }
             })}
           </Grid>
-          :
-          <Grid container direction="row" xs={12} sx={{ flexGrow: 1 }} spacing={0.2}>
-            {
-              filter != null ?
-                <Grid xs={12}>
-                  <Typography variant="h6" color="text.primary">{t.keyword + ": " + filter}</Typography>
-                </Grid> : null
-            }
-            <Grid container xs={6} sx={{ flexGrow: 1 }}>
-              {articles?.data.map((article) => {
-                if (article.attributes?.uuid != null) {
-                  return (
-                    <Grid container direction="column" sx={{ flexGrow: 1 }} key={article.id} xs={6} p={2}>
-                      <Card sx={{ display: "flex", justifyContent: "stretch", alignContent: "stretch", backgroundColor: "background.content" }}>
-                        <Stack sx={{ flexGrow: 1 }}>
-                          <CardContent sx={{ flexGrow: 1 }}>
-                            <Grid container justifyContent="center" mb={4} sx={{ position: "relative", flexGrow: 1 }}>
-                              {article.attributes.thumbnail?.data?.attributes?.url != null && article.attributes.thumbnail?.data?.attributes?.alternativeText != null ?
-                                <Link href={`/article/${article.attributes.uuid}`}>
-                                  <Image src={article.attributes.thumbnail.data.attributes.url} className="nextimage" fill alt={article.attributes.thumbnail.data.attributes.alternativeText} />
-                                </Link>
-                                : null
-                              }
-                            </Grid>
-                            <Grid container direction="row" justifyContent="space-between" my={2} sx={{ flexGrow: 1 }}>
-                              <Grid>
-                                <Typography variant="h4" >
-                                  {article.attributes.title}
-                                </Typography>
-                              </Grid>
-                              <Stack sx={{ color: "text.secondary" }}>
-                                <Typography variant="caption" align="right">
-                                  {t.updated_at}: {article.attributes.updatedAt
-                                    .replace("T", " ")
-                                    .replace(/\..*$/g, "")
-                                    .replace(/\-/g, "/")}
-                                </Typography>
-                                <Typography variant="caption" align="right">
-                                  {t.created_at}: {article.attributes.createdAt
-                                    .replace("T", " ")
-                                    .replace(/\..*$/g, "")
-                                    .replace(/\-/g, "/")}
-                                </Typography>
-                              </Stack>
-                            </Grid>
-                            <Grid container direction="column" sx={{ flexGrow: 1 }} mt={4} ml={1}>
-                              <Typography variant="body1">{article.attributes.summary}</Typography>
-                            </Grid>
-                          </CardContent>
-                          <CardActions sx={{ flexGrow: 1 }}>
-                            <Grid container mb={2} ml={1}>
-                              <Button onClick={() => { router.push(`/article/${article.attributes?.uuid}`) }} size="small">
-                                <Typography variant="body2" color="text.link">
-                                  {t.more_details}
-                                </Typography>
-                              </Button>
-                            </Grid>
-                          </CardActions>
-                        </Stack>
-                      </Card>
-                    </Grid>
-                  )
-                } else {
-                  return null
-                }
-              })}
-            </Grid>
-          </Grid>
-        }
+        </Grid>
         {
           router.pathname === "/search" ?
             null :

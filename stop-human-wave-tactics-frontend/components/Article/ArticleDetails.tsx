@@ -13,7 +13,6 @@ type ArticleProps = {
 };
 
 export const ArticleDetails = ({ articles }: { articles: ArticleEntityResponseCollection }) => {
-  const router = useRouter()
   const { locale, locales, t } = useLocale()
 
   if (articles?.data[0]?.attributes != null) {

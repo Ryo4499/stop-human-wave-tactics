@@ -4,7 +4,6 @@ import Grid from "@mui/material/Unstable_Grid2";
 import { useLocale } from "../lib/locale"
 import type { NextPage } from "next";
 import Sidebar from "../components/Common/Sidebar";
-import { isMobile } from "react-device-detect";
 import { getCategories } from "../graphql/getCategories";
 import { getBackendGraphqlURL } from "../lib/graphqlClient";
 import { CategoryEntityResponseCollection } from "../types/graphql_res";
@@ -88,7 +87,7 @@ const PrivacyPolicyContent: NextPage = () => {
   ));
 
   return (
-    <Grid container direction="column" py={2} px={4} spacing={3}>
+    <Grid container direction="column" my={2} mx={5} spacing={3}>
       <Grid>
         <Typography color="text.primary" variant="h6">{t.site_info}</Typography>
       </Grid>
@@ -139,35 +138,19 @@ const PrivacyPolicy: NextPage<CategoriesResponseProps> = ({ categories, variable
   const { data, error, isLoading } = useSWR([getCategories, variables], { fallbackData: { categories: categories, variables: variables }, })
   if (isLoading) return <Loading />
   if (data != null) {
-    return <Grid container sx={{ flexGrow: 1 }}>
+    return <Grid container>
       <Meta title="Privacy Policy Page" description="This page published about privacy policy." keyword={categories.data.map((value) => value.attributes?.name).join(" ")} />
-      {isMobile ?
-        <Grid
-          container
-          direction="column"
-          sx={{ flexGrow: 1 }}
-        >
-          <Grid container p={1.5} xs={12}>
-            <Sidebar categories={data.categories} />
-          </Grid>
-          <Grid container direction="column" p={1.5} xs={12} sx={{ flexGrow: 1 }}>
-            <PrivacyPolicyContent />
-          </Grid>
-        </Grid> :
-        <Grid
-          container
-          direction="row"
-          sx={{ flexGrow: 1 }}
-          my={2}
-        >
-          <Grid container xs={10} sx={{ flexGrow: 1 }}>
-            <PrivacyPolicyContent />
-          </Grid>
-          <Grid container xs={2} sx={{ flexGrow: 1 }}>
-            <Sidebar categories={data.categories} />
-          </Grid>
+      <Grid
+        container
+        direction="row"
+      >
+        <Grid container xs={12} md={10}>
+          <PrivacyPolicyContent />
         </Grid>
-      }
+        <Grid container xs={12} md={2}>
+          <Sidebar categories={data.categories} />
+        </Grid>
+      </Grid>
     </Grid>
   } else {
     return <GraphqlError error={error} />

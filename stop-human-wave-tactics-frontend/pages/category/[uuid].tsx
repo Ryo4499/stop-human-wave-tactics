@@ -4,9 +4,8 @@ import { useRouter } from "next/router"
 import { request } from "graphql-request"
 import { getBackendGraphqlURL } from "../../lib/graphqlClient";
 import { ArticleEntity } from "../../types/graphql_res";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Sidebar from "../../components/Common/Sidebar";
-import { isMobile } from "react-device-detect";
 import { ArticlesCategorisProps, UUIDParams, UUIDStaticProps } from "../../types/general";
 import { getCategoriesUUID } from "../../graphql/getCategoriesUUID";
 import { Articles } from "../../components/Articles";
@@ -72,34 +71,19 @@ const ArticlesPage: NextPage<ArticlesCategorisProps> = ({ articles, categories, 
     );
     if (isLoading) return <Loading />
     if (data != null) {
-        return <Grid container sx={{flexGrow:1}}>
+        return <Grid container sx={{ flexGrow: 1 }}>
             <Meta title="Searched articles by category name" description="This page published articles searched by category name." keyword={categories.data.map((value) => value.attributes?.name).join(" ")} />
-            {isMobile ?
-                <Grid
-                    container
-                    direction="column"
-                    sx={{ flexGrow: 1 }}
-                >
-                    <Grid container p={1.5} xs={12}>
-                        <Sidebar categories={data.categories} />
-                    </Grid>
-                    <Grid container direction="column" p={1.5} xs={12} sx={{ flexGrow: 1 }}>
-                        <Articles page={page} setPage={setPage} articles={data.articles} filter={router.query.name} />
-                    </Grid>
-                </Grid> :
-                <Grid
-                    container
-                    direction="row"
-                    sx={{ flexGrow: 1 }}
-                >
-                    <Grid container xs={10} sx={{ flexGrow: 1 }}>
-                        <Articles page={page} setPage={setPage} articles={data.articles} filter={router.query.name} />
-                    </Grid>
-                    <Grid container xs={2} sx={{ flexGrow: 1 }}>
-                        <Sidebar categories={data.categories} />
-                    </Grid>
+            <Grid
+                container
+                direction="row"
+            >
+                <Grid container xs={12} md={10}>
+                    <Articles page={page} setPage={setPage} articles={data.articles} filter={router.query.name} />
                 </Grid>
-            }
+                <Grid container xs={12} md={2}>
+                    <Sidebar categories={data.categories} />
+                </Grid>
+            </Grid>
         </Grid>
     } else {
         return <GraphqlError error={error} />
