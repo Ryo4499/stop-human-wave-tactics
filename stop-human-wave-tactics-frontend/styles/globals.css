@@ -29,3 +29,12 @@ a {
 pre .hljs {
   background-color: rgba(38 38, 38, 0.9);
 }
+
+.nextimage {
+  object-fit: contain;
+  position: relative !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: fit-content !important;
+  max-height: fit-content !important;
+}
