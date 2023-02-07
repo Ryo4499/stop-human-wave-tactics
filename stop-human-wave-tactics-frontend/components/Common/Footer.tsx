@@ -13,17 +13,17 @@ const Footer = () => {
         <Toolbar >
           <Grid container justifyContent="center" alignItems="center" xs={12} sx={{ color: "text.primary" }}>
             <Grid container mx={1}>
-              <Link href="/">
+              <Link href="/" as="/">
                 {t.top}
               </Link>
             </Grid>
             <Grid container mx={1}>
-              <Link href="/privacy-policy">
+              <Link href="/privacy-policy" as="/privacy-policy">
                 {t.privacy_policy}
               </Link>
             </Grid>
             <Grid container mx={1}>
-              <Link href="/portofolios">
+              <Link href="/portofolios" as="/portofolios">
                 {t.portofolios}
               </Link>
             </Grid>
