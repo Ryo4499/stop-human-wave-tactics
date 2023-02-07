@@ -65,12 +65,13 @@ const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({ articles, categories,
             <Grid
                 container
                 direction="row"
+                sx={{ flexGrow: 1 }}
             >
                 <Meta title="Top Page" description="This page published latest articles." keyword={categories.data.map((value) => value.attributes?.name).join(" ")} />
-                <Grid container xs={12} md={10}>
+                <Grid container xs={12} md={10} sx={{ flexGrow: 1 }}>
                     <Articles page={page} setPage={setPage} articles={data.articles} filter={null} />
                 </Grid>
-                <Grid container xs={12} md={2}>
+                <Grid container xs={12} md={2} sx={{ flexGrow: 1 }}>
                     <Sidebar categories={data.categories} />
                 </Grid>
             </Grid>)
