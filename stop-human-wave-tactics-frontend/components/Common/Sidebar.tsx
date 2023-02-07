@@ -27,6 +27,11 @@ const Sidebar = ({ categories }: CategoriesProps) => {
     }
   }
 
+  const githuburl = "https://github.com/Ryo4499"
+  const twitterurl = "https://twitter.com/ar4499_"
+  const facebookurl = "https://www.facebook.com/profile.php?id=100090145990107"
+  const instagramurl = "https://www.instagram.com/ar4499_/"
+
   return (
     <Grid container direction="column" sx={{ backgroundColor: 'background.sidebar', flexGrow: 1 }} >
       <Grid container direction="row" justifyContent="center" >
@@ -75,16 +80,16 @@ const Sidebar = ({ categories }: CategoriesProps) => {
             <Grid container xs={1}></Grid>
             <Grid container xs={11}>
               <Stack direction="row" spacing={0.8}>
-                <a href="https://github.com/Ryo4499">
+                <a href={githuburl}>
                   <GitHubIcon sx={{ fontSize: "1.4rem", color: "text.secondary" }} />
                 </a>
-                <a href="https://twitter.com/ar4499_">
+                <a href={twitterurl}>
                   <TwitterIcon sx={{ fontSize: "1.4rem", color: "text.secondary" }} />
                 </a>
-                <a href="">
+                <a href={facebookurl}>
                   <FacebookIcon sx={{ fontSize: "1.4rem", color: "text.secondary" }} />
                 </a>
-                <a href="">
+                <a href={instagramurl}>
                   <InstagramIcon sx={{ fontSize: "1.4rem", color: "text.secondary" }} />
                 </a>
               </Stack>
