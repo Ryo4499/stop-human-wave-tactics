@@ -60,11 +60,12 @@ const ArticlePage: NextPage<ArticlesCategorisProps> = ({ articles, categories, v
             <Grid
                 container
                 direction="row"
+                sx={{ flexGrow: 1 }}
             >
-                <Grid container xs={12} md={10}>
+                <Grid container xs={12} md={10} sx={{ flexGrow: 1 }}>
                     <ArticleDetails articles={data.articles} />
                 </Grid>
-                <Grid container xs={12} md={2}>
+                <Grid container xs={12} md={2} sx={{ flexGrow: 1 }}>
                     <Sidebar categories={data.categories} />
                 </Grid>
             </Grid>
