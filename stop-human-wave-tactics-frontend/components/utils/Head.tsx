@@ -24,7 +24,7 @@ const Meta = ({ title, description, keyword }: Props): JSX.Element => {
             <meta name="twitter:title" content={title} />
             <meta name="twitter:description" content={description} />
             <link rel="canonical" href={getProxyURL()} />
-            <link rel="shortcut icon" href={path.join(getProxyURL(), "favicon.ico")} />
+            <link rel="shortcut icon" href="/favicon.ico" />
             <link rel="apple-touch-icon" href={getProxyURL()} />
             <script async
                 src="https://www.googletagmanager.com/gtag/js?id=G-884NEPFPMJ"
