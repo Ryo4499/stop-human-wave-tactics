@@ -13,7 +13,6 @@ import Loading from "../../components/Common/Loading"
 import { GraphqlError } from "../../components/Common/DisplayError";
 import useSWR from "swr"
 import Meta from "../../components/utils/Head";
-import { Category } from "@mui/icons-material";
 
 export const getStaticPaths = async ({ locales }: { locales: Array<string> }) => {
     const paths: Array<UUIDParams> = []
@@ -57,7 +56,7 @@ const ArticlePage: NextPage<ArticlesCategorisProps> = ({ articles, categories, v
     const { data, error, isLoading } = useSWR([getArticlesCategories, variables], { fallbackData: { articles: articles, categories: categories, variables: variables }, })
     if (isLoading) return <Loading />
     if (data != null) {
-        return <>
+        return <Grid container sx={{ flexGrow: 1 }}>
             <Meta title="Article Details Page" description="This page published article details." keyword={categories.data.map((value) => value.attributes?.name).join(" ")} />
             {isMobile ?
                 <Grid
@@ -85,7 +84,7 @@ const ArticlePage: NextPage<ArticlesCategorisProps> = ({ articles, categories, v
                     </Grid>
                 </Grid>
             }
-        </>
+        </Grid>
     } else {
         return <GraphqlError error={error} />
     }

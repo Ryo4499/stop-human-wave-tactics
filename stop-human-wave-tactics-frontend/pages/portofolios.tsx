@@ -93,7 +93,7 @@ const Portofolio: NextPage<CategoriesResponseProps> = ({ categories, variables }
     }, [router]);
     if (isLoading) return <Loading />
     if (data != null) {
-        return <>
+        return <Grid container sx={{ flexGrow: 1 }}>
             <Meta title="Portfolios Page" description="This page introduce my portfolios." keyword={categories.data.map((value) => value.attributes?.name).join(" ")} />
             {isMobile ?
                 <Grid
@@ -121,7 +121,7 @@ const Portofolio: NextPage<CategoriesResponseProps> = ({ categories, variables }
                     </Grid>
                 </Grid>
             }
-        </>
+        </Grid>
     } else {
         return <GraphqlError error={error} />
     }

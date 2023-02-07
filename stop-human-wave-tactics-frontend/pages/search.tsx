@@ -82,63 +82,33 @@ const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({ articles, categories,
             }
         }
         const filterArticlesResponseCollection = Object.assign(data.articles, filterArticlesCollection)
-        if (filterArticles.length === 0) {
-            return (
-                <Grid
-                    container
-                    direction="row"
-                    sx={{ flexGrow: 1 }}
-                >
-                    <Meta title="Searched articles by title" description="This page published articles searched by title." keyword={filter} />
-                    {isMobile ?
-                        <>
-                            <Grid container xs={12} sx={{ flexGrow: 1 }}>
-                                <Sidebar categories={data.categories} />
-                            </Grid>
-                            <Grid container direction="column" xs={12} sx={{ flexGrow: 1 }}>
-                                <NotFound />
-                            </Grid>
-                        </>
-                        :
-                        <>
-                            <Grid container xs={10} sx={{ flexGrow: 1 }}>
-                                <NotFound />
-                            </Grid>
-                            <Grid container xs={2} sx={{ flexGrow: 1 }}>
-                                <Sidebar categories={data.categories} />
-                            </Grid>
-                        </>
-                    }
-                </Grid>)
-        } else {
-            return (
-                <Grid
-                    container
-                    direction="row"
-                    sx={{ flexGrow: 1 }}
-                >
-                    <Meta title="Searched articles by title" description="This page published articles searched by title." keyword={filter} />
-                    {isMobile ?
-                        <>
-                            <Grid container xs={12} sx={{ flexGrow: 1 }}>
-                                <Sidebar categories={data.categories} />
-                            </Grid>
-                            <Grid container direction="column" xs={12} sx={{ flexGrow: 1 }}>
-                                <Articles page={page} setPage={setPage} articles={filterArticlesResponseCollection} filter={filter} />
-                            </Grid>
-                        </>
-                        :
-                        <>
-                            <Grid container xs={10} sx={{ flexGrow: 1 }}>
-                                <Articles page={page} setPage={setPage} articles={filterArticlesResponseCollection} filter={filter} />
-                            </Grid>
-                            <Grid container xs={2} sx={{ flexGrow: 1 }}>
-                                <Sidebar categories={data.categories} />
-                            </Grid>
-                        </>
-                    }
-                </Grid>)
-        }
+        return (
+            <Grid
+                container
+                direction="row"
+                sx={{ flexGrow: 1 }}
+            >
+                <Meta title="Searched articles by title" description="This page published articles searched by title." keyword={filter} />
+                {isMobile ?
+                    <>
+                        <Grid container xs={12} sx={{ flexGrow: 1 }}>
+                            <Sidebar categories={data.categories} />
+                        </Grid>
+                        <Grid container direction="column" xs={12} sx={{ flexGrow: 1 }}>
+                            {filterArticles.length === 0 ? <NotFound /> : <Articles page={page} setPage={setPage} articles={filterArticlesResponseCollection} filter={filter} />}
+                        </Grid>
+                    </>
+                    :
+                    <>
+                        <Grid container xs={10} sx={{ flexGrow: 1 }}>
+                            {filterArticles.length === 0 ? <NotFound /> : <Articles page={page} setPage={setPage} articles={filterArticlesResponseCollection} filter={filter} />}
+                        </Grid>
+                        <Grid container xs={2} sx={{ flexGrow: 1 }}>
+                            <Sidebar categories={data.categories} />
+                        </Grid>
+                    </>
+                }
+            </Grid >)
     } else {
         return <GraphqlError error={error} />
     }
