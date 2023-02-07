@@ -18,9 +18,10 @@ export const ParticlesContext = createContext({} as {
 });
 
 export const ColorModeContext = createContext({ toggleColorMode: () => { } });
-export function reportWebVitals(metric: NextWebVitalsMetric) {
-  console.log(metric)
-}
+
+//export function reportWebVitals(metric: NextWebVitalsMetric) {
+//  console.log(metric)
+//}
 
 const MyApp: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
   const [mode, setMode] = useState<'light' | 'dark'>('dark');

@@ -11,7 +11,7 @@ export const Categories = ({ categories }: CategoriesProps) => {
     {categories.data.map(category => {
       if (category.attributes?.uuid != null) {
         return <Grid key={category.id} >
-          <Link href={`/category/${category.attributes?.uuid}`} >
+          <Link href={{ pathname: `/category/${category.attributes.uuid}`, query: { name: category.attributes.name } }} >
             <Typography color="text.secondary">
               {category.attributes?.name} ({category.attributes?.articles?.data.length})
             </Typography>

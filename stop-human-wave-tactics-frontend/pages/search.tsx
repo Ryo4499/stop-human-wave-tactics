@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Unstable_Grid2"
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { request } from "graphql-request"
 import { Articles } from "../components/Articles";
 import { getBackendGraphqlURL } from "../lib/graphqlClient";
@@ -14,6 +14,7 @@ import useSWR from "swr"
 import Loading from "../components/Common/Loading";
 import { GraphqlError } from "../components/Common/DisplayError";
 import { ArticleEntity } from "../types/graphql_res";
+import Meta from "../components/utils/Head";
 
 
 export const getStaticProps = async ({ locales, locale, defaultLocale }: IStaticProps) => {
@@ -49,7 +50,19 @@ const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({ articles, categories,
             ? 1
             : parseInt(router.query.page as string, 10)
     )
+    useEffect(() => {
+        router.beforePopState(({ as }) => {
+            if (as !== router.asPath) {
+                // Will run when leaving the current page; on back/forward actions
+                // Add your logic here, like toggling the modal state
+            }
+            return true;
+        });
 
+        return () => {
+            router.beforePopState(() => true);
+        };
+    }, [router]);
     if (isLoading) return <Loading />
     if (data != null) {
         const filterArticles = data.articles.data.filter(
@@ -76,6 +89,7 @@ const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({ articles, categories,
                     direction="row"
                     sx={{ flexGrow: 1 }}
                 >
+                    <Meta title="Searched articles by title" description="This page published articles searched by title." keyword={filter} />
                     {isMobile ?
                         <>
                             <Grid container xs={12} sx={{ flexGrow: 1 }}>
@@ -103,19 +117,20 @@ const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({ articles, categories,
                     direction="row"
                     sx={{ flexGrow: 1 }}
                 >
+                    <Meta title="Searched articles by title" description="This page published articles searched by title." keyword={filter} />
                     {isMobile ?
                         <>
                             <Grid container xs={12} sx={{ flexGrow: 1 }}>
                                 <Sidebar categories={data.categories} />
                             </Grid>
                             <Grid container direction="column" xs={12} sx={{ flexGrow: 1 }}>
-                                <Articles page={page} setPage={setPage} articles={filterArticlesResponseCollection} />
+                                <Articles page={page} setPage={setPage} articles={filterArticlesResponseCollection} filter={filter} />
                             </Grid>
                         </>
                         :
                         <>
                             <Grid container xs={10} sx={{ flexGrow: 1 }}>
-                                <Articles page={page} setPage={setPage} articles={filterArticlesResponseCollection} />
+                                <Articles page={page} setPage={setPage} articles={filterArticlesResponseCollection} filter={filter} />
                             </Grid>
                             <Grid container xs={2} sx={{ flexGrow: 1 }}>
                                 <Sidebar categories={data.categories} />

@@ -90,7 +90,7 @@ const Sidebar = ({ categories }: CategoriesProps) => {
                     <a href="https://github.com/Ryo4499">
                       <GitHubIcon sx={{ fontSize: "1.4rem", color: "text.secondary" }} />
                     </a>
-                    <a href="">
+                    <a href="https://twitter.com/ar4499_">
                       <TwitterIcon sx={{ fontSize: "1.4rem", color: "text.secondary" }} />
                     </a>
                     <a href="">
