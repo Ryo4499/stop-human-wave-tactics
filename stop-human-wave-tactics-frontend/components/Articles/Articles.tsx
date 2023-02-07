@@ -13,6 +13,7 @@ import {
   CardActions,
   Button,
 } from "@mui/material";
+import Image from "next/image";
 import {
   ArticleEntityResponseCollection,
 } from "../../types/graphql_res";
@@ -85,15 +86,10 @@ export const Articles = ({ page, setPage, articles }: ArticlesProps) => {
                     <Card sx={{ backgroundColor: "background.content" }}>
                       <CardActionArea>
                         <CardContent>
-                          <Grid container justifyContent="center" mb={4}>
-                            {article.attributes.thumbnail?.data?.attributes?.url != null ?
+                          <Grid container justifyContent="center" mb={4} sx={{ position: "relative" }}>
+                            {article.attributes.thumbnail?.data?.attributes?.url != null && article.attributes.thumbnail?.data?.attributes?.alternativeText != null ?
                               <Link href={`/article/${article.attributes.uuid}`}>
-                                <CardMedia
-                                  component="img"
-                                  image={
-                                    article.attributes.thumbnail.data.attributes.url
-                                  }
-                                />
+                                <Image src={article.attributes.thumbnail.data.attributes.url} alt={article.attributes.thumbnail.data.attributes.alternativeText} className="nextimage" />
                               </Link>
                               : null
                             }
@@ -149,15 +145,10 @@ export const Articles = ({ page, setPage, articles }: ArticlesProps) => {
                       <Card sx={{ display: "flex", justifyContent: "stretch", alignContent: "stretch", backgroundColor: "background.content" }}>
                         <Stack sx={{ flexGrow: 1 }}>
                           <CardContent sx={{ flexGrow: 1 }}>
-                            <Grid container justifyContent="center" mb={4}>
-                              {article.attributes.thumbnail?.data?.attributes?.url != null ?
+                            <Grid container justifyContent="center" mb={4} sx={{ position: "relative", flexGrow: 1 }}>
+                              {article.attributes.thumbnail?.data?.attributes?.url != null && article.attributes.thumbnail?.data?.attributes?.alternativeText != null ?
                                 <Link href={`/article/${article.attributes.uuid}`}>
-                                  <CardMedia
-                                    component="img"
-                                    image={
-                                      article.attributes.thumbnail.data.attributes.url
-                                    }
-                                  />
+                                  <Image src={article.attributes.thumbnail.data.attributes.url} className="nextimage" fill alt={article.attributes.thumbnail.data.attributes.alternativeText} />
                                 </Link>
                                 : null
                               }
@@ -207,13 +198,14 @@ export const Articles = ({ page, setPage, articles }: ArticlesProps) => {
             </Grid>
           </Grid>
         }
-        {router.pathname === "/search" ?
-          null :
-          <Grid container direction="row" justifyContent="center" mb={2}>
-            <Content page={page} setPage={setPage} pageCount={pageCount}></Content>
-          </Grid>
+        {
+          router.pathname === "/search" ?
+            null :
+            <Grid container direction="row" justifyContent="center" mb={2}>
+              <Content page={page} setPage={setPage} pageCount={pageCount}></Content>
+            </Grid>
         }
-      </Grid>
+      </Grid >
     );
   } else {
     return null
