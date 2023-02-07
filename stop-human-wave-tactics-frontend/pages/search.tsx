@@ -94,7 +94,6 @@ const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({ articles, categories,
                 <Grid container xs={2} sx={{ flexGrow: 1 }}>
                     <Sidebar categories={data.categories} />
                 </Grid>
-                }
             </Grid >)
     } else {
         return <GraphqlError error={error} />
