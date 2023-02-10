@@ -4,14 +4,13 @@ query getArticlesCategories(
   $filters: ArticleFiltersInput
   $pagination: PaginationArg!
   $sort: [String]
-  $publicationState: PublicationState
   $locale: I18NLocaleCode!
 ) {
   articles(
     filters: $filters
     pagination: $pagination
     sort: $sort
-    publicationState: $publicationState
+    publicationState: LIVE
     locale: $locale
   ) {
     data {
@@ -92,7 +91,7 @@ query getArticlesCategories(
       attributes {
         uuid
         name
-        articles {
+        articles(publicationState: LIVE) {
           data {
             id
             attributes {
