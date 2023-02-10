@@ -16,7 +16,7 @@ export const getCategoriesUUID = gql`query getCategoriesUUID(
       id
       attributes {
         uuid
-        articles {
+        articles(publicationState: LIVE) {
           data {
             id
             attributes {
