@@ -1258,7 +1258,6 @@ export type GetArticlesQueryVariables = Exact<{
   filters?: InputMaybe<ArticleFiltersInput>;
   pagination: PaginationArg;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>> | InputMaybe<Scalars['String']>>;
-  publicationState?: InputMaybe<PublicationState>;
   locale: Scalars['I18NLocaleCode'];
 }>;
 
@@ -1269,7 +1268,6 @@ export type GetArticlesCategoriesQueryVariables = Exact<{
   filters?: InputMaybe<ArticleFiltersInput>;
   pagination: PaginationArg;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>> | InputMaybe<Scalars['String']>>;
-  publicationState?: InputMaybe<PublicationState>;
   locale: Scalars['I18NLocaleCode'];
 }>;
 
@@ -1280,7 +1278,6 @@ export type GetArticlesPagesQueryVariables = Exact<{
   filters?: InputMaybe<ArticleFiltersInput>;
   pagination: PaginationArg;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>> | InputMaybe<Scalars['String']>>;
-  publicationState?: InputMaybe<PublicationState>;
   locale: Scalars['I18NLocaleCode'];
 }>;
 
@@ -1291,7 +1288,6 @@ export type GetArticlesUuidQueryVariables = Exact<{
   filters?: InputMaybe<ArticleFiltersInput>;
   pagination: PaginationArg;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>> | InputMaybe<Scalars['String']>>;
-  publicationState?: InputMaybe<PublicationState>;
   locale: Scalars['I18NLocaleCode'];
 }>;
 
@@ -1401,13 +1397,13 @@ export const GetArticleDocument = gql`
 }
     `;
 export const GetArticlesDocument = gql`
-    query getArticles($filters: ArticleFiltersInput, $pagination: PaginationArg!, $sort: [String], $publicationState: PublicationState, $locale: I18NLocaleCode!) {
+    query getArticles($filters: ArticleFiltersInput, $pagination: PaginationArg!, $sort: [String], $locale: I18NLocaleCode!) {
   articles(
     filters: $filters
     pagination: $pagination
     sort: $sort
-    publicationState: $publicationState
     locale: $locale
+    publicationState: LIVE
   ) {
     data {
       id
@@ -1479,13 +1475,13 @@ export const GetArticlesDocument = gql`
 }
     `;
 export const GetArticlesCategoriesDocument = gql`
-    query getArticlesCategories($filters: ArticleFiltersInput, $pagination: PaginationArg!, $sort: [String], $publicationState: PublicationState, $locale: I18NLocaleCode!) {
+    query getArticlesCategories($filters: ArticleFiltersInput, $pagination: PaginationArg!, $sort: [String], $locale: I18NLocaleCode!) {
   articles(
     filters: $filters
     pagination: $pagination
     sort: $sort
-    publicationState: $publicationState
     locale: $locale
+    publicationState: LIVE
   ) {
     data {
       id
@@ -1560,7 +1556,7 @@ export const GetArticlesCategoriesDocument = gql`
       attributes {
         uuid
         name
-        articles {
+        articles(publicationState: LIVE) {
           data {
             id
             attributes {
@@ -1583,13 +1579,13 @@ export const GetArticlesCategoriesDocument = gql`
 }
     `;
 export const GetArticlesPagesDocument = gql`
-    query getArticlesPages($filters: ArticleFiltersInput, $pagination: PaginationArg!, $sort: [String], $publicationState: PublicationState, $locale: I18NLocaleCode!) {
+    query getArticlesPages($filters: ArticleFiltersInput, $pagination: PaginationArg!, $sort: [String], $locale: I18NLocaleCode!) {
   articles(
     filters: $filters
     pagination: $pagination
     sort: $sort
-    publicationState: $publicationState
     locale: $locale
+    publicationState: LIVE
   ) {
     meta {
       pagination {
@@ -1603,13 +1599,13 @@ export const GetArticlesPagesDocument = gql`
 }
     `;
 export const GetArticlesUuidDocument = gql`
-    query getArticlesUUID($filters: ArticleFiltersInput, $pagination: PaginationArg!, $sort: [String], $publicationState: PublicationState, $locale: I18NLocaleCode!) {
+    query getArticlesUUID($filters: ArticleFiltersInput, $pagination: PaginationArg!, $sort: [String], $locale: I18NLocaleCode!) {
   articles(
     filters: $filters
     pagination: $pagination
     sort: $sort
-    publicationState: $publicationState
     locale: $locale
+    publicationState: LIVE
   ) {
     data {
       attributes {
@@ -1632,7 +1628,7 @@ export const GetCategoriesDocument = gql`
       attributes {
         uuid
         name
-        articles {
+        articles(publicationState: LIVE) {
           data {
             id
             attributes {
@@ -1668,7 +1664,7 @@ export const GetCategoriesUuidDocument = gql`
       id
       attributes {
         uuid
-        articles {
+        articles(publicationState: LIVE) {
           data {
             id
             attributes {
@@ -1698,7 +1694,7 @@ export const GetCategoryDocument = gql`
       attributes {
         uuid
         name
-        articles {
+        articles(publicationState: LIVE) {
           data {
             id
             attributes {

@@ -8,7 +8,7 @@ query getCategory($id: ID!, $locale: I18NLocaleCode!) {
       attributes {
         uuid
         name
-        articles {
+        articles(publicationState: LIVE) {
           data {
             id
             attributes {
