@@ -18,7 +18,7 @@ query getCategories(
       attributes {
         uuid
         name
-        articles {
+        articles(publicationState: LIVE) {
           data {
             id
             attributes {
