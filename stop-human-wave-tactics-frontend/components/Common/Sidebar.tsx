@@ -10,11 +10,8 @@ import Stack from "@mui/material/Stack";
 import { useLocale } from "../../lib/locale"
 import { Categories } from "../Category";
 import { useRouter } from "next/router";
-import { CategoryEntityResponseCollection } from "../../types/graphql_res";
+import { CategoriesProps } from "../../types/general";
 
-interface CategoriesProps {
-  categories: CategoryEntityResponseCollection
-}
 
 const Sidebar = ({ categories }: CategoriesProps) => {
   const router = useRouter()
@@ -35,16 +32,12 @@ const Sidebar = ({ categories }: CategoriesProps) => {
   return (
     <Grid container direction="column" sx={{ backgroundColor: 'background.sidebar', flexGrow: 1 }} >
       <Grid container direction="row" justifyContent="center" >
-        < Grid container direction="row" justifyContent="center" alignItems="center" my={2} xs={12}>
-          <Grid container xs={1}>
-          </Grid>
-          <Grid container xs={2}>
+        < Grid container direction="row" justifyContent="center" alignContent="center" alignItems="center" my={2} xs={12}>
+          <Grid mx={1} mt={1} alignItems="center">
             <SearchIcon fontSize="large" sx={{ color: "text.primary" }} />
           </Grid >
-          <Grid container xs={8}>
+          <Grid alignItems="center">
             <TextField sx={{ flexGrow: 1, color: "text.primary", "& label": { color: "text.primary" } }} id="outlined-basic" label={t.search} variant="outlined" onKeyDown={submitHandle} />
-          </Grid>
-          <Grid container xs={1}>
           </Grid>
         </Grid >
         <Grid container justifyContent="center" py={2} xs={12}>

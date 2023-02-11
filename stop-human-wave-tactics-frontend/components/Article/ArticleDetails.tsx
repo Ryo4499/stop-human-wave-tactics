@@ -6,7 +6,9 @@ import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Unstable_Grid2";
 import { Typography } from "@mui/material";
 import { useLocale } from "../../lib/locale";
+import ArchiveIcon from '@mui/icons-material/Archive';
 import MdContent from "../Common/MdContent";
+import Link from "next/link";
 
 type ArticleProps = {
   uuid: string;
@@ -18,30 +20,48 @@ export const ArticleDetails = ({ articles }: { articles: ArticleEntityResponseCo
   if (articles?.data[0]?.attributes != null) {
     const article = articles.data[0]?.attributes;
     return (
-      <Grid container direction="column" xs={12} sx={{ flexGrow: 1 }}>
-        <Grid container direction="column" sx={{ flexGrow: 1, backgroundColor: "background.content" }} mx={5} justifyContent="space-between">
-          <Grid container direction="column" mx={5} my={2}>
-            <Grid container>
+      <Grid container direction="column" xs={12} sx={{ flexGrow: 1, }}>
+        <Grid container direction="column" sx={{ flexGrow: 1, backgroundColor: "background.content", mx: { md: 5, xs: 0 }, my: { md: 0, xs: 3 } }} justifyContent="space-between">
+          <Grid container direction="column" my={2} mx={5}>
+            <Grid >
               <Typography variant="h2" color={"text.primary"}>
                 {article.title}
               </Typography>
             </Grid>
-            <Stack my={2}>
-              <Typography variant="body1" color={"text.secondary"} align="right">
-                {t.updated_at}: {article.updatedAt
-                  .replace("T", " ")
-                  .replace(/\..*$/g, "")
-                  .replace(/\-/g, "/")
-                }
-              </Typography>
-              <Typography variant="body1" color={"text.secondary"} align="right">
-                {t.created_at}: {article.createdAt
-                  .replace("T", " ")
-                  .replace(/\..*$/g, "")
-                  .replace(/\-/g, "/")
-                }
-              </Typography>
-            </Stack>
+            <Grid container direction="row" my={2} justifyContent="space-between" alignContent="center" alignItems="center">
+              {
+                article.category?.data?.attributes?.uuid != null ?
+                  <Grid container direction="row" sx={{ color: "text.link" }} spacing={1} alignContent="center" alignItems="center">
+                    <Grid >
+                      <ArchiveIcon sx={{ color: "text.secondary" }} />
+                    </Grid>
+                    <Grid >
+                      <Link href={`/category/${article.category?.data?.attributes?.uuid}`}>
+                        <Typography variant="subtitle1">
+                          {article.category?.data?.attributes?.name}
+                        </Typography>
+                      </Link>
+                    </Grid>
+                  </Grid> :
+                  null
+              }
+              <Grid textAlign={"right"}>
+                <Typography variant="body1" color={"text.secondary"} >
+                  {t.updated_at}: {article.updatedAt
+                    .replace("T", " ")
+                    .replace(/\..*$/g, "")
+                    .replace(/\-/g, "/")
+                  }
+                </Typography>
+                <Typography variant="body1" color={"text.secondary"} >
+                  {t.created_at}: {article.createdAt
+                    .replace("T", " ")
+                    .replace(/\..*$/g, "")
+                    .replace(/\-/g, "/")
+                  }
+                </Typography>
+              </Grid>
+            </Grid>
             <Grid container direction="row">
               <Typography variant="body1" color={"text.secondary"} >
                 <MdContent content={article.content}></MdContent>
