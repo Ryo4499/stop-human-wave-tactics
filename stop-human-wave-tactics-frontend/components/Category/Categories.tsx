@@ -4,15 +4,15 @@ import Link from "next/link";
 import { useLocale } from "../../lib/locale";
 import { CategoriesProps } from "../../types/general";
 
+
 export const Categories = ({ categories }: CategoriesProps) => {
   const { locale, locales, t } = useLocale()
-
   const CategoriesContent = <Grid>
     {categories.data.map(category => {
       if (category.attributes?.uuid != null) {
         return <Grid key={category.id} >
-          <Link href={{ pathname: `/category/${category.attributes.uuid}`, query: { name: category.attributes.name } }} as={"/category/[uuid]"} >
-            <Typography color="text.secondary">
+          <Link href={{ pathname: `/category/${category.attributes.uuid}`, query: { name: category.attributes.name } }} >
+            <Typography color="text.link">
               {category.attributes?.name} ({category.attributes?.articles?.data.length})
             </Typography>
           </Link>
