@@ -87,7 +87,7 @@ const PrivacyPolicyContent: NextPage = () => {
   ));
 
   return (
-    <Grid container direction="column" my={2} mx={5} spacing={3}>
+    <Grid container direction="column" mx={5} spacing={3} sx={{ backgroundColor: "background.content", my: { md: 0, xs: 2 }, flexGrow: 1 }}>
       <Grid>
         <Typography color="text.primary" variant="h6">{t.site_info}</Typography>
       </Grid>
