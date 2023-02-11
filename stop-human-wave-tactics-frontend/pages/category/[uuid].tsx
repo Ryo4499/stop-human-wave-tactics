@@ -70,7 +70,7 @@ const ArticlesPage: NextPage<ArticlesCategorisProps> = ({ articles, categories, 
             : parseInt(router.query.page as string, 10)
     );
     if (isLoading) return <Loading />
-    if (data != null) {
+    if (data != null && typeof router.query.name === "string") {
         return <Grid container sx={{ flexGrow: 1 }}>
             <Meta title="Searched articles by category name" description="This page published articles searched by category name." keyword={categories.data.map((value) => value.attributes?.name).join(" ")} />
             <Grid
