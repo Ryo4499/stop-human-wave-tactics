@@ -12,7 +12,9 @@ import {
   Typography,
   CardActions,
   Button,
+  Container,
 } from "@mui/material";
+import ArchiveIcon from '@mui/icons-material/Archive';
 import Image from "next/image";
 import {
   ArticleEntityResponseCollection,
@@ -64,13 +66,14 @@ export const Articles = ({ page, setPage, articles, filter }: ArticlesProps) => 
     const pageCount = articles.meta.pagination.pageCount
     return (
       <Grid container direction="column" sx={{ flexGrow: 1 }} xs={12}>
+        {
+          filter != null ?
+            <Grid container xs={12} mx={3} mt={2} mb={1}>
+              <Typography variant="h6" color="text.secondary">{t.keyword + ":  " + filter}</Typography>
+            </Grid>
+            : null
+        }
         <Grid container direction="row" xs={12} sx={{ flexGrow: 1 }} spacing={0.2}>
-          {
-            filter != null ?
-              <Grid xs={12}>
-                <Typography variant="h6" color="text.primary">{t.keyword + ": " + filter}</Typography>
-              </Grid> : null
-          }
           <Grid container xs={6} sx={{ flexGrow: 1 }}>
             {articles?.data.map((article) => {
               if (article.attributes?.uuid != null) {
@@ -108,17 +111,33 @@ export const Articles = ({ page, setPage, articles, filter }: ArticlesProps) => 
                               </Typography>
                             </Stack>
                           </Grid>
+                          {
+                            article.attributes.category?.data?.attributes?.uuid != null ?
+                              <Grid container sx={{ color: "text.link" }} spacing={1}>
+                                <Grid>
+                                  <ArchiveIcon sx={{ color: "text.secondary" }} />
+                                </Grid>
+                                <Grid>
+                                  <Link href={{ pathname: `/category/${article.attributes.category.data.attributes.uuid}`, query: { name: article.attributes.category.data.attributes.name } }} >
+                                    {article.attributes.category.data.attributes.name}
+                                  </Link>
+                                </Grid>
+                              </Grid>
+                              : null
+                          }
                           <Grid container direction="column" sx={{ flexGrow: 1 }} mt={4} ml={1}>
                             <Typography variant="body1">{article.attributes.summary}</Typography>
                           </Grid>
                         </CardContent>
                         <CardActions sx={{ flexGrow: 1 }}>
                           <Grid container mb={2} ml={1}>
-                            <Button onClick={() => { router.push("/article/[uuid]", `/article/${article.attributes?.uuid}`) }} size="small">
-                              <Typography variant="body2" color="text.link">
-                                {t.more_details}
-                              </Typography>
-                            </Button>
+                            <Grid>
+                              <Button onClick={() => { router.push("/article/[uuid]", `/article/${article.attributes?.uuid}`) }} size="small">
+                                <Typography variant="subtitle1" color="text.link">
+                                  {t.more_details}
+                                </Typography>
+                              </Button>
+                            </Grid>
                           </Grid>
                         </CardActions>
                       </Stack>
