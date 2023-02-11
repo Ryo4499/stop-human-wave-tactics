@@ -1,20 +1,17 @@
 import Link from "next/link";
-import { useLayoutEffect, ChangeEvent } from "react";
+import { ChangeEvent } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import Stack from "@mui/material/Stack";
 import {
   Card,
-  CardActionArea,
   CardContent,
-  CardMedia,
   Pagination,
   PaginationItem,
   Typography,
   CardActions,
   Button,
-  Container,
 } from "@mui/material";
-import ArchiveIcon from '@mui/icons-material/Archive';
+import FolderIcon from '@mui/icons-material/Folder';
 import Image from "next/image";
 import {
   ArticleEntityResponseCollection,
@@ -82,55 +79,61 @@ export const Articles = ({ page, setPage, articles, filter }: ArticlesProps) => 
                     <Card sx={{ display: "flex", justifyContent: "stretch", alignContent: "stretch", backgroundColor: "background.content" }}>
                       <Stack sx={{ flexGrow: 1 }}>
                         <CardContent sx={{ flexGrow: 1 }}>
-                          <Grid container justifyContent="center" mb={4} sx={{ position: "relative", flexGrow: 1 }}>
-                            {article.attributes.thumbnail?.data?.attributes?.url != null && article.attributes.thumbnail?.data?.attributes?.alternativeText != null ?
-                              <Link href={`/article/${article.attributes.uuid}`}>
+                          {article.attributes.thumbnail?.data?.attributes?.url != null && article.attributes.thumbnail?.data?.attributes?.alternativeText != null ?
+                            <Link href={`/article/${article.attributes.uuid}`}>
+                              <Grid container justifyContent="center" mb={4} sx={{ position: "relative", flexGrow: 1 }}>
                                 <Image src={article.attributes.thumbnail.data.attributes.url} className="nextimage" fill alt={article.attributes.thumbnail.data.attributes.alternativeText} />
-                              </Link>
-                              : null
-                            }
-                          </Grid>
-                          <Grid container direction="row" justifyContent="space-between" my={2} sx={{ flexGrow: 1 }}>
-                            <Grid>
-                              <Typography variant="h4" >
+                              </Grid>
+                            </Link>
+                            : null
+                          }
+                          <Grid container justifyContent="space-between" ml={1} alignContent="center" alignItems="center">
+                            <Grid container sx={{ mt: { xs: 1, md: 0 } }} xs={12} md={6}>
+                              <Typography variant="h4" color="text.primary">
                                 {article.attributes.title}
                               </Typography>
                             </Grid>
-                            <Stack sx={{ color: "text.secondary" }}>
-                              <Typography variant="caption" align="right">
-                                {t.updated_at}: {article.attributes.updatedAt
-                                  .replace("T", " ")
-                                  .replace(/\..*$/g, "")
-                                  .replace(/\-/g, "/")}
-                              </Typography>
-                              <Typography variant="caption" align="right">
-                                {t.created_at}: {article.attributes.createdAt
-                                  .replace("T", " ")
-                                  .replace(/\..*$/g, "")
-                                  .replace(/\-/g, "/")}
-                              </Typography>
-                            </Stack>
+                            <Grid container sx={{ mt: { xs: 1, md: 0 } }} xs={12} md={6} justifyContent="flex-end">
+                              <Stack textAlign="right">
+                                <Typography variant="caption">
+                                  {t.updated_at}: {article.attributes.updatedAt
+                                    .replace("T", " ")
+                                    .replace(/\..*$/g, "")
+                                    .replace(/\-/g, "/")}
+                                </Typography>
+                                <Typography variant="caption">
+                                  {t.created_at}: {article.attributes.createdAt
+                                    .replace("T", " ")
+                                    .replace(/\..*$/g, "")
+                                    .replace(/\-/g, "/")}
+                                </Typography>
+                              </Stack>
+                            </Grid>
                           </Grid>
-                          {
-                            article.attributes.category?.data?.attributes?.uuid != null ?
-                              <Grid container sx={{ color: "text.link" }} spacing={1}>
-                                <Grid>
-                                  <ArchiveIcon sx={{ color: "text.secondary" }} />
+                          <Grid container justifyContent="flex-end" mt={1}>
+                            {
+                              article.attributes.category?.data?.attributes?.uuid != null ?
+                                <Grid container sx={{ color: "text.link" }} spacing={1} ml={1}>
+                                  <Grid>
+                                    <FolderIcon sx={{ color: "text.secondary" }} />
+                                  </Grid>
+                                  <Grid>
+                                    <Link href={{ pathname: `/category/${article.attributes.category.data.attributes.uuid}`, query: { name: article.attributes.category.data.attributes.name } }} >
+                                      <Typography color="text.link">
+                                        {article.attributes.category.data.attributes.name}
+                                      </Typography>
+                                    </Link>
+                                  </Grid>
                                 </Grid>
-                                <Grid>
-                                  <Link href={{ pathname: `/category/${article.attributes.category.data.attributes.uuid}`, query: { name: article.attributes.category.data.attributes.name } }} >
-                                    {article.attributes.category.data.attributes.name}
-                                  </Link>
-                                </Grid>
-                              </Grid>
-                              : null
-                          }
-                          <Grid container direction="column" sx={{ flexGrow: 1 }} mt={4} ml={1}>
+                                : null
+                            }
+                          </Grid>
+                          <Grid container direction="column" sx={{ flexGrow: 1 }} ml={3}>
                             <Typography variant="body1">{article.attributes.summary}</Typography>
                           </Grid>
                         </CardContent>
-                        <CardActions sx={{ flexGrow: 1 }}>
-                          <Grid container mb={2} ml={1}>
+                        <Grid container ml={2} my={1}>
+                          <CardActions sx={{ flexGrow: 1 }}>
                             <Grid>
                               <Button onClick={() => { router.push("/article/[uuid]", `/article/${article.attributes?.uuid}`) }} size="small">
                                 <Typography variant="subtitle1" color="text.link">
@@ -138,8 +141,8 @@ export const Articles = ({ page, setPage, articles, filter }: ArticlesProps) => 
                                 </Typography>
                               </Button>
                             </Grid>
-                          </Grid>
-                        </CardActions>
+                          </CardActions>
+                        </Grid>
                       </Stack>
                     </Card>
                   </Grid>

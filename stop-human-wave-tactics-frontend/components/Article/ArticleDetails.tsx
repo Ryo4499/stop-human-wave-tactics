@@ -4,7 +4,7 @@ import {
 import Grid from "@mui/material/Unstable_Grid2";
 import { Typography } from "@mui/material";
 import { useLocale } from "../../lib/locale";
-import ArchiveIcon from '@mui/icons-material/Archive';
+import FolderIcon from '@mui/icons-material/Folder';
 import MdContent from "../Common/MdContent";
 import Link from "next/link";
 
@@ -31,11 +31,11 @@ export const ArticleDetails = ({ articles }: { articles: ArticleEntityResponseCo
                 article.category?.data?.attributes?.uuid != null ?
                   <Grid container direction="row" sx={{ color: "text.link" }} spacing={1} alignContent="center" alignItems="center">
                     <Grid >
-                      <ArchiveIcon sx={{ color: "text.secondary" }} />
+                      <FolderIcon sx={{ color: "text.secondary" }} />
                     </Grid>
                     <Grid >
-                      <Link href={{ pathname: `/category/${article.category.data.attributes.uuid}`, query: { name: article.category.data.attributes.name } }} >
-                        <Typography variant="subtitle1">
+                      <Link href={{ pathname: `/category/${article.category.data.attributes.uuid}`, query: { name: article.category.data.attributes.name } }}>
+                        <Typography variant="subtitle1" color="text.link">
                           {article.category?.data?.attributes?.name}
                         </Typography>
                       </Link>
@@ -61,13 +61,11 @@ export const ArticleDetails = ({ articles }: { articles: ArticleEntityResponseCo
               </Grid>
             </Grid>
             <Grid container direction="row">
-              <Typography variant="body1" color={"text.secondary"} >
-                <MdContent content={article.content}></MdContent>
-              </Typography>
+              <MdContent content={article.content}></MdContent>
             </Grid>
           </Grid>
         </Grid>
-      </Grid>
+      </Grid >
     );
   } else {
     return null
