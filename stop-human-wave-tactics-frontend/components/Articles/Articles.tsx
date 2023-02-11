@@ -84,7 +84,7 @@ export const Articles = ({ page, setPage, articles, filter }: ArticlesProps) => 
                         <CardContent sx={{ flexGrow: 1 }}>
                           <Grid container justifyContent="center" mb={4} sx={{ position: "relative", flexGrow: 1 }}>
                             {article.attributes.thumbnail?.data?.attributes?.url != null && article.attributes.thumbnail?.data?.attributes?.alternativeText != null ?
-                              <Link href={`/article/${article.attributes.uuid}`} as="/article/[uuid]">
+                              <Link href={`/article/${article.attributes.uuid}`}>
                                 <Image src={article.attributes.thumbnail.data.attributes.url} className="nextimage" fill alt={article.attributes.thumbnail.data.attributes.alternativeText} />
                               </Link>
                               : null
