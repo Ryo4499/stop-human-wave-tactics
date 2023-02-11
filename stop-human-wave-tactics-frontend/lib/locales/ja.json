@@ -10,7 +10,7 @@
   "author": "Ryo Arai",
   "more_details": "続きを見る",
   "keyword": "検索ワード",
-  "top": "トップページへ",
+  "top": "トップページ",
   "privacy_policy": "利用規約",
   "portofolios": "ポートフォリオ",
   "about_techforward": "2021年に作成したWikiアプリです。\n使用技術\nFrontend: Nuxtjs\nBackend: Flask\nインフラ: DockerCompose\n",

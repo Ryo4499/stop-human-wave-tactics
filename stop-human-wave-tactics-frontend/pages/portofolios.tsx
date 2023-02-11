@@ -47,7 +47,7 @@ const PortofolioContent = () => {
     const techforward_url = "https://google.com"
 
     return (
-        <Grid container direction="column" my={2} mx={5} spacing={3}>
+        <Grid container direction="column" mx={5} spacing={3} sx={{ backgroundColor: "background.content", my: { md: 0, xs: 2 }, flexGrow: 1 }}>
             <Grid spacing={2}>
                 <Grid>
                     <Typography color="text.primary" variant="h6">{techforward}</Typography>
