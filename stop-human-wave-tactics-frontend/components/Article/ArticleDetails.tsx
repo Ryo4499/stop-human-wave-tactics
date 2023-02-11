@@ -34,7 +34,7 @@ export const ArticleDetails = ({ articles }: { articles: ArticleEntityResponseCo
                       <ArchiveIcon sx={{ color: "text.secondary" }} />
                     </Grid>
                     <Grid >
-                      <Link href={`/category/${article.category?.data?.attributes?.uuid}`}>
+                      <Link href={{ pathname: `/category/${article.category.data.attributes.uuid}`, query: { name: article.category.data.attributes.name } }} >
                         <Typography variant="subtitle1">
                           {article.category?.data?.attributes?.name}
                         </Typography>
