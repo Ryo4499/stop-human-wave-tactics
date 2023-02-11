@@ -21,6 +21,7 @@ import Grid from "@mui/material/Unstable_Grid2"
 import { unified } from 'unified';
 import CustomImage from "./CustomImage";
 import CustomLink from "./CustomLink";
+import { Typography } from "@mui/material";
 
 const sanitizeSchema = {
     ...defaultSchema,
@@ -55,7 +56,9 @@ const parseReact = (content: string) => unified().use(rehypeParse, { fragment: t
 
 const MdContent = ({ content }: { content: string }) => {
     return <Grid>
-        {parseReact(String(processor(content)))}
+        <Typography variant="body1" color="text.secondary">
+            {parseReact(String(processor(content)))}
+        </Typography>
     </Grid >
 }
 
