@@ -91,7 +91,7 @@ query getArticlesCategories(
       attributes {
         uuid
         name
-        articles(publicationState: LIVE) {
+        articles(filters: { publishedAt: { ne: null } }, publicationState: LIVE) {
           data {
             id
             attributes {
