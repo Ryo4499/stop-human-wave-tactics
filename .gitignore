@@ -4,3 +4,4 @@
 *.log
 .exec-onece
 .vscode
+.docker
