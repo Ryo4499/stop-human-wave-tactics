@@ -68,7 +68,7 @@ const Sidebar = ({ categories }: CategoriesProps) => {
           </Grid>
           <Grid container direction="row" xs={12} py={0.5}>
             <Grid container xs={12} py={0.5}>
-              <Typography variant="subtitle1" color="text.primary">Social Media</Typography>
+              <Typography variant="subtitle1" color="text.primary">Github</Typography>
             </Grid>
             <Grid container xs={1}></Grid>
             <Grid container xs={11}>
@@ -76,15 +76,19 @@ const Sidebar = ({ categories }: CategoriesProps) => {
                 <a href={githuburl}>
                   <GitHubIcon sx={{ fontSize: "1.4rem", color: "text.secondary" }} />
                 </a>
-                <a href={twitterurl}>
-                  <TwitterIcon sx={{ fontSize: "1.4rem", color: "text.secondary" }} />
-                </a>
-                <a href={facebookurl}>
-                  <FacebookIcon sx={{ fontSize: "1.4rem", color: "text.secondary" }} />
-                </a>
-                <a href={instagramurl}>
-                  <InstagramIcon sx={{ fontSize: "1.4rem", color: "text.secondary" }} />
-                </a>
+                {true ? null :
+                  <div>
+                    <a href={twitterurl}>
+                      <TwitterIcon sx={{ fontSize: "1.4rem", color: "text.secondary" }} />
+                    </a>
+                    <a href={facebookurl}>
+                      <FacebookIcon sx={{ fontSize: "1.4rem", color: "text.secondary" }} />
+                    </a>
+                    <a href={instagramurl}>
+                      <InstagramIcon sx={{ fontSize: "1.4rem", color: "text.secondary" }} />
+                    </a>
+                  </div>
+                }
               </Stack>
             </Grid>
           </Grid>
