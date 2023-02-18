@@ -1,5 +1,3 @@
-import config from "dotenv"
-
 export const getPageSize = (): number => {
     const pagesize = process.env.PAGESIZE
     if (pagesize != null) {
