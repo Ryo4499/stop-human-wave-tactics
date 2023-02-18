@@ -10,18 +10,17 @@
     "strapi": "strapi"
   },
   "dependencies": {
-    "@bn-digital/strapi-plugin-field-uuid": "^1.1.7",
-    "@ckeditor/strapi-plugin-ckeditor": "^0.0.5",
-    "@strapi/plugin-graphql": "4.6.0",
-    "@strapi/plugin-i18n": "4.6.0",
-    "@strapi/plugin-sentry": "4.6.0",
+    "@ckeditor/strapi-plugin-ckeditor": "^0.0.7",
+    "@strapi/plugin-graphql": "4.6.1",
+    "@strapi/plugin-i18n": "4.6.1",
+    "@strapi/plugin-sentry": "4.6.1",
     "@strapi/plugin-seo": "^1.7.7",
-    "@strapi/plugin-users-permissions": "4.6.0",
-    "@strapi/strapi": "4.6.0",
-    "@strapi/typescript-utils": "4.6.0",
+    "@strapi/plugin-users-permissions": "4.6.1",
+    "@strapi/strapi": "4.6.1",
+    "@strapi/typescript-utils": "4.6.1",
     "pg": "8.8.0",
-    "strapi-plugin-preview-button": "^1.1.1",
-    "strapi-plugin-todo": "^0.0.9"
+    "strapi-plugin-deepl": "^0.4.2",
+    "strapi-plugin-preview-button": "^1.1.2"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^2.16.2",
@@ -38,7 +37,7 @@
     "uuid": "2779e8c2-964c-480a-8d96-9acffac9f30a"
   },
   "engines": {
-    "node": ">=12.x.x <=16.x.x",
+    "node": ">=12.x.x <=18.x.x",
     "npm": ">=6.0.0"
   },
   "license": "MIT"
