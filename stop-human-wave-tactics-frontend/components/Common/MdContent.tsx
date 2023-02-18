@@ -55,7 +55,7 @@ const parseReact = (content: string) => unified().use(rehypeParse, { fragment: t
 } as any).processSync(content).result
 
 const MdContent = ({ content }: { content: string }) => {
-    return <Grid>
+    return <Grid direction="column" container sx={{ flexGrow: 1 }}>
         <Typography variant="body1" color="text.secondary">
             {parseReact(String(processor(content)))}
         </Typography>
