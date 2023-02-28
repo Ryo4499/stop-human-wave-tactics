@@ -47,7 +47,6 @@ services:
       - type: bind
         source: ./certbot/html
         target: /var/www/html
-    command: sh
     depends_on:
       db:
         condition: service_healthy
