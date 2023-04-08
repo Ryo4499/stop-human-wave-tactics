@@ -3,7 +3,7 @@ export default ({ env }) => ({
     client: "postgres",
     connection: {
       host: env('POSTGRES_HOST'),
-      port: parseInt(env('POSTGRES_PORT'), 10),
+      port: env.int('POSTGRES_PORT'),
       database: env('POSTGRES_DB'),
       user: env('POSTGRES_USER'),
       password: env('POSTGRES_PASSWORD'),
