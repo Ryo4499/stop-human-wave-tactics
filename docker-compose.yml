@@ -12,7 +12,7 @@ services:
     depends_on:
       proxy:
         condition: service_started
-    command: ["--version"]
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 10d & wait $${!}; done;'"
     env_file:
       - ./.env
 
@@ -42,12 +42,14 @@ services:
       - type: bind
         source: /var/www/html
         target: /var/www/html
+      - type: bind
+        source: /etc/letsencrypt
+        target: /etc/letsencrypt
     depends_on:
       db:
         condition: service_healthy
-      back:
-        condition: service_healthy
-    restart: unless-stopped
+    command: "/bin/sh -c 'while :; do sleep 20d & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+    restart: always
     networks:
       app_net:
         ipv4_address: 172.30.0.4
@@ -173,12 +175,6 @@ services:
         ipv4_address: 172.30.0.3
       db_net:
         ipv4_address: 172.30.3.3
-    healthcheck:
-      test: "wget --no-verbose --tries=1 --spider http://localhost:1337 || exit 1"
-      interval: 5s
-      retries: 5
-      start_period: 10s
-      timeout: 60s
 
   front:
     build:
@@ -218,20 +214,12 @@ services:
     depends_on:
       db:
         condition: service_healthy
-      back:
-        condition: service_healthy
       proxy:
         condition: service_started
     restart: unless-stopped
     networks:
       app_net:
         ipv4_address: 172.30.0.2
-    healthcheck:
-      test: "wget --no-verbose --tries=1 --spider http://localhost:3000 || exit 1"
-      interval: 5s
-      retries: 5
-      start_period: 10s
-      timeout: 60s
 
 volumes:
   dbData:
