@@ -148,7 +148,6 @@ services:
         MODE: $MODE
     env_file:
       - ./.env
-      - ./stop-human-wave-tactics-backend/.env
     environment:
       - TZ
       - POSTGRES_HOST
@@ -164,12 +163,26 @@ services:
       - type: volume
         source: backModules
         target: "/home/${MY_USER}/stop-human-wave-tactics-backend/node_modules"
-    command: "yarn dev"
+    entrypoint: sh
+    command:
+      - -c
+      - |
+        if [ "${MODE}" = "PRODUCTION" ]; then \
+          yarn start; \
+        else \
+          yarn dev; \
+        fi
     tty: true
     depends_on:
       db:
         condition: service_healthy
     restart: unless-stopped
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:${BACK_PORT}${URL} || exit 1
+      interval: 30s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
     networks:
       app_net:
         ipv4_address: 172.30.0.3
@@ -194,9 +207,10 @@ services:
     working_dir: "/home/${MY_USER}/stop-human-wave-tactics-frontend"
     user: $MY_USER
     volumes:
-      - type: bind
-        source: "./stop-human-wave-tactics-frontend/"
-        target: "/home/${MY_USER}/stop-human-wave-tactics-frontend/"
+      # comment out if this mode is production
+      #- type: bind
+      #  source: "./stop-human-wave-tactics-frontend/"
+      #  target: "/home/${MY_USER}/stop-human-wave-tactics-frontend/"
       - type: volume
         source: frontModules
         target: "/home/${MY_USER}/stop-human-wave-tactics-frontend/node_modules"
@@ -214,8 +228,16 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      back:
+        condition: service_healthy
       proxy:
         condition: service_started
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:${FRONT_PORT} || exit 1
+      interval: 5s
+      retries: 5
+      start_period: 20s
+      timeout: 60s
     restart: unless-stopped
     networks:
       app_net:

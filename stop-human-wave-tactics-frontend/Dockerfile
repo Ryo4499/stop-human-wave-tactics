@@ -4,17 +4,22 @@ ARG MY_USER
 ARG MY_GROUP
 ARG MODE
 
-RUN apk update && apk add libressl-dev libffi-dev tzdata curl
+RUN apk update && apk add libressl-dev libffi-dev tzdata
+
+USER $MY_USER
 
 WORKDIR "/home/${MY_USER}/stop-human-wave-tactics-frontend"
+
 RUN chown $MY_USER:$MY_GROUP ./
 
 COPY --chown=$MY_USER:$MY_GROUP . .
-USER $MY_USER
 
 RUN if [ "${MODE}" = "PRODUCTION" ]; then \
-  yarn install --production=true --frozen-lockfile --force --update-checksums ; \
+  yarn install --production=true --frozen-lockfile --force ; \
   else \
-  yarn install --production=false --no-lockfile --pre-lockfile ; \
+  yarn install --production=false ; \
   fi
 
+
+# comment out if you don't use bind mount
+# RUN chown $MY_USER:$MY_GROUP -R ./
