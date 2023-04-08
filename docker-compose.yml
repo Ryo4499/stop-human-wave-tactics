@@ -14,7 +14,10 @@ services:
       - type: bind
         source: ./certbot/letsencrypto
         target: /etc/letsencrypto
-    command: ["--version"]
+      - type: bind
+        source: ./certbot/log
+        target: /var/log/letsencrypt
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
     env_file:
       - ./.env
 
