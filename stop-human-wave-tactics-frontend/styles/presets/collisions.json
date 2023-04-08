@@ -103,6 +103,11 @@
       }
     }
   },
+  "fpsLimit": 30,
+  "duration": {
+    "max": 10,
+    "min": 5
+  },
   "background": {
     "color": "#0d47a1"
   }

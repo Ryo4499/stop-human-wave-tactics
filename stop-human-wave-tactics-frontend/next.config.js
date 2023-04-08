@@ -6,7 +6,7 @@ module.exports = {
       {
         source: '/uploads/:path*',
         destination:
-          'http://back:1337/uploads/:path*',
+          'http://back:${BACK_PORT}/uploads/:path*',
       },
     ]
   },
@@ -14,15 +14,8 @@ module.exports = {
   typescript: {
     ignoreBuildErrors: true
   },
-  env: {
-    PAGESIZE: 6,
-    //NEXT_PUBLIC_BACKEND_URL: "http://localhost/graphql",
-    GTAG: "G-884NEPFPMJ",
-    NEXT_PUBLIC_BACKEND_URL: "http://back:1337",
-    PROXY_URL: "http://localhost",
-  },
   images: {
-    domains: ['localhost', 'back'],
+    domains: ['localhost', 'back', '${DOMAIN}'],
   },
   i18n: {
     locales: ['en', 'ja'],

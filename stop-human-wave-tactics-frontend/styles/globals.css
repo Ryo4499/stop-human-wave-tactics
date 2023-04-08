@@ -26,8 +26,15 @@ a {
   text-decoration: none;
 }
 
-pre .hljs {
+.toc a {
+  color: #4889ee;
+}
+
+pre,
+code .hljs {
+  display: flex;
   background-color: rgba(38 38, 38, 0.9);
+  flex-grow: 1;
 }
 
 .nextimage {
