@@ -43,7 +43,7 @@ const PortofolioContent = () => {
     const techforward = "TechForward"
     const abount_bookmemo = t.about_bookmemo.split("\n").map((line, key) => <span key={key}>{line}<br /></span>)
     const abount_techforward = t.about_techforward.split("\n").map((line, key) => <span key={key}>{line}<br /></span>)
-    const bookmemo_url = "https://google.com"
+    const bookmemo_url = "https://bookmemo.xyz"
     const techforward_url = "https://google.com"
 
     return (
