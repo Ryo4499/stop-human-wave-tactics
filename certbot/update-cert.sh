@@ -6,4 +6,4 @@ CURRENT=$(
 echo $CURRENT
 source $CURRENT/../.env
 
-docker compose run --rm certbot certonly --webroot -w /usr/share/nginx/html --email $EMAIL -d $DOMAIN --agree-tos
+docker compose exec certbot certbot certonly --webroot -w /usr/share/nginx/html --email $EMAIL -d $DOMAIN --agree-tos
