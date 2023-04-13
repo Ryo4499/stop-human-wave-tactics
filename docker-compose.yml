@@ -1,20 +1,26 @@
 version: "3.9"
 services:
   certbot:
-    image: certbot/certbot:latest
+    build: 
+      context: ./certbot
+      dockerfile: Dockerfile
+      args:
+        MY_USER: $MY_USER
     volumes:
       - type: bind
-        source: /etc/letsencrypt
-        target: /etc/letsencrypt
+        source: ./certbot/letsencrypto
+        target: /etc/letsencrypto
       - type: bind
-        source: /var/www/html
-        target: /var/www/html
+        source: ./nginx/html
+        target: /usr/share/nginx/html
+    #entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 10d & wait $${!}; done; chown -R $(whoami):$(whoami) ~'"
+    entrypoint: sh
+    tty: true
+    env_file:
+      - ./.env
     depends_on:
       proxy:
         condition: service_started
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 10d & wait $${!}; done;'"
-    env_file:
-      - ./.env
 
   proxy:
     build:
@@ -40,11 +46,11 @@ services:
         source: ./nginx/log
         target: /var/log/nginx
       - type: bind
-        source: /var/www/html
-        target: /var/www/html
+        source: ./certbot/letsencrypto
+        target: /etc/letsencrypto
       - type: bind
-        source: /etc/letsencrypt
-        target: /etc/letsencrypt
+        source: ./nginx/html
+        target: /usr/share/nginx/html
     depends_on:
       db:
         condition: service_healthy
