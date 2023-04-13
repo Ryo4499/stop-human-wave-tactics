@@ -8,8 +8,8 @@ services:
         MY_USER: $MY_USER
     volumes:
       - type: bind
-        source: ./certbot/letsencrypto
-        target: /etc/letsencrypto
+        source: ./certbot/letsencrypt
+        target: /etc/letsencrypt
       - type: bind
         source: ./nginx/html
         target: /usr/share/nginx/html
@@ -27,8 +27,8 @@ services:
       context: ./nginx
       dockerfile: Dockerfile
     ports:
-      - "127.0.0.1:80:80"
-      - "127.0.0.1:443:443"
+      - "0.0.0.0:80:80"
+      - "0.0.0.0:443:443"
     env_file:
       - ./.env
     environment:
@@ -46,8 +46,8 @@ services:
         source: ./nginx/log
         target: /var/log/nginx
       - type: bind
-        source: ./certbot/letsencrypto
-        target: /etc/letsencrypto
+        source: ./certbot/letsencrypt
+        target: /etc/letsencrypt
       - type: bind
         source: ./nginx/html
         target: /usr/share/nginx/html
