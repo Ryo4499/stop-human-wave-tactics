@@ -60,6 +60,18 @@ AWS_REGION=
 S3_BUCKET_NAME=
 ```
 
+## Gen SSL
+
+```sh
+# disable ssl server conf
+mv nginx/conf.d/ssl_server.conf nginx/conf.d/ssl_server.conf.txt
+# up
+./build.up
+# unlock packet filter 80,443
+docker compose exec certbot sh
+certbot certonly --webroot -w /usr/share/nginx/html --email $EMAIL -d $DOMAIN --agree-tos
+```
+
 ## How to update
 
 ```bash
