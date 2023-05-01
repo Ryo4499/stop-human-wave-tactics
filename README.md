@@ -2,7 +2,7 @@
 
 ## Usage
 
-```bash
+```sh
 git clone git@github.com:Ryo4499/stop-human-wave-tactics.git
 cd stop-human-wave-tactics
 docker-compose build --no-cache
@@ -74,7 +74,7 @@ certbot certonly --webroot -w /usr/share/nginx/html --email $EMAIL -d $DOMAIN --
 
 ## How to update
 
-```bash
+```sh
 cd stop-human-wave-tactics
 docker-compose down
 docker-compose exec back sh
@@ -83,4 +83,16 @@ exit
 docker-compose exec front sh
 yarn upgrade-interactive
 exit
+```
+
+## How to access administrator panel
+
+```sh
+# Host machine
+# Add Port Forwarding settings(front, back, 80, 443)
+vi ~/.ssh/config
+# Remote machine
+./build_up.sh
+# Host machine
+curl localhost:$BACK_PORT/admin
 ```
