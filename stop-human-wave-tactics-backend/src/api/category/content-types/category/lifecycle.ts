@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import { ApplicationError } from "@strapi/utils"
+import { ApplicationError } from "@strapi/utils/lib/errors"
 
 export default {
     async beforeCreate(event) {

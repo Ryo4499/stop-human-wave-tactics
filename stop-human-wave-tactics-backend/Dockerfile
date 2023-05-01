@@ -6,7 +6,7 @@ ARG MODE
 
 # measures Webpack Memory leak
 ENV NODE_OPTIONS="--max-old-space-size=1024"
-RUN apk update && apk add libressl-dev libffi-dev tzdata
+RUN apk update && apk add libressl-dev libffi-dev tzdata && npm install -g npm && npm install -g --force yarn && npm install -g npm-check-updates
 
 USER $MY_USER
 
