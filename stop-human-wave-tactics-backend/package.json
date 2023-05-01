@@ -16,7 +16,7 @@
     "@strapi/plugin-sentry": "4.9.2",
     "@strapi/plugin-seo": "^1.7.7",
     "@strapi/plugin-users-permissions": "4.9.2",
-    "@strapi/strapi": "4.9.2",
+    "@strapi/strapi": "4.8.0",
     "@strapi/typescript-utils": "4.9.2",
     "pg": "8.8.0",
     "strapi-plugin-deepl": "^0.4.2",
