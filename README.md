@@ -78,11 +78,12 @@ certbot certonly --webroot -w /usr/share/nginx/html --email $EMAIL -d $DOMAIN --
 cd stop-human-wave-tactics
 docker-compose down
 docker-compose exec back sh
-yarn upgrade-interactive
+ncu -u
 exit
 docker-compose exec front sh
-yarn upgrade-interactive
+ncu -u
 exit
+./copy_package.sh
 ```
 
 ## How to access administrator panel
