@@ -1,4 +1,4 @@
-import { ApplicationError } from "@strapi/utils"
+import { ApplicationError } from "@strapi/utils/lib/errors"
 import crypto from "crypto"
 
 export default {
