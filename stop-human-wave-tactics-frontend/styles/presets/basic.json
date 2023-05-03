@@ -14,7 +14,8 @@
       "animation": {
         "enable": true,
         "speed": 20,
-        "sync": true
+        "sync": true,
+        "destroy": "min"
       }
     },
     "opacity": {
@@ -24,6 +25,10 @@
       "value": {
         "min": 0.1,
         "max": 3
+      },
+      "animation": {
+        "enable": true,
+        "destroy": "min"
       }
     },
     "links": {
@@ -37,9 +42,7 @@
       "enable": true,
       "speed": 6,
       "direction": "none",
-      "outModes": {
-        "default": "out"
-      }
+      "outMode": "destroy"
     }
   },
   "interactivity": {
@@ -63,10 +66,6 @@
     }
   },
   "fpsLimit": 30,
-  "duration": {
-    "max": 10,
-    "min": 5
-  },
   "background": {
     "color": "#000000"
   }

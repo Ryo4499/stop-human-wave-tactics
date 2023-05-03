@@ -2,7 +2,6 @@ import "../styles/globals.css";
 import type { NextPage } from "next";
 import { SWRConfig } from "swr"
 import { client } from "../lib/graphqlClient"
-import { useMediaQuery } from "@mui/material";
 import { createContext, useEffect, useMemo, useState } from "react"
 import React from "react";
 import Layout from "../components/Layouts/Layout";

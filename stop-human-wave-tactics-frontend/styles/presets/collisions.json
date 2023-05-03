@@ -23,7 +23,8 @@
         "enable": false,
         "speed": 1,
         "minimumValue": 0.1,
-        "sync": false
+        "sync": false,
+        "destroy": "min"
       }
     },
     "size": {
@@ -33,10 +34,11 @@
         "minimumValue": 10
       },
       "animation": {
-        "enable": false,
+        "enable": true,
         "speed": 40,
         "minimumValue": 0.1,
-        "sync": false
+        "sync": false,
+        "destroy": "min"
       }
     },
     "lineLinked": {
@@ -53,7 +55,7 @@
       "direction": "none",
       "random": false,
       "straight": false,
-      "out_mode": "bounce",
+      "outMode": "destroy",
       "attract": {
         "enable": false,
         "rotateX": 600,
@@ -104,10 +106,6 @@
     }
   },
   "fpsLimit": 30,
-  "duration": {
-    "max": 10,
-    "min": 5
-  },
   "background": {
     "color": "#0d47a1"
   }

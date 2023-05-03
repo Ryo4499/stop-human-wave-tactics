@@ -38,13 +38,13 @@ const Header = () => {
               </Link>
             </Grid>
             <Grid container alignItems="center">
-              <TranslateIcon sx={{ mx: 1, color: "text.primary" }} />
+              <TranslateIcon sx={{ mx: 0.5, fontSize: 18, color: "text.primary" }} />
               <FormControl required size="small">
                 <Select defaultValue={locale} value={locale}>
                   {locales.map((locale: string) => {
                     return (
                       <MenuItem key={locale} value={locale} onClick={handleLocaleChange}>
-                        <Typography color="text.primary" noWrap>
+                        <Typography sx={{ fontSize: 12 }} color="text.primary" noWrap>
                           {locale}
                         </Typography>
                       </MenuItem>
