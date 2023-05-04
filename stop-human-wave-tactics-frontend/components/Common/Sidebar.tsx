@@ -32,69 +32,65 @@ const Sidebar = ({ categories }: CategoriesProps) => {
   return (
     <Grid container direction="column" sx={{ backgroundColor: 'background.sidebar', flexGrow: 1 }} >
       <Grid container direction="row" justifyContent="center" >
-        < Grid container direction="row" justifyContent="center" alignContent="center" alignItems="center" my={2} xs={12}>
-          <Grid mx={1} mt={1} alignItems="center">
-            <SearchIcon fontSize="large" sx={{ color: "text.primary" }} />
-          </Grid >
-          <Grid alignItems="center">
-            <TextField sx={{ flexGrow: 1, color: "text.primary", "& label": { color: "text.primary" } }} id="outlined-basic" label={t.search} variant="outlined" onKeyDown={submitHandle} />
-          </Grid>
-        </Grid >
-        <Grid container justifyContent="center" py={2} xs={12}>
-          <Avatar sx={{ width: "8rem", height: "8rem" }} alt="Avater" src="/ar44.jpg" />
-        </Grid>
-        <Grid container ml={"2rem"}>
-          <Grid container py={0.5}>
-            <Grid container xs={12}>
-              <Typography variant="subtitle1" color="text.primary">Author</Typography>
-            </Grid>
-            <Grid container xs={1}></Grid>
-            <Grid container xs={11} >
-              <Typography variant="subtitle1" color="text.secondary">{t.user}</Typography>
-            </Grid>
-          </Grid>
-          <Grid container py={0.5}>
-            <Grid container xs={12}>
-              <Typography variant="subtitle1" color="text.primary">Jobs</Typography>
-            </Grid>
-            <Grid container xs={1}></Grid>
-            <Grid container xs={11}>
-              <Typography variant="subtitle2" color="text.secondary">AI Enginner</Typography>
-            </Grid>
-            <Grid container xs={1}></Grid>
-            <Grid container xs={11}>
-              <Typography variant="subtitle2" color="text.secondary">Full Stack Enginner</Typography>
-            </Grid>
-          </Grid>
-          <Grid container direction="row" xs={12} py={0.5}>
-            <Grid container xs={12} py={0.5}>
-              <Typography variant="subtitle1" color="text.primary">Github</Typography>
-            </Grid>
-            <Grid container xs={1}></Grid>
-            <Grid container xs={11}>
-              <Stack direction="row" spacing={0.8}>
-                <a href={githuburl}>
-                  <GitHubIcon sx={{ fontSize: "1.4rem", color: "text.secondary" }} />
-                </a>
-                {true ? null :
-                  <div>
-                    <a href={twitterurl}>
-                      <TwitterIcon sx={{ fontSize: "1.4rem", color: "text.secondary" }} />
-                    </a>
-                    <a href={facebookurl}>
-                      <FacebookIcon sx={{ fontSize: "1.4rem", color: "text.secondary" }} />
-                    </a>
-                    <a href={instagramurl}>
-                      <InstagramIcon sx={{ fontSize: "1.4rem", color: "text.secondary" }} />
-                    </a>
-                  </div>
-                }
-              </Stack>
-            </Grid>
-          </Grid>
-          <Categories categories={categories} />
-        </Grid>
+        <Grid container direction="row" justifyContent="center" alignContent="center" alignItems="center" my={2} xs={12} >
+          <SearchIcon mx={1} mt={1} fontSize="medium" sx={{ color: "text.primary" }} />
+          <TextField sx={{ fontSize: 14, color: "text.primary", "& label": { color: "text.primary" }, width: "auto" }} id="outlined-basic" label={t.search} variant="outlined" onKeyDown={submitHandle} />
+      </Grid >
+      <Grid container justifyContent="center" py={2} xs={12}>
+        <Avatar sx={{ width: "8rem", height: "8rem" }} alt="Avater" src="/ar44.jpg" />
       </Grid>
+      <Grid container ml={"2rem"}>
+        <Grid container py={0.5}>
+          <Grid container xs={12}>
+            <Typography variant="subtitle1" color="text.primary">Author</Typography>
+          </Grid>
+          <Grid container xs={1}></Grid>
+          <Grid container xs={11} >
+            <Typography variant="subtitle1" color="text.secondary">{t.user}</Typography>
+          </Grid>
+        </Grid>
+        <Grid container py={0.5}>
+          <Grid container xs={12}>
+            <Typography variant="subtitle1" color="text.primary">Jobs</Typography>
+          </Grid>
+          <Grid container xs={1}></Grid>
+          <Grid container xs={11}>
+            <Typography variant="subtitle2" color="text.secondary">AI Enginner</Typography>
+          </Grid>
+          <Grid container xs={1}></Grid>
+          <Grid container xs={11}>
+            <Typography variant="subtitle2" color="text.secondary">Full Stack Enginner</Typography>
+          </Grid>
+        </Grid>
+        <Grid container direction="row" xs={12} py={0.5}>
+          <Grid container xs={12} py={0.5}>
+            <Typography variant="subtitle1" color="text.primary">Github</Typography>
+          </Grid>
+          <Grid container xs={1}></Grid>
+          <Grid container xs={11}>
+            <Stack direction="row" spacing={0.8}>
+              <a href={githuburl}>
+                <GitHubIcon sx={{ fontSize: "1.4rem", color: "text.secondary" }} />
+              </a>
+              {true ? null :
+                <div>
+                  <a href={twitterurl}>
+                    <TwitterIcon sx={{ fontSize: "1.4rem", color: "text.secondary" }} />
+                  </a>
+                  <a href={facebookurl}>
+                    <FacebookIcon sx={{ fontSize: "1.4rem", color: "text.secondary" }} />
+                  </a>
+                  <a href={instagramurl}>
+                    <InstagramIcon sx={{ fontSize: "1.4rem", color: "text.secondary" }} />
+                  </a>
+                </div>
+              }
+            </Stack>
+          </Grid>
+        </Grid>
+        <Categories categories={categories} />
+      </Grid>
+    </Grid>
     </Grid >
   );
 }
