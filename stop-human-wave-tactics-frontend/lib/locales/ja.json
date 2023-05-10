@@ -13,6 +13,7 @@
   "top": "トップページ",
   "privacy_policy": "利用規約",
   "portofolios": "ポートフォリオ",
+  "about_instance": "普段はインスタンスを落としていますので、閲覧したい場合はご連絡ください。\n",
   "about_techforward": "2021年に作成したWikiアプリです。\n使用技術\nFrontend: Nuxtjs\nBackend: Flask\nインフラ: DockerCompose\n",
   "about_bookmemo": "2020年に作成した書評アプリです。\n使用技術\nSpring Boot + Thymeleaf\n",
   "disclaimer": "免責事項",
