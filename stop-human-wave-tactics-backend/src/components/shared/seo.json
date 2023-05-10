@@ -10,12 +10,12 @@
     "metaTitle": {
       "required": true,
       "type": "string",
-      "maxLength": 60
+      "maxLength": 120
     },
     "metaDescription": {
       "type": "string",
       "required": true,
-      "maxLength": 160,
+      "maxLength": 220,
       "minLength": 30
     },
     "metaImage": {
