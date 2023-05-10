@@ -39,7 +39,7 @@ export const getStaticProps = async ({ locales, locale, defaultLocale }: IStatic
 };
 
 const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({ articles, categories, variables }) => {
-    const { data, error, isLoading } = useSWR([getArticlesCategories, variables], { fallbackData: { articles: articles, categories: categories }, })
+    const { data, error, isLoading } = useSWR([getArticlesCategories, variables], { fallbackData: { articles: articles, categories: categories, variables: variables }, })
     const router = useRouter()
     const [page, setPage] = useState(
         router.query.page == null
