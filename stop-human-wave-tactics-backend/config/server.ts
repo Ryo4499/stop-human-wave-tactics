@@ -1,4 +1,3 @@
-
 export default ({ env }) => ({
   host: env('HOST'),
   port: env.int('BACK_PORT'),
