@@ -18,26 +18,32 @@ export default ({ env }) => ({
       sendMetadata: true,
     }
   },
-  deepl: {
+  translate: {
     enabled: true,
     config: {
-      // your DeepL API key
-      apiKey: env("DEEPL_API_KEY"),
-      // whether to use the free or paid api, default true
-      freeApi: true,
-      // Which field types are translated (default string, text, richtext, components and dynamiczones)
-      translatedFieldTypes: [
-        'string',
-        'text',
-        'richtext',
-        'component',
-        'dynamiczone',
-      ],
-      // If relations should be translated (default true)
-      translateRelations: true,
-      // You can define a custom glossary to be used here (see https://www.deepl.com/docs-api/managing-glossaries/)
-      glossaryId: 'customGlossary',
+      provider: 'deepl',
+      providerOptions: {
+        // your API key - required and wil cause errors if not provided
+        apiKey: env("DEEPL_API_KEY"),
+        // use custom api url - optional
+        apiUrl: 'https://api-free.deepl.com',
+        apiOptions: {
+          // see <https://github.com/DeepLcom/deepl-node#text-translation-options> for supported options.
+          // note that tagHandling Mode cannot be set this way. 
+          // use with caution, as non-default values may break translation of markdown 
+          formality: 'default',
+        }
+      },
     },
+    translatedFieldTypes: [
+      'string',
+      { type: 'text', format: 'plain' },
+      { type: 'richtext', format: 'markdown' },
+      'component',
+      'dynamiczone',
+    ],
+    // If relations should be translated (default true)
+    translateRelations: true,
   },
   //upload: {
   //  config: {
