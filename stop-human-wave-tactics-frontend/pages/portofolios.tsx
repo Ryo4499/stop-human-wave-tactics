@@ -41,6 +41,7 @@ const PortofolioContent = () => {
     const { locale, locales, t } = useLocale();
     const bookmemo = "BookMemo"
     const techforward = "TechForward"
+    const abount_instance = t.about_instance.split("\n").map((line, key) => <span key={key}>{line}<br /></span>)
     const abount_bookmemo = t.about_bookmemo.split("\n").map((line, key) => <span key={key}>{line}<br /></span>)
     const abount_techforward = t.about_techforward.split("\n").map((line, key) => <span key={key}>{line}<br /></span>)
     const bookmemo_url = "https://bookmemo.xyz"
@@ -48,6 +49,9 @@ const PortofolioContent = () => {
 
     return (
         <Grid container direction="column" mx={5} spacing={3} sx={{ backgroundColor: "background.content", my: { md: 0, xs: 2 }, flexGrow: 1 }}>
+            <Grid>
+                <Typography color="text.primary" variant="h5">{yarn add strapi-provider-translate-deeplabout_instance}</Typography>
+            </Grid>
             <Grid spacing={2}>
                 <Grid>
                     <Typography color="text.primary" variant="h6">{techforward}</Typography>

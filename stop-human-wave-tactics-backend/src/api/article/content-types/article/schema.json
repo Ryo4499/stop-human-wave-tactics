@@ -37,7 +37,7 @@
       "type": "string",
       "unique": true,
       "required": true,
-      "maxLength": 50,
+      "maxLength": 150,
       "minLength": 1
     },
     "summary": {
@@ -48,9 +48,9 @@
       },
       "type": "string",
       "required": true,
-      "minLength": 1,
       "unique": false,
-      "maxLength": 100
+      "minLength": 1,
+      "maxLength": 200
     },
     "content": {
       "pluginOptions": {

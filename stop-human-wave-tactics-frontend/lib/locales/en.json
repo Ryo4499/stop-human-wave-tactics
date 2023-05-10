@@ -13,6 +13,7 @@
   "top": "Top Page",
   "privacy_policy": "Privacy Policy",
   "portofolios": "Portofolios",
+  "about_instance": "I usually drop instances, so please contact me if you wish to view them.\n",
   "about_techforward": "Wiki app created in 2021.\nTechnology\nFrontend: Nuxtjs\nBackend: Flask\nInfra: DockerCompose\n",
   "about_bookmemo": "Book review app created in 2020.\nTechnology\nSpring Boot + Thymeleaf\n",
   "disclaimer": "Disclaimer",
