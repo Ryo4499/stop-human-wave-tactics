@@ -9,7 +9,6 @@ import Sidebar from "../components/Common/Sidebar"
 import { GraphqlError } from "../components/Common/DisplayError"
 import { CategoriesResponseProps, IStaticProps } from "../types/general"
 import useSWR from "swr"
-import Loading from "../components/Common/Loading"
 import { useLocale } from "../lib/locale"
 import { useRouter } from "next/router"
 import { useEffect } from "react"
@@ -100,7 +99,7 @@ const PortofolioContent = () => {
 }
 
 const Portofolio: NextPage<CategoriesResponseProps> = ({ categories, variables }) => {
-    const { data, error, isLoading } = useSWR([getCategories, variables], { fallbackData: { categories: categories, variables: variables }, })
+    const { data, error, } = useSWR([getCategories, variables], { fallbackData: { categories: categories, variables: variables }, })
     const router = useRouter()
     useEffect(() => {
         router.beforePopState(({ as }) => {
@@ -116,7 +115,6 @@ const Portofolio: NextPage<CategoriesResponseProps> = ({ categories, variables }
         };
     }, [router]);
     if (error) return <GraphqlError error={error} />
-    if (isLoading) return <Loading />
     return <Grid container sx={{ flexGrow: 1 }}>
         <Meta title="Portfolios Page" description="This page introduce my portfolios." keyword={categories.data.map((value) => value.attributes?.name).join(" ")} />
         <Grid
