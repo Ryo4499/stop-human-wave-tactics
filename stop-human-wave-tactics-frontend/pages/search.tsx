@@ -10,7 +10,6 @@ import { ArticlesCategorisProps, IStaticProps } from "../types/general";
 import { NotFound } from "../components/Common/NotFound";
 import { getArticlesCategories } from "../graphql/getArticlesCategories";
 import useSWR from "swr"
-import Loading from "../components/Common/Loading";
 import { GraphqlError } from "../components/Common/DisplayError";
 import { ArticleEntity } from "../types/graphql_res";
 import Meta from "../components/utils/Head";
@@ -41,7 +40,7 @@ export const getStaticProps = async ({ locales, locale, defaultLocale }: IStatic
 };
 
 const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({ articles, categories, variables }) => {
-    const { data, error, isLoading } = useSWR([getArticlesCategories, variables], { fallbackData: { articles: articles, categories: categories, variables: variables }, })
+    const { data, error, } = useSWR([getArticlesCategories, variables], { fallbackData: { articles: articles, categories: categories, variables: variables }, })
     const router = useRouter()
     const filter = router.query.title != null && typeof router.query.title === "string" ? router.query.title : ""
     const [page, setPage] = useState(
@@ -62,7 +61,6 @@ const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({ articles, categories,
             router.beforePopState(() => true);
         };
     }, [router]);
-    if (isLoading) return <Loading />
     if (data != null) {
         const filterArticles = data.articles.data.filter(
             (article: ArticleEntity) => {
