@@ -41,16 +41,37 @@ const PortofolioContent = () => {
     const { locale, locales, t } = useLocale();
     const bookmemo = "BookMemo"
     const techforward = "TechForward"
+    const datsujinkai = "StopHumanWaveTactics"
+    const dl = "DeepLearning Demo"
     const abount_instance = t.about_instance.split("\n").map((line, key) => <span key={key}>{line}<br /></span>)
     const abount_bookmemo = t.about_bookmemo.split("\n").map((line, key) => <span key={key}>{line}<br /></span>)
+    const abount_dl = t.about_dl.split("\n").map((line, key) => <span key={key}>{line}<br /></span>)
     const abount_techforward = t.about_techforward.split("\n").map((line, key) => <span key={key}>{line}<br /></span>)
+    const abount_datsujinkai = t.about_datsujinkai.split("\n").map((line, key) => <span key={key}>{line}<br /></span>)
+    const dl_url = "https://drive.google.com/drive/folders/1Sp22-Pl5kqCWPoTZXENB-cpApb0zNfXh?usp=sharing"
     const bookmemo_url = "https://bookmemo.xyz"
-    const techforward_url = "https://google.com"
+    const techforward_url = "https://techforward.blog"
 
     return (
         <Grid container direction="column" mx={5} spacing={3} sx={{ backgroundColor: "background.content", my: { md: 0, xs: 2 }, flexGrow: 1 }}>
-            <Grid>
-                <Typography color="text.primary" variant="h5">{yarn add strapi-provider-translate-deeplabout_instance}</Typography>
+            <Grid spacing={2}>
+                <Grid>
+                    <Typography color="text.primary" variant="h6">{datsujinkai}</Typography>
+                </Grid>
+                <Grid>
+                    <Typography color="text.secondary" variant="body1">{abount_datsujinkai}</Typography>
+                </Grid>
+            </Grid>
+            <Grid spacing={2}>
+                <Grid>
+                    <Typography color="text.primary" variant="h6">{datsujinkai}</Typography>
+                </Grid>
+                <Grid>
+                    <Typography color="text.secondary" variant="body1">{abount_datsujinkai}</Typography>
+                </Grid>
+            </Grid>
+            <Grid spacing={2}>
+                <Typography color="text.primary" variant="h5">{abount_instance}</Typography>
             </Grid>
             <Grid spacing={2}>
                 <Grid>
@@ -94,26 +115,23 @@ const Portofolio: NextPage<CategoriesResponseProps> = ({ categories, variables }
             router.beforePopState(() => true);
         };
     }, [router]);
+    if (error) return <GraphqlError error={error} />
     if (isLoading) return <Loading />
-    if (data != null) {
-        return <Grid container sx={{ flexGrow: 1 }}>
-            <Meta title="Portfolios Page" description="This page introduce my portfolios." keyword={categories.data.map((value) => value.attributes?.name).join(" ")} />
-            <Grid
-                container
-                direction="row"
-                sx={{ flexGrow: 1 }}
-            >
-                <Grid container xs={12} md={10} sx={{ flexGrow: 1 }}>
-                    <PortofolioContent />
-                </Grid>
-                <Grid container xs={12} md={2} sx={{ flexGrow: 1 }}>
-                    <Sidebar categories={data.categories} />
-                </Grid>
+    return <Grid container sx={{ flexGrow: 1 }}>
+        <Meta title="Portfolios Page" description="This page introduce my portfolios." keyword={categories.data.map((value) => value.attributes?.name).join(" ")} />
+        <Grid
+            container
+            direction="row"
+            sx={{ flexGrow: 1 }}
+        >
+            <Grid container xs={12} md={10} sx={{ flexGrow: 1 }}>
+                <PortofolioContent />
+            </Grid>
+            <Grid container xs={12} md={2} sx={{ flexGrow: 1 }}>
+                <Sidebar categories={data.categories} />
             </Grid>
         </Grid>
-    } else {
-        return <GraphqlError error={error} />
-    }
+    </Grid>
 }
 
 export default Portofolio
