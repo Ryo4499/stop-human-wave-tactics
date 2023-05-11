@@ -12,7 +12,6 @@ import { Articles } from "../../components/Articles";
 import { GraphqlError } from "../../components/Common/DisplayError";
 import { getArticlesCategories } from "../../graphql/getArticlesCategories";
 import useSWR from "swr"
-import Loading from "../../components/Common/Loading";
 import Meta from "../../components/utils/Head";
 
 export const getStaticPaths = async ({ locales }: { locales: Array<string> }) => {
@@ -62,14 +61,13 @@ export const getStaticProps = async ({ params, locale }: UUIDStaticProps) => {
     }
 };
 const ArticlesPage: NextPage<ArticlesCategorisProps> = ({ articles, categories, variables }) => {
-    const { data, error, isLoading } = useSWR([getArticlesCategories, variables], { fallbackData: { articles: articles, categories: categories, variables: variables }, })
+    const { data, error, } = useSWR([getArticlesCategories, variables], { fallbackData: { articles: articles, categories: categories, variables: variables }, })
     const router = useRouter()
     const [page, setPage] = useState(
         router.query.page === undefined
             ? 1
             : parseInt(router.query.page as string, 10)
     );
-    if (isLoading) return <Loading />
     if (data != null && typeof router.query.name === "string") {
         return <Grid container sx={{ flexGrow: 1 }}>
             <Meta title="Searched articles by category name" description="This page published articles searched by category name." keyword={categories.data.map((value) => value.attributes?.name).join(" ")} />
