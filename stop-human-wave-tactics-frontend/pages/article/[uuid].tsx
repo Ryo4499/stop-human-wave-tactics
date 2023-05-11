@@ -8,7 +8,6 @@ import { getArticlesUUID } from "../../graphql/getArticlesUUID";
 import Sidebar from "../../components/Common/Sidebar";
 import { ArticlesCategorisProps, UUIDParams, UUIDStaticProps } from "../../types/general";
 import { getArticlesCategories } from "../../graphql/getArticlesCategories";
-import Loading from "../../components/Common/Loading"
 import { GraphqlError } from "../../components/Common/DisplayError";
 import useSWR from "swr"
 import Meta from "../../components/utils/Head";
@@ -52,8 +51,7 @@ export const getStaticProps = async ({ params, locale }: UUIDStaticProps) => {
 };
 
 const ArticlePage: NextPage<ArticlesCategorisProps> = ({ articles, categories, variables }) => {
-    const { data, error, isLoading } = useSWR([getArticlesCategories, variables], { fallbackData: { articles: articles, categories: categories, variables: variables }, })
-    if (isLoading) return <Loading />
+    const { data, error, } = useSWR([getArticlesCategories, variables], { fallbackData: { articles: articles, categories: categories, variables: variables }, })
     if (data != null) {
         return <Grid container sx={{ flexGrow: 1 }}>
             <Meta title="Article Details Page" description="This page published article details." keyword={categories.data.map((value) => value.attributes?.name).join(" ")} />

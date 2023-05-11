@@ -6,7 +6,6 @@ import { request } from "graphql-request"
 import { Articles } from "../components/Articles";
 import { getBackendGraphqlURL } from "../lib/graphqlClient";
 import { getPageSize } from "../lib/pagination";
-import Loading from "../components/Common/Loading";
 import { GraphqlError } from "../components/Common/DisplayError";
 import Sidebar from "../components/Common/Sidebar";
 import { ArticlesCategorisProps, IStaticProps } from "../types/general";
@@ -39,7 +38,7 @@ export const getStaticProps = async ({ locales, locale, defaultLocale }: IStatic
 };
 
 const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({ articles, categories, variables }) => {
-    const { data, error, isLoading } = useSWR([getArticlesCategories, variables], { fallbackData: { articles: articles, categories: categories, variables: variables }, })
+    const { data, error, } = useSWR([getArticlesCategories, variables], { fallbackData: { articles: articles, categories: categories, variables: variables }, })
     const router = useRouter()
     const [page, setPage] = useState(
         router.query.page == null
@@ -59,7 +58,6 @@ const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({ articles, categories,
             router.beforePopState(() => true);
         };
     }, [router]);
-    if (isLoading) return <Loading />
     if (data != null) {
         return (
             <Grid

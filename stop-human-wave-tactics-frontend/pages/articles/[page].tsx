@@ -13,7 +13,6 @@ import Sidebar from "../../components/Common/Sidebar";
 import { ArticlesCategorisProps, PageParams, PagesStaticProps } from "../../types/general";
 import { getArticlesCategories } from "../../graphql/getArticlesCategories";
 import useSWR from "swr"
-import Loading from "../../components/Common/Loading";
 import Meta from "../../components/utils/Head";
 
 
@@ -63,14 +62,13 @@ export const getStaticProps = async ({ params, locale }: PagesStaticProps) => {
 
 
 const ArticlesPage: NextPage<ArticlesCategorisProps> = ({ articles, categories, variables }) => {
-    const { data, error, isLoading } = useSWR([getArticlesCategories, variables], { fallbackData: { articles: articles, categories: categories, variables: variables }, })
+    const { data, error, } = useSWR([getArticlesCategories, variables], { fallbackData: { articles: articles, categories: categories, variables: variables }, })
     const router = useRouter()
     const [page, setPage] = useState(
         router.query.page === undefined
             ? 1
             : parseInt(router.query.page as string, 10)
     );
-    if (isLoading) return <Loading />
     if (data != null) {
         return <Grid container sx={{ flexGrow: 1 }}>
             <Meta title="Articles Page" description="This page published articles sorted in descing ordered of the latest modified date." keyword={categories.data.map((value) => value.attributes?.name).join(" ")} />

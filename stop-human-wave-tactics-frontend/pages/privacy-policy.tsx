@@ -9,7 +9,6 @@ import { getBackendGraphqlURL } from "../lib/graphqlClient";
 import { CategoryEntityResponseCollection } from "../types/graphql_res";
 import { GraphqlError } from "../components/Common/DisplayError";
 import { CategoriesResponseProps, IStaticProps } from "../types/general";
-import Loading from "../components/Common/Loading";
 import useSWR from "swr"
 import Meta from "../components/utils/Head";
 
@@ -135,8 +134,7 @@ const PrivacyPolicyContent: NextPage = () => {
 }
 
 const PrivacyPolicy: NextPage<CategoriesResponseProps> = ({ categories, variables }) => {
-  const { data, error, isLoading } = useSWR([getCategories, variables], { fallbackData: { categories: categories, variables: variables }, })
-  if (isLoading) return <Loading />
+  const { data, error, } = useSWR([getCategories, variables], { fallbackData: { categories: categories, variables: variables }, })
   if (data != null) {
     return <Grid container>
       <Meta title="Privacy Policy Page" description="This page published about privacy policy." keyword={categories.data.map((value) => value.attributes?.name).join(" ")} />
