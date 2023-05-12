@@ -15,7 +15,7 @@ import { useEffect } from "react"
 import Meta from "../components/utils/Head"
 
 export const getStaticProps = async ({ locales, locale, defaultLocale }: IStaticProps) => {
-    const variables = { pagination: {}, locale: locale }
+    const variables = { filters: {}, pagination: {}, locale: locale }
     const result = await request(getBackendGraphqlURL(), getCategories, variables).then(({ categories }: { categories: CategoryEntityResponseCollection }) => {
         return {
             props: {
@@ -42,11 +42,11 @@ const PortofolioContent = () => {
     const techforward = "TechForward"
     const datsujinkai = "StopHumanWaveTactics"
     const dl = "DeepLearning Demo"
-    const abount_instance = t.about_instance.split("\n").map((line, key) => <span key={key}>{line}<br /></span>)
-    const abount_bookmemo = t.about_bookmemo.split("\n").map((line, key) => <span key={key}>{line}<br /></span>)
-    const abount_dl = t.about_dl.split("\n").map((line, key) => <span key={key}>{line}<br /></span>)
-    const abount_techforward = t.about_techforward.split("\n").map((line, key) => <span key={key}>{line}<br /></span>)
-    const abount_datsujinkai = t.about_datsujinkai.split("\n").map((line, key) => <span key={key}>{line}<br /></span>)
+    const about_instance = t.about_instance.split("\n").map((line, key) => <span key={key}>{line}<br /></span>)
+    const about_bookmemo = t.about_bookmemo.split("\n").map((line, key) => <span key={key}>{line}<br /></span>)
+    const about_dl = t.about_dl.split("\n").map((line, key) => <span key={key}>{line}<br /></span>)
+    const about_techforward = t.about_techforward.split("\n").map((line, key) => <span key={key}>{line}<br /></span>)
+    const about_datsujinkai = t.about_datsujinkai.split("\n").map((line, key) => <span key={key}>{line}<br /></span>)
     const dl_url = "https://drive.google.com/drive/folders/1Sp22-Pl5kqCWPoTZXENB-cpApb0zNfXh?usp=sharing"
     const bookmemo_url = "https://bookmemo.xyz"
     const techforward_url = "https://techforward.blog"
@@ -58,26 +58,26 @@ const PortofolioContent = () => {
                     <Typography color="text.primary" variant="h6">{datsujinkai}</Typography>
                 </Grid>
                 <Grid>
-                    <Typography color="text.secondary" variant="body1">{abount_datsujinkai}</Typography>
+                    <Typography color="text.secondary" variant="body1">{about_datsujinkai}</Typography>
                 </Grid>
             </Grid>
             <Grid spacing={2}>
                 <Grid>
-                    <Typography color="text.primary" variant="h6">{datsujinkai}</Typography>
+                    <Typography color="text.primary" variant="h6">{dl}</Typography>
                 </Grid>
                 <Grid>
-                    <Typography color="text.secondary" variant="body1">{abount_datsujinkai}</Typography>
+                    <Typography color="text.secondary" variant="body1">{about_dl}</Typography>
                 </Grid>
             </Grid>
             <Grid spacing={2}>
-                <Typography color="text.primary" variant="h5">{abount_instance}</Typography>
+                <Typography color="text.primary" variant="h5">{about_instance}</Typography>
             </Grid>
             <Grid spacing={2}>
                 <Grid>
                     <Typography color="text.primary" variant="h6">{techforward}</Typography>
                 </Grid>
                 <Grid>
-                    <Typography color="text.secondary" variant="body1">{abount_techforward}</Typography>
+                    <Typography color="text.secondary" variant="body1">{about_techforward}</Typography>
                     <Link href={techforward_url} color="text.link">
                         <a target="_blank" rel="noopener noreferrer">{techforward_url}</a>
                     </Link>
@@ -88,7 +88,7 @@ const PortofolioContent = () => {
                     <Typography color="text.primary" variant="h6">{bookmemo}</Typography>
                 </Grid>
                 <Grid>
-                    <Typography color="text.secondary" variant="body1">{abount_bookmemo}</Typography>
+                    <Typography color="text.secondary" variant="body1">{about_bookmemo}</Typography>
                     <Link href={bookmemo_url} color="text.link">
                         <a target="_blank" rel="noopener noreferrer">{bookmemo_url}</a>
                     </Link>
@@ -99,7 +99,7 @@ const PortofolioContent = () => {
 }
 
 const Portofolio: NextPage<CategoriesResponseProps> = ({ categories, variables }) => {
-    const { data, error, } = useSWR([getCategories, variables], { fallbackData: { categories: categories, variables: variables }, })
+    const { data, error } = useSWR([getCategories, variables], { fallbackData: { categories: categories, variables: variables }, })
     const router = useRouter()
     useEffect(() => {
         router.beforePopState(({ as }) => {
@@ -114,22 +114,25 @@ const Portofolio: NextPage<CategoriesResponseProps> = ({ categories, variables }
             router.beforePopState(() => true);
         };
     }, [router]);
-    if (error) return <GraphqlError error={error} />
-    return <Grid container sx={{ flexGrow: 1 }}>
-        <Meta title="Portfolios Page" description="This page introduce my portfolios." keyword={categories.data.map((value) => value.attributes?.name).join(" ")} />
-        <Grid
-            container
-            direction="row"
-            sx={{ flexGrow: 1 }}
-        >
-            <Grid container xs={12} md={10} sx={{ flexGrow: 1 }}>
-                <PortofolioContent />
-            </Grid>
-            <Grid container xs={12} md={2} sx={{ flexGrow: 1 }}>
-                <Sidebar categories={data.categories} />
+    if (data != null) {
+        return <Grid container sx={{ flexGrow: 1 }}>
+            <Meta title="Portfolios Page" description="This page introduce my portfolios." keyword={categories.data.map((value) => value.attributes?.name).join(" ")} />
+            <Grid
+                container
+                direction="row"
+                sx={{ flexGrow: 1 }}
+            >
+                <Grid container xs={12} md={10} sx={{ flexGrow: 1 }}>
+                    <PortofolioContent />
+                </Grid>
+                <Grid container xs={12} md={2} sx={{ flexGrow: 1 }}>
+                    <Sidebar categories={data.categories} />
+                </Grid>
             </Grid>
         </Grid>
-    </Grid>
+    } else {
+        return <GraphqlError error={error} />
+    }
 }
 
 export default Portofolio
