@@ -18,6 +18,7 @@ import {
 } from "../../types/graphql_res";
 import { useRouter } from "next/router";
 import { useLocale } from "../../lib/locale";
+import { imageLoader } from "../Common/CustomImage"
 
 interface ArticlesProps {
   page: number
@@ -56,6 +57,7 @@ const Content = ({ page, setPage, pageCount }: ArticlesPropsContent) => {
 
 
 export const Articles = ({ page, setPage, articles, filter }: ArticlesProps) => {
+  //<img src={article.attributes.thumbnail.data.attributes.url} alt={article.attributes.thumbnail.data.attributes.alternativeText} width="50%" height="10%" />
   const { locale, locales, t } = useLocale()
   const router = useRouter()
 
