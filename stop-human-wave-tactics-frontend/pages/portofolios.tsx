@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { request } from "graphql-request"
 import Grid from "@mui/material/Unstable_Grid2"
 import { Link, Typography } from "@mui/material"
@@ -59,6 +60,10 @@ const PortofolioContent = () => {
                 </Grid>
                 <Grid>
                     <Typography color="text.secondary" variant="body1">{about_datsujinkai}</Typography>
+                </Grid>
+                <Grid>
+                    <Typography color="text.secondary" variant="body1">LightHouse Score</Typography>
+                    <Image src={"/20230515_lighthouse_score.png"} className="nextimage" fill alt={"lighthouse score"} />
                 </Grid>
             </Grid>
             <Grid spacing={2}>

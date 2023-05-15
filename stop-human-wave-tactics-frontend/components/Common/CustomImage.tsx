@@ -10,9 +10,6 @@ interface CustomImage {
     width: number
     height: number
 }
-const imageLoader = ({ src, width, quality }) => {
-    return path.join(getProxyURL(), `${src}?w=${width}&q=${quality || 75}`);
-};
 const CustomImage: React.FC<CustomImage> = props => {
     return <Grid container sx={{ position: "relative" }}>
         <Image src={props.src} className="nextimage" fill alt={props.alt} />
