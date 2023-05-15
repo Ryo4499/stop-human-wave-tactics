@@ -6,7 +6,7 @@ module.exports = {
       {
         source: '/uploads/:path*',
         destination:
-          'http://back:${BACK_PORT}/uploads/:path*',
+          `${process.env.PROXY_URL}/uploads/:path*`,
       },
     ]
   },
@@ -15,7 +15,7 @@ module.exports = {
     ignoreBuildErrors: true
   },
   images: {
-    domains: ['localhost', 'back', '${DOMAIN}'],
+    domains: ['localhost', 'back', process.env.DOMAIN],
   },
   i18n: {
     locales: ['en', 'ja'],
