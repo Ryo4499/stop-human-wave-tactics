@@ -39,7 +39,9 @@ const sanitizeSchema = {
 }
 
 // remark形式変換 > remark関連のPlugin適用 > rehype変換 > rehype関連のPlugin適用 > 
-const processor = (content: string) => unified().use(remarkParse).use(remarkGemoji).use(remarkGfm).use(remarkMath).use(remarkPlantuml).use(remarkCodeTitle).use(remarkRehype).use(rehypeHighlight).use(rehypeExternalLinks, {
+const processor = (content: string) => unified().use(remarkParse).use(remarkGemoji).use(remarkGfm).use(remarkMath).use(remarkPlantuml).use(remarkCodeTitle).use(remarkRehype).use(rehypeHighlight, {
+    ignoreMissing: true
+}).use(rehypeExternalLinks, {
     rel: ['nofollow']
 }).use(rehypeFmt).use(rehypeKatex).use(rehypeSlug).use(rehypeToc).use(rehypeAutolinkHeadings).use(rehypeStringify).processSync(content).value
 
