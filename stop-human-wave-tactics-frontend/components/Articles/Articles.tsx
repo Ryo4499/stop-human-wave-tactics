@@ -18,7 +18,7 @@ import {
 } from "../../types/graphql_res";
 import { useRouter } from "next/router";
 import { useLocale } from "../../lib/locale";
-import { imageLoader } from "../Common/CustomImage"
+import { DefaultAdsense } from "../Common/Adsense";
 
 interface ArticlesProps {
   page: number
@@ -162,6 +162,9 @@ export const Articles = ({ page, setPage, articles, filter }: ArticlesProps) => 
               <Content page={page} setPage={setPage} pageCount={pageCount}></Content>
             </Grid>
         }
+        <Grid my={2}>
+          <DefaultAdsense/>
+        </Grid>
       </Grid >
     );
   } else {
