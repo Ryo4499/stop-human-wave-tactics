@@ -1,3 +1,4 @@
+import fs from "fs"
 import Script from "next/script"
 import Document, {
   DocumentContext,
@@ -25,11 +26,11 @@ class MyDocument extends Document {
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', ${process.env.GTAG});
+            gtag('config', ${fs.readFileSync(process.env.GTAG,"utf8").replace("\n","")});
           `,
             }}
           />
-          <Script id="analytics2" src={`https://www.googletagmanager.com/gtag/js?id=${process.env.GTAG}`}
+          <Script id="analytics2" src={`https://www.googletagmanager.com/gtag/js?id=${fs.readFileSync(process.env.GTAG,'utf8').replace('\n','')}`}
             strategy="worker" />
           <Script id="google_adsense" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5108510865994427"
             strategy="worker" />
