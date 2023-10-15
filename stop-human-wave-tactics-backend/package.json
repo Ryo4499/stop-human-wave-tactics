@@ -15,7 +15,7 @@
     "@strapi/plugin-i18n": "4.10.5",
     "@strapi/plugin-sentry": "4.10.5",
     "@strapi/plugin-seo": "^1.8.0",
-    "@strapi/plugin-users-permissions": "4.10.5",
+    "@strapi/plugin-users-permissions": "4.12.1",
     "@strapi/strapi": "4.10.5",
     "@strapi/typescript-utils": "4.10.5",
     "pg": "8.10.0",
