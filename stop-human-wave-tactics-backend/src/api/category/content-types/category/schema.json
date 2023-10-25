@@ -9,23 +9,45 @@
   "options": {
     "draftAndPublish": false
   },
-  "pluginOptions": {},
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
   "attributes": {
-    "name": {
-      "type": "string",
-      "minLength": 1,
-      "unique": true,
-      "required": true
+    "uuid": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "customField",
+      "customField": "plugin::field-uuid.uuid"
     },
-    "slug": {
-      "type": "uid",
-      "targetField": "name",
-      "required": true
+    "name": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        },
+        "translate": {
+          "translate": "translate"
+        }
+      },
+      "type": "string",
+      "required": true,
+      "unique": true,
+      "minLength": 1,
+      "maxLength": 30
     },
     "articles": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::article.article",
+      "pluginOptions": {
+        "translate": {
+          "translate": "translate"
+        }
+      },
       "mappedBy": "category"
     }
   }

@@ -10,44 +10,121 @@
   "options": {
     "draftAndPublish": true
   },
-  "pluginOptions": {},
+  "pluginOptions": {
+    "versions": {
+      "versioned": true
+    },
+    "i18n": {
+      "localized": true
+    }
+  },
   "attributes": {
+    "uuid": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "customField",
+      "customField": "plugin::field-uuid.uuid"
+    },
     "title": {
+      "pluginOptions": {
+        "versions": {
+          "versioned": true
+        },
+        "i18n": {
+          "localized": true
+        },
+        "translate": {
+          "translate": "translate"
+        }
+      },
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 150,
+      "required": true,
+      "unique": true
+    },
+    "summary": {
+      "pluginOptions": {
+        "versions": {
+          "versioned": true
+        },
+        "i18n": {
+          "localized": true
+        },
+        "translate": {
+          "translate": "translate"
+        }
+      },
       "type": "string",
       "unique": true,
-      "minLength": 1,
       "required": true,
-      "maxLength": 128
-    },
-    "content": {
-      "type": "richtext",
-      "required": true,
+      "maxLength": 200,
       "minLength": 1
     },
-    "slug": {
-      "type": "uid",
-      "required": true,
-      "targetField": "title"
+    "content": {
+      "pluginOptions": {
+        "versions": {
+          "versioned": true
+        },
+        "i18n": {
+          "localized": true
+        },
+        "translate": {
+          "translate": "translate"
+        }
+      },
+      "type": "richtext",
+      "minLength": 1,
+      "required": true
     },
     "thumbnail": {
       "type": "media",
-      "multiple": true,
-      "required": false,
+      "multiple": false,
+      "required": true,
       "allowedTypes": [
         "images"
-      ]
-    },
-    "user": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "plugin::users-permissions.user",
-      "inversedBy": "articles"
+      ],
+      "pluginOptions": {
+        "versions": {
+          "versioned": true
+        },
+        "i18n": {
+          "localized": false
+        },
+        "translate": {
+          "translate": ""
+        }
+      }
     },
     "category": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::category.category",
-      "inversedBy": "articles"
+      "inversedBy": "articles",
+      "pluginOptions": {
+        "translate": {
+          "translate": "translate"
+        }
+      }
+    },
+    "Seo": {
+      "type": "component",
+      "repeatable": true,
+      "pluginOptions": {
+        "versions": {
+          "versioned": true
+        },
+        "i18n": {
+          "localized": true
+        },
+        "translate": {
+          "translate": "translate"
+        }
+      },
+      "component": "shared.seo"
     }
   }
 }

@@ -1,0 +1,9 @@
+.env
+*.key
+*.crt
+*.pem
+*.log
+.exec-onece
+.vscode
+.docker
+.secrets/

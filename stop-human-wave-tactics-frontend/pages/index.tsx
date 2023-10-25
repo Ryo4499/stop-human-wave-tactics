@@ -1,48 +1,82 @@
-import Header from "../components/common/Header";
-import Sidebar from "../components/common/Sidebar";
-import Footer from "../components/common/Footer";
-import Articles from "../components/Articles/Articles";
-import Grid from "@mui/material/Grid";
-import Container from "@mui/material/Container";
-import Box from "@mui/material/Box";
-import Pagination from "@mui/material/Pagination";
-import type { InferGetStaticPropsType } from "next";
+import Grid from "@mui/material/Unstable_Grid2"
+import { GetStaticProps } from "next";
+import type { NextPage } from "next";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { request } from "graphql-request"
+import { Articles } from "../components/Articles";
+import { getBackendGraphqlURL } from "../lib/graphqlClient";
+import { getPageSize } from "../lib/pagination";
+import { GraphqlError } from "../components/Common/DisplayError";
+import Sidebar from "../components/Common/Sidebar";
+import { ArticlesCategorisProps, IStaticProps } from "../types/general";
+import { getArticlesCategories } from "../graphql/getArticlesCategories";
+import useSWR from "swr"
+import Meta from "../components/utils/Head";
 
-export async function getStaticProps() {
-	const products = [1, 2, 3];
+export const getStaticProps = (async ({ locales, locale, defaultLocale }: IStaticProps) => {
+    const variables = { filters: {}, pagination: { page: 1, pageSize: getPageSize() }, sort: ["updatedAt:Desc", "publishedAt:Desc"], locale: locale }
+    const res = await request(getBackendGraphqlURL(), getArticlesCategories, variables).then((result) => {
+        return result
+    })
+    if (res != null) {
+        const result = {
+            props: {
+                articles: res.articles,
+                categories: res.categories,
+                variables: variables,
+            },
+            notFound: false,
+            revalidate: 3600,
+        }
+        return result
+    } else {
+        return {
+            notFound: true,
+            revalidate: 3600
+        }
+    }
+}) satisfies GetStaticProps;
 
-	return {
-		props: {
-			products,
-		},
-		revalidate: 4 * 60 * 60,
-	};
+const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({ articles, categories, variables }) => {
+    const { data, error, } = useSWR([getArticlesCategories, variables], { fallbackData: { articles: articles, categories: categories, variables: variables }, })
+    const router = useRouter()
+    const [page, setPage] = useState(
+        router.query.page == null
+            ? 1
+            : parseInt(router.query.page as string, 10)
+    )
+    useEffect(() => {
+        router.beforePopState(({ as }) => {
+            if (as !== router.asPath) {
+                // Will run when leaving the current page; on back/forward actions
+                // Add your logic here, like toggling the modal state
+            }
+            return true;
+        });
+
+        return () => {
+            router.beforePopState(() => true);
+        };
+    }, [router]);
+    if (data != null) {
+        return (
+            <Grid
+                container
+                direction="row"
+                sx={{ flexGrow: 1 }}
+            >
+                <Meta title="Top Page" description="This page published latest articles." keyword={categories.data.map((value) => value.attributes?.name).join(" ")} />
+                <Grid container xs={12} md={10} sx={{ flexGrow: 1 }}>
+                    <Articles page={page} setPage={setPage} articles={data.articles} filter={null} />
+                </Grid>
+                <Grid container xs={12} md={2} sx={{ flexGrow: 1 }}>
+                    <Sidebar categories={data.categories} />
+                </Grid>
+            </Grid>)
+    } else {
+        return <GraphqlError error={error} />
+    }
 }
 
-export default function App({
-	products,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
-	return (
-		<Grid container direction="column">
-			<Grid container justifyContent="center" direction="row">
-				<Header></Header>
-			</Grid>
-			<Grid container direction="row">
-				<Grid container justifyContent="center" direction="column" xs={9} md={10} px={10}>
-					<Box>
-						<Articles></Articles>
-					</Box>
-					<Box sx={{ justifyContent: "center" }}>
-						<Pagination count={10} color="primary" />
-					</Box>
-				</Grid>
-				<Grid container justifyContent="center" direction="column" xs={3} md={2}>
-					<Sidebar></Sidebar>
-				</Grid>
-			</Grid>
-			<Grid container justifyContent="center">
-				<Footer></Footer>
-			</Grid>
-		</Grid >
-	);
-}
+export default ArticlesIndex
