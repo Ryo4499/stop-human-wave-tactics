@@ -22,4 +22,3 @@ RUN if [ "${MODE}" = "PRODUCTION" ]; then \
   yarn install --production=false ; \
   fi
 
-RUN yarn build

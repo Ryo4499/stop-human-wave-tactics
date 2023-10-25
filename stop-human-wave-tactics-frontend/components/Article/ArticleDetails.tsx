@@ -7,6 +7,7 @@ import { useLocale } from "../../lib/locale";
 import FolderIcon from '@mui/icons-material/Folder';
 import MdContent from "../Common/MdContent";
 import Link from "next/link";
+import { DefaultAdsense } from "../Common/Adsense";
 
 type ArticleProps = {
   uuid: string;
@@ -62,6 +63,9 @@ export const ArticleDetails = ({ articles }: { articles: ArticleEntityResponseCo
             </Grid>
             <Grid container direction="row">
               <MdContent content={article.content}></MdContent>
+            </Grid>
+            <Grid my={2}>
+              <DefaultAdsense />
             </Grid>
           </Grid>
         </Grid>
