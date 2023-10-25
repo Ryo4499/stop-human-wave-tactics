@@ -1,7 +1,7 @@
 declare namespace NodeJS {
   interface ProcessEnv {
     readonly POSTGRES_HOST: string
-    readonly POSTGRES_PORT: number
+    readonly PG_PORT: number
     readonly POSTGRES_DB: string
     readonly POSTGRES_USER: string
     readonly POSTGRES_PASSWORD: string
@@ -14,6 +14,8 @@ declare namespace NodeJS {
     readonly API_TOKEN_SALT: string
     readonly ADMIN_JWT_SECRET: string
     readonly JWT_SECRET: string
-    readonly SENTRY_DNS: string
+    readonly TRANSFER_TOKEN_SALT: string
+    readonly DEEPL_API_KEY: string
+    readonly SENTRY_DSN: string
   }
 }

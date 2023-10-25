@@ -1,8 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
 import Grid from "@mui/material/Unstable_Grid2"
-import path from "path"
-import { getProxyURL } from '../../lib/graphqlClient'
 
 interface CustomImage {
     src: string

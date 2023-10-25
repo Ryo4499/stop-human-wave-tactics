@@ -1,3 +1,8 @@
+*{
+  word-break: break-word !important;
+  overflow-wrap: break-word !important; 
+}
+
 html,
 body {
   padding: 0;
@@ -12,7 +17,6 @@ div#__next,
 div#__next > div {
   min-height: 100vh;
   max-width: 100%;
-  overflow: auto;
 }
 
 body {
@@ -36,6 +40,7 @@ a {
 
 pre,
 code .hljs {
+  white-space: break-spaces;
   display: flex;
   background-color: rgba(38 38, 38, 0.9);
   flex-grow: 1;

@@ -4,11 +4,10 @@
   "info": {
     "singularName": "category",
     "pluralName": "categories",
-    "displayName": "Category",
-    "description": ""
+    "displayName": "Category"
   },
   "options": {
-    "draftAndPublish": false
+    "draftAndPublish": true
   },
   "pluginOptions": {
     "i18n": {
@@ -19,19 +18,19 @@
     "uuid": {
       "pluginOptions": {
         "i18n": {
-          "localized": false
+          "localized": true
         }
       },
-      "type": "string",
-      "unique": false,
-      "required": true,
-      "regex": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
-      "targetField": "name"
+      "type": "customField",
+      "customField": "plugin::field-uuid.uuid"
     },
     "name": {
       "pluginOptions": {
         "i18n": {
           "localized": true
+        },
+        "translate": {
+          "translate": "translate"
         }
       },
       "type": "string",
@@ -44,6 +43,11 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::article.article",
+      "pluginOptions": {
+        "translate": {
+          "translate": "translate"
+        }
+      },
       "mappedBy": "category"
     }
   }

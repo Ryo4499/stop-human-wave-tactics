@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { GetStaticProps } from "next";
 import { request } from "graphql-request"
 import Grid from "@mui/material/Unstable_Grid2"
 import { Link, Typography } from "@mui/material"
@@ -15,7 +16,7 @@ import { useRouter } from "next/router"
 import { useEffect } from "react"
 import Meta from "../components/utils/Head"
 
-export const getStaticProps = async ({ locales, locale, defaultLocale }: IStaticProps) => {
+export const getStaticProps = (async ({ locales, locale, defaultLocale }: IStaticProps) => {
     const variables = { filters: {}, pagination: {}, locale: locale }
     const result = await request(getBackendGraphqlURL(), getCategories, variables).then(({ categories }: { categories: CategoryEntityResponseCollection }) => {
         return {
@@ -35,7 +36,7 @@ export const getStaticProps = async ({ locales, locale, defaultLocale }: IStatic
             revalidate: 3600
         }
     }
-};
+}) satisfies GetStaticProps;
 
 const PortofolioContent = () => {
     const { locale, locales, t } = useLocale();
