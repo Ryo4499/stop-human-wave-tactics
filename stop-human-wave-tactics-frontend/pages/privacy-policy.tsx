@@ -1,7 +1,8 @@
-import { Box, Typography, ListItemText, Link } from "@mui/material";
-import { request } from "graphql-request"
+import { Typography, Link } from "@mui/material";
+import { request } from "graphql-request";
+import { GetStaticProps } from "next";
 import Grid from "@mui/material/Unstable_Grid2";
-import { useLocale } from "../lib/locale"
+import { useLocale } from "../lib/locale";
 import type { NextPage } from "next";
 import Sidebar from "../components/Common/Sidebar";
 import { getCategories } from "../graphql/getCategories";
@@ -9,34 +10,42 @@ import { getBackendGraphqlURL } from "../lib/graphqlClient";
 import { CategoryEntityResponseCollection } from "../types/graphql_res";
 import { GraphqlError } from "../components/Common/DisplayError";
 import { CategoriesResponseProps, IStaticProps } from "../types/general";
-import useSWR from "swr"
+import useSWR from "swr";
 import Meta from "../components/utils/Head";
 
-export const getStaticProps = async ({ locales, locale, defaultLocale }: IStaticProps) => {
-  const variables = { pagination: {}, locale: locale }
-  const result = await request(getBackendGraphqlURL(), getCategories, variables).then(({ categories }: { categories: CategoryEntityResponseCollection }) => {
+export const getStaticProps = (async ({
+  locales,
+  locale,
+  defaultLocale,
+}: IStaticProps) => {
+  const variables = { pagination: {}, locale: locale };
+  const result = await request(
+    getBackendGraphqlURL(),
+    getCategories,
+    variables
+  ).then(({ categories }: { categories: CategoryEntityResponseCollection }) => {
     return {
       props: {
         categories: categories,
-        variables: variables
+        variables: variables,
       },
       notFound: false,
       revalidate: 3600,
     };
-  })
+  });
   if (result != null) {
-    return result
+    return result;
   } else {
     return {
       notFound: true,
-      revalidate: 3600
-    }
+      revalidate: 3600,
+    };
   }
-};
+}) satisfies GetStaticProps;
 
 const PrivacyPolicyContent: NextPage = () => {
   const { locale, locales, t } = useLocale();
-  const site_text = t.site_text
+  const site_text = t.site_text;
   const site_info = site_text.split("\n").map((line, key) => (
     <span key={key}>
       {line}
@@ -86,75 +95,121 @@ const PrivacyPolicyContent: NextPage = () => {
   ));
 
   return (
-    <Grid container direction="column" mx={5} spacing={3} sx={{ backgroundColor: "background.content", my: { md: 0, xs: 2 }, flexGrow: 1 }}>
+    <Grid
+      container
+      direction="column"
+      mx={5}
+      spacing={3}
+      sx={{
+        backgroundColor: "background.content",
+        my: { md: 0, xs: 2 },
+        flexGrow: 1,
+      }}
+    >
       <Grid>
-        <Typography color="text.primary" variant="h6">{t.site_info}</Typography>
+        <Typography color="text.primary" variant="h6">
+          {t.site_info}
+        </Typography>
       </Grid>
       <Grid>
-        <Typography color="text.secondary" variant="body1">{site_info}</Typography>
+        <Typography color="text.secondary" variant="body1">
+          {site_info}
+        </Typography>
       </Grid>
       <Grid>
-        <Typography color="text.primary" variant="h6">{t.google_ad}</Typography>
+        <Typography color="text.primary" variant="h6">
+          {t.google_ad}
+        </Typography>
       </Grid>
       <Grid>
-        <Typography color="text.secondary" variant="body1">{google_ad_info}</Typography>
+        <Typography color="text.secondary" variant="body1">
+          {google_ad_info}
+        </Typography>
         <Link href={google_ad_url} color="text.link">
-          <a target="_blank" rel="noopener noreferrer">{google_ad_url}</a>
+          <a target="_blank" rel="noopener noreferrer">
+            {google_ad_url}
+          </a>
         </Link>
       </Grid>
       <Grid>
-        <Typography color="text.primary" variant="h6">{t.google_analysis}</Typography>
+        <Typography color="text.primary" variant="h6">
+          {t.google_analysis}
+        </Typography>
       </Grid>
       <Grid>
-        <Typography color="text.secondary" variant="body1">{google_analysis_info}</Typography>
+        <Typography color="text.secondary" variant="body1">
+          {google_analysis_info}
+        </Typography>
         <Link href={google_analysis_url} color="text.link">
-          <a target="_blank" rel="noopener noreferrer">{google_analysis_url}</a>
+          <a target="_blank" rel="noopener noreferrer">
+            {google_analysis_url}
+          </a>
         </Link>
       </Grid>
       <Grid>
-        <Typography color="text.primary" variant="h6">{t.copy_right}</Typography>
+        <Typography color="text.primary" variant="h6">
+          {t.copy_right}
+        </Typography>
       </Grid>
       <Grid>
-        <Typography color="text.secondary" variant="body1">{copy_right_info}</Typography>
+        <Typography color="text.secondary" variant="body1">
+          {copy_right_info}
+        </Typography>
       </Grid>
       <Grid>
-        <Typography color="text.primary" variant="h6">{t.link_free}</Typography>
+        <Typography color="text.primary" variant="h6">
+          {t.link_free}
+        </Typography>
       </Grid>
       <Grid>
-        <Typography color="text.secondary" variant="body1">{link_free_info}</Typography>
+        <Typography color="text.secondary" variant="body1">
+          {link_free_info}
+        </Typography>
       </Grid>
       <Grid>
-        <Typography color="text.primary" variant="h6">{t.disclaimer}</Typography>
+        <Typography color="text.primary" variant="h6">
+          {t.disclaimer}
+        </Typography>
       </Grid>
       <Grid>
-        <Typography color="text.secondary" variant="body1">{disclaimer_info}</Typography>
+        <Typography color="text.secondary" variant="body1">
+          {disclaimer_info}
+        </Typography>
       </Grid>
     </Grid>
   );
-}
+};
 
-const PrivacyPolicy: NextPage<CategoriesResponseProps> = ({ categories, variables }) => {
-  const { data, error, } = useSWR([getCategories, variables], { fallbackData: { categories: categories, variables: variables }, })
+const PrivacyPolicy: NextPage<CategoriesResponseProps> = ({
+  categories,
+  variables,
+}) => {
+  const { data, error } = useSWR([getCategories, variables], {
+    fallbackData: { categories: categories, variables: variables },
+  });
   if (data != null) {
-    return <Grid container>
-      <Meta title="Privacy Policy Page" description="This page published about privacy policy." keyword={categories.data.map((value) => value.attributes?.name).join(" ")} />
-      <Grid
-        container
-        direction="row"
-        sx={{ flexGrow: 1 }}
-      >
-        <Grid container xs={12} md={10} sx={{ flexGrow: 1 }}>
-          <PrivacyPolicyContent />
-        </Grid>
-        <Grid container xs={12} md={2} sx={{ flexGrow: 1 }}>
-          <Sidebar categories={data.categories} />
+    return (
+      <Grid container>
+        <Meta
+          title="Privacy Policy Page"
+          description="This page published about privacy policy."
+          keyword={categories.data
+            .map((value) => value.attributes?.name)
+            .join(" ")}
+        />
+        <Grid container direction="row" sx={{ flexGrow: 1 }}>
+          <Grid container xs={12} md={10} sx={{ flexGrow: 1 }}>
+            <PrivacyPolicyContent />
+          </Grid>
+          <Grid container xs={12} md={2} sx={{ flexGrow: 1 }}>
+            <Sidebar categories={data.categories} />
+          </Grid>
         </Grid>
       </Grid>
-    </Grid>
+    );
   } else {
-    return <GraphqlError error={error} />
+    return <GraphqlError error={error} />;
   }
+};
 
-}
-
-export default PrivacyPolicy
+export default PrivacyPolicy;

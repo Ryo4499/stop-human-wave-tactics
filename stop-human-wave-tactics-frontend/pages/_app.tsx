@@ -6,7 +6,7 @@ import { createContext, useEffect, useMemo, useState } from "react"
 import React from "react";
 import Layout from "../components/Layouts/Layout";
 import { AppProps, NextWebVitalsMetric } from "next/app";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { ThemeProvider, createTheme } from "@mui/material";
 import { darkPalette, lightPalette } from "../lib/theme";
 import CssBaseline from "@mui/material/CssBaseline";
 import mainParticle from "../styles/presets/basic.json"
