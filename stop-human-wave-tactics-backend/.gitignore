@@ -108,3 +108,4 @@ exports
 build/
 dist/
 .strapi-updater.json
+dist
