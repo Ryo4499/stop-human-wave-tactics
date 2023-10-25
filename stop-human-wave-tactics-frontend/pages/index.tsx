@@ -1,7 +1,8 @@
 import Grid from "@mui/material/Unstable_Grid2"
+import { GetStaticProps } from "next";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { request } from "graphql-request"
 import { Articles } from "../components/Articles";
 import { getBackendGraphqlURL } from "../lib/graphqlClient";
@@ -13,7 +14,7 @@ import { getArticlesCategories } from "../graphql/getArticlesCategories";
 import useSWR from "swr"
 import Meta from "../components/utils/Head";
 
-export const getStaticProps = async ({ locales, locale, defaultLocale }: IStaticProps) => {
+export const getStaticProps = (async ({ locales, locale, defaultLocale }: IStaticProps) => {
     const variables = { filters: {}, pagination: { page: 1, pageSize: getPageSize() }, sort: ["updatedAt:Desc", "publishedAt:Desc"], locale: locale }
     const res = await request(getBackendGraphqlURL(), getArticlesCategories, variables).then((result) => {
         return result
@@ -35,7 +36,7 @@ export const getStaticProps = async ({ locales, locale, defaultLocale }: IStatic
             revalidate: 3600
         }
     }
-};
+}) satisfies GetStaticProps;
 
 const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({ articles, categories, variables }) => {
     const { data, error, } = useSWR([getArticlesCategories, variables], { fallbackData: { articles: articles, categories: categories, variables: variables }, })

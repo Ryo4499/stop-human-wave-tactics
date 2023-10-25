@@ -3,7 +3,7 @@
 ## Usage
 
 ```sh
-git clone git@github.com:Ryo4499/stop-human-wave-tactics.git
+git clone git@github.com:x-o-o44dev/stop-human-wave-tactics.git
 cd stop-human-wave-tactics
 docker-compose build --no-cache
 docker-compose up -d
@@ -12,53 +12,44 @@ docker-compose down
 
 # Environment Variables
 
+please refer to .env.sample
+
 frontend environment variables
 
 ```env
-# domain
-DOMAIN=localhost
-# time zone
-TZ='Asia/Tokyo'
-# language
-LANG='en_US.UTF-8'
-LANGUAGE='en_US.UTF-8'
-LC_ALL='en_US.UTF-8'
-# postgres
-POSTGRES_HOST='db'
-POSTGRES_PORT=5432
-POSTGRES_DB='stop_human_wave_tactics_db'
-POSTGRES_USER='ar44'
-POSTGRES_PASSWORD=''
-DB_SSL=false
-# container user
-MY_USER='node'
-MY_GROUP='node'
-# choice one DEV or PRODUCTION
-MODE='DEV'
-DOCKER_CONTENT_TRUST=1
-NEXT_PUBLIC_BACKEND_URL=
-NODE_EXTRA_CA_CERTS =
+PAGESIZE=6
+FRONT_PORT=
+NEXT_PUBLIC_PROXY_URL='http://localhost'
+NEXT_PUBLIC_BACKEND_URL="http://back:${BACK_PORT}"
+GTAG=''
 ```
 
 backend environment variables
 
 ```env
+# backend
 ADMIN_URL='/admin'
-HOST='0.0.0.0'
-BACK_PORT=1337
+HOST=''
+BACK_PORT=
 URL='/'
-APP_KEYS=''
-API_TOKEN_SALT=''
-ADMIN_JWT_SECRET=''
-JWT_SECRET=''
-SENTRY_DNS=''
-AWS_ACCESS_KEY_ID=
-AWS_ACCESS_SECRET=
-AWS_REGION=
-S3_BUCKET_NAME=
+DATABASE_HOST='db'
+DATABASE_PORT=$PG_PORT
+DATABASE_CLIENT='postgres'
+DATABASE_NAME=$POSTGRES_DB_FILE
+DATABASE_USERNAME=$POSTGRES_USER_FILE
+DATABASE_PASSWORD=$POSTGRES_PASSWORD_FILE
+DATABASE_DRIVER='postgresql+asyncpg'
+DATABASE_SSL=false
+SENTRY_DSN=/run/secrets/SENTRY_DSN
+APP_KEYS=/run/secrets/APP_KEYS
+API_TOKEN_SALT=/run/secrets/API_TOKEN_SALT
+ADMIN_JWT_SECRET=/run/secrets/ADMIN_JWT_SECRET
+JWT_SECRET=/run/secrets/JWT_SECRET
+TRANSFER_TOKEN_SALT=/run/secrets/TRANSFER_TOKEN_SALT
+DEEPL_API_KEY=/run/secrets/DEEPL_API_KEY
 ```
 
-## Gen SSL
+## Generate SSL dev key
 
 ```sh
 # disable ssl server conf

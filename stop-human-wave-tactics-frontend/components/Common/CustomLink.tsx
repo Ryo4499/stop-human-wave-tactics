@@ -8,7 +8,7 @@ const CustomLink: React.FC<{ href: string, children: any, id: string, className:
             {children}
         </Link>
     ) : (
-        <a href={href} target="_blank" rel="noopener noreferrer" id={id} className={className}>
+        <a href={href} target="_blank" rel="noopener noreferrer nofollow" id={id} className={className}>
             <Typography color="text.link">
                 {children}
             </Typography>
