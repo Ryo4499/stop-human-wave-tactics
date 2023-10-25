@@ -1,55 +1,305 @@
-version: "3"
+version: "3.9"
 services:
-    proxy:
-        image: nginx:stable
-        environment:
-            TZ: Asia/Tokyo
-        ports:
-            - "80:80"
-        volumes:
-            - ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
-        depends_on:
-            - db
-            - front
-            - back
-    db:
-        image: postgres:14-alpine
-        environment:
-            TZ: Asia/Tokyo
-            POSTGRES_USER: postgres
-            POSTGRES_PASSWORD: secret
-            POSTGRES_DB: stop_human_wave_tactics_db
-        volumes:
-            - dbData:/var/lib/postgresql/data
-    back:
-        build:
-            context: ./stop-human-wave-tactics-backend
-            dockerfile: Dockerfile
-        environment:
-            TZ: Asia/Tokyo
-        volumes:
-            - backModules:/home/stop-human-wave-tactics-backend/node_modules
-            - ./stop-human-wave-tactics-backend:/home/stop-human-wave-tactics-backend
-        tty: true
-        command: sh -c "yarn build && yarn dev"
-        depends_on:
-            - db
-    front:
-        build:
-            context: ./stop-human-wave-tactics-frontend
-            dockerfile: Dockerfile
-        environment:
-            TZ: Asia/Tokyo
-        volumes:
-            - frontModules:/home/stop-human-wave-tactics-frontend/node_modules
-            - ./stop-human-wave-tactics-frontend:/home/stop-human-wave-tactics-frontend
-        tty: true
-        command: sh -c "yarn build && yarn dev"
-        depends_on:
-            - back
-            - db
+  certbot:
+    build:
+      context: ./certbot
+      dockerfile: Dockerfile
+      args:
+        MY_USER: $MY_USER
+    env_file:
+      - .env
+    volumes:
+      - type: bind
+        source: ./certbot/letsencrypt
+        target: /etc/letsencrypt
+      - type: bind
+        source: ./nginx/html
+        target: /usr/share/nginx/html
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 10d & wait $${!}; done; chown -R $(whoami):$(whoami) ~'"
+    tty: true
+    depends_on:
+      proxy:
+        condition: service_started
+    networks:
+      app_net:
+        ipv4_address: 172.30.0.5
+
+  proxy:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "0.0.0.0:80:80"
+      - "0.0.0.0:443:443"
+    env_file:
+      - .env
+    tty: true
+    volumes:
+      - type: bind
+        source: ./nginx/nginx.conf
+        target: /etc/nginx/nginx.conf
+      - type: bind
+        source: ./nginx/modsecurity/
+        target: /etc/modsecurity.d/
+      - type: bind
+        source: ./nginx/certificates
+        target: /etc/nginx/certificates
+      - type: bind
+        source: ./nginx/conf.d/
+        target: /etc/nginx/conf.d/
+      - type: bind
+        source: ./nginx/log
+        target: /var/log/nginx
+      - type: bind
+        source: ./certbot/letsencrypt
+        target: /etc/letsencrypt
+      - type: bind
+        source: ./nginx/html
+        target: /usr/share/nginx/html
+      - type: bind
+        source: ./certbot/config
+        target: /etc/nginx/ssl
+    depends_on:
+      db:
+        condition: service_healthy
+    command: '/bin/sh -c ''while :; do sleep 20d & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
+    restart: always
+    healthcheck:
+      test: service nginx status || exit 1
+      interval: 5s
+      retries: 10
+      start_period: 5s
+      timeout: 60s
+    networks:
+      app_net:
+        ipv4_address: 172.30.0.4
+
+  prometheus:
+    image: prom/prometheus:latest
+    env_file:
+      - .env
+    volumes:
+      - type: bind
+        source: ./prometheus
+        target: /etc/prometheus
+    command: "--config.file=/etc/prometheus/prometheus.yml"
+    restart: unless-stopped
+    networks:
+      monitor_net:
+        ipv4_address: 172.30.4.5
+
+  exporter:
+    image: prom/node-exporter:latest
+    env_file:
+      - .env
+    restart: unless-stopped
+    networks:
+      monitor_net:
+        ipv4_address: 172.30.4.4
+
+  grafana:
+    image: grafana/grafana:latest
+    env_file:
+      - .env
+    restart: unless-stopped
+    networks:
+      monitor_net:
+        ipv4_address: 172.30.4.3
+
+  alertmanager:
+    image: prom/alertmanager:latest
+    env_file:
+      - .env
+    volumes:
+      - type: bind
+        source: ./alertmanager
+        target: /etc/alertmanager
+    command: "--config.file=/etc/alertmanager/config.yml"
+    restart: unless-stopped
+    networks:
+      monitor_net:
+        ipv4_address: 172.30.4.2
+
+  db:
+    image: postgres:14-alpine
+    env_file:
+      - .env
+    tty: true
+    volumes:
+      - type: volume
+        source: dbData
+        target: /var/lib/postgresql/data
+    secrets:
+      - DB_NAME
+      - DB_USER
+      - DB_PASS
+    restart: unless-stopped
+    networks:
+      db_net:
+        ipv4_address: 172.30.3.2
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 5s
+      retries: 5
+      start_period: 5s
+      timeout: 30s
+
+  back:
+    build:
+      context: ./stop-human-wave-tactics-backend
+      dockerfile: Dockerfile
+      args:
+        MY_USER: $MY_USER
+        MY_GROUP: $MY_GROUP
+        MODE: $MODE
+    working_dir: "/home/${MY_USER}/stop-human-wave-tactics-backend"
+    user: $MY_USER
+    secrets:
+      - DB_NAME
+      - DB_USER
+      - DB_PASS
+      - ADMIN_JWT_SECRET
+      - API_TOKEN_SALT
+      - APP_KEYS
+      - DEEPL_API_KEY
+      - TRANSFER_TOKEN_SALT
+      - SENTRY_DSN
+    env_file:
+      - .env
+    volumes:
+      - type: volume
+        source: backModules
+        target: "/home/${MY_USER}/stop-human-wave-tactics-backend/node_modules"
+      - type: volume
+        source: staticData
+        target: "/home/${MY_USER}/stop-human-wave-tactics-backend/public"
+    ports:
+      - 127.0.0.1:$BACK_PORT:$BACK_PORT
+      - 127.0.0.1:4018:4018
+      - 127.0.0.1:4019:4019
+    entrypoint: sh
+    command:
+      - -c
+      - |
+        yarn build && \
+        if [ "${MODE}" = "PRODUCTION" ]; then \
+          yarn start; \
+        else \
+          yarn dev; \
+        fi
+    tty: true
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: wget --spider http://localhost:${BACK_PORT}${ADMIN_URL}
+      interval: 5s
+      retries: 10
+      start_period: 30s
+      timeout: 80s
+    networks:
+      app_net:
+        ipv4_address: 172.30.0.3
+      db_net:
+        ipv4_address: 172.30.3.3
+
+  front:
+    build:
+      context: ./stop-human-wave-tactics-frontend
+      network: host
+      dockerfile: Dockerfile
+      args:
+        MY_USER: $MY_USER
+        MY_GROUP: $MY_GROUP
+        MODE: $MODE
+        DOMAIN: $DOMAIN
+    env_file:
+      - .env
+    working_dir: "/home/${MY_USER}/stop-human-wave-tactics-frontend"
+    user: $MY_USER
+    volumes:
+      - type: volume
+        source: frontModules
+        target: "/home/${MY_USER}/stop-human-wave-tactics-frontend/node_modules"
+    tty: true
+    entrypoint: sh
+    command:
+      - -c
+      - |
+        yarn build; \
+        if [ "${MODE}" = "PRODUCTION" ]; then \
+          yarn start; \
+        else \
+          yarn dev; \
+        fi
+    depends_on:
+      db:
+        condition: service_healthy
+      back:
+        condition: service_healthy
+      proxy:
+        condition: service_started
+    ports:
+      - 127.0.0.1:$FRONT_PORT:$FRONT_PORT
+    healthcheck:
+      test: wget --spider http://localhost:${FRONT_PORT}
+      interval: 5s
+      retries: 10
+      start_period: 30s
+      timeout: 80s
+    restart: unless-stopped
+    networks:
+      app_net:
+        ipv4_address: 172.30.0.2
+
+secrets:
+  DB_NAME:
+    file: .secrets/DB_NAME
+  DB_USER:
+    file: .secrets/DB_USER
+  DB_PASS:
+    file: .secrets/DB_PASS
+  ADMIN_JWT_SECRET:
+    file: .secrets/ADMIN_JWT_SECRET
+  API_TOKEN_SALT:
+    file: .secrets/API_TOKEN_SALT
+  APP_KEYS:
+    file: .secrets/APP_KEYS
+  DEEPL_API_KEY:
+    file: .secrets/DEEPL_API_KEY
+  TRANSFER_TOKEN_SALT:
+    file: .secrets/TRANSFER_TOKEN_SALT
+  SENTRY_DSN:
+    file: .secrets/SENTRY_DSN
 
 volumes:
-    dbData:
-    frontModules:
-    backModules:
+  dbData:
+  staticData:
+  frontModules:
+  backModules:
+
+networks:
+  default:
+    external: false
+  app_net:
+    driver: bridge
+    internal: false
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.30.0.0/24
+  db_net:
+    driver: bridge
+    internal: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.30.3.0/24
+  monitor_net:
+    driver: bridge
+    internal: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.30.4.0/24

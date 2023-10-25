@@ -1,11 +1,15 @@
+import fs from "fs"
 export default ({ env }) => ({
-  host: env('HOST', '0.0.0.0'),
-  port: env.int('PORT', 1337),
-  url: env('ADMIN_URL', 'http://localhost/admin'),
-  apiToken: {
-    salt: env('API_TOKEN_SALT', 'example-salt')
-  },
+  url: env('ADMIN_URL'),
   auth: {
-    secret: env('ADMIN_JWT_SECRET', 'example-token'),
+    secret: fs.readFileSync(env('ADMIN_JWT_SECRET'),"utf8").replace("\n",""),
+  },
+  apiToken: {
+    salt: fs.readFileSync(env('API_TOKEN_SALT'),"utf8").replace("\n",""),
+  },
+  transfer: {
+    token: {
+      salt: fs.readFileSync(env('TRANSFER_TOKEN_SALT'),"utf8").replace("\n",""),
+    },
   },
 });

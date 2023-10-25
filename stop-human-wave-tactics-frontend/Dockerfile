@@ -1,10 +1,25 @@
-FROM node:16-alpine
+FROM node:18-alpine
 
-WORKDIR /home/stop-human-wave-tactics-frontend
+ARG MY_USER
+ARG MY_GROUP
+ARG MODE
 
-COPY package.json .
-COPY yarn.lock .
+RUN apk update && apk add libressl-dev libffi-dev tzdata && npm install -g npm && npm install -g --force yarn && npm install -g npm-check-updates
 
-RUN apk update && apk add libressl-dev libffi-dev tzdata && yarn global add yarn && yarn install --frozen-lockfile --ignore-optional
+USER $MY_USER
 
-ENV TZ=Asia/Tokyo
+WORKDIR "/home/${MY_USER}/stop-human-wave-tactics-frontend"
+
+RUN chown $MY_USER:$MY_GROUP ./
+
+COPY --chown=$MY_USER:$MY_GROUP . .
+
+RUN if [ "${MODE}" = "PRODUCTION" ]; then \
+  yarn install --production=true --frozen-lockfile --force ; \
+  else \
+  yarn install --production=false ; \
+  fi
+
+
+# comment out if you don't use bind mount
+# RUN chown $MY_USER:$MY_GROUP -R ./
