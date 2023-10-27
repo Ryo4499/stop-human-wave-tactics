@@ -56,9 +56,6 @@ services:
       - type: bind
         source: ./nginx/html
         target: /usr/share/nginx/html
-      - type: bind
-        source: ./certbot/config
-        target: /etc/nginx/ssl
     depends_on:
       db:
         condition: service_healthy
