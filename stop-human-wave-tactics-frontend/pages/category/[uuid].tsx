@@ -3,9 +3,10 @@ import { NextPage } from "next";
 import { GetStaticProps, GetStaticPaths } from "next";
 import { useRouter } from "next/router";
 import { request } from "graphql-request";
+import { useState } from "react";
+import useSWR from "swr";
 import { getBackendGraphqlURL } from "../../lib/graphqlClient";
 import { ArticleEntity } from "../../types/graphql_res";
-import { useState } from "react";
 import Sidebar from "../../components/Common/Sidebar";
 import {
   ArticlesCategorisProps,
@@ -16,7 +17,6 @@ import { getCategoriesUUID } from "../../graphql/getCategoriesUUID";
 import { Articles } from "../../components/Articles";
 import { GraphqlError } from "../../components/Common/DisplayError";
 import { getArticlesCategories } from "../../graphql/getArticlesCategories";
-import useSWR from "swr";
 import Meta from "../../components/utils/Head";
 
 export const getStaticPaths = (async ({

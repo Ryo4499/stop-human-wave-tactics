@@ -2,6 +2,7 @@ import Grid from "@mui/material/Unstable_Grid2";
 import { NextPage } from "next";
 import { GetStaticProps, GetStaticPaths } from "next";
 import { request } from "graphql-request";
+import useSWR from "swr";
 import { ArticleDetails } from "../../components/Article";
 import { getBackendGraphqlURL } from "../../lib/graphqlClient";
 import { ArticleEntity } from "../../types/graphql_res";
@@ -14,7 +15,6 @@ import {
 } from "../../types/general";
 import { getArticlesCategories } from "../../graphql/getArticlesCategories";
 import { GraphqlError } from "../../components/Common/DisplayError";
-import useSWR from "swr";
 import Meta from "../../components/utils/Head";
 
 export const getStaticPaths = (async ({
