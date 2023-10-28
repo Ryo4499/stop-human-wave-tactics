@@ -2,6 +2,7 @@ import { Typography, Link } from "@mui/material";
 import { request } from "graphql-request";
 import { GetStaticProps } from "next";
 import Grid from "@mui/material/Unstable_Grid2";
+import useSWR from "swr";
 import { useLocale } from "../lib/locale";
 import type { NextPage } from "next";
 import Sidebar from "../components/Common/Sidebar";
@@ -10,7 +11,6 @@ import { getBackendGraphqlURL } from "../lib/graphqlClient";
 import { CategoryEntityResponseCollection } from "../types/graphql_res";
 import { GraphqlError } from "../components/Common/DisplayError";
 import { CategoriesResponseProps, IStaticProps } from "../types/general";
-import useSWR from "swr";
 import Meta from "../components/utils/Head";
 
 export const getStaticProps = (async ({
@@ -46,53 +46,24 @@ export const getStaticProps = (async ({
 const PrivacyPolicyContent: NextPage = () => {
   const { locale, locales, t } = useLocale();
   const site_text = t.site_text;
-  const site_info = site_text.split("\n").map((line, key) => (
-    <span key={key}>
-      {line}
-      <br />
-    </span>
-  ));
+  const typo = (text: String) =>
+    text.split("\n").map((line, key) => (
+      <Typography key={key} variant="body1" color="text.secondary">
+        {line}
+      </Typography>
+    ));
+  const site_info = typo(site_text);
 
   const google_ad_url =
     "https://support.google.com/adspolicy/answer/54818?hl=ja";
-  const google_ad_info = t.google_ad_text.split("\n").map((line, key) => (
-    <span key={key}>
-      {line}
-      <br />
-    </span>
-  ));
-
-  const google_analysis_info = t.google_analysis_text
-    .split("\n")
-    .map((line, key) => (
-      <span key={key}>
-        {line}
-        <br />
-      </span>
-    ));
+  const google_ad_info = typo(t.google_ad_text);
+  const google_analysis_info = typo(t.google_analysis_text);
   const google_analysis_url =
     "https://marketingplatform.google.com/about/analytics/terms/jp/";
 
-  const copy_right_info = t.copy_right_text.split("\n").map((line, key) => (
-    <span key={key}>
-      {line}
-      <br />
-    </span>
-  ));
-
-  const link_free_info = t.link_free_text.split("\n").map((line, key) => (
-    <span key={key}>
-      {line}
-      <br />
-    </span>
-  ));
-
-  const disclaimer_info = t.disclaimer_text.split("\n").map((line, key) => (
-    <span key={key}>
-      {line}
-      <br />
-    </span>
-  ));
+  const copy_right_info = typo(t.copy_right_text);
+  const link_free_info = typo(t.link_free_text);
+  const disclaimer_info = typo(t.disclaimer_text);
 
   return (
     <Grid
@@ -111,24 +82,16 @@ const PrivacyPolicyContent: NextPage = () => {
           {t.site_info}
         </Typography>
       </Grid>
-      <Grid>
-        <Typography color="text.secondary" variant="body1">
-          {site_info}
-        </Typography>
-      </Grid>
+      <Grid>{site_info}</Grid>
       <Grid>
         <Typography color="text.primary" variant="h6">
           {t.google_ad}
         </Typography>
       </Grid>
       <Grid>
-        <Typography color="text.secondary" variant="body1">
-          {google_ad_info}
-        </Typography>
+        {google_ad_info}
         <Link href={google_ad_url} color="text.link">
-          <a target="_blank" rel="noopener noreferrer">
-            {google_ad_url}
-          </a>
+          {google_ad_url}
         </Link>
       </Grid>
       <Grid>
@@ -137,13 +100,9 @@ const PrivacyPolicyContent: NextPage = () => {
         </Typography>
       </Grid>
       <Grid>
-        <Typography color="text.secondary" variant="body1">
-          {google_analysis_info}
-        </Typography>
+        {google_analysis_info}
         <Link href={google_analysis_url} color="text.link">
-          <a target="_blank" rel="noopener noreferrer">
-            {google_analysis_url}
-          </a>
+          {google_analysis_url}
         </Link>
       </Grid>
       <Grid>
@@ -151,31 +110,19 @@ const PrivacyPolicyContent: NextPage = () => {
           {t.copy_right}
         </Typography>
       </Grid>
-      <Grid>
-        <Typography color="text.secondary" variant="body1">
-          {copy_right_info}
-        </Typography>
-      </Grid>
+      <Grid>{copy_right_info}</Grid>
       <Grid>
         <Typography color="text.primary" variant="h6">
           {t.link_free}
         </Typography>
       </Grid>
-      <Grid>
-        <Typography color="text.secondary" variant="body1">
-          {link_free_info}
-        </Typography>
-      </Grid>
+      <Grid>{link_free_info}</Grid>
       <Grid>
         <Typography color="text.primary" variant="h6">
           {t.disclaimer}
         </Typography>
       </Grid>
-      <Grid>
-        <Typography color="text.secondary" variant="body1">
-          {disclaimer_info}
-        </Typography>
-      </Grid>
+      <Grid>{disclaimer_info}</Grid>
     </Grid>
   );
 };
