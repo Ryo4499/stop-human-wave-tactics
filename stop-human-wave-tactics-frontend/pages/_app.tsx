@@ -1,26 +1,27 @@
 import "../styles/globals.css";
 import type { NextPage } from "next";
-import { SWRConfig } from "swr"
-import { client } from "../lib/graphqlClient"
-import { createContext, useEffect, useMemo, useState } from "react"
+import { SWRConfig } from "swr";
+import { createContext, useEffect, useMemo, useState } from "react";
 import React from "react";
-import Layout from "../components/Layouts/Layout";
-import { AppProps, NextWebVitalsMetric } from "next/app";
+import { AppProps } from "next/app";
 import { ThemeProvider, createTheme } from "@mui/material";
 import { darkPalette, lightPalette } from "../lib/theme";
-import CssBaseline from "@mui/material/CssBaseline";
-import mainParticle from "../styles/presets/basic.json"
-import subParticle from "../styles/presets/collisions.json"
 import Script from "next/script";
 import { useRouter } from "next/router";
-import * as gtag from "../lib/gtag"
+import CssBaseline from "@mui/material/CssBaseline";
+import mainParticle from "../styles/presets/basic.json";
+import subParticle from "../styles/presets/collisions.json";
+import { client } from "../lib/graphqlClient";
+import Layout from "../components/Layouts/Layout";
+import * as gtag from "../lib/gtag";
 
-export const ParticlesContext = createContext({} as {
-  mainParticle: object,
-});
+export const ParticlesContext = createContext(
+  {} as {
+    mainParticle: object;
+  }
+);
 
-export const GoogleTagManager: React.FC<{
-}> = () => (
+export const GoogleTagManager: React.FC<{}> = () => (
   <Script
     id="gtm"
     strategy="afterInteractive"
@@ -36,21 +37,21 @@ export const GoogleTagManager: React.FC<{
   />
 );
 
-export const ColorModeContext = createContext({ toggleColorMode: () => { } });
+export const ColorModeContext = createContext({ toggleColorMode: () => {} });
 
 //export function reportWebVitals(metric: NextWebVitalsMetric) {
 //  console.log(metric)
 //}
 
 const MyApp: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
-  const [mode, setMode] = useState<'light' | 'dark'>('dark');
+  const [mode, setMode] = useState<"light" | "dark">("dark");
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
-        setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+        setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
       },
     }),
-    [],
+    []
   );
 
   const theme = useMemo(
@@ -58,30 +59,42 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
       createTheme({
         palette: {
           mode: mode,
-          ...(mode === "dark" ? darkPalette : lightPalette)
+          ...(mode === "dark" ? darkPalette : lightPalette),
         },
       }),
     [mode]
   );
 
-  const fetcher = (query: any, variables: any) => client.request(query, variables)
-  const router = useRouter()
+  const fetcher = (query: any, variables: any) =>
+    client.request(query, variables);
+  const router = useRouter();
   useEffect(() => {
     const handleRouteChange = (url: string) => {
-      gtag.pageview(url)
-    }
-    router.events.on('routeChangeComplete', handleRouteChange)
-    router.events.on('hashChangeComplete', handleRouteChange)
+      gtag.pageview(url);
+    };
+    router.events.on("routeChangeComplete", handleRouteChange);
+    router.events.on("hashChangeComplete", handleRouteChange);
     return () => {
-      router.events.off('routeChangeComplete', handleRouteChange)
-      router.events.off('hashChangeComplete', handleRouteChange)
-    }
-  }, [router.events])
+      router.events.off("routeChangeComplete", handleRouteChange);
+      router.events.off("hashChangeComplete", handleRouteChange);
+    };
+  }, [router.events]);
   return (
     <ColorModeContext.Provider value={colorMode}>
-      <ParticlesContext.Provider value={{ mainParticle: mode === "dark" ? mainParticle : subParticle }}>
+      <ParticlesContext.Provider
+        value={{ mainParticle: mode === "dark" ? mainParticle : subParticle }}
+      >
         <CssBaseline />
-        <SWRConfig value={{ fetcher, suspense: true, errorRetryCount: 3, revalidateIfStale: true, revalidateOnMount: true, shouldRetryOnError: false }}>
+        <SWRConfig
+          value={{
+            fetcher,
+            suspense: true,
+            errorRetryCount: 3,
+            revalidateIfStale: true,
+            revalidateOnMount: true,
+            shouldRetryOnError: false,
+          }}
+        >
           <ThemeProvider theme={theme}>
             <Layout>
               <Component {...pageProps} />
@@ -105,10 +118,10 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
               />
             </Layout>
           </ThemeProvider>
-        </SWRConfig >
-      </ParticlesContext.Provider >
+        </SWRConfig>
+      </ParticlesContext.Provider>
     </ColorModeContext.Provider>
   );
-}
+};
 
 export default MyApp;

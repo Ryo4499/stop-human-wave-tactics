@@ -1,45 +1,52 @@
 import { Typography } from "@mui/material";
-import Grid from "@mui/material/Unstable_Grid2";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
 import Link from "next/link";
 import { useLocale } from "../../lib/locale";
 import { CategoriesProps } from "../../types/general";
 
-
 export const Categories = ({ categories }: CategoriesProps) => {
-  const { locale, locales, t } = useLocale()
-  const CategoriesContent = <Grid>
-    {categories.data.map(category => {
-      if (category.attributes?.uuid != null) {
-        return <Grid key={category.id} >
-          <Link href={{ pathname: `/category/${category.attributes.uuid}`, query: { name: category.attributes.name } }} >
-            <Typography color="text.link">
-              {category.attributes?.name} ({category.attributes?.articles?.data.length})
-            </Typography>
-          </Link>
-        </Grid>
-      } else {
-        return null
-      }
-    })}
-  </Grid>
+  const { locale, locales, t } = useLocale();
+  const CategoriesContent = (
+    <List disablePadding>
+      {categories.data.map((category) => {
+        if (category.attributes?.uuid != null) {
+          return (
+            <ListItem sx={{ pl: 4 }} key={category.id} disablePadding>
+              <Link
+                href={{
+                  pathname: `/category/${category.attributes.uuid}`,
+                  query: { name: category.attributes.name },
+                }}
+              >
+                <Typography color="text.link">
+                  {category.attributes?.name} (
+                  {category.attributes?.articles?.data.length})
+                </Typography>
+              </Link>
+            </ListItem>
+          );
+        } else {
+          return null;
+        }
+      })}
+    </List>
+  );
 
   if (categories.data.length === 0) {
-    return (
-      null
-    )
+    return null;
   } else {
-    return (<>
-      <Grid container direction="row" py={0.5}>
-        <Grid container xs={12} py={0.5}>
-          <Typography color="text.primary">{t.categories}</Typography>
-        </Grid>
-        <Grid container xs={1}></Grid>
-        <Grid container xs={11}>
+    return (
+      <>
+        <List>
+          <ListItem sx={{ my: 1 }} disablePadding>
+            <Typography variant="subtitle1" color="text.primary">
+              {t.categories}
+            </Typography>
+          </ListItem>
           {CategoriesContent}
-        </Grid>
-      </Grid>
-    </>
-    )
+        </List>
+      </>
+    );
   }
 };
-

@@ -12,22 +12,103 @@
   "keyword": "Keyword",
   "top": "Top Page",
   "privacy_policy": "Privacy Policy",
-  "portofolios": "Portofolios",
+  "achievement": "Achievement",
+  "achievement_text": [
+    {
+      "title": "Image Registration for Medical Image",
+      "description": "A research project that uses models such as VoxelMorph to perform superimposition on two images of the same subject taken in different fields of view and time frames.",
+      "skill":"OpenCV(Python),Numpy,Pytorch,TensorFlow,Git,ShellScript,Docker,Docker Compose,Ubuntu",
+      "date": "2023/10/01~2023/12/31"
+    },
+    {
+      "title": "Estimation of camera parameters using 3D skeletal model",
+      "description": "Research project to estimate the location of camera parameters from human skeletal information obtained by estimation using OpenPose and VoxelPose.",
+      "skill":"OpenCV(Python),Numpy,Pytorch,Git,ShellScript,Docker,Docker Compose,Ubuntu",
+      "date": "2023/06/01~2023/09/30"
+    },
+    {
+      "title": "Performance evaluation of generic language models",
+      "description": "Research projects aimed at improving the all-coupling layer, improving the Embedding layer, and evaluating and improving the performance of continuous learning using the Bert model.",
+      "skill":"Pytorch,C11,Cython,Csh,ShellScript,Git,Docker,Docker Compose,Ubuntu,CentOS,GCE(GCP)",
+      "date": "2022/02/01~2023/04/30"
+    },
+    {
+      "title": "Operation and maintenance of in-house wiki",
+      "description": "Operation and maintenance of the internal wiki created in August 2021.",
+      "skill": "Flask,Nextjs,Mariadb,Git,Docker,Docker Compose,EC2(AWS),AmazonLinux",
+      "date": "2022/02/01~2023/04/30"
+    },
+    {
+      "title": "Distribution of Windows Security Patch",
+      "description": "Distribute Windows security patches to PCs in the same domain.",
+      "skill":"PowerShell,WQL,VBA,Windows Server,Active Directory",
+      "date": "2021/12/01~2022/01/31"
+    },
+    {
+      "title": "Testing of bandwidth control applications",
+      "description": "Create a test for the Python code that performs network bandwidth control.",
+      "skill":"Pytest,ShellScript,Git,Docker,Docker Compose,Amazon Linux",
+      "date": "2021/09/01~2022/11/30"
+    },
+    {
+      "title": "Development of an internal wiki",
+      "description": "Create a technology sharing website for internal use.",
+      "skill": "Flask,Nextjs,Mariadb,Git,Docker,Docker Compose,EC2(AWS),AmazonLinux",
+      "date": "2021/08/01~2022/08/31"
+    },
+    {
+      "title": "Web site development for internal use",
+      "description": "Create a website to share information for internal use.",
+      "skill": "Spring Boot,Spring Security,Nextjs,PostgreSQL,Heroku",
+      "date": "2021/06/01~2022/07/31"
+    }
+  ],
+  "portfolios": "Portfolios",
+  "portfolios_text":[
+    {
+      "title": "Stop Human Wave Tactics",
+      "description": "This site.",
+      "date": "Created by 2023",
+      "skill": "Nextjs(ISR),Strapi,Docker Compose",
+      "url": "https://datsujinkai.com/",
+      "github":""
+    },
+    {
+      "title": "DeepLearning Demo",
+      "description": "This is a sample of DeepLearning model for learning etc.",
+      "date": "Created by 2023",
+      "skill": "Nextjs(ISR),Strapi,Docker Compose",
+      "url": "https://drive.google.com/drive/folders/1Sp22-Pl5kqCWPoTZXENB-cpApb0zNfXh?usp=sharing",
+      "github":""
+    },
+    {
+      "title": "TechForward",
+      "description": "Wiki app.",
+      "date": "Created by 2021",
+      "skill": "Nuxtjs(SSR),Flack,Docker Compose",
+      "url": "",
+      "github":"https://github.com/x-o-o44dev/TechForward"
+    },
+    {
+      "title": "BookMemo",
+      "description": "Book review app.",
+      "date": "Created by 2020",
+      "skill": "Nextjs(ISR),Strapi,Docker Compose",
+      "url": "",
+      "github":"https://github.com/x-o-o44dev/BookMemo"
+    }
+  ],
   "about_instance": "I usually drop instances, so please contact me if you wish to view them.\n",
-  "about_datsujinkai": "This site.\nTechnology\nFrontend: Nextjs(ISR)\nBackend: Strapi\nInfra: DockerCompose\n",
-  "about_techforward": "Wiki app created in 2021.\nTechnology\nFrontend: Nuxtjs(SSR)\nBackend: Flask\nInfra: DockerCompose, AWS\n",
-  "about_bookmemo": "Book review app created in 2020.\nTechnology\nSpring Boot + Thymeleaf\nInfra: GCE\n",
-  "about_dl": "This is a sample of DeepLearning model for learning etc.\nThe technology\nPytorch\n",
   "disclaimer": "Disclaimer",
-  "disclaimer_text": "This site introduces products through an affiliate program and does not sell directly. If you have any inquiries about our products, please contact the distributors directly. If you are redirected to other sites from this site by links or banners, we are not responsible for the information, services, etc. provided on those sites. We also do not guarantee the accuracy or legality of the linked sites or their contents in any way. Articles about this site are written based on personal and subjective opinions and may not be applicable to all people. Final decisions regarding the purchase of products and services are your own responsibility. \nWe make every effort to ensure that the contents and information on this site are as accurate as possible, but we do not necessarily guarantee their accuracy, safety, etc. It is possible that erroneous information may have been included, or that the information may be out of date. We are not responsible for any problems that may occur as a result of using this site. Please be aware of this in advance. \n addition, this disclaimer and all articles on this site are subject to change or deletion without notice. Please be aware of this beforehand.",
+  "disclaimer_text": "This site introduces products through an affiliate program and does not sell directly.\n If you have any inquiries about our products, please contact the distributors directly.\nIf you are redirected to other sites from this site by links or banners, we are not responsible for the information, services, etc.\nProvided on those sites.\nWe also do not guarantee the accuracy or legality of the linked sites or their contents in any way.\nArticles about this site are written based on personal and subjective opinions and may not be applicable to all people.\nFinal decisions regarding the purchase of products and services are your own responsibility.\nWe make every effort to ensure that the contents and information on this site are as accurate as possible, but we do not necessarily guarantee their accuracy, safety, etc.\nIt is possible that erroneous information may have been included, or that the information may be out of date.\nWe are not responsible for any problems that may occur as a result of using this site.\nPlease be aware of this in advance.\nAddition, this disclaimer and all articles on this site are subject to change or deletion without notice.\nPlease be aware of this beforehand.",
   "link_free": "About Links",
   "link_free_text": "This site is basically link-free, but direct links to images and the use of inline frames are not permitted.",
   "copy_right": "Copyrights",
-  "copy_right_text": "We do not waive any copyright on the articles on this site. Unauthorized reproduction of any text, images, videos, or other copyrighted information that exists on this site is prohibited. Legal action will be taken for anything that exceeds the scope of quotation. \nIf you wish to reprint any of the information, please contact us. \nThis site is not intended to be a copyright infringement site. The intellectual property rights of the copyrighted materials used belong to their respective authors and organizations. \nIf you have any problems regarding copyrights or portrait rights, please contact us. If we receive a warning from the copyright owner or a request to modify or remove the material, we will take prompt action or remove the material.",
+  "copy_right_text": "We do not waive any copyright on the articles on this site.\nUnauthorized reproduction of any text, images, videos, or other copyrighted information that exists on this site is prohibited.\nLegal action will be taken for anything that exceeds the scope of quotation.\nIf you wish to reprint any of the information, please contact us.\nThis site is not intended to be a copyright infringement site.\nThe intellectual property rights of the copyrighted materials used belong to their respective authors and organizations.\nIf you have any problems regarding copyrights or portrait rights, please contact us.\nIf we receive a warning from the copyright owner or a request to modify or remove the material, we will take prompt action or remove the material.",
   "google_analysis": "About Access Analysis Tools",
-  "google_analysis_text": "This website uses Google Analytics, an access analysis tool by Google. \nThis Google Analytics uses cookies to collect traffic data. \nThis traffic data is collected anonymously and does not personally identify you. \nYou can refuse the collection of this feature by disabling cookies, so please check your browser settings. \nPlease click on the following URL for more information about this agreement.",
+  "google_analysis_text": "This website uses Google Analytics, an access analysis tool by Google.\nThis Google Analytics uses cookies to collect traffic data.\nThis traffic data is collected anonymously and does not personally identify you.\nYou can refuse the collection of this feature by disabling cookies, so please check your browser settings.\nPlease click on the following URL for more information about this agreement.",
   "google_ad": "About Advertisement Distribution",
-  "google_ad_text": "This website uses a third-party advertising service, Google Adsense Google Adsense. These ad-serving companies may use \"cookies\" (not including your name, address, e-mail address, or telephone number) to display advertisements for products and services that may be of interest to you. For more information on settings and Google Adsense, please see \"Advertising - Policies and Terms - Google\". \nThis site is also a participant in the Amazon Associates Program, an affiliate program designed to provide a means for sites to earn referral fees by promoting and linking to Amazon.com. Third parties may provide content and advertising, collect information directly from visitors, and set or recognize cookies on visitors' browsers. Please click on the following URL for more information about this agreement.",
+  "google_ad_text": "This website uses a third-party advertising service, Google Adsense Google Adsense.\nThese ad-serving companies may use \"cookies\" (not including your name, address, e-mail address, or telephone number) to display advertisements for products and services that may be of interest to you.\nFor more information on settings and Google Adsense, please see \"Advertising - Policies and Terms - Google\".\nThis site is also a participant in the Amazon Associates Program, an affiliate program designed to provide a means for sites to earn referral fees by promoting and linking to Amazon.com.\nThird parties may provide content and advertising, collect information directly from visitors, and set or recognize cookies on visitors' browsers.\nPlease click on the following URL for more information about this agreement.",
   "site_info": "Site operator information",
-  "site_text": "Operated by: AR44\nContact: ar44.blog@gmail.com\nEstablished: May 11, 2023\nLast revised: May 11, 2023."
+  "site_text": "Operated by: AR44\nContact: ar44.blog@gmail.com\nEstablished: May 11, 2023\nLast revised: Oct 29, 2023."
 }
