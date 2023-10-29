@@ -4,6 +4,7 @@ import Grid from "@mui/material/Unstable_Grid2";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { request } from "graphql-request";
+import useSWR from "swr";
 import { Articles } from "../../components/Articles";
 import { getArticlesPages } from "../../graphql/getArticlesPages";
 import { getBackendGraphqlURL } from "../../lib/graphqlClient";
@@ -17,7 +18,6 @@ import {
   PagesStaticProps,
 } from "../../types/general";
 import { getArticlesCategories } from "../../graphql/getArticlesCategories";
-import useSWR from "swr";
 import Meta from "../../components/utils/Head";
 
 export const getStaticPaths = (async ({

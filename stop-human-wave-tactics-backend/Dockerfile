@@ -12,7 +12,7 @@ USER $MY_USER
 
 WORKDIR "/home/${MY_USER}/stop-human-wave-tactics-backend"
 
-RUN chown $MY_USER:$MY_GROUP ./
+RUN chown $MY_USER:$MY_GROUP -R ./ && mkdir -p ./public/uploads
 # PROD & rm bind mount
 COPY --chown=$MY_USER:$MY_GROUP . .
 

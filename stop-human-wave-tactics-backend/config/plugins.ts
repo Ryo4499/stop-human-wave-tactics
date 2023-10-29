@@ -43,6 +43,10 @@ export default ({ env }) => ({
         apiKey: fs.readFileSync(env("DEEPL_API_KEY"), "utf8").replace("\n", ""),
         // use custom api url - optional
         apiUrl: "https://api-free.deepl.com",
+        localeMap: {
+          // use uppercase here!
+          EN: "EN-US",
+        },
         apiOptions: {
           // see <https://github.com/DeepLcom/deepl-node#text-translation-options> for supported options.
           // note that tagHandling Mode cannot be set this way.
