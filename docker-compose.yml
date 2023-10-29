@@ -168,7 +168,7 @@ services:
         source: backModules
         target: "/home/${MY_USER}/stop-human-wave-tactics-backend/node_modules"
       - type: volume
-        source: staticData
+        source: backStaticData
         target: "/home/${MY_USER}/stop-human-wave-tactics-backend/public"
     ports:
       - 127.0.0.1:$BACK_PORT:$BACK_PORT
@@ -219,6 +219,9 @@ services:
       - type: volume
         source: frontModules
         target: "/home/${MY_USER}/stop-human-wave-tactics-frontend/node_modules"
+      - type: volume
+        source: frontStaticData
+        target: "/home/${MY_USER}/stop-human-wave-tactics-frontend/public"
     tty: true
     entrypoint: sh
     command:
@@ -272,7 +275,8 @@ secrets:
 
 volumes:
   dbData:
-  staticData:
+  frontStaticData:
+  backStaticData:
   frontModules:
   backModules:
 
