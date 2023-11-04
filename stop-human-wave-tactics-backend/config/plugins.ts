@@ -1,4 +1,5 @@
 import fs from "fs";
+
 export default ({ env }) => ({
   graphql: {
     enabled: true,
@@ -10,23 +11,12 @@ export default ({ env }) => ({
       amountLimit: 30,
     },
   },
-  ckeditor: true,
   seo: { enabled: true },
   sentry: {
     enabled: true,
     config: {
       dsn: fs.readFileSync(env("SENTRY_DSN"), "utf8").replace("\n", ""),
       sendMetadata: true,
-    },
-  },
-  "content-versioning": {
-    enabled: true,
-  },
-  migrations: {
-    enabled: true,
-    config: {
-      autoStart: true,
-      migrationFolderPath: "migrations",
     },
   },
   "local-image-sharp": {
