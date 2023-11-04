@@ -130,7 +130,7 @@ services:
       - DB_NAME
       - DB_USER
       - DB_PASS
-    restart: unless-stopped
+    restart: always
     networks:
       db_net:
         ipv4_address: 172.30.3.2
@@ -188,7 +188,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    restart: unless-stopped
+    restart: always
     healthcheck:
       test: wget --spider http://localhost:${BACK_PORT}${ADMIN_URL}
       interval: 5s
@@ -248,7 +248,7 @@ services:
       retries: 10
       start_period: 30s
       timeout: 80s
-    restart: unless-stopped
+    restart: always
     networks:
       app_net:
         ipv4_address: 172.30.0.2
