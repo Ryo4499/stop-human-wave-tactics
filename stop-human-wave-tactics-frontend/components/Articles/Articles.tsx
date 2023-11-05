@@ -1,16 +1,14 @@
-import Link from "next/link";
 import { ChangeEvent } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import Stack from "@mui/material/Stack";
-import {
-  Card,
-  CardContent,
-  Pagination,
-  PaginationItem,
-  Typography,
-  CardActions,
-  Button,
-} from "@mui/material";
+import Card from "@mui/material/Card"
+import CardContent from "@mui/material/CardContent"
+import CardActions from "@mui/material/CardActions"
+import Pagination from "@mui/material/Pagination"
+import PaginationItem from "@mui/material/PaginationItem"
+import Typography from "@mui/material/Typography"
+import Button from "@mui/material/Button";
+import Link from "next/link";
 import FolderIcon from "@mui/icons-material/Folder";
 import Image from "next/image";
 import { ArticleEntityResponseCollection } from "../../types/graphql_res";
@@ -103,8 +101,8 @@ export const Articles = ({
                         <CardContent sx={{ flexGrow: 1 }}>
                           {article.attributes.thumbnail?.data?.attributes
                             ?.url != null &&
-                          article.attributes.thumbnail?.data?.attributes
-                            ?.alternativeText != null ? (
+                            article.attributes.thumbnail?.data?.attributes
+                              ?.alternativeText != null ? (
                             <Link href={`/article/${article.attributes.uuid}`}>
                               <Grid
                                 container
