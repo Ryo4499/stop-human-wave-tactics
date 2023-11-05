@@ -1,9 +1,8 @@
-import Image from "next/image";
 import { GetStaticProps } from "next";
 import { request } from "graphql-request";
 import Grid from "@mui/material/Unstable_Grid2";
 import Link from "next/link";
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import type { NextPage } from "next";
@@ -13,10 +12,10 @@ import { useEffect } from "react";
 import { getBackendGraphqlURL } from "../lib/graphqlClient";
 import { getCategories } from "../graphql/getCategories";
 import { CategoryEntityResponseCollection } from "../types/graphql_res";
-import Sidebar from "../components/Common/Sidebar";
 import { GraphqlError } from "../components/Common/DisplayError";
 import { CategoriesResponseProps, IStaticProps } from "../types/general";
 import { useLocale } from "../lib/locale";
+import Sidebar from "../components/Common/Sidebar";
 import Meta from "../components/utils/Head";
 
 export const getStaticProps = (async ({

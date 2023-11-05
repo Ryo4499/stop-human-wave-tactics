@@ -4,11 +4,11 @@ import { SWRConfig } from "swr";
 import { createContext, useEffect, useMemo, useState } from "react";
 import React from "react";
 import { AppProps } from "next/app";
-import { ThemeProvider, createTheme } from "@mui/material";
+import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider, createTheme } from '@mui/material/styles'
 import { darkPalette, lightPalette } from "../lib/theme";
 import Script from "next/script";
 import { useRouter } from "next/router";
-import CssBaseline from "@mui/material/CssBaseline";
 import mainParticle from "../styles/presets/basic.json";
 import subParticle from "../styles/presets/collisions.json";
 import { client } from "../lib/graphqlClient";
@@ -37,7 +37,7 @@ export const GoogleTagManager: React.FC<{}> = () => (
   />
 );
 
-export const ColorModeContext = createContext({ toggleColorMode: () => {} });
+export const ColorModeContext = createContext({ toggleColorMode: () => { } });
 
 //export function reportWebVitals(metric: NextWebVitalsMetric) {
 //  console.log(metric)
