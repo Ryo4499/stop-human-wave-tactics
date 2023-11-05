@@ -1,4 +1,4 @@
-import { alpha } from "@mui/material";
+import { alpha } from "@mui/material/styles";
 
 export const darkPalette = {
   primary: {

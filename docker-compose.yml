@@ -175,8 +175,6 @@ services:
         target: "/home/${MY_USER}/stop-human-wave-tactics-backend/public"
     ports:
       - 127.0.0.1:$BACK_PORT:$BACK_PORT
-      - 127.0.0.1:4018:4018
-      - 127.0.0.1:4019:4019
     entrypoint: sh
     command:
       - -c

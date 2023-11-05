@@ -1,7 +1,8 @@
-import { Typography, Link } from "@mui/material";
+import Link from "next/link";
+import Grid from "@mui/material/Unstable_Grid2";
+import Typography from "@mui/material/Typography";
 import { request } from "graphql-request";
 import { GetStaticProps } from "next";
-import Grid from "@mui/material/Unstable_Grid2";
 import useSWR from "swr";
 import { useLocale } from "../lib/locale";
 import type { NextPage } from "next";

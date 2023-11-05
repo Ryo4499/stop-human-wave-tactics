@@ -1,12 +1,12 @@
-import {
-  ArticleEntityResponseCollection,
-} from "../../types/graphql_res";
 import Grid from "@mui/material/Unstable_Grid2";
-import { Typography } from "@mui/material";
-import { useLocale } from "../../lib/locale";
+import Typography from "@mui/material/Typography";
 import FolderIcon from '@mui/icons-material/Folder';
 import MdContent from "../Common/MdContent";
 import Link from "next/link";
+import {
+  ArticleEntityResponseCollection,
+} from "../../types/graphql_res";
+import { useLocale } from "../../lib/locale";
 import { DefaultAdsense } from "../Common/Adsense";
 
 type ArticleProps = {
