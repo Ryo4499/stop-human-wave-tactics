@@ -9,9 +9,9 @@ import { Articles } from "../components/Articles";
 import { getBackendGraphqlURL } from "../lib/graphqlClient";
 import { getPageSize } from "../lib/pagination";
 import { GraphqlError } from "../components/Common/DisplayError";
-import Sidebar from "../components/Common/Sidebar";
 import { ArticlesCategorisProps, IStaticProps } from "../types/general";
 import { getArticlesCategories } from "../graphql/getArticlesCategories";
+import Sidebar from "../components/Common/Sidebar";
 import Meta from "../components/utils/Head";
 
 export const getStaticProps = (async ({

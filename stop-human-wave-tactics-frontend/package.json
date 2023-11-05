@@ -5,7 +5,7 @@
   "description": "Blog App",
   "scripts": {
     "dev": "next dev -p ${FRONT_PORT}",
-    "build": "next build --profile --debug",
+    "build": "next build",
     "start": "next start -p ${FRONT_PORT}",
     "lint": "next lint",
     "export": "next export"

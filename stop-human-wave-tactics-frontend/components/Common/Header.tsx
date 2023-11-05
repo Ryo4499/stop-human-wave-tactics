@@ -6,12 +6,12 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import TranslateIcon from "@mui/icons-material/Translate";
 import MenuItem from "@mui/material/MenuItem";
-import { useLocale } from "../../lib/locale";
-import { useRouter } from "next/router"
+import Typography from "@mui/material/Typography";
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import IconButton from "@mui/material/IconButton"
-import { Typography } from "@mui/material";
+import { useLocale } from "../../lib/locale";
+import { useRouter } from "next/router"
 import { ColorModeContext } from "../../pages/_app";
 import { useContext } from "react";
 import { useTheme } from "@mui/material/styles";
