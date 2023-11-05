@@ -1,6 +1,5 @@
 import React from "react";
 import Link from "next/link";
-import { Typography } from "@mui/material";
 const CustomLink: React.FC<{
   href: string;
   children: any;
