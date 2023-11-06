@@ -81,7 +81,6 @@ const processor = (content: string): React.ReactElement<unknown, string | React.
         Fragment: prod.Fragment,
         jsx: prod.jsx,
         jsxs: prod.jsxs,
-        jsxDev: prod.jsxDev,
         createElement: React.createElement,
         components: {
             a: CustomLink,
