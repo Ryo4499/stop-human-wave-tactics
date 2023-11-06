@@ -1,19 +1,18 @@
 import "../styles/globals.css";
 import type { NextPage } from "next";
 import { SWRConfig } from "swr";
-import { createContext, useEffect, useMemo, useState } from "react";
+import { createContext, useMemo, useState } from "react";
 import React from "react";
 import { AppProps } from "next/app";
+import Script from 'next/script'
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import { darkPalette, lightPalette } from "../lib/theme";
-import Script from "next/script";
-import { useRouter } from "next/router";
 import mainParticle from "../styles/presets/basic.json";
 import subParticle from "../styles/presets/collisions.json";
 import { client } from "../lib/graphqlClient";
 import Layout from "../components/Layouts/Layout";
-import * as gtag from "../lib/gtag";
+import { GA_ID } from "../lib/gad";
 
 export const ParticlesContext = createContext(
   {} as {
@@ -21,34 +20,14 @@ export const ParticlesContext = createContext(
   }
 );
 
-export const GoogleTagManager: React.FC<{}> = () => (
-  <Script
-    id="gtm"
-    strategy="afterInteractive"
-    dangerouslySetInnerHTML={{
-      __html: `
-            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer', 'G-884NEPFPMMJ');
-          `,
-    }}
-  />
-);
-
 export const ColorModeContext = createContext({ toggleColorMode: () => { } });
-
-//export function reportWebVitals(metric: NextWebVitalsMetric) {
-//  console.log(metric)
-//}
 
 const MyApp: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
   const [mode, setMode] = useState<"light" | "dark">("dark");
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
-        setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+        setMode((prevMode: string) => (prevMode === "light" ? "dark" : "light"));
       },
     }),
     []
@@ -67,18 +46,6 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
 
   const fetcher = (query: any, variables: any) =>
     client.request(query, variables);
-  const router = useRouter();
-  useEffect(() => {
-    const handleRouteChange = (url: string) => {
-      gtag.pageview(url);
-    };
-    router.events.on("routeChangeComplete", handleRouteChange);
-    router.events.on("hashChangeComplete", handleRouteChange);
-    return () => {
-      router.events.off("routeChangeComplete", handleRouteChange);
-      router.events.off("hashChangeComplete", handleRouteChange);
-    };
-  }, [router.events]);
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ParticlesContext.Provider
@@ -98,24 +65,7 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
           <ThemeProvider theme={theme}>
             <Layout>
               <Component {...pageProps} />
-              <Script
-                strategy="afterInteractive"
-                src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
-              />
-              <Script
-                id="gtag-init"
-                strategy="afterInteractive"
-                dangerouslySetInnerHTML={{
-                  __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${gtag.GA_TRACKING_ID}', {
-              page_path: window.location.pathname,
-            });
-          `,
-                }}
-              />
+              <Script id="google_adsense" src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${GA_ID}`} />
             </Layout>
           </ThemeProvider>
         </SWRConfig>
