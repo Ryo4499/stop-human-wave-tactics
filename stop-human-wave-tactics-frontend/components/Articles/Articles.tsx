@@ -219,10 +219,10 @@ export const Articles = ({
                             <Grid>
                               <Button
                                 onClick={() => {
-                                  router.push(
-                                    "/article/[uuid]",
-                                    `/article/${article.attributes?.uuid}`
-                                  );
+                                  router.push({
+                                    pathname: "/article/[uuid]",
+                                    query: { uuid: article.attributes?.uuid }
+                                  });
                                 }}
                                 size="small"
                               >
@@ -247,7 +247,7 @@ export const Articles = ({
           </Grid>
         </Grid>
         {router.pathname === "/search" ? null : (
-          <Grid container direction="row" justifyContent="center" mb={2}>
+          <Grid container direction="row" justifyContent="center" my={2}>
             <Content
               page={page}
               setPage={setPage}

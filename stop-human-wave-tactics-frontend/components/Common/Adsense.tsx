@@ -1,19 +1,31 @@
-import Script from "next/script";
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import Grid from "@mui/material/Unstable_Grid2"
+import { GA_ID, GA_SLOT } from '../../lib/gad';
 
 export const DefaultAdsense = () => {
+    const { asPath } = useRouter();
+
+    useEffect(() => {
+        try {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push(
+                {},
+            );
+        } catch (error) {
+            // Pass
+        }
+    }, [asPath]);
     return (
-        <>
-            <Script id="adsense1" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5108510865994427"
-                strategy="worker" />
+        <Grid key={asPath}>
             <ins className="adsbygoogle"
                 style={{ display: "block" }}
-                data-ad-client="ca-pub-5108510865994427"
-                data-ad-slot="3235537736"
+                data-adtest={process.env.MODE === "DEV" ? "on" : "off"}
+                data-ad-client={GA_ID}
+                data-ad-slot={GA_SLOT}
                 data-ad-format="auto"
-                data-full-width-responsive="true" />
-            <Script id="adsense2">
-                {`(adsbygoogle = window.adsbygoogle || []).push({ })`}
-            </Script>
-        </>
+                data-full-width-responsive="true"
+            />
+        </Grid>
     )
 }
