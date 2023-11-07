@@ -1,0 +1,5 @@
+#!/bin/bash
+# Need to gunzip backup file 
+if [ -e $1 ]; then
+	docker exec -it db psql -U $(cat .secrets/DB_USER) -d $(cat .secrets/DB_NAME) < $1;
+fi
