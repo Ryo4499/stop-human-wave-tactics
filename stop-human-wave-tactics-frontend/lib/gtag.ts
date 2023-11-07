@@ -1,8 +1,8 @@
-export const GA_TRACKING_ID = process.env.GTAG
+export const GA_TRACKING_ID = String(process.env.GTAG)
 
 // https://developers.google.com/analytics/devguides/collection/gtagjs/pages
 export const pageview = (url: string) => {
-  window.gtag("config", GA_TRACKING_ID, {
+  globalThis.window.gtag("config", GA_TRACKING_ID, {
     page_path: url,
   });
 };
