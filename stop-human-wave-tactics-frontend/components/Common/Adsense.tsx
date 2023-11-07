@@ -20,7 +20,7 @@ export const DefaultAdsense = () => {
         <Grid key={asPath}>
             <ins className="adsbygoogle"
                 style={{ display: "block" }}
-                data-adtest={process.env.MODE === "DEV" ? "on" : "off"}
+                data-adtest={String(process.env.MODE) === "DEV" ? "on" : "off"}
                 data-ad-client={GA_ID}
                 data-ad-slot={GA_SLOT}
                 data-ad-format="auto"
