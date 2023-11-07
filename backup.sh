@@ -1,4 +1,9 @@
 #!/bin/bash
+CURRENT=$(
+    cd $(dirname $0)
+    pwd
+)
+echo $CURRENT
 BACKUP_DIR='./backup'
 today=$(date "+%Y%m%d")
 mkdir -p $BACKUP_DIR
