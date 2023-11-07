@@ -66,9 +66,9 @@ const preprocessor = (content: string) => unified()
         rel: ["nofollow"],
     })
     .use(rehypeFmt)
-    .use(rehypeToc)
-    .use(rehypeKatex)
     .use(rehypeSlug)
+    .use(rehypeToc, { heading: "TOC", maxDepth: 2 })
+    .use(rehypeKatex)
     .use(rehypeAutolinkHeadings, {
         behavior: "warp"
     })
