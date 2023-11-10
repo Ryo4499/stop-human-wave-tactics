@@ -65,7 +65,7 @@ export const ArticleDetails = ({ articles }: { articles: ArticleEntityResponseCo
               <MdContent content={article.content}></MdContent>
             </Grid>
             <Grid my={2}>
-              <DefaultAdsense />
+              <DefaultAdsense style={{ display: "block", testAlign: "center" }} key="in-aricle" format="fluid" slot="7513378149" fullWidth={false} />
             </Grid>
           </Grid>
         </Grid>
