@@ -18,12 +18,12 @@ const GoogleAnalytics = () => {
     return (
         <>
             <Script
-                strategy='afterInteractive'
+                strategy='beforeInteractive'
                 async
                 id={GA_TRACKING_ID}
                 src="https://www.googletagmanager.com/gtag/js"
             />
-            <Script id='gtag-init' async strategy='afterInteractive'>
+            <Script id='gtag-init' async strategy='beforeInteractive'>
                 {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
