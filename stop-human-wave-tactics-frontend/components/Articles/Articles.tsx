@@ -256,7 +256,7 @@ export const Articles = ({
           </Grid>
         )}
         <Grid my={2}>
-          <DefaultAdsense />
+          <DefaultAdsense style={{ display: "block" }} format="autorelaxed" slot="1094459397" key="" fullWidth={false} />
         </Grid>
       </Grid>
     );
