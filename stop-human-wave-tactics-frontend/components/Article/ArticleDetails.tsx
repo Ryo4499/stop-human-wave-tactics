@@ -9,25 +9,21 @@ import {
 import { useLocale } from "../../lib/locale";
 import { DefaultAdsense } from "../Common/Adsense";
 
-type ArticleProps = {
-  uuid: string;
-};
-
 export const ArticleDetails = ({ articles }: { articles: ArticleEntityResponseCollection }) => {
   const { locale, locales, t } = useLocale()
 
   if (articles?.data[0]?.attributes != null) {
     const article = articles.data[0]?.attributes;
     return (
-      <Grid container direction="column" xs={12} sx={{ flexGrow: 1, }}>
-        <Grid container direction="column" sx={{ flexGrow: 1, backgroundColor: "background.content", mx: { md: 5, xs: 0 }, my: { md: 0, xs: 3 } }} justifyContent="space-between">
-          <Grid container direction="column" my={2} mx={5}>
-            <Grid >
+      <Grid direction="column" my={2} xs={12} sx={{ flexGrow: 1, }}>
+        <Grid direction="column" mx={5} sx={{ backgroundColor: "background.content" }} justifyContent="space-between">
+          <Grid direction="column" mx={5}>
+            <Grid>
               <Typography variant="h2" color={"text.primary"}>
                 {article.title}
               </Typography>
             </Grid>
-            <Grid container direction="row" my={2} justifyContent="space-between" alignContent="center" alignItems="center">
+            <Grid direction="row" my={2} justifyContent="space-between" alignContent="center" alignItems="center">
               {
                 article.category?.data?.attributes?.uuid != null ?
                   <Grid container direction="row" sx={{ color: "text.link" }} spacing={1} alignContent="center" alignItems="center">
@@ -61,7 +57,7 @@ export const ArticleDetails = ({ articles }: { articles: ArticleEntityResponseCo
                 </Typography>
               </Grid>
             </Grid>
-            <Grid container direction="row">
+            <Grid direction="row">
               <MdContent content={article.content}></MdContent>
             </Grid>
             <Grid my={2}>
