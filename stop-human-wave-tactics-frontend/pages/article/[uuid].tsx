@@ -5,7 +5,7 @@ import { request } from "graphql-request";
 import useSWR from "swr";
 import { ArticleDetails } from "../../components/Article";
 import { getBackendGraphqlURL } from "../../lib/graphqlClient";
-import { ArticleEntity } from "../../types/graphql_res";
+import { ArticleEntity, ArticleEntityResponseCollection, CategoryEntityResponseCollection, GetArticlesCategoriesQuery, GetArticlesQueryVariables } from "../../types/graphql_res";
 import { getArticlesUUID } from "../../graphql/getArticlesUUID";
 import Sidebar from "../../components/Common/Sidebar";
 import {
@@ -22,18 +22,21 @@ export const getStaticPaths = (async ({
 }: {
   locales: Array<string>;
 }) => {
+  // get all articles uuid and generate article detail page
   const paths: Array<UUIDParams> = [];
   if (locales != null) {
     for (const locale of locales) {
       const variables = { pagination: {}, locale: locale };
       await request(getBackendGraphqlURL(), getArticlesUUID, variables).then(
-        ({ articles }) => {
-          articles.data.map((article: ArticleEntity) =>
-            paths.push({
-              params: { uuid: article.attributes?.uuid },
-              locale: locale,
-            })
-          );
+        ({ articles }: { articles: ArticleEntityResponseCollection }) => {
+          articles.data.map((article: ArticleEntity) => {
+            if (article.attributes?.uuid) {
+              paths.push({
+                params: { uuid: article.attributes.uuid },
+                locale: locale,
+              });
+            }
+          });
         }
       );
     }
@@ -42,6 +45,7 @@ export const getStaticPaths = (async ({
 }) satisfies GetStaticPaths;
 
 export const getStaticProps = (async ({ params, locale }: UUIDStaticProps) => {
+  // get all articles and categories
   const variables = {
     filters: { uuid: { eq: params.uuid } },
     pagination: {},
@@ -52,7 +56,7 @@ export const getStaticProps = (async ({ params, locale }: UUIDStaticProps) => {
     getBackendGraphqlURL(),
     getArticlesCategories,
     variables
-  ).then((result) => {
+  ).then((result: GetArticlesCategoriesQuery) => {
     return result;
   });
   if (res != null) {
@@ -78,7 +82,7 @@ const ArticlePage: NextPage<ArticlesCategorisProps> = ({
   articles,
   categories,
   variables,
-}) => {
+}: { articles: ArticleEntityResponseCollection, categories: CategoryEntityResponseCollection, variables: GetArticlesQueryVariables }) => {
   const { data, error } = useSWR([getArticlesCategories, variables], {
     fallbackData: {
       articles: articles,

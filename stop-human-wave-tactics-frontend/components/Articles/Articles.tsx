@@ -60,6 +60,7 @@ export const Articles = ({
 
   if (articles.data != null) {
     const pageCount = articles.meta.pagination.pageCount;
+    console.log(articles.data)
     return (
       <Grid container direction="column" sx={{ flexGrow: 1 }} xs={12}>
         {filter != null ? (
@@ -98,7 +99,7 @@ export const Articles = ({
                       }}
                     >
                       <Stack sx={{ flexGrow: 1 }}>
-                        <CardContent sx={{ flexGrow: 1 }}>
+                        <CardContent sx={{ flexGrow: 1, maxHeight: "60vh", maxWidth: "60vw" }}>
                           {article.attributes.thumbnail?.data?.attributes
                             ?.url != null &&
                             article.attributes.thumbnail?.data?.attributes
@@ -108,7 +109,7 @@ export const Articles = ({
                                 container
                                 justifyContent="center"
                                 mb={4}
-                                sx={{ position: "relative", flexGrow: 1 }}
+                                sx={{ position: "relative" }}
                               >
                                 <Image
                                   loader={imageLoader}
@@ -168,7 +169,7 @@ export const Articles = ({
                               </Stack>
                             </Grid>
                           </Grid>
-                          <Grid container justifyContent="flex-end" mt={1}>
+                          <Grid container justifyContent="flex-end" mt={1} sx={{ maxWidth: "100vw", maxHeight: "100vh" }}>
                             {article.attributes.category?.data?.attributes
                               ?.uuid != null ? (
                               <Grid
