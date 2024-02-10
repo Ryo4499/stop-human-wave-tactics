@@ -6,7 +6,7 @@ ARG MODE
 
 # measures Webpack Memory leak
 ENV NODE_OPTIONS="--max-old-space-size=1024"
-RUN apk update && apk add libressl-dev libffi-dev tzdata && npm install -g npm && npm install -g --force yarn && npm install -g npm-check-updates
+RUN apk update && apk add libressl-dev libffi-dev tzdata && npm install -g npm && npm install -g --force yarn && npm install -g npm-check-updates && mkdir /node_modules && chown ${MY_USER}:${MY_GROUP} /node_modules
 
 USER $MY_USER
 
@@ -16,9 +16,11 @@ RUN chown $MY_USER:$MY_GROUP -R ./ && mkdir -p ./public/uploads
 # PROD & rm bind mount
 COPY --chown=$MY_USER:$MY_GROUP . .
 
+ENV PATH=/node_modules/.bin:$PATH
+
 RUN if [ "${MODE}" = "PRODUCTION" ]; then \
-  yarn install --production=true --frozen-lockfile --force ; \
+  yarn install --production=true --frozen-lockfile --force --modules-folder=/node_modules ; \
   else \
-  yarn install --production=false ; \
+  yarn install --production=false --modules-folder=/node_modules; \
   fi
 

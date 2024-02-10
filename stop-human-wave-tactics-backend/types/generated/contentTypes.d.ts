@@ -428,9 +428,6 @@ export interface ApiArticleArticle extends Schema.CollectionType {
     content: Attribute.RichText &
       Attribute.Required &
       Attribute.SetPluginOptions<{
-        versions: {
-          versioned: true;
-        };
         i18n: {
           localized: true;
         };
@@ -491,15 +488,6 @@ export interface ApiArticleArticle extends Schema.CollectionType {
       'admin::user'
     > &
       Attribute.Private;
-    versions: Attribute.Relation<
-      'api::article.article',
-      'manyToMany',
-      'api::article.article'
-    >;
-    vuid: Attribute.String;
-    versionNumber: Attribute.Integer & Attribute.DefaultTo<1>;
-    versionComment: Attribute.String;
-    isVisibleInListView: Attribute.Boolean & Attribute.DefaultTo<true>;
     localizations: Attribute.Relation<
       'api::article.article',
       'oneToMany',
@@ -517,7 +505,7 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
     displayName: 'Category';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   pluginOptions: {
     i18n: {
@@ -559,7 +547,6 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
       }>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
       'api::category.category',
       'oneToOne',

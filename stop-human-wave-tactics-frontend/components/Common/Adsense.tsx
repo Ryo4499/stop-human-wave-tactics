@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router';
 import { useEffect, CSSProperties } from 'react';
 import Grid from "@mui/material/Unstable_Grid2"
-import { GA_ID } from '../../lib/gad';
 
 export const DefaultAdsense = ({ style, format, slot, key, fullWidth }: { style: CSSProperties, format: String, slot: String, key: String, fullWidth: boolean }) => {
     const { asPath } = useRouter();
@@ -19,13 +18,12 @@ export const DefaultAdsense = ({ style, format, slot, key, fullWidth }: { style:
     return (
         <Grid key={asPath}>
             <ins className="adsbygoogle"
-                style={style}
-                data-adtest={String(process.env.MODE) === "DEV" ? "on" : "off"}
-                data-ad-client={GA_ID}
-                data-ad-layout-key={key}
-                data-ad-slot={slot}
-                data-ad-format={format}
-                data-full-width-responsive={fullWidth}
+                style={{ display: "block", textAlign: "center" }}
+                data-adtest={process.env.MODE === "DEV" ? "on" : "off"}
+                data-ad-client={process.env.GA_ID}
+                data-ad-slot={process.env.GA_SLOT}
+                data-ad-format="auto"
+                data-full-width-responsive="true"
             />
         </Grid>
     )
