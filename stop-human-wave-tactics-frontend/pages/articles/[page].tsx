@@ -9,7 +9,7 @@ import { Articles } from "../../components/Articles";
 import { getArticlesPages } from "../../graphql/getArticlesPages";
 import { getBackendGraphqlURL } from "../../lib/graphqlClient";
 import { getPageSize } from "../../lib/pagination";
-import { ArticleEntityResponseCollection } from "../../types/graphql_res";
+import { ArticleEntityResponseCollection, CategoryEntityResponseCollection, GetArticlesCategoriesQuery, GetArticlesQueryVariables } from "../../types/graphql_res";
 import { GraphqlError } from "../../components/Common/DisplayError";
 import Sidebar from "../../components/Common/Sidebar";
 import {
@@ -59,7 +59,7 @@ export const getStaticProps = (async ({ params, locale }: PagesStaticProps) => {
     getBackendGraphqlURL(),
     getArticlesCategories,
     variables
-  ).then((result) => {
+  ).then((result: GetArticlesCategoriesQuery) => {
     return result;
   });
   if (res != null) {
@@ -85,7 +85,7 @@ const ArticlesPage: NextPage<ArticlesCategorisProps> = ({
   articles,
   categories,
   variables,
-}) => {
+}: { articles: ArticleEntityResponseCollection, categories: CategoryEntityResponseCollection, variables: GetArticlesQueryVariables }) => {
   const { data, error } = useSWR([getArticlesCategories, variables], {
     fallbackData: {
       articles: articles,

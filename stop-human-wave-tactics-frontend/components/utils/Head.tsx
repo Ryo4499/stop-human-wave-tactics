@@ -8,7 +8,7 @@ interface Props {
   keyword: string;
 }
 
-const Meta = ({ title, description, keyword }: Props): JSX.Element => {
+const Meta = ({ title, description, keyword }: Props): React.ReactNode => {
   return (
     <Head>
       <title>{title}</title>

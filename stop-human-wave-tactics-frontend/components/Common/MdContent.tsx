@@ -66,9 +66,9 @@ const preprocessor = (content: string) => unified()
         rel: ["nofollow"],
     })
     .use(rehypeFmt)
-    .use(rehypeToc)
     .use(rehypeKatex)
     .use(rehypeSlug)
+    .use(rehypeToc)
     .use(rehypeAutolinkHeadings, {
         behavior: "warp"
     })
@@ -165,7 +165,7 @@ const MdContent = ({ content }: { content: string }) => {
     const result_pre = preprocessor(content)
     const result = processor(result_pre)
 
-    return <Grid direction="column" container sx={{ flexGrow: 1 }}>
+    return <Grid direction="column" sx={{ flexGrow: 1 }}>
         <Typography variant="body1" color="text.secondary" dangerouslySetInnerHTML={{ __html: result }}>
         </Typography>
     </Grid >

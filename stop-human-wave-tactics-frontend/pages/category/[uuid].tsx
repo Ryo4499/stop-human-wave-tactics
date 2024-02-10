@@ -6,7 +6,7 @@ import { request } from "graphql-request";
 import { useState } from "react";
 import useSWR from "swr";
 import { getBackendGraphqlURL } from "../../lib/graphqlClient";
-import { ArticleEntity } from "../../types/graphql_res";
+import { ArticleEntityResponseCollection, CategoryEntity, CategoryEntityResponseCollection, GetArticlesCategoriesQuery, GetArticlesQueryVariables } from "../../types/graphql_res";
 import Sidebar from "../../components/Common/Sidebar";
 import {
   ArticlesCategorisProps,
@@ -29,13 +29,15 @@ export const getStaticPaths = (async ({
     for (const locale of locales) {
       const variables = { pagination: {}, locale: locale };
       await request(getBackendGraphqlURL(), getCategoriesUUID, variables).then(
-        ({ categories }) => {
-          categories.data.map((category: ArticleEntity) =>
-            paths.push({
-              params: { uuid: category.attributes?.uuid },
-              locale: locale,
-            })
-          );
+        ({ categories }: { categories: CategoryEntityResponseCollection }) => {
+          categories.data.map((category: CategoryEntity) => {
+            if (category.attributes?.uuid) {
+              paths.push({
+                params: { uuid: category.attributes.uuid },
+                locale: locale,
+              })
+            }
+          });
         }
       );
     }
@@ -58,7 +60,7 @@ export const getStaticProps = (async ({ params, locale }: UUIDStaticProps) => {
     getBackendGraphqlURL(),
     getArticlesCategories,
     variables
-  ).then((result) => {
+  ).then((result: GetArticlesCategoriesQuery) => {
     return result;
   });
   if (res != null) {
@@ -84,7 +86,7 @@ const ArticlesPage: NextPage<ArticlesCategorisProps> = ({
   articles,
   categories,
   variables,
-}) => {
+}: { articles: ArticleEntityResponseCollection, categories: CategoryEntityResponseCollection, variables: GetArticlesQueryVariables }) => {
   const { data, error } = useSWR([getArticlesCategories, variables], {
     fallbackData: {
       articles: articles,

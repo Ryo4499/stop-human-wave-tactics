@@ -8,7 +8,7 @@ import { useLocale } from "../../lib/locale";
 const Footer = () => {
   const { locale, locales, t } = useLocale();
   return (
-    <Grid container xs={12} mt={2}>
+    <Grid container xs={12}>
       <AppBar position="static">
         <Toolbar>
           <Grid
@@ -57,7 +57,7 @@ const Footer = () => {
           </Grid>
         </Toolbar>
       </AppBar>
-    </Grid>
+    </Grid >
   );
 };
 export default Footer;

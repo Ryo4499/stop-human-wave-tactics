@@ -42,9 +42,6 @@ services:
         source: ./nginx/modsecurity/
         target: /etc/modsecurity.d/
       - type: bind
-        source: ./nginx/certificates
-        target: /etc/nginx/certificates
-      - type: bind
         source: ./nginx/conf.d/
         target: /etc/nginx/conf.d/
       - type: bind
@@ -164,9 +161,12 @@ services:
     env_file:
       - .env
     volumes:
+      - type: bind
+        source: ./stop-human-wave-tactics-backend
+        target: "/home/${MY_USER}/stop-human-wave-tactics-backend"
       - type: volume
         source: backModules
-        target: "/home/${MY_USER}/stop-human-wave-tactics-backend/node_modules"
+        target: "/node_modules"
       - type: volume
         source: backStaticData
         target: "/home/${MY_USER}/stop-human-wave-tactics-backend/public"
@@ -214,9 +214,12 @@ services:
     working_dir: "/home/${MY_USER}/stop-human-wave-tactics-frontend"
     user: $MY_USER
     volumes:
+      - type: bind
+        source: ./stop-human-wave-tactics-frontend
+        target: "/home/${MY_USER}/stop-human-wave-tactics-frontend"
       - type: volume
         source: frontModules
-        target: "/home/${MY_USER}/stop-human-wave-tactics-frontend/node_modules"
+        target: "/node_modules"
       - type: volume
         source: frontStaticData
         target: "/home/${MY_USER}/stop-human-wave-tactics-frontend/public"
