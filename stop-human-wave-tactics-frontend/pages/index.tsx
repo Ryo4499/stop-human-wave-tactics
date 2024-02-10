@@ -13,6 +13,7 @@ import { ArticlesCategorisProps, IStaticProps } from "../types/general";
 import { getArticlesCategories } from "../graphql/getArticlesCategories";
 import Sidebar from "../components/Common/Sidebar";
 import Meta from "../components/utils/Head";
+import { ArticleEntityResponseCollection, CategoryEntity, CategoryEntityResponseCollection, GetArticlesCategoriesQuery, GetArticlesPagesQueryVariables, GetArticlesQueryVariables } from "../types/graphql_res";
 
 export const getStaticProps = (async ({
   locales,
@@ -29,7 +30,7 @@ export const getStaticProps = (async ({
     getBackendGraphqlURL(),
     getArticlesCategories,
     variables
-  ).then((result) => {
+  ).then((result: GetArticlesCategoriesQuery) => {
     return result;
   });
   if (res != null) {
@@ -55,7 +56,7 @@ const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({
   articles,
   categories,
   variables,
-}) => {
+}: { articles: ArticleEntityResponseCollection, categories: CategoryEntityResponseCollection, variables: GetArticlesQueryVariables }) => {
   const { data, error } = useSWR([getArticlesCategories, variables], {
     fallbackData: {
       articles: articles,
@@ -87,7 +88,7 @@ const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({
           title="Top Page"
           description="This page published latest articles."
           keyword={categories.data
-            .map((value) => value.attributes?.name)
+            .map((value: CategoryEntity) => value.attributes?.name)
             .join(" ")}
         />
         <Grid container xs={12} md={10} sx={{ flexGrow: 1 }}>
