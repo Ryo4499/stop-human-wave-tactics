@@ -1,8 +1,7 @@
 import "../styles/globals.css";
 import type { NextPage } from "next";
 import { SWRConfig } from "swr";
-import { createContext, useMemo, useState, useEffect } from "react";
-import React from "react";
+import React, { createContext, useMemo, useState, useEffect, Suspense } from "react";
 import { AppProps } from "next/app";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider, createTheme } from '@mui/material/styles'
@@ -19,7 +18,9 @@ import { type Container } from "@tsparticles/engine";
 export const ColorModeContext = createContext({ toggleColorMode: () => { } });
 
 const MyApp: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
-  const [mode, setMode] = useState<"light" | "dark">("dark");
+  const [mode, setMode] = useState<"light", "dark">("dark");
+  // first load state
+  const [init, setInit] = useState(false);
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
@@ -42,8 +43,6 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
 
   const fetcher = (query: any, variables: any) =>
     client.request(query, variables);
-  // first load state
-  const [init, setInit] = useState(false);
   // this should be run only once per application lifetime
   useEffect(() => {
     initParticlesEngine(async (engine: any) => {
@@ -63,34 +62,35 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
   }
 
   if (!init) {
-    return <CircularProgress />;
+    return <CircularProgress />
+  } else {
+    return (
+      <ColorModeContext.Provider value={colorMode}>
+        <CssBaseline />
+        <SWRConfig
+          value={{
+            fetcher,
+            suspense: true,
+            errorRetryCount: 3,
+            revalidateIfStale: true,
+            revalidateOnMount: true,
+            shouldRetryOnError: false,
+          }}
+        >
+          <ThemeProvider theme={theme}>
+            <Particles
+              id="tsparticles"
+              particlesLoaded={particlesLoaded}
+              options={mode === "dark" ? mainParticle : subParticle}
+            />
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </ThemeProvider>
+        </SWRConfig>
+      </ColorModeContext.Provider>
+    );
   }
-  return (
-    <ColorModeContext.Provider value={colorMode}>
-      <CssBaseline />
-      <SWRConfig
-        value={{
-          fetcher,
-          suspense: true,
-          errorRetryCount: 3,
-          revalidateIfStale: true,
-          revalidateOnMount: true,
-          shouldRetryOnError: false,
-        }}
-      >
-        <ThemeProvider theme={theme}>
-          <Particles
-            id="tsparticles"
-            particlesLoaded={particlesLoaded}
-            options={mode === "dark" ? mainParticle : subParticle}
-          />
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </ThemeProvider>
-      </SWRConfig>
-    </ColorModeContext.Provider>
-  );
 };
 
 export default MyApp;
