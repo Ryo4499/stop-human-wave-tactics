@@ -146,8 +146,8 @@ services:
         MY_USER: $MY_USER
         MY_GROUP: $MY_GROUP
         MODE: $MODE
-    working_dir: "/home/${MY_USER}/stop-human-wave-tactics-backend"
-    user: $MY_USER
+    working_dir: "${HOME}/stop-human-wave-tactics-backend"
+    user: $MY_USER:$MY_GROUP
     secrets:
       - DB_NAME
       - DB_USER
@@ -162,14 +162,22 @@ services:
       - .env
     volumes:
       - type: bind
+        source: /etc/passwd
+        target: /etc/passwd
+        read_only: true
+      - type: bind
+        source: /etc/group
+        target: /etc/group
+        read_only: true
+      - type: bind
         source: ./stop-human-wave-tactics-backend
-        target: "/home/${MY_USER}/stop-human-wave-tactics-backend"
+        target: "${HOME}/stop-human-wave-tactics-backend"
       - type: volume
         source: backModules
         target: "/node_modules"
       - type: volume
         source: backStaticData
-        target: "/home/${MY_USER}/stop-human-wave-tactics-backend/public"
+        target: "${HOME}/stop-human-wave-tactics-backend/public"
     ports:
       - 127.0.0.1:$BACK_PORT:$BACK_PORT
     entrypoint: sh
@@ -211,9 +219,17 @@ services:
         DOMAIN: $DOMAIN
     env_file:
       - .env
-    working_dir: "/home/${MY_USER}/stop-human-wave-tactics-frontend"
-    user: $MY_USER
+    working_dir: "${HOME}/stop-human-wave-tactics-frontend"
+    user: $MY_USER:$MY_GROUP
     volumes:
+      - type: bind
+        source: /etc/passwd
+        target: /etc/passwd
+        read_only: true
+      - type: bind
+        source: /etc/group
+        target: /etc/group
+        read_only: true
       - type: bind
         source: ./stop-human-wave-tactics-frontend
         target: "/home/${MY_USER}/stop-human-wave-tactics-frontend"
