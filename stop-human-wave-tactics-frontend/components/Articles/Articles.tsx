@@ -60,7 +60,6 @@ export const Articles = ({
 
   if (articles.data != null) {
     const pageCount = articles.meta.pagination.pageCount;
-    console.log(articles.data)
     return (
       <Grid container direction="column" sx={{ flexGrow: 1 }} xs={12}>
         {filter != null ? (

@@ -19,7 +19,8 @@ COPY --chown=$MY_USER:$MY_GROUP ./yarn.lock .
 ENV PATH=/node_modules/.bin:$PATH
 
 RUN if [ "${MODE}" = "PRODUCTION" ]; then \
-  yarn install --production=true --frozen-lockfile --force --modules-folder=/node_modules ; \
-  else \
-  yarn install --production=false --modules-folder=/node_modules ; \
-  fi
+    yarn install --production=true --frozen-lockfile --force --modules-folder=/node_modules ; \
+    else \
+    yarn install --production=false --modules-folder=/node_modules ; \
+    fi
+
