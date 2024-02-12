@@ -9,7 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
             priority: 1,
         },
         {
-            url: 'https://datsujinkai.com/policy',
+            url: 'https://datsujinkai.com/privacy-policy',
             lastModified: new Date(),
             changeFrequency: 'yearly',
             priority: 1,
