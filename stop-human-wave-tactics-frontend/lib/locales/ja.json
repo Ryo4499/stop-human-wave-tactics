@@ -17,19 +17,19 @@
     {
       "title": "医療画像の位置合わせ",
       "description": "VoxelMorphなどのモデルを使用して、異なる視野、時間軸で撮影された同一被写体の2枚の画像に対して重ね合わせを行う研究プロジェクト。",
-      "skill":"OpenCV(Python),Numpy,Pytorch,TensorFlow,Git,ShellScript,Docker,Docker Compose,Ubuntu",
+      "skill": "OpenCV(Python),Numpy,Pytorch,TensorFlow,Git,ShellScript,Docker,Docker Compose,Ubuntu",
       "date": "2023/10/01~2023/12/31"
     },
     {
       "title": "3D骨格モデルを使用したカメラパラメータの推定",
       "description": "OpenPose,VoxelPoseを使用して、推定を行って得られた人間の骨格情報からカメラパラメータの位置を推定する研究プロジェクト。",
-      "skill":"OpenCV(Python),Numpy,Pytorch,Git,ShellScript,Docker,Docker Compose,Ubuntu",
+      "skill": "OpenCV(Python),Numpy,Pytorch,Git,ShellScript,Docker,Docker Compose,Ubuntu",
       "date": "2023/06/01~2023/09/30"
     },
     {
       "title": "汎用言語モデルの性能評価",
       "description": "全結合層の改良、Embedding層の改良、Bertモデルを使用した継続学習の性能評価および向上を目的とした研究プロジェクト。",
-      "skill":"Pytorch,C11,Cython,Csh,ShellScript,Git,Docker,Docker Compose,Ubuntu,CentOS,GCE(GCP)",
+      "skill": "Pytorch,C11,Cython,Csh,ShellScript,Git,Docker,Docker Compose,Ubuntu,CentOS,GCE(GCP)",
       "date": "2022/02/01~2023/04/30"
     },
     {
@@ -41,13 +41,13 @@
     {
       "title": "Windows Security Patchの配布",
       "description": "同一ドメインのPCにWindowsのセキュリティパッチを配布する。",
-      "skill":"PowerShell,WQL,VBA,Windows Server,Active Directory",
+      "skill": "PowerShell,WQL,VBA,Windows Server,Active Directory",
       "date": "2021/12/01~2022/01/31"
     },
     {
       "title": "帯域制御アプリのテスト",
       "description": "ネットワーク帯域制御を行うPythonコードのテストを作成する。",
-      "skill":"Pytest,ShellScript,Git,Docker,Docker Compose,Amazon Linux",
+      "skill": "Pytest,ShellScript,Git,Docker,Docker Compose,Amazon Linux",
       "date": "2021/09/01~2022/11/30"
     },
     {
@@ -64,22 +64,22 @@
     }
   ],
   "portfolios": "ポートフォリオ",
-  "portfolios_text":[
+  "portfolios_text": [
     {
       "title": "脱人海戦術",
       "description": "当サイト。",
       "date": "2023年作",
       "skill": "Nextjs(ISR),Strapi,Docker Compose",
       "url": "https://datsujinkai.com/",
-      "github":""
+      "github": ""
     },
     {
       "title": "DeepLearning Demo",
       "description": "使用経験のあるモデルのデモコード。",
       "date": "2023年作",
-      "skill": "Nextjs(ISR),Strapi,Docker Compose",
+      "skill": "Pytorch",
       "url": "https://drive.google.com/drive/folders/1Sp22-Pl5kqCWPoTZXENB-cpApb0zNfXh?usp=sharing",
-      "github":""
+      "github": ""
     },
     {
       "title": "TechForward",
@@ -87,7 +87,7 @@
       "date": "2021年作",
       "skill": "Nuxtjs(SSR),Flack,Docker Compose",
       "url": "",
-      "github":"https://github.com/x-o-o44dev/TechForward"
+      "github": "https://github.com/Ryo4499/TechForward"
     },
     {
       "title": "BookMemo",
@@ -95,7 +95,7 @@
       "date": "2020年作",
       "skill": "Nextjs(ISR),Strapi,Docker Compose",
       "url": "",
-      "github":"https://github.com/x-o-o44dev/BookMemo"
+      "github": "https://github.com/Ryo4499/BookMemo"
     }
   ],
   "about_instance": "普段はインスタンスを落としていますので、閲覧したい場合はご連絡ください。\n",
@@ -110,5 +110,5 @@
   "google_ad": "広告配信について",
   "google_ad_text": "当サイトでは、第三者配信の広告サービス「Google Adsense グーグルアドセンス」を利用しています。\nこのような広告配信事業者は、ユーザーの興味に応じた商品やサービスの広告を表示するため、当サイトや他サイトへのアクセスに関する情報 『Cookie』(氏名、住所、メール アドレス、電話番号は含まれません) を使用することがあります。\nCookie（クッキー）を無効にする設定およびGoogleアドセンスに関する詳細は「広告 – ポリシーと規約 – Google」をご覧ください。\nまた当サイトは、Amazon.co.jpを宣伝しリンクすることによってサイトが紹介料を獲得できる手段を提供することを目的に設定されたアフィリエイトプログラムである、Amazonアソシエイト・プログラムの参加者です。\n第三者がコンテンツおよび宣伝を提供し、訪問者から直接情報を収集し、訪問者のブラウザにCookie（クッキー）を設定したりこれを認識したりする場合があります。\nこの規約に関しては、下記のURLをクリックしてください。",
   "site_info": "サイト運営者について",
-  "site_text": "運営者: AR44\n連絡先: ar44.blog@gmail.com\n制定日: 2023年05月11日\n最終改定日: 2023年10月29日"
+  "site_text": "運営者: AR44\n連絡先: ar44.blog@gmail.com\n制定日: 2023年05月11日\n最終改定日: 2024年03月19日"
 }

@@ -9,7 +9,7 @@ import { Articles } from "../components/Articles";
 import { getBackendGraphqlURL } from "../lib/graphqlClient";
 import Sidebar from "../components/Common/Sidebar";
 import { ArticlesCategorisProps, IStaticProps } from "../types/general";
-import { NotFound } from "../components/Common/NotFound";
+import { SearchNotFound } from "../components/Common/SearchNotFound";
 import { getArticlesCategories } from "../graphql/getArticlesCategories";
 import { GraphqlError } from "../components/Common/DisplayError";
 import { ArticleEntity } from "../types/graphql_res";
@@ -87,7 +87,7 @@ const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({
   if (data != null) {
     const filterArticles = data.articles.data.filter(
       (article: ArticleEntity) => {
-        return article.attributes?.title.includes(filter);
+        return article.attributes?.title.toLowerCase().includes(filter.toLowerCase());
       }
     );
 
@@ -115,7 +115,7 @@ const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({
         />
         <Grid container xs={10} sx={{ flexGrow: 1 }}>
           {filterArticles.length === 0 ? (
-            <NotFound />
+            <SearchNotFound filter={filter} />
           ) : (
             <Articles
               page={page}
