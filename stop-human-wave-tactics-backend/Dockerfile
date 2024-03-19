@@ -10,7 +10,7 @@ RUN apk update && apk add shadow libressl-dev libffi-dev tzdata && npm install -
 
 USER $MY_USER
 
-WORKDIR "${HOME}/stop-human-wave-tactics-backend"
+WORKDIR "/home/${MY_USER}/stop-human-wave-tactics-backend"
 
 RUN chown $MY_USER:$MY_GROUP -R ./ && mkdir -p ./public/uploads
 
