@@ -56,11 +56,11 @@ const PrivacyPolicyContent: NextPage = () => {
   const site_info = typo(site_text);
 
   const google_ad_url =
-    "https://support.google.com/adspolicy/answer/54818?hl=ja";
+    `https://support.google.com/adspolicy/answer/54818?hl=${locale}`;
   const google_ad_info = typo(t.google_ad_text);
   const google_analysis_info = typo(t.google_analysis_text);
   const google_analysis_url =
-    "https://marketingplatform.google.com/about/analytics/terms/jp/";
+    `https://marketingplatform.google.com/about/analytics/terms/${locale === 'ja' ? 'jp' : 'us'}/`;
 
   const copy_right_info = typo(t.copy_right_text);
   const link_free_info = typo(t.link_free_text);

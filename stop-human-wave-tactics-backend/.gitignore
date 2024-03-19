@@ -109,3 +109,4 @@ build/
 dist/
 .strapi-updater.json
 dist
+.strapi/
