@@ -1,6 +1,5 @@
 "use client";
 import path from "path";
-import { getProxyURL } from "./graphqlClient";
 
 export const imageLoader = ({
   src,
@@ -11,6 +10,6 @@ export const imageLoader = ({
   width: number;
   quality: number;
 }): string => {
-  const url = path.join(getProxyURL(), src);
+  const url = path.join("", src);
   return url;
 };
