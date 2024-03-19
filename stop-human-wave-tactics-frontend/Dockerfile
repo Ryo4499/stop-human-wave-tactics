@@ -8,7 +8,7 @@ RUN apk update && apk add shadow libressl-dev libffi-dev tzdata wget curl && npm
 
 USER $MY_USER
 
-WORKDIR "${HOME}/stop-human-wave-tactics-frontend"
+WORKDIR "/home/${MY_USER}/stop-human-wave-tactics-frontend"
 
 RUN chown $MY_USER:$MY_GROUP ./ 
 
