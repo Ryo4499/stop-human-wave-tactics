@@ -13,7 +13,6 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import Stack from "@mui/material/Stack";
-import Image from 'next/image'
 import { useLocale } from "../../lib/locale";
 import { Categories } from "../Category";
 import { useRouter } from "next/router";
@@ -73,7 +72,11 @@ const Sidebar = ({ categories }: CategoriesProps) => {
           />
         </Grid>
         <Grid container justifyContent="center" py={2} xs={12}>
-          <Image src="/static/images/ar44.jpg" alt="Avatar" width={100} height={100} style={{ borderRadius: "100%", width: "8rem", height: "8rem" }} />
+          <Avatar
+            sx={{ width: "8rem", height: "8rem" }}
+            alt="Avater"
+            src="/static/images/ar44.jpg"
+          />
         </Grid>
         <Grid
           container
