@@ -83,20 +83,20 @@ const AchievementContent = () => {
           <ListItem sx={{ pl: 4 }}>
             <Typography variant="subtitle2" color="text.secondary">
               URL:{" "}
+              <Link href={value.url} color="text.link">
+                {value.url}
+              </Link>
             </Typography>
-            <Link href={value.url} color="text.link">
-              {value.url}
-            </Link>
           </ListItem>
         )}
         {value.github != "" && (
           <ListItem sx={{ pl: 4 }}>
             <Typography variant="subtitle2" color="text.secondary">
               GitHub:{" "}
+              <Link href={value.github} color="text.link">
+                {value.github}
+              </Link>
             </Typography>
-            <Link href={value.github} color="text.link">
-              {value.github}
-            </Link>
           </ListItem>
         )}
       </List>
