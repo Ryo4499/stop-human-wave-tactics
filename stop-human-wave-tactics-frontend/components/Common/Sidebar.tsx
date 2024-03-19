@@ -73,7 +73,7 @@ const Sidebar = ({ categories }: CategoriesProps) => {
           />
         </Grid>
         <Grid container justifyContent="center" py={2} xs={12}>
-          <Image src="/static/images/ar44.jpg" alt="Avatar" width={100} height={100} style={{ borderRadius: "100%", width: "8rem", height: "8rem" }} />
+          <Avatar src="/static/images/ar44.jpg" alt="Avatar" />
         </Grid>
         <Grid
           container
