@@ -8,7 +8,7 @@ module.exports = {
   },
   images: {
     domains: ["localhost", "back", process.env.DOMAIN],
-    path: "images",
+    path: "/images",
   },
   i18n: {
     locales: ["en", "ja"],

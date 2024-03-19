@@ -143,6 +143,8 @@ services:
       context: ./stop-human-wave-tactics-backend
       dockerfile: Dockerfile
       args:
+        UID: $UID
+        GID: $GID
         MY_USER: $MY_USER
         MY_GROUP: $MY_GROUP
         MODE: $MODE
@@ -162,22 +164,14 @@ services:
       - .env
     volumes:
       - type: bind
-        source: /etc/passwd
-        target: /etc/passwd
-        read_only: true
-      - type: bind
-        source: /etc/group
-        target: /etc/group
-        read_only: true
-      - type: bind
         source: ./stop-human-wave-tactics-backend
         target: "/home/${MY_USER}/stop-human-wave-tactics-backend"
       - type: volume
         source: backModules
         target: "/node_modules"
-      - type: volume
-        source: backStaticData
-        target: "/home/${MY_USER}/stop-human-wave-tactics-backend/public"
+      #- type: volume
+      #  source: backStaticData
+      #  target: "/home/${MY_USER}/stop-human-wave-tactics-backend/public"
     ports:
       - 127.0.0.1:$BACK_PORT:$BACK_PORT
     entrypoint: sh
@@ -213,6 +207,8 @@ services:
       network: host
       dockerfile: Dockerfile
       args:
+        UID: $UID
+        GID: $GID
         MY_USER: $MY_USER
         MY_GROUP: $MY_GROUP
         MODE: $MODE
@@ -223,22 +219,14 @@ services:
     user: $MY_USER:$MY_GROUP
     volumes:
       - type: bind
-        source: /etc/passwd
-        target: /etc/passwd
-        read_only: true
-      - type: bind
-        source: /etc/group
-        target: /etc/group
-        read_only: true
-      - type: bind
         source: ./stop-human-wave-tactics-frontend
         target: "/home/${MY_USER}/stop-human-wave-tactics-frontend"
       - type: volume
         source: frontModules
         target: "/node_modules"
-      - type: volume
-        source: frontStaticData
-        target: "/home/${MY_USER}/stop-human-wave-tactics-frontend/public"
+      #- type: volume
+      #  source: frontStaticData
+      #  target: "/home/${MY_USER}/stop-human-wave-tactics-frontend/public"
     tty: true
     entrypoint: sh
     command:

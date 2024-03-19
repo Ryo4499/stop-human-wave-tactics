@@ -1,5 +1,7 @@
 FROM node:18-alpine
 
+ARG UID
+ARG GID
 ARG MY_USER
 ARG MY_GROUP
 ARG MODE
@@ -10,11 +12,12 @@ USER $MY_USER
 
 WORKDIR "/home/${MY_USER}/stop-human-wave-tactics-frontend"
 
-RUN chown $MY_USER:$MY_GROUP ./ 
+RUN chown $UID:$GID -R ./ 
 
 #COPY --chown=$MY_USER:$MY_GROUP . .
-COPY --chown=$MY_USER:$MY_GROUP ./package.json .
-COPY --chown=$MY_USER:$MY_GROUP ./yarn.lock .
+COPY --chown=$UID:$GID ./package.json .
+COPY --chown=$UID:$GID ./yarn.lock .
+COPY --chown=$UID:$GID ./public/ ./
 
 ENV PATH=/node_modules/.bin:$PATH
 
