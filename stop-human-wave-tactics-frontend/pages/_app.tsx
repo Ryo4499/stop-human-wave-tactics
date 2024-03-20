@@ -1,7 +1,7 @@
 import "../styles/globals.css";
 import type { NextPage } from "next";
 import { SWRConfig } from "swr";
-import React, { createContext, useMemo, useState, useEffect, Suspense } from "react";
+import React, { createContext, useMemo, useState, useEffect } from "react";
 import { AppProps } from "next/app";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider, createTheme } from '@mui/material/styles'
@@ -9,22 +9,24 @@ import { darkPalette, lightPalette } from "../lib/theme";
 import CircularProgress from '@mui/material/CircularProgress';
 import mainParticle from "../styles/presets/basic.json";
 import subParticle from "../styles/presets/collisions.json";
-import { client } from "../lib/graphqlClient";
+import { client, getMode } from "../lib/graphqlClient";
 import Layout from "../components/Layouts/Layout";
 import { loadSlim } from "@tsparticles/slim";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { type Container } from "@tsparticles/engine";
+import { GoogleTagManager } from "@next/third-parties/google";
+import { getGtag } from "../lib/google";
 
 export const ColorModeContext = createContext({ toggleColorMode: () => { } });
 
 const MyApp: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
-  const [mode, setMode] = useState<"light", "dark">("dark");
+  const [mode, setMode] = useState<string>("dark");
   // first load state
   const [init, setInit] = useState(false);
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
-        setMode((prevMode: string) => (prevMode === "light" ? "dark" : "light"));
+        setMode((prevMode: string): string => (prevMode === "light" ? "dark" : "light"));
       },
     }),
     []
@@ -86,6 +88,9 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
             <Layout>
               <Component {...pageProps} />
             </Layout>
+            {
+              getMode() === "PRODUCTION" && <GoogleTagManager gtmId={`${getGtag()}`} />
+            }
           </ThemeProvider>
         </SWRConfig>
       </ColorModeContext.Provider>
