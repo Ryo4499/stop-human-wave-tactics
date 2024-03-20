@@ -24,7 +24,8 @@ export const getStaticProps = (async ({
     getBackendGraphqlURL(),
     getCategories,
     variables
-  ).then(({ categories }: { categories: CategoryEntityResponseCollection }) => {
+  ).then((response) => {
+    const categories = response as CategoryEntityResponseCollection;
     return {
       props: {
         categories: categories,
@@ -42,7 +43,7 @@ export const getStaticProps = (async ({
       revalidate: 3600,
     };
   }
-}) satisfies GetStaticProps;
+})
 
 const PrivacyPolicyContent: NextPage = () => {
   const { locale, locales, t } = useLocale();

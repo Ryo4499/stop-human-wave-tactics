@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { getBackendGraphqlURL } from "../lib/graphqlClient";
 import { getCategories } from "../graphql/getCategories";
-import { CategoryEntityResponseCollection } from "../types/graphql_res";
+import { CategoryEntity, CategoryEntityResponseCollection } from "../types/graphql_res";
 import { GraphqlError } from "../components/Common/DisplayError";
 import { CategoriesResponseProps, IStaticProps } from "../types/general";
 import { useLocale } from "../lib/locale";
@@ -24,7 +24,7 @@ export const getStaticProps = (async ({
   defaultLocale,
 }: IStaticProps) => {
   const variables = { filters: {}, pagination: {}, locale: locale };
-  const result = await request(
+  const result = await request<{ categories: CategoryEntityResponseCollection }>(
     getBackendGraphqlURL(),
     getCategories,
     variables
@@ -46,19 +46,10 @@ export const getStaticProps = (async ({
       revalidate: 3600,
     };
   }
-}) satisfies GetStaticProps;
+});
 
 const AchievementContent = () => {
   const { locale, locales, t } = useLocale();
-  const serviceName = (name: String, variant: String = "h6") => (
-    <Grid>
-      <Typography color="text.primary" variant={variant}>
-        {name}
-      </Typography>
-    </Grid>
-  );
-  const achievement = serviceName(t.achievement, "h4");
-  const portfolios = serviceName(t.portfolios, "h4");
   const about_portfolios = t.portfolios_text.map((value, index, array) => (
     <Grid key={index}>
       <List>
@@ -147,9 +138,21 @@ const AchievementContent = () => {
         flexGrow: 1,
       }}
     >
-      <Grid spacing={2}>{achievement}</Grid>
+      <Grid spacing={2}>
+        <Grid>
+          <Typography color="text.primary" variant="h4">
+            {t.achievement}
+          </Typography>
+        </Grid>
+      </Grid>
       <Grid spacing={2}>{about_achivement}</Grid>
-      <Grid spacing={2}>{portfolios}</Grid>
+      <Grid spacing={2}>
+        <Grid>
+          <Typography color="text.primary" variant="h4">
+            {t.portfolios}
+          </Typography>
+        </Grid>
+      </Grid>
       <Grid spacing={2}>{about_portfolios}</Grid>
     </Grid>
   );
@@ -183,11 +186,11 @@ const Achievement: NextPage<CategoriesResponseProps> = ({
           title="Portfolios Page"
           description="This page introduce my portfolios."
           keyword={categories.data
-            .map(
-              (value: { attributes: { name: String } }) =>
-                value.attributes?.name
-            )
-            .join(" ")}
+          .map(
+            (value: CategoryEntity) =>
+            value.attributes?.name as string
+          )
+          .join(" ")}
         />
         <Grid container direction="row" sx={{ flexGrow: 1 }}>
           <Grid container xs={12} md={10} sx={{ flexGrow: 1 }}>

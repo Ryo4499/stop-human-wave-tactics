@@ -1,4 +1,4 @@
-import { React } from "react"
+import type { KeyboardEvent } from "react"
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
@@ -22,10 +22,10 @@ const Sidebar = ({ categories }: CategoriesProps) => {
   const router = useRouter();
   const { locale, locales, t } = useLocale();
 
-  const submitHandle = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const submitHandle = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      router.push({ pathname: "/search", query: { title: e.target.value } });
+      router.push({ pathname: "/search", query: { title: e.currentTarget.value } });
     }
   };
 
@@ -53,10 +53,8 @@ const Sidebar = ({ categories }: CategoriesProps) => {
           xs={12}
         >
           <SearchIcon
-            mx={1}
-            mt={1}
             fontSize="medium"
-            sx={{ color: "text.primary" }}
+            sx={{ color: "text.primary", mx: 1, mt: 1 }}
           />
           <TextField
             sx={{
@@ -136,39 +134,50 @@ const Sidebar = ({ categories }: CategoriesProps) => {
                 <ListItem sx={{ pl: 4 }} disablePadding>
                   <Stack direction="row" spacing={0.8}>
                     {githubUrl && (
-                      <Link href={githubUrl} sx={{ px: 2 }}>
-                        <GitHubIcon
-                          sx={{ fontSize: "1.4rem", color: "text.secondary" }}
-                        />
-                      </Link>
+                      <Grid px={2}>
+                        <Link href={githubUrl} >
+                          <GitHubIcon
+                            sx={{ fontSize: "1.4rem", color: "text.secondary" }}
+                          />
+                        </Link>
+                      </Grid>
                     )}
                     {linkedinUrl && (
-                      <Link href={linkedinUrl} sx={{ mx: 2 }}>
-                        <LinkedInIcon
-                          sx={{ fontSize: "1.4rem", color: "text.secondary" }}
-                        />
-                      </Link>
+                      <Grid mx={2}>
+                        <Link href={linkedinUrl} >
+                          <LinkedInIcon
+                            sx={{ fontSize: "1.4rem", color: "text.secondary" }}
+                          />
+                        </Link>
+                      </Grid>
                     )}
                     {twitterUrl && (
-                      <Link href={twitterUrl} sx={{ mx: 2 }}>
-                        <TwitterIcon
-                          sx={{ fontSize: "1.4rem", color: "text.secondary" }}
-                        />
-                      </Link>
+                      <Grid mx={2}>
+                        <Link href={twitterUrl}>
+                          <TwitterIcon
+                            sx={{ fontSize: "1.4rem", color: "text.secondary" }}
+                          />
+                        </Link>
+                      </Grid>
                     )}
                     {facebookUrl && (
-                      <Link href={facebookUrl} sx={{ mx: 2 }}>
-                        <FacebookIcon
-                          sx={{ fontSize: "1.4rem", color: "text.secondary" }}
-                        />
-                      </Link>
+                      <Grid mx={2}>
+
+                        <Link href={facebookUrl} >
+                          <FacebookIcon
+                            sx={{ fontSize: "1.4rem", color: "text.secondary" }}
+                          />
+                        </Link>
+                      </Grid>
                     )}
                     {instagramUrl && (
-                      <Link href={instagramUrl} sx={{ mx: 2 }}>
-                        <InstagramIcon
-                          sx={{ fontSize: "1.4rem", color: "text.secondary" }}
-                        />
-                      </Link>
+                      <Grid mx={2}>
+                        <Link href={instagramUrl} >
+                          <InstagramIcon
+                            sx={{ fontSize: "1.4rem", color: "text.secondary" }}
+                          />
+                        </Link>
+                      </Grid>
                     )}
                   </Stack>
                 </ListItem>

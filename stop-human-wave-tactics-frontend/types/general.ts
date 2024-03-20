@@ -1,8 +1,7 @@
-import { Categories } from "./../components/Category/Categories";
-import { Articles } from "./../components/Articles/Articles";
 import {
   ArticleEntityResponseCollection,
   CategoryEntityResponseCollection,
+  GetArticlesQueryVariables,
 } from "./graphql_res";
 
 export interface CategoriesProps {
@@ -22,7 +21,7 @@ export interface ArticlesResponseProps {
 export interface ArticlesCategorisProps {
   articles: ArticleEntityResponseCollection;
   categories: CategoryEntityResponseCollection;
-  variables: object;
+  variables: GetArticlesQueryVariables;
 }
 
 export interface UUIDParams {

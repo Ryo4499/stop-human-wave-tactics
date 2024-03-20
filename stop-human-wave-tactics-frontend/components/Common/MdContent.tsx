@@ -18,8 +18,8 @@ import rehypeSlug from "rehype-slug";
 import rehypeParse from "rehype-parse";
 import rehypeStringify from "rehype-stringify";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
-import { attacher as remarkCodeExtra } from "remark-code-extra";
-import { attacher as remarkCodeFrontmatter } from "remark-code-frontmatter";
+import * as remarkCodeExtra from "remark-code-extra";
+import * as  remarkCodeFrontmatter from "remark-code-frontmatter";
 import type { Options as RehypeReactOptions } from "rehype-react";
 import rehypeReact from "rehype-react";
 import { unified } from "unified";
@@ -59,18 +59,14 @@ const preprocessor = (content: string) => unified()
     .use(remarkPlantuml)
     .use(remarkCodeTitle)
     .use(remarkRehype)
-    .use(rehypeHighlight, {
-        ignoreMissing: true,
-    })
-    .use(rehypeExternalLinks, {
-        rel: ["nofollow"],
-    })
+    .use(rehypeHighlight)
+    .use(rehypeExternalLinks, { rel: ["nofollow"] })
     .use(rehypeFmt)
     .use(rehypeKatex)
     .use(rehypeSlug)
     .use(rehypeToc)
     .use(rehypeAutolinkHeadings, {
-        behavior: "warp"
+        behavior: 'wrap',
     })
     .use(rehypeStringify)
     .processSync(content).toString()
@@ -88,7 +84,7 @@ const processor = (content: string): React.ReactElement<unknown, string | React.
         },
         passNode: true
     } as RehypeReactOptions)
-    .processSync(content).toString()
+    .processSync(content).result
 
 const MdContent = ({ content }: { content: string }) => {
     const sanitizeSchema = {
@@ -112,7 +108,7 @@ const MdContent = ({ content }: { content: string }) => {
                 ],
             ],
             code: [
-                ...(defaultSchema.attributes.code || []),
+                ...(defaultSchema.attributes?.code || []),
                 [
                     "className",
                     "hljs",

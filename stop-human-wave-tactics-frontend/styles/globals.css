@@ -54,6 +54,5 @@ code .hljs {
 .nextimage {
   object-fit: cover;
   position: relative !important;
-  max-width: 45vw;
   max-height: 25vh;
 }

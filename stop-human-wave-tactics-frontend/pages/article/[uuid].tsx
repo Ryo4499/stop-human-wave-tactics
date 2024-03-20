@@ -1,6 +1,5 @@
 import Grid from "@mui/material/Unstable_Grid2";
 import { NextPage } from "next";
-import { GetStaticProps, GetStaticPaths } from "next";
 import { request } from "graphql-request";
 import useSWR from "swr";
 import { ArticleDetails } from "../../components/Article";
@@ -27,24 +26,27 @@ export const getStaticPaths = (async ({
   if (locales != null) {
     for (const locale of locales) {
       const variables = { pagination: {}, locale: locale };
-      await request(getBackendGraphqlURL(), getArticlesUUID, variables).then(
-        ({ articles }: { articles: ArticleEntityResponseCollection }) => {
-          articles.data.map((article: ArticleEntity) => {
-            if (article.attributes?.uuid) {
-              paths.push({
-                params: { uuid: article.attributes.uuid },
-                locale: locale,
-              });
-            }
-          });
-        }
+      await request(getBackendGraphqlURL(), getArticlesUUID, variables).then((response) => {
+        const { articles } = response as { articles: ArticleEntityResponseCollection };
+        articles.data.map((article: ArticleEntity) => {
+          if (article.attributes?.uuid) {
+            paths.push({
+              params: { uuid: article.attributes.uuid },
+              locale: locale,
+            });
+          }
+        });
+      }
       );
     }
   }
   return { paths: paths, fallback: "blocking" };
-}) satisfies GetStaticPaths;
+})
 
 export const getStaticProps = (async ({ params, locale }: UUIDStaticProps) => {
+  const isGetArticlesCategoriesQuery = (object: any): object is GetArticlesCategoriesQuery => {
+    return 'articles' in object && 'categories' in object;
+  }
   // get all articles and categories
   const variables = {
     filters: { uuid: { eq: params.uuid } },
@@ -52,14 +54,14 @@ export const getStaticProps = (async ({ params, locale }: UUIDStaticProps) => {
     sort: ["updatedAt:Desc", "publishedAt:Desc"],
     locale: locale,
   };
-  const res = await request(
+  const res: GetArticlesCategoriesQuery | unknown = await request(
     getBackendGraphqlURL(),
     getArticlesCategories,
     variables
-  ).then((result: GetArticlesCategoriesQuery) => {
+  ).then((result) => {
     return result;
   });
-  if (res != null) {
+  if (res != null && isGetArticlesCategoriesQuery(res)) {
     const result = {
       props: {
         articles: res.articles,
@@ -76,7 +78,7 @@ export const getStaticProps = (async ({ params, locale }: UUIDStaticProps) => {
       revalidate: 3600,
     };
   }
-}) satisfies GetStaticProps;
+})
 
 const ArticlePage: NextPage<ArticlesCategorisProps> = ({
   articles,
