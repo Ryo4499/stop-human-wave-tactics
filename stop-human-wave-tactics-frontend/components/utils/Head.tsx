@@ -1,5 +1,8 @@
 import React from "react";
 import Head from "next/head";
+import { GoogleAnalytics } from "@next/third-parties/google";
+import { getDomain, getMode } from "../../lib/graphqlClient";
+import { getGtag } from "../../lib/google";
 
 interface Props {
   title: string;
@@ -14,7 +17,7 @@ const Meta = ({ title, description, keyword }: Props): React.ReactNode => {
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:type" content="blog" />
-      <meta property="og:url" content={`https://${process.env.DOMAIN}`} />
+      <meta property="og:url" content={`https://${getDomain()}`} />
       <meta property="og:site_name" content={title} />
       <meta name="keywords" content={keyword} />
       <meta name="twitter:card" content="summary" />
@@ -25,6 +28,9 @@ const Meta = ({ title, description, keyword }: Props): React.ReactNode => {
       <meta http-equiv="Cache-Control" content="public, max-age=0" />
       <meta name="msapplication-config" content="/browserconfig.xml" />
       <link rel="shortcut icon" href="/static/images/favicon.ico" />
+      {
+        getMode() === "PRODUCTION" && <GoogleAnalytics gaId={`${getGtag()}`} />
+      }
     </Head>
   );
 };
