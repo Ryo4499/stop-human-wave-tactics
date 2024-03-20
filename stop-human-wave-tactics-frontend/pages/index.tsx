@@ -20,6 +20,7 @@ export const getStaticProps = (async ({
   locale,
   defaultLocale,
 }: IStaticProps) => {
+  const isArticlesCategoriesQuery = (object: any): object is GetArticlesCategoriesQuery => { return 'articles' in object && 'categories' in object }
   const variables = {
     filters: {},
     pagination: { page: 1, pageSize: getPageSize() },
@@ -30,10 +31,10 @@ export const getStaticProps = (async ({
     getBackendGraphqlURL(),
     getArticlesCategories,
     variables
-  ).then((result: GetArticlesCategoriesQuery) => {
+  ).then((result) => {
     return result;
   });
-  if (res != null) {
+  if (res != null && isArticlesCategoriesQuery(res)) {
     const result = {
       props: {
         articles: res.articles,
@@ -50,7 +51,7 @@ export const getStaticProps = (async ({
       revalidate: 3600,
     };
   }
-}) satisfies GetStaticProps;
+})
 
 const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({
   articles,

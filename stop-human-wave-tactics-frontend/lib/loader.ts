@@ -1,15 +1,12 @@
 "use client";
 import path from "path";
+import type { ImageLoaderProps } from 'next/image';
 
 export const imageLoader = ({
   src,
   width,
   quality,
-}: {
-  src: string;
-  width: number;
-  quality: number;
-}): string => {
+}: ImageLoaderProps): string => {
   const url = path.join("", src);
   return url;
 };
