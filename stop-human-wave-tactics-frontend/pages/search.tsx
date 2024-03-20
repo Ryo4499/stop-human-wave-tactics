@@ -1,5 +1,4 @@
 import Grid from "@mui/material/Unstable_Grid2";
-import { GetStaticProps } from "next";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -12,7 +11,7 @@ import { ArticlesCategorisProps, IStaticProps } from "../types/general";
 import { SearchNotFound } from "../components/Common/SearchNotFound";
 import { getArticlesCategories } from "../graphql/getArticlesCategories";
 import { GraphqlError } from "../components/Common/DisplayError";
-import { ArticleEntity } from "../types/graphql_res";
+import { ArticleEntity, GetArticlesCategoriesQuery } from "../types/graphql_res";
 import Meta from "../components/utils/Head";
 
 export const getStaticProps = (async ({
@@ -20,6 +19,9 @@ export const getStaticProps = (async ({
   locale,
   defaultLocale,
 }: IStaticProps) => {
+  const isArticlesCategoriesQuery = (object: any): object is GetArticlesCategoriesQuery => {
+    return "articles" in object && "categories" in object;
+  };
   const variables = {
     pagination: {},
     sort: ["updatedAt:Desc", "publishedAt:Desc"],
@@ -32,7 +34,7 @@ export const getStaticProps = (async ({
   ).then((result) => {
     return result;
   });
-  if (res != null) {
+  if (res != null && isArticlesCategoriesQuery(res)) {
     const result = {
       props: {
         articles: res.articles,
@@ -49,7 +51,7 @@ export const getStaticProps = (async ({
       revalidate: 3600,
     };
   }
-}) satisfies GetStaticProps;
+})
 
 const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({
   articles,

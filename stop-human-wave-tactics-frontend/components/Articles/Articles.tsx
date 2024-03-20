@@ -98,7 +98,7 @@ export const Articles = ({
                       }}
                     >
                       <Stack sx={{ flexGrow: 1 }}>
-                        <CardContent sx={{ flexGrow: 1, maxHeight: "60vh", maxWidth: "60vw" }}>
+                        <CardContent sx={{ flexGrow: 1, maxHeight: "60vh" }}>
                           {article.attributes.thumbnail?.data?.attributes
                             ?.url != null &&
                             article.attributes.thumbnail?.data?.attributes
@@ -106,18 +106,17 @@ export const Articles = ({
                             <Link href={`/article/${article.attributes.uuid}`}>
                               <Grid
                                 container
-                                justifyContent="center"
                                 mb={4}
-                                sx={{ position: "relative" }}
                               >
                                 <Image
                                   loader={imageLoader}
                                   src={
-                                    article.attributes.thumbnail.data.attributes
-                                      .url
+                                    //article.attributes.thumbnail.data.attributes.url
+                                    "https://assets.st-note.com/production/uploads/images/24127642/rectangle_large_type_2_802007386bb75d9db15a6dd2880e2584.jpg?fit=bounds&quality=85&width=1280"
                                   }
                                   className="nextimage"
                                   fill
+                                  sizes="(max-width: 200vh) 200vh, (max-width: 200vw) 200vw, 200vw"
                                   alt={
                                     article.attributes.thumbnail.data.attributes
                                       .alternativeText

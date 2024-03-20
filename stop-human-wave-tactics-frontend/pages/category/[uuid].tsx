@@ -1,6 +1,5 @@
 import Grid from "@mui/material/Unstable_Grid2";
 import { NextPage } from "next";
-import { GetStaticProps, GetStaticPaths } from "next";
 import { useRouter } from "next/router";
 import { request } from "graphql-request";
 import { useState } from "react";
@@ -29,7 +28,8 @@ export const getStaticPaths = (async ({
     for (const locale of locales) {
       const variables = { pagination: {}, locale: locale };
       await request(getBackendGraphqlURL(), getCategoriesUUID, variables).then(
-        ({ categories }: { categories: CategoryEntityResponseCollection }) => {
+        (response) => {
+          const { categories } = response as { categories: CategoryEntityResponseCollection };
           categories.data.map((category: CategoryEntity) => {
             if (category.attributes?.uuid) {
               paths.push({
@@ -43,9 +43,10 @@ export const getStaticPaths = (async ({
     }
   }
   return { paths: paths, fallback: "blocking" };
-}) satisfies GetStaticPaths;
+})
 
 export const getStaticProps = (async ({ params, locale }: UUIDStaticProps) => {
+  const isGetCategoriesQuery = (object: any): object is GetArticlesCategoriesQuery => { return 'categories' in object }
   const variables = {
     filters: {
       category: {
@@ -60,10 +61,10 @@ export const getStaticProps = (async ({ params, locale }: UUIDStaticProps) => {
     getBackendGraphqlURL(),
     getArticlesCategories,
     variables
-  ).then((result: GetArticlesCategoriesQuery) => {
+  ).then((result) => {
     return result;
   });
-  if (res != null) {
+  if (res != null && isGetCategoriesQuery(res)) {
     const result = {
       props: {
         articles: res.articles,
@@ -80,7 +81,7 @@ export const getStaticProps = (async ({ params, locale }: UUIDStaticProps) => {
       revalidate: 3600,
     };
   }
-}) satisfies GetStaticProps;
+})
 
 const ArticlesPage: NextPage<ArticlesCategorisProps> = ({
   articles,
