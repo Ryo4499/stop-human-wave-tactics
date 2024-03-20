@@ -1,11 +1,8 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
-  output: "build",
+  distDir: "build",
   reactStrictMode: true,
   crossOrigin: "anonymous",
-  typescript: {
-    ignoreBuildErrors: true,
-  },
   images: {
     domains: ["localhost", "back", process.env.DOMAIN],
     path: "/images",

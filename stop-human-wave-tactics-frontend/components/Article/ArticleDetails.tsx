@@ -15,9 +15,9 @@ export const ArticleDetails = ({ articles }: { articles: ArticleEntityResponseCo
   if (articles?.data[0]?.attributes != null) {
     const article = articles.data[0]?.attributes;
     return (
-      <Grid direction="column" my={2} xs={12} sx={{ flexGrow: 1, }}>
-        <Grid direction="column" mx={5} sx={{ backgroundColor: "background.content" }} justifyContent="space-between">
-          <Grid direction="column" mx={5}>
+      <Grid direction="column" justifyContent={"center"} my={2} xs={12} sx={{ flexGrow: 1 }}>
+        <Grid direction="column" xs={12} sx={{ height: "100vh" }} justifyContent="space-between">
+          <Grid direction="column" mx={5} px={5} sx={{ height: "100vh", backgroundColor: "background.content" }}>
             <Grid>
               <Typography variant="h2" color={"text.primary"}>
                 {article.title}
@@ -61,7 +61,7 @@ export const ArticleDetails = ({ articles }: { articles: ArticleEntityResponseCo
               <MdContent content={article.content}></MdContent>
             </Grid>
             <Grid my={2}>
-              <DefaultAdsense style={{ display: "block", testAlign: "center" }} key="in-aricle" format="fluid" slot="7513378149" fullWidth={false} />
+              <DefaultAdsense style={{ display: "block", textAlign: "center" }} key="in-aricle" format="fluid" slot="7513378149" fullWidth={false} />
             </Grid>
           </Grid>
         </Grid>

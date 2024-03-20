@@ -33,7 +33,8 @@ export const getStaticPaths = (async ({
         locale: locale,
       };
       await request(getBackendGraphqlURL(), getArticlesPages, variables).then(
-        ({ articles }: { articles: ArticleEntityResponseCollection }) => {
+        (response) => {
+          const { articles } = response as { articles: ArticleEntityResponseCollection };
           const pageCount = articles?.meta.pagination.pageCount;
           if (pageCount != null) {
             const pages = Array.from({ length: pageCount }, (v, k) => k + 1);
@@ -47,9 +48,10 @@ export const getStaticPaths = (async ({
     }
   }
   return { paths: paths, fallback: "blocking" };
-}) satisfies GetStaticPaths;
+})
 
 export const getStaticProps = (async ({ params, locale }: PagesStaticProps) => {
+  const isGetArticlesQuery = (object: any): object is GetArticlesCategoriesQuery => { return 'articles' in object }
   const variables = {
     pagination: { page: parseInt(params.page, 10), pageSize: getPageSize() },
     sort: ["updatedAt:Desc", "publishedAt:Desc"],
@@ -59,10 +61,10 @@ export const getStaticProps = (async ({ params, locale }: PagesStaticProps) => {
     getBackendGraphqlURL(),
     getArticlesCategories,
     variables
-  ).then((result: GetArticlesCategoriesQuery) => {
+  ).then((result) => {
     return result;
   });
-  if (res != null) {
+  if (res != null && isGetArticlesQuery(res)) {
     const result = {
       props: {
         articles: res.articles,
@@ -79,7 +81,7 @@ export const getStaticProps = (async ({ params, locale }: PagesStaticProps) => {
       revalidate: 3600,
     };
   }
-}) satisfies GetStaticProps;
+})
 
 const ArticlesPage: NextPage<ArticlesCategorisProps> = ({
   articles,
