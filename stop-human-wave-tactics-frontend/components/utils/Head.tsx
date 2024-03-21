@@ -25,7 +25,7 @@ const Meta = ({ title, description, keyword }: Props): React.ReactNode => {
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta http-equiv="Expires" content={`${new Date().toString()}`} />
-      <meta http-equiv="Cache-Control" content="public, max-age=0" />
+      <meta http-equiv="Cache-Control" content="no-store max-age=0" />
       <meta name="msapplication-config" content="/browserconfig.xml" />
       <link rel="shortcut icon" href="/static/images/favicon.ico" />
       {

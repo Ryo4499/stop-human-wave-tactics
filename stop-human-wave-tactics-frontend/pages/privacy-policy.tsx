@@ -2,30 +2,26 @@ import Link from "next/link";
 import Grid from "@mui/material/Unstable_Grid2";
 import Typography from "@mui/material/Typography";
 import { request } from "graphql-request";
-import { GetStaticProps } from "next";
 import useSWR from "swr";
 import { useLocale } from "../lib/locale";
 import type { NextPage } from "next";
 import Sidebar from "../components/Common/Sidebar";
 import { getCategories } from "../graphql/getCategories";
 import { getBackendGraphqlURL } from "../lib/graphqlClient";
-import { CategoryEntityResponseCollection } from "../types/graphql_res";
+import { CategoryEntityResponseCollection, GetCategoriesQuery } from "../types/graphql_res";
 import { GraphqlError } from "../components/Common/DisplayError";
-import { CategoriesResponseProps, IStaticProps } from "../types/general";
+import { CategoriesResponseProps } from "../types/general";
 import Meta from "../components/utils/Head";
 
 export const getStaticProps = (async ({
-  locales,
   locale,
-  defaultLocale,
-}: IStaticProps) => {
-  const variables = { pagination: {}, locale: locale };
-  const result = await request(
+}) => {
+  const variables = { filters: {}, pagination: {}, locale: locale };
+  const result = await request<{ categories: CategoryEntityResponseCollection }>(
     getBackendGraphqlURL(),
     getCategories,
     variables
-  ).then((response) => {
-    const categories = response as CategoryEntityResponseCollection;
+  ).then(({ categories }: { categories: CategoryEntityResponseCollection }) => {
     return {
       props: {
         categories: categories,
@@ -45,16 +41,16 @@ export const getStaticProps = (async ({
   }
 })
 
+
 const PrivacyPolicyContent: NextPage = () => {
   const { locale, locales, t } = useLocale();
-  const site_text = t.site_text;
-  const typo = (text: String) =>
+  const typo = (text: string) =>
     text.split("\n").map((line, key) => (
       <Typography key={key} variant="body1" color="text.secondary">
         {line}
       </Typography>
     ));
-  const site_info = typo(site_text);
+  const site_info = typo(t.site_text);
 
   const google_ad_url =
     `https://support.google.com/adspolicy/answer/54818?hl=${locale}`;
@@ -142,7 +138,7 @@ const PrivacyPolicy: NextPage<CategoriesResponseProps> = ({
         <Meta
           title="Privacy Policy Page"
           description="This page published about privacy policy."
-          keyword={categories.data
+          keyword={data.categories.data
             .map((value) => value.attributes?.name)
             .join(" ")}
         />

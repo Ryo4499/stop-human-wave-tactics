@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { GetStaticProps, GetStaticPaths } from "next";
+import { GetStaticPaths } from "next";
 import Grid from "@mui/material/Unstable_Grid2";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -15,15 +15,12 @@ import Sidebar from "../../components/Common/Sidebar";
 import {
   ArticlesCategorisProps,
   PageParams,
-  PagesStaticProps,
 } from "../../types/general";
 import { getArticlesCategories } from "../../graphql/getArticlesCategories";
 import Meta from "../../components/utils/Head";
 
 export const getStaticPaths = (async ({
   locales,
-}: {
-  locales: Array<string>;
 }) => {
   const paths: Array<PageParams> = [];
   if (locales != null) {
@@ -48,9 +45,9 @@ export const getStaticPaths = (async ({
     }
   }
   return { paths: paths, fallback: "blocking" };
-})
+}) satisfies GetStaticPaths
 
-export const getStaticProps = (async ({ params, locale }: PagesStaticProps) => {
+export const getStaticProps = (async ({ params, locale }) => {
   const isGetArticlesQuery = (object: any): object is GetArticlesCategoriesQuery => { return 'articles' in object }
   const variables = {
     pagination: { page: parseInt(params.page, 10), pageSize: getPageSize() },
