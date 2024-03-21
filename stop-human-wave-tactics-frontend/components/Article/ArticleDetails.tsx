@@ -16,10 +16,10 @@ export const ArticleDetails = ({ articles }: { articles: ArticleEntityResponseCo
     const article = articles.data[0]?.attributes;
     return (
       <Grid direction="column" justifyContent={"center"} my={2} xs={12} sx={{ flexGrow: 1 }}>
-        <Grid direction="column" xs={12} sx={{ height: "100vh" }} justifyContent="space-between">
-          <Grid direction="column" mx={5} px={5} sx={{ height: "100vh", backgroundColor: "background.content" }}>
+        <Grid direction="column" xs={12} justifyContent="space-between">
+          <Grid direction="column" mx={5} px={5} sx={{ backgroundColor: "background.content" }}>
             <Grid>
-              <Typography variant="h2" color={"text.primary"}>
+              <Typography variant="h2" py={2} color={"text.primary"}>
                 {article.title}
               </Typography>
             </Grid>
@@ -57,11 +57,11 @@ export const ArticleDetails = ({ articles }: { articles: ArticleEntityResponseCo
                 </Typography>
               </Grid>
             </Grid>
-            <Grid direction="row">
+            <Grid direction="row" py={2}>
               <MdContent content={article.content}></MdContent>
-            </Grid>
-            <Grid my={2}>
-              <DefaultAdsense style={{ display: "block", textAlign: "center" }} key="in-aricle" format="fluid" slot="7513378149" fullWidth={false} />
+              <Grid container direction="column" my={2} xs={12} sx={{ flexGrow: 1, height: "auto" }}>
+                <DefaultAdsense style={{ display: "block", textAlign: "center" }} key="in-aricle" format="fluid" slot="7513378149" fullWidth={false} />
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
