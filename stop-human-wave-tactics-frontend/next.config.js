@@ -1,11 +1,10 @@
+//@ts-check
 /** @type {import('next').NextConfig} */
 module.exports = {
-  distDir: "build",
   reactStrictMode: true,
   crossOrigin: "anonymous",
   images: {
     domains: ["localhost", "back", process.env.DOMAIN],
-    path: "/images",
   },
   i18n: {
     locales: ["en", "ja"],

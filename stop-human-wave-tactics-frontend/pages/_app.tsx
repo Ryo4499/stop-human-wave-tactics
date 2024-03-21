@@ -6,13 +6,12 @@ import { AppProps } from "next/app";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import { darkPalette, lightPalette } from "../lib/theme";
-import CircularProgress from '@mui/material/CircularProgress';
 import mainParticle from "../styles/presets/basic.json";
 import subParticle from "../styles/presets/collisions.json";
 import { client, getMode } from "../lib/graphqlClient";
 import Layout from "../components/Layouts/Layout";
 import { loadSlim } from "@tsparticles/slim";
-import Particles, { initParticlesEngine } from "@tsparticles/react";
+import ParticlesComponents, { initParticlesEngine } from "@tsparticles/react";
 import { type Container } from "@tsparticles/engine";
 import { GoogleTagManager } from "@next/third-parties/google";
 import { getGtag } from "../lib/google";
@@ -63,41 +62,37 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
 
   const particlesLoaded = async (container?: Container): Promise<void> => {
   }
-  const options = mode.toString() === "dark" ? JSON.stringify(mainParticle) : JSON.stringify(subParticle)
+  const options = mode.toString() === "dark" ? mainParticle : subParticle
 
-  if (!init) {
-    return <CircularProgress />
-  } else {
-    return (
-      <ColorModeContext.Provider value={colorMode}>
-        <CssBaseline />
-        <SWRConfig
-          value={{
-            fetcher,
-            suspense: true,
-            errorRetryCount: 3,
-            revalidateIfStale: true,
-            revalidateOnMount: true,
-            shouldRetryOnError: false,
-          }}
-        >
-          <ThemeProvider theme={theme}>
-            <Particles
-              id="tsparticles"
-              particlesLoaded={particlesLoaded}
-              options={JSON.parse(options)}
-            />
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-            {
-              getMode() === "PRODUCTION" && <GoogleTagManager gtmId={`${getGtag()}`} />
-            }
-          </ThemeProvider>
-        </SWRConfig>
-      </ColorModeContext.Provider>
-    );
-  }
-};
+  return (
+    <ColorModeContext.Provider value={colorMode}>
+      <CssBaseline />
+      <SWRConfig
+        value={{
+          fetcher,
+          suspense: true,
+          errorRetryCount: 3,
+          revalidateIfStale: true,
+          revalidateOnMount: true,
+          shouldRetryOnError: false,
+        }}
+      >
+        <ThemeProvider theme={theme}>
+          {init && <ParticlesComponents
+            id="tsparticles"
+            particlesLoaded={particlesLoaded}
+            options={options as any}
+          />}
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+          {
+            getMode() === "PRODUCTION" && <GoogleTagManager gtmId={`${getGtag()}`} />
+          }
+        </ThemeProvider>
+      </SWRConfig>
+    </ColorModeContext.Provider>
+  );
+}
 
 export default MyApp;

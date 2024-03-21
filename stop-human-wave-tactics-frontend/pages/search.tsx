@@ -7,7 +7,7 @@ import useSWR from "swr";
 import { Articles } from "../components/Articles";
 import { getBackendGraphqlURL } from "../lib/graphqlClient";
 import Sidebar from "../components/Common/Sidebar";
-import { ArticlesCategorisProps, IStaticProps } from "../types/general";
+import { ArticlesCategorisProps } from "../types/general";
 import { SearchNotFound } from "../components/Common/SearchNotFound";
 import { getArticlesCategories } from "../graphql/getArticlesCategories";
 import { GraphqlError } from "../components/Common/DisplayError";
@@ -15,10 +15,8 @@ import { ArticleEntity, GetArticlesCategoriesQuery } from "../types/graphql_res"
 import Meta from "../components/utils/Head";
 
 export const getStaticProps = (async ({
-  locales,
   locale,
-  defaultLocale,
-}: IStaticProps) => {
+}) => {
   const isArticlesCategoriesQuery = (object: any): object is GetArticlesCategoriesQuery => {
     return "articles" in object && "categories" in object;
   };
