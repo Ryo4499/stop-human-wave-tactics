@@ -1,4 +1,3 @@
-import { GetStaticProps } from "next";
 import { request } from "graphql-request";
 import Grid from "@mui/material/Unstable_Grid2";
 import Link from "next/link";
@@ -13,16 +12,14 @@ import { getBackendGraphqlURL } from "../lib/graphqlClient";
 import { getCategories } from "../graphql/getCategories";
 import { CategoryEntity, CategoryEntityResponseCollection } from "../types/graphql_res";
 import { GraphqlError } from "../components/Common/DisplayError";
-import { CategoriesResponseProps, IStaticProps } from "../types/general";
+import { CategoriesResponseProps } from "../types/general";
 import { useLocale } from "../lib/locale";
 import Sidebar from "../components/Common/Sidebar";
 import Meta from "../components/utils/Head";
 
 export const getStaticProps = (async ({
-  locales,
   locale,
-  defaultLocale,
-}: IStaticProps) => {
+}) => {
   const variables = { filters: {}, pagination: {}, locale: locale };
   const result = await request<{ categories: CategoryEntityResponseCollection }>(
     getBackendGraphqlURL(),
@@ -46,7 +43,7 @@ export const getStaticProps = (async ({
       revalidate: 3600,
     };
   }
-});
+})
 
 const AchievementContent = () => {
   const { locale, locales, t } = useLocale();
@@ -186,11 +183,11 @@ const Achievement: NextPage<CategoriesResponseProps> = ({
           title="Portfolios Page"
           description="This page introduce my portfolios."
           keyword={categories.data
-          .map(
-            (value: CategoryEntity) =>
-            value.attributes?.name as string
-          )
-          .join(" ")}
+            .map(
+              (value: CategoryEntity) =>
+                value.attributes?.name as string
+            )
+            .join(" ")}
         />
         <Grid container direction="row" sx={{ flexGrow: 1 }}>
           <Grid container xs={12} md={10} sx={{ flexGrow: 1 }}>

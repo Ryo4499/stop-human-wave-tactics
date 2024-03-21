@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import * as prod from 'react/jsx-runtime'
 import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
@@ -30,7 +30,7 @@ import CustomLink from "./CustomLink";
 
 // remark形式変換 > remark関連のPlugin適用 > rehype変換 > rehype関連のPlugin適用 >
 // md to html
-const preprocessor = (content: string) => unified()
+const preprocessor = unified()
     .use(remarkParse)
     .use(remarkCodeFrontmatter)
     .use(remarkCodeExtra, {
@@ -69,9 +69,8 @@ const preprocessor = (content: string) => unified()
         behavior: 'wrap',
     })
     .use(rehypeStringify)
-    .processSync(content).toString()
 
-const processor = (content: string): React.ReactElement<unknown, string | React.JSXElementConstructor<any>> => unified()
+const processor = unified()
     .use(rehypeParse, { fragment: true })
     .use(rehypeReact, {
         Fragment: prod.Fragment,
@@ -84,9 +83,9 @@ const processor = (content: string): React.ReactElement<unknown, string | React.
         },
         passNode: true
     } as RehypeReactOptions)
-    .processSync(content).result
 
 const MdContent = ({ content }: { content: string }) => {
+    const [result, setResult] = useState<string>(content)
     const sanitizeSchema = {
         ...defaultSchema,
         attributes: {
@@ -156,11 +155,9 @@ const MdContent = ({ content }: { content: string }) => {
             ],
         },
     };
-
-
-    const result_pre = preprocessor(content)
-    const result = processor(result_pre)
-
+    useEffect(() => {
+        preprocessor.process(content).then(res => processor.process(res.value).then(res => setResult(res.value)))
+    })
     return <Grid direction="column" sx={{ flexGrow: 1 }}>
         <Typography variant="body1" color="text.secondary" dangerouslySetInnerHTML={{ __html: result }}>
         </Typography>

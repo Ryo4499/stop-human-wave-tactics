@@ -8,7 +8,7 @@ ARG MODE
 
 # measures Webpack Memory leak
 ENV NODE_OPTIONS="--max-old-space-size=1024"
-RUN apk update && apk add shadow libressl-dev libffi-dev tzdata && npm install -g npm && npm install -g --force yarn && npm install -g npm-check-updates && usermod -l ${MY_USER} node && groupmod -n ${MY_GROUP} node && mkdir /node_modules && usermod -d /home/${MY_USER} -m ${MY_USER} && chown ${MY_USER}:${MY_GROUP} /node_modules
+RUN apk update && apk add shadow libressl-dev libffi-dev tzdata && npm install -g npm && npm install -g --force yarn && npm install -g npm-check-updates && usermod -l ${MY_USER} node && groupmod -n ${MY_GROUP} node && mkdir /node_modules && usermod -d /home/${MY_USER} -m ${MY_USER} && chown ${UID}:${GID} /node_modules
 
 USER $MY_USER
 
@@ -18,6 +18,7 @@ RUN chown $UID:$GID -R ./
 
 # PROD & rm bind mount
 # COPY --chown=$MY_USER:$MY_GROUP . .
+COPY --chown=$UID:$GID ./.yarnrc .
 COPY --chown=$UID:$GID ./package.json .
 COPY --chown=$UID:$GID ./yarn.lock .
 COPY --chown=$UID:$GID ./public/ .
@@ -25,8 +26,8 @@ COPY --chown=$UID:$GID ./public/ .
 ENV PATH=/node_modules/.bin:$PATH
 
 RUN if [ "${MODE}" = "PRODUCTION" ]; then \
-    yarn install --production=true --frozen-lockfile --force --modules-folder=/node_modules ; \
+    yarn install --production=true --frozen-lockfile --force ; \
     else \
-    yarn install --production=false --modules-folder=/node_modules ; \
+    yarn install --production=false ; \
     fi
 
