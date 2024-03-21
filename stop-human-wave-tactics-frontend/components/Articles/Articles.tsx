@@ -54,7 +54,6 @@ export const Articles = ({
   articles,
   filter,
 }: ArticlesProps) => {
-  //<img src={article.attributes.thumbnail.data.attributes.url} alt={article.attributes.thumbnail.data.attributes.alternativeText} width="50%" height="10%" />
   const { locale, locales, t } = useLocale();
   const router = useRouter();
 
@@ -111,8 +110,7 @@ export const Articles = ({
                                 <Image
                                   loader={imageLoader}
                                   src={
-                                    //article.attributes.thumbnail.data.attributes.url
-                                    "https://assets.st-note.com/production/uploads/images/24127642/rectangle_large_type_2_802007386bb75d9db15a6dd2880e2584.jpg?fit=bounds&quality=85&width=1280"
+                                    article.attributes.thumbnail.data.attributes.url
                                   }
                                   className="nextimage"
                                   fill
