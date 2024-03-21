@@ -5,7 +5,7 @@
 
 html,
 body,
-body > div#__next {
+body>div#__next {
   padding: 0;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
@@ -43,12 +43,15 @@ a {
   color: #4889ee;
 }
 
-pre,
-code .hljs {
-  white-space: break-spaces;
-  display: flex;
+.remark-code-title {
+
   background-color: rgba(38 38, 38, 0.9);
-  flex-grow: 1;
+}
+
+pre,
+code {
+  width: 100%;
+  white-space: pre-wrap;
 }
 
 .nextimage {
