@@ -25,7 +25,7 @@ const Sidebar = ({ categories }: CategoriesProps) => {
   const submitHandle = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      router.push({ pathname: "/search", query: { title: e.currentTarget.value } });
+      router.push({ pathname: "/search", query: { title: (e.target as HTMLInputElement).value } });
     }
   };
 

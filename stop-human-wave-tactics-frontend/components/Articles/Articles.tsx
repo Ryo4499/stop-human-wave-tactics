@@ -74,6 +74,7 @@ export const Articles = ({
           xs={12}
           sx={{ flexGrow: 1 }}
           spacing={0.2}
+          mb={2}
         >
           <Grid container xs={6} sx={{ flexGrow: 1 }}>
             {articles?.data.map((article) => {
@@ -86,18 +87,19 @@ export const Articles = ({
                     key={article.id}
                     xs={12}
                     md={6}
-                    p={2}
+                    p={3}
                   >
                     <Card
                       sx={{
                         display: "flex",
                         justifyContent: "stretch",
                         alignContent: "stretch",
+                        height: "fit-content",
                         backgroundColor: "background.content",
                       }}
                     >
                       <Stack sx={{ flexGrow: 1 }}>
-                        <CardContent sx={{ flexGrow: 1, maxHeight: "60vh" }}>
+                        <CardContent sx={{ flexGrow: 1, height: "100%" }}>
                           {article.attributes.thumbnail?.data?.attributes
                             ?.url != null &&
                             article.attributes.thumbnail?.data?.attributes
@@ -243,15 +245,13 @@ export const Articles = ({
             })}
           </Grid>
         </Grid>
-        {router.pathname === "/search" ? null : (
-          <Grid container direction="row" justifyContent="center" my={2}>
-            <Content
-              page={page}
-              setPage={setPage}
-              pageCount={pageCount}
-            ></Content>
-          </Grid>
-        )}
+        <Grid container direction="row" justifyContent="center">
+          <Content
+            page={page}
+            setPage={setPage}
+            pageCount={pageCount}
+          ></Content>
+        </Grid>
         <Grid my={2}>
           <DefaultAdsense style={{ display: "block" }} format="autorelaxed" slot="1094459397" key="" fullWidth={false} />
         </Grid>

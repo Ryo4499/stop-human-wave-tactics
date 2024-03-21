@@ -67,7 +67,9 @@ const PrivacyPolicyContent: NextPage = () => {
     <Grid
       container
       direction="column"
+      xs={12}
       mx={5}
+      px={5}
       spacing={3}
       sx={{
         backgroundColor: "background.content",
@@ -76,51 +78,57 @@ const PrivacyPolicyContent: NextPage = () => {
       }}
     >
       <Grid>
-        <Typography color="text.primary" variant="h6">
-          {t.site_info}
-        </Typography>
+        <Grid>
+          <Typography color="text.primary" variant="h4">
+            {t.privacy_policy}
+          </Typography>
+        </Grid>
+        <Grid my={2}>
+          <Typography color="text.primary" variant="h5">
+            {t.site_info}
+          </Typography>
+          <Grid my={2} ml={2}>{site_info}</Grid>
+        </Grid>
+        <Grid my={2}>
+          <Typography color="text.primary" variant="h5">
+            {t.google_ad}
+          </Typography>
+          <Grid my={2} ml={2}>
+            {google_ad_info}
+            <Link href={google_ad_url} color="text.link">
+              {google_ad_url}
+            </Link>
+          </Grid>
+        </Grid>
+        <Grid my={2}>
+          <Typography color="text.primary" variant="h5">
+            {t.google_analysis}
+          </Typography>
+          <Grid my={2} ml={2}>
+            {google_analysis_info}
+            <Link href={google_analysis_url} color="text.link">
+              {google_analysis_url}
+            </Link>
+          </Grid>
+        </Grid>
+        <Grid my={2}>
+          <Typography color="text.primary" variant="h5">
+            {t.copy_right}
+          </Typography>
+          <Grid my={2} ml={2}>{copy_right_info}</Grid>
+        </Grid>
+        <Grid my={2}>
+          <Typography color="text.primary" variant="h5">
+            {t.link_free}
+          </Typography>
+          <Grid my={2} ml={2}>{link_free_info}</Grid>
+        </Grid>
+        <Grid my={2}>
+          <Typography color="text.primary" variant="h5">
+            {t.disclaimer}
+          </Typography>
+          <Grid my={2} ml={2}>{disclaimer_info}</Grid></Grid>
       </Grid>
-      <Grid>{site_info}</Grid>
-      <Grid>
-        <Typography color="text.primary" variant="h6">
-          {t.google_ad}
-        </Typography>
-      </Grid>
-      <Grid>
-        {google_ad_info}
-        <Link href={google_ad_url} color="text.link">
-          {google_ad_url}
-        </Link>
-      </Grid>
-      <Grid>
-        <Typography color="text.primary" variant="h6">
-          {t.google_analysis}
-        </Typography>
-      </Grid>
-      <Grid>
-        {google_analysis_info}
-        <Link href={google_analysis_url} color="text.link">
-          {google_analysis_url}
-        </Link>
-      </Grid>
-      <Grid>
-        <Typography color="text.primary" variant="h6">
-          {t.copy_right}
-        </Typography>
-      </Grid>
-      <Grid>{copy_right_info}</Grid>
-      <Grid>
-        <Typography color="text.primary" variant="h6">
-          {t.link_free}
-        </Typography>
-      </Grid>
-      <Grid>{link_free_info}</Grid>
-      <Grid>
-        <Typography color="text.primary" variant="h6">
-          {t.disclaimer}
-        </Typography>
-      </Grid>
-      <Grid>{disclaimer_info}</Grid>
     </Grid>
   );
 };
@@ -134,7 +142,7 @@ const PrivacyPolicy: NextPage<CategoriesResponseProps> = ({
   });
   if (data != null) {
     return (
-      <Grid container>
+      <Grid container sx={{ flexGrow: 1 }}>
         <Meta
           title="Privacy Policy Page"
           description="This page published about privacy policy."
@@ -143,7 +151,7 @@ const PrivacyPolicy: NextPage<CategoriesResponseProps> = ({
             .join(" ")}
         />
         <Grid container direction="row" sx={{ flexGrow: 1 }}>
-          <Grid container xs={12} md={10} sx={{ flexGrow: 1 }}>
+          <Grid container py={2} xs={12} md={10} sx={{ flexGrow: 1 }}>
             <PrivacyPolicyContent />
           </Grid>
           <Grid container xs={12} md={2} sx={{ flexGrow: 1 }}>
