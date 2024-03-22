@@ -349,7 +349,7 @@ services:
       - |
         yarn build; \
         if [ "${MODE}" = "PRODUCTION" ]; then \
-          yarn postbuild && NODE_ENV="production" && yarn start; \
+          NODE_ENV="production" && yarn start; \
         else \
           yarn dev; \
         fi
