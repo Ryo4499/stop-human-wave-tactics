@@ -7,7 +7,9 @@ import {
   ArticleEntityResponseCollection,
 } from "../../types/graphql_res";
 import { useLocale } from "../../lib/locale";
-import { DefaultAdsense } from "../Common/Adsense";
+import { Adsense } from '@ctrl/react-adsense';
+import { getMode } from "../../lib/graphqlClient";
+import { getGaId } from "../../lib/google";
 
 export const ArticleDetails = ({ articles }: { articles: ArticleEntityResponseCollection }) => {
   const { locale, locales, t } = useLocale()
@@ -59,9 +61,12 @@ export const ArticleDetails = ({ articles }: { articles: ArticleEntityResponseCo
             </Grid>
             <Grid direction="row" py={2}>
               <MdContent content={article.content}></MdContent>
-              <Grid container direction="column" my={2} xs={12} sx={{ flexGrow: 1, height: "auto" }}>
-                <DefaultAdsense style={{ display: "block", textAlign: "center" }} key="in-aricle" format="fluid" slot="7513378149" fullWidth={false} />
-              </Grid>
+              {
+                getMode() !== "PRODUCTION" &&
+                <Grid className="adsbygoogle" container my={2} xs={12} >
+                  <Adsense style={{ display: "block", textAlign: "center" }} adTest={getMode() === "PRODUCTION" ? "off" : "on"} client={getGaId()} format="fluid" slot="7513378149" key="in-article" />
+                </Grid>
+              }
             </Grid>
           </Grid>
         </Grid>

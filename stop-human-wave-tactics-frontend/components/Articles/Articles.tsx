@@ -15,7 +15,9 @@ import { ArticleEntityResponseCollection } from "../../types/graphql_res";
 import { useRouter } from "next/router";
 import { useLocale } from "../../lib/locale";
 import { imageLoader } from "../../lib/loader";
-import { DefaultAdsense } from "../Common/Adsense";
+import { Adsense } from '@ctrl/react-adsense';
+import { getMode } from "../../lib/graphqlClient";
+import { getGaId } from "../../lib/google";
 
 interface ArticlesProps {
   page: number;
@@ -252,9 +254,12 @@ export const Articles = ({
             pageCount={pageCount}
           ></Content>
         </Grid>
-        <Grid my={2}>
-          <DefaultAdsense style={{ display: "block" }} format="autorelaxed" slot="1094459397" key="" fullWidth={false} />
-        </Grid>
+        {
+          getMode() !== "PRODUCTION" &&
+          <Grid className="adsbygoogle" container my={2} xs={12}>
+            <Adsense style={{ display: "block" }} adTest={getMode() === "PRODUCTION" ? "off" : "on"} client={getGaId()} format="autorelaxed" slot="1094459397" key="" />
+          </Grid>
+        }
       </Grid>
     );
   } else {
