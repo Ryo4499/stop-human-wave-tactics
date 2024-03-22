@@ -64,8 +64,8 @@ services:
       start_period: 5s
       timeout: 60s
     networks:
-      app_net:
       nginx_net:
+      app_net:
 
   prometheus:
     image: prom/prometheus:latest
@@ -142,7 +142,7 @@ services:
       mode: global
     networks:
       monitor_back_net:
-      nginx_net:
+      app_net:  
 
   exporter:
     image: prom/node-exporter:latest
@@ -201,6 +201,27 @@ services:
       mode: global
     networks:
       monitor_back_net:
+  
+  influxdb:
+    image: influxdb:alpine
+    env_file:
+      - .env
+    networks:
+      monitor_back_net:
+      k6_net:
+    volumes:
+      - type: volume
+        source: influxdbData
+        target: /var/lib/influxdb
+
+  k6:
+    image: grafana/k6:latest
+    env_file:
+      - .env
+    networks:
+      k6_net:
+    volumes:
+      - ./k6:/scripts
 
   db:
     image: postgres:14-alpine
@@ -218,6 +239,7 @@ services:
     restart: always
     networks:
       db_net:
+      monitor_back_net:
     healthcheck:
       test: ["CMD-SHELL", "pg_isready"]
       interval: 5s
@@ -280,8 +302,9 @@ services:
       start_period: 30s
       timeout: 80s
     networks:
-      app_net:
       db_net:
+      app_net:
+      monitor_back_net:
 
   front:
     build:
@@ -335,6 +358,7 @@ services:
     restart: always
     networks:
       app_net:
+      monitor_back_net:
 
 secrets:
   DB_NAME:
@@ -357,6 +381,7 @@ secrets:
     file: .secrets/SENTRY_DSN
 
 volumes:
+  influxdbData:
   prometheusData:
   grafanaData:
   dbData:
@@ -370,14 +395,14 @@ networks:
     external: false
   nginx_net:
     driver: bridge
-    internal: true
+    internal: false
     ipam:
       driver: default
       config:
         - subnet: 172.30.0.0/24
   app_net:
     driver: bridge
-    internal: false
+    internal: true
     ipam:
       driver: default
       config:
@@ -403,3 +428,11 @@ networks:
       driver: default
       config:
         - subnet: 172.30.9.0/24
+  k6_net:
+    driver: bridge
+    internal: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.30.11.0/24
+
