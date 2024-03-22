@@ -4,7 +4,6 @@ CURRENT=$(
     pwd
 )
 echo $CURRENT
-source $CURRENT/../.env
 
 docker compose run --rm certbot renew --dry-run
 docker compose exec proxy nginx -s reload

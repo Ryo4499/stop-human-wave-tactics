@@ -74,8 +74,7 @@ const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({
   useEffect(() => {
     router.beforePopState(({ as }) => {
       if (as !== router.asPath) {
-        // Will run when leaving the current page; on back/forward actions
-        // Add your logic here, like toggling the modal state
+        return false;
       }
       return true;
     });

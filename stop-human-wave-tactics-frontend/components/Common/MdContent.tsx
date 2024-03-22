@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import * as prod from 'react/jsx-runtime'
 import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
@@ -159,19 +159,15 @@ const processor = unified()
     } as RehypeReactOptions)
 
 const MdContent = ({ content }: { content: string }) => {
-    const [result, setResult] = useState<any>(content)
-    const [processing, setProcessing] = useState<boolean>(true)
-    useEffect(() => {
-        preprocessor.process(content).then(res => processor.process(res.value).then(res => {
-            setResult(res.value)
-            setProcessing(false)
-        }))
-    })
+    const [processedContent, setProcessedContent] = useState<any>("")
+    preprocessor.process(content).then(res => processor.process(res.value).then(res => {
+        setProcessedContent(res.value)
+    }))
     return <Grid direction="column" sx={{ flexGrow: 1 }}>
         {
             (
-                !processing &&
-                <Typography variant="body1" color="text.secondary" dangerouslySetInnerHTML={{ __html: result }}>
+                (processedContent !== "") &&
+                <Typography variant="body1" color="text.secondary" dangerouslySetInnerHTML={{ __html: processedContent }}>
                 </Typography>
             )
         }

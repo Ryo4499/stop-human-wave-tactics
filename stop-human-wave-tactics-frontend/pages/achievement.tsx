@@ -2,8 +2,6 @@ import { request } from "graphql-request";
 import Grid from "@mui/material/Unstable_Grid2";
 import Link from "next/link";
 import Typography from "@mui/material/Typography";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
 import type { NextPage } from "next";
 import useSWR from "swr";
 import { useRouter } from "next/router";
@@ -160,8 +158,7 @@ const Achievement: NextPage<CategoriesResponseProps> = ({
   useEffect(() => {
     router.beforePopState(({ as }) => {
       if (as !== router.asPath) {
-        // Will run when leaving the current page; on back/forward actions
-        // Add your logic here, like toggling the modal state
+        return false;
       }
       return true;
     });

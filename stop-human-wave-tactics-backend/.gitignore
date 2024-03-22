@@ -110,3 +110,4 @@ dist/
 .strapi-updater.json
 dist
 .strapi/
+public/

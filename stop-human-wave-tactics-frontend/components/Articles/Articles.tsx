@@ -116,11 +116,11 @@ export const Articles = ({
                                   }
                                   className="nextimage"
                                   fill
-                                  sizes="(max-width: 200vh) 200vh, (max-width: 200vw) 200vw, 200vw"
                                   alt={
                                     article.attributes.thumbnail.data.attributes
                                       .alternativeText
                                   }
+                                  sizes="(max-width: 1080px) 100vw, (max-width: 1920px) 50vw, 33vw"
                                 />
                               </Grid>
                             </Link>
