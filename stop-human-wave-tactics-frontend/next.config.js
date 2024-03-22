@@ -1,6 +1,5 @@
-//@ts-check
-/** @type {import('next').NextConfig} */
-module.exports = {
+const withPWA = require("next-pwa")({ dest: "public" });
+module.exports = withPWA({
   reactStrictMode: true,
   crossOrigin: "anonymous",
   images: {
@@ -19,4 +18,4 @@ module.exports = {
   experimental: {
     scrollRestoration: false,
   },
-};
+});

@@ -11,7 +11,7 @@ interface CustomImageInterface {
 
 const CustomImage: React.FC<CustomImageInterface> = props => {
     return <Grid container sx={{ position: "relative" }}>
-        <Image src={props.src} className="nextimage" fill alt={props.alt} />
+        <Image src={props.src} className="nextimage" fill alt={props.alt} sizes="(max-width: 1080px) 100vw, (max-width: 1920px) 50vw, 33vw" />
     </Grid>
 }
 export default CustomImage
