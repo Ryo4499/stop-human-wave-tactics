@@ -22,15 +22,14 @@ services:
         condition: service_started
     networks:
       app_net:
-        ipv4_address: 172.30.0.5
 
   proxy:
     build:
       context: ./nginx
       dockerfile: Dockerfile
     ports:
-      - "0.0.0.0:80:80"
-      - "0.0.0.0:443:443"
+      - 0.0.0.0:80:80
+      - 0.0.0.0:443:443
     env_file:
       - .env
     tty: true
@@ -66,7 +65,7 @@ services:
       timeout: 60s
     networks:
       app_net:
-        ipv4_address: 172.30.0.4
+      nginx_net:
 
   prometheus:
     image: prom/prometheus:latest
@@ -76,29 +75,39 @@ services:
       - type: bind
         source: ./prometheus
         target: /etc/prometheus
-    command: "--config.file=/etc/prometheus/prometheus.yml"
+      - type: volume
+        source: prometheusData
+        target: /prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/usr/share/prometheus/console_libraries"
+      - "--web.console.templates=/usr/share/prometheus/consoles"
     restart: unless-stopped
     networks:
-      monitor_net:
-        ipv4_address: 172.30.4.5
-
-  exporter:
-    image: prom/node-exporter:latest
-    env_file:
-      - .env
-    restart: unless-stopped
-    networks:
-      monitor_net:
-        ipv4_address: 172.30.4.4
+      monitor_back_net:
 
   grafana:
     image: grafana/grafana:latest
+    user: "427"
     env_file:
       - .env
+    volumes:
+      - type: bind
+        source: ./grafana/provisioning
+        target: /etc/grafana/provisioning
+      - type: volume
+        source: grafanaData
+        target: /var/lib/grafana
+    depends_on:
+      prometheus:
+        condition: service_started
     restart: unless-stopped
+    ports:
+      - 127.0.0.1:3892:3000
     networks:
-      monitor_net:
-        ipv4_address: 172.30.4.3
+      monitor_back_net:
+      monitor_front_net:
 
   alertmanager:
     image: prom/alertmanager:latest
@@ -108,11 +117,90 @@ services:
       - type: bind
         source: ./alertmanager
         target: /etc/alertmanager
-    command: "--config.file=/etc/alertmanager/config.yml"
+    command:
+      - "--config.file=/etc/alertmanager/config.yml"
+      - "--storage.path=/alertmanager"
     restart: unless-stopped
     networks:
-      monitor_net:
-        ipv4_address: 172.30.4.2
+      monitor_back_net:
+
+  nginx-exporter:
+    image: nginx/nginx-prometheus-exporter
+    restart: unless-stopped
+    env_file:
+      - .env
+    command:
+      - -nginx.scrape-uri=https://proxy/stub_status
+    depends_on:
+      prometheus:
+        condition: service_started
+      proxy:
+        condition: service_started
+      front:
+        condition: service_healthy
+    deploy:
+      mode: global
+    networks:
+      monitor_back_net:
+      nginx_net:
+
+  exporter:
+    image: prom/node-exporter:latest
+    env_file:
+      - .env
+    command:
+      - "--path.rootfs=/host"
+      - "--path.procfs=/host/proc"
+      - "--path.sysfs=/host/sys"
+      - --collector.filesystem.ignored-mount-points
+      - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
+    volumes:
+      - /:/host:ro,rslave
+      - type: bind
+        source: /
+        target: /rootfs
+        read_only: true
+      - type: bind
+        source: /proc
+        target: /host/proc
+        read_only: true
+      - type: bind
+        source: /sys
+        target: /host/sys
+        read_only: true
+    restart: unless-stopped
+    deploy:
+      mode: global
+    networks:
+      monitor_back_net:
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.47.2
+    volumes:
+      - type: bind
+        source: /
+        target: /rootfs
+        read_only: true
+      - type: bind
+        source: /var/run
+        target: /var/run
+        read_only: true
+      - type: bind
+        source: /sys
+        target: /sys
+        read_only: true
+      - type: bind
+        source: /var/lib/docker
+        target: /var/lib/docker
+        read_only: true
+    restart: unless-stopped
+    depends_on:
+      prometheus:
+        condition: service_started
+    deploy:
+      mode: global
+    networks:
+      monitor_back_net:
 
   db:
     image: postgres:14-alpine
@@ -130,7 +218,6 @@ services:
     restart: always
     networks:
       db_net:
-        ipv4_address: 172.30.3.2
     healthcheck:
       test: ["CMD-SHELL", "pg_isready"]
       interval: 5s
@@ -169,9 +256,6 @@ services:
       - type: volume
         source: backModules
         target: "/node_modules"
-      #- type: volume
-      #  source: backStaticData
-      #  target: "/home/${MY_USER}/stop-human-wave-tactics-backend/public"
     ports:
       - 127.0.0.1:$BACK_PORT:$BACK_PORT
     entrypoint: sh
@@ -197,9 +281,7 @@ services:
       timeout: 80s
     networks:
       app_net:
-        ipv4_address: 172.30.0.3
       db_net:
-        ipv4_address: 172.30.3.3
 
   front:
     build:
@@ -224,9 +306,6 @@ services:
       - type: volume
         source: frontModules
         target: "/node_modules"
-      #- type: volume
-      #  source: frontStaticData
-      #  target: "/home/${MY_USER}/stop-human-wave-tactics-frontend/public"
     tty: true
     entrypoint: sh
     command:
@@ -256,7 +335,6 @@ services:
     restart: always
     networks:
       app_net:
-        ipv4_address: 172.30.0.2
 
 secrets:
   DB_NAME:
@@ -279,6 +357,8 @@ secrets:
     file: .secrets/SENTRY_DSN
 
 volumes:
+  prometheusData:
+  grafanaData:
   dbData:
   frontStaticData:
   backStaticData:
@@ -288,24 +368,38 @@ volumes:
 networks:
   default:
     external: false
+  nginx_net:
+    driver: bridge
+    internal: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.30.0.0/24
   app_net:
     driver: bridge
     internal: false
     ipam:
       driver: default
       config:
-        - subnet: 172.30.0.0/24
+        - subnet: 172.30.3.0/24
   db_net:
     driver: bridge
     internal: true
     ipam:
       driver: default
       config:
-        - subnet: 172.30.3.0/24
-  monitor_net:
+        - subnet: 172.30.5.0/24
+  monitor_front_net:
+    driver: bridge
+    internal: false
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.30.7.0/24
+  monitor_back_net:
     driver: bridge
     internal: true
     ipam:
       driver: default
       config:
-        - subnet: 172.30.4.0/24
+        - subnet: 172.30.9.0/24
