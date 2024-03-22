@@ -1,8 +1,8 @@
 global:
-  scrape_interval:     15s
+  scrape_interval: 15s
   evaluation_interval: 15s
   external_labels:
-      monitor: 'codelab-monitor'
+    monitor: "codelab-monitor"
 
 rule_files:
   - /etc/prometheus/alert.rules
@@ -11,12 +11,15 @@ alerting:
   alertmanagers:
     - scheme: http
       static_configs:
-      - targets:
-        - alertmanager:9093
+        - targets:
+            - alertmanager:9093
 
 scrape_configs:
-  - job_name: 'prometheus'
+  - job_name: "prometheus"
+    scrape_interval: 5s
     static_configs:
       - targets:
-        -  prometheus:9090
-        -  node-exporter:9100
+          - prometheus:9090
+          - exporter:9100
+          - nginx-exporter:9113
+          - cadvisor:8080
