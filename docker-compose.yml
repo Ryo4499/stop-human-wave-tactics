@@ -99,12 +99,12 @@ services:
       - type: volume
         source: grafanaData
         target: /var/lib/grafana
-    depends_on:
-      prometheus:
-        condition: service_started
     restart: unless-stopped
     ports:
       - 127.0.0.1:3892:3000
+    depends_on:
+      prometheus:
+        condition: service_started
     networks:
       monitor_back_net:
       monitor_front_net:
@@ -126,11 +126,11 @@ services:
 
   nginx-exporter:
     image: nginx/nginx-prometheus-exporter
-    restart: unless-stopped
     env_file:
       - .env
     command:
       - -nginx.scrape-uri=https://proxy/stub_status
+    restart: unless-stopped
     depends_on:
       prometheus:
         condition: service_started
@@ -169,6 +169,9 @@ services:
         target: /host/sys
         read_only: true
     restart: unless-stopped
+    depends_on:
+      prometheus:
+        condition: service_started
     deploy:
       mode: global
     networks:
@@ -206,22 +209,32 @@ services:
     image: influxdb:alpine
     env_file:
       - .env
-    networks:
-      monitor_back_net:
-      k6_net:
     volumes:
       - type: volume
         source: influxdbData
         target: /var/lib/influxdb
+    restart: unless-stopped
+    depends_on:
+      prometheus:
+        condition: service_started
+    networks:
+      monitor_back_net:
+      k6_net:
 
   k6:
     image: grafana/k6:latest
     env_file:
       - .env
+    volumes:
+      - type: bind
+        source: k6
+        target: /scripts
+    restart: unless-stopped
+    depends_on:
+      influxdb:
+        condition: service_started
     networks:
       k6_net:
-    volumes:
-      - ./k6:/scripts
 
   db:
     image: postgres:14-alpine
@@ -296,7 +309,7 @@ services:
         condition: service_healthy
     restart: always
     healthcheck:
-      test: wget --spider http://localhost:${BACK_PORT}${ADMIN_URL}
+      test: wget --spider back:${BACK_PORT}${ADMIN_URL}
       interval: 5s
       retries: 10
       start_period: 30s
@@ -336,7 +349,7 @@ services:
       - |
         yarn build; \
         if [ "${MODE}" = "PRODUCTION" ]; then \
-          NODE_ENV="production" && yarn start; \
+          yarn postbuild && NODE_ENV="production" && yarn start; \
         else \
           yarn dev; \
         fi
@@ -350,7 +363,7 @@ services:
     ports:
       - 127.0.0.1:$FRONT_PORT:$FRONT_PORT
     healthcheck:
-      test: wget --spider http://localhost:${FRONT_PORT}
+      test: wget --spider front:${FRONT_PORT}
       interval: 5s
       retries: 10
       start_period: 30s
@@ -358,6 +371,7 @@ services:
     restart: always
     networks:
       app_net:
+      monitor_front_net:
       monitor_back_net:
 
 secrets:
