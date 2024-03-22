@@ -1,22 +1,11 @@
 name: Production Deployment
 on:
   push:
-    branches: [production]
+    branches: [main]
 jobs:
   build:
-    runs-on: ubuntu-20.04    
+    runs-on: [self-hosted, linux]
     steps:
-    - uses: actions/checkout@v3
-    - name: Install and setup Node version
-      uses: actions/setup-node@v3      
-      with:
-        node-version: '16.x'
-        cache: 'npm'
-    - name: Setup the AWS Cli
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-region: $AWS_REGION
-        aws-access-key-id: $AWS_KEY_ID
-        aws-secret-access-key: $AWS_SECRET_KEY
-    - run: aws s3 sync . s3:$AWS_BUCKET_URL 
-
+      - uses: actions/checkout@v3
+      - name: Checkout and Build
+        run: ./buildup.sh
