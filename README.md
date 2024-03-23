@@ -61,6 +61,15 @@ docker compose exec certbot sh
 certbot certonly --webroot -w /usr/share/nginx/html --email $EMAIL -d $DOMAIN --agree-tos
 ```
 
+## How to switch dev
+
+```sh
+# Modify cert key paths
+vim nginx/conf.d/default.conf
+# Modify back, front port
+vim nginx/nginx.conf
+```
+
 ## How to update
 
 ```sh

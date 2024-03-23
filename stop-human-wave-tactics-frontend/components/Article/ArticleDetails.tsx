@@ -7,7 +7,9 @@ import {
   ArticleEntityResponseCollection,
 } from "../../types/graphql_res";
 import { useLocale } from "../../lib/locale";
-import { DefaultAdsense } from "../Common/Adsense";
+import { Adsense } from '@ctrl/react-adsense';
+import { getMode } from "../../lib/graphqlClient";
+import { getGaId } from "../../lib/google";
 
 export const ArticleDetails = ({ articles }: { articles: ArticleEntityResponseCollection }) => {
   const { locale, locales, t } = useLocale()
@@ -16,10 +18,10 @@ export const ArticleDetails = ({ articles }: { articles: ArticleEntityResponseCo
     const article = articles.data[0]?.attributes;
     return (
       <Grid direction="column" justifyContent={"center"} my={2} xs={12} sx={{ flexGrow: 1 }}>
-        <Grid direction="column" xs={12} sx={{ height: "100vh" }} justifyContent="space-between">
-          <Grid direction="column" mx={5} px={5} sx={{ height: "100vh", backgroundColor: "background.content" }}>
+        <Grid direction="column" xs={12} justifyContent="space-between">
+          <Grid direction="column" mx={5} px={5} sx={{ backgroundColor: "background.content" }}>
             <Grid>
-              <Typography variant="h2" color={"text.primary"}>
+              <Typography variant="h2" py={2} color={"text.primary"}>
                 {article.title}
               </Typography>
             </Grid>
@@ -57,11 +59,14 @@ export const ArticleDetails = ({ articles }: { articles: ArticleEntityResponseCo
                 </Typography>
               </Grid>
             </Grid>
-            <Grid direction="row">
+            <Grid direction="row" py={2}>
               <MdContent content={article.content}></MdContent>
-            </Grid>
-            <Grid my={2}>
-              <DefaultAdsense style={{ display: "block", textAlign: "center" }} key="in-aricle" format="fluid" slot="7513378149" fullWidth={false} />
+              {
+                getMode() !== "PRODUCTION" &&
+                <Grid className="adsbygoogle" container my={2} xs={12} >
+                  <Adsense style={{ display: "block", textAlign: "center" }} adTest={getMode() === "PRODUCTION" ? "off" : "on"} client={getGaId()} format="fluid" slot="7513378149" key="in-article" />
+                </Grid>
+              }
             </Grid>
           </Grid>
         </Grid>

@@ -25,7 +25,7 @@ const Sidebar = ({ categories }: CategoriesProps) => {
   const submitHandle = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      router.push({ pathname: "/search", query: { title: e.currentTarget.value } });
+      router.push({ pathname: "/search", query: { title: (e.target as HTMLInputElement).value } });
     }
   };
 
@@ -73,7 +73,7 @@ const Sidebar = ({ categories }: CategoriesProps) => {
           <Avatar
             sx={{ width: "8rem", height: "8rem" }}
             alt="Avater"
-            src="/static/images/ar44.jpg"
+            src="/static/images/ar44.webp"
           />
         </Grid>
         <Grid

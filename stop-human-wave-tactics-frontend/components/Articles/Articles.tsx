@@ -15,7 +15,9 @@ import { ArticleEntityResponseCollection } from "../../types/graphql_res";
 import { useRouter } from "next/router";
 import { useLocale } from "../../lib/locale";
 import { imageLoader } from "../../lib/loader";
-import { DefaultAdsense } from "../Common/Adsense";
+import { Adsense } from '@ctrl/react-adsense';
+import { getMode } from "../../lib/graphqlClient";
+import { getGaId } from "../../lib/google";
 
 interface ArticlesProps {
   page: number;
@@ -54,7 +56,6 @@ export const Articles = ({
   articles,
   filter,
 }: ArticlesProps) => {
-  //<img src={article.attributes.thumbnail.data.attributes.url} alt={article.attributes.thumbnail.data.attributes.alternativeText} width="50%" height="10%" />
   const { locale, locales, t } = useLocale();
   const router = useRouter();
 
@@ -75,6 +76,7 @@ export const Articles = ({
           xs={12}
           sx={{ flexGrow: 1 }}
           spacing={0.2}
+          mb={2}
         >
           <Grid container xs={6} sx={{ flexGrow: 1 }}>
             {articles?.data.map((article) => {
@@ -87,18 +89,19 @@ export const Articles = ({
                     key={article.id}
                     xs={12}
                     md={6}
-                    p={2}
+                    p={3}
                   >
                     <Card
                       sx={{
                         display: "flex",
                         justifyContent: "stretch",
                         alignContent: "stretch",
+                        height: "fit-content",
                         backgroundColor: "background.content",
                       }}
                     >
                       <Stack sx={{ flexGrow: 1 }}>
-                        <CardContent sx={{ flexGrow: 1, maxHeight: "60vh" }}>
+                        <CardContent sx={{ flexGrow: 1, height: "100%" }}>
                           {article.attributes.thumbnail?.data?.attributes
                             ?.url != null &&
                             article.attributes.thumbnail?.data?.attributes
@@ -111,16 +114,15 @@ export const Articles = ({
                                 <Image
                                   loader={imageLoader}
                                   src={
-                                    //article.attributes.thumbnail.data.attributes.url
-                                    "https://assets.st-note.com/production/uploads/images/24127642/rectangle_large_type_2_802007386bb75d9db15a6dd2880e2584.jpg?fit=bounds&quality=85&width=1280"
+                                    article.attributes.thumbnail.data.attributes.url
                                   }
                                   className="nextimage"
                                   fill
-                                  sizes="(max-width: 200vh) 200vh, (max-width: 200vw) 200vw, 200vw"
                                   alt={
                                     article.attributes.thumbnail.data.attributes
                                       .alternativeText
                                   }
+                                  sizes="(max-width: 1080px) 100vw, (max-width: 1920px) 50vw, 33vw"
                                 />
                               </Grid>
                             </Link>
@@ -245,18 +247,19 @@ export const Articles = ({
             })}
           </Grid>
         </Grid>
-        {router.pathname === "/search" ? null : (
-          <Grid container direction="row" justifyContent="center" my={2}>
-            <Content
-              page={page}
-              setPage={setPage}
-              pageCount={pageCount}
-            ></Content>
-          </Grid>
-        )}
-        <Grid my={2}>
-          <DefaultAdsense style={{ display: "block" }} format="autorelaxed" slot="1094459397" key="" fullWidth={false} />
+        <Grid container direction="row" justifyContent="center">
+          <Content
+            page={page}
+            setPage={setPage}
+            pageCount={pageCount}
+          ></Content>
         </Grid>
+        {
+          getMode() !== "PRODUCTION" &&
+          <Grid className="adsbygoogle" container my={2} xs={12}>
+            <Adsense style={{ display: "block" }} adTest={getMode() === "PRODUCTION" ? "off" : "on"} client={getGaId()} format="autorelaxed" slot="1094459397" key="" />
+          </Grid>
+        }
       </Grid>
     );
   } else {
