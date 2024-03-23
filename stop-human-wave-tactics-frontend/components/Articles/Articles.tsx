@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, useContext } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import Stack from "@mui/material/Stack";
 import Card from "@mui/material/Card"
@@ -16,28 +16,26 @@ import { useRouter } from "next/router";
 import { useLocale } from "../../lib/locale";
 import { imageLoader } from "../../lib/loader";
 import { Adsense } from '@ctrl/react-adsense';
-import { getMode } from "../../lib/graphqlClient";
+import { prod } from "../../lib/graphqlClient";
 import { getGaId } from "../../lib/google";
+import { PageContext } from "../../pages/_app";
 
 interface ArticlesProps {
-  page: number;
-  setPage: (value: number) => void;
   articles: ArticleEntityResponseCollection;
   filter: string | string[] | null | undefined;
 }
 
 interface ArticlesPropsContent {
-  page: number;
-  setPage: (value: number) => void;
   pageCount: number | undefined;
 }
 
-const Content = ({ page, setPage, pageCount }: ArticlesPropsContent) => {
+const Content = ({ pageCount }: ArticlesPropsContent) => {
   const router = useRouter();
+  const { page, setPage } = useContext(PageContext)
   const handleChange = (event: ChangeEvent<unknown>, value: number) => {
     setPage(value);
     router.push("/articles/[page]", `/articles/${value}`);
-  };
+  }
   return (
     <Pagination
       page={page}
@@ -46,30 +44,110 @@ const Content = ({ page, setPage, pageCount }: ArticlesPropsContent) => {
       renderItem={(item) => {
         return <PaginationItem {...item} />;
       }}
-    ></Pagination>
+    />
   );
 };
 
+const FilterComponent = ({ t, filter }) => {
+  if (filter == null) {
+    return null;
+  }
+  return (
+    <Grid container xs={12} ml={2} my={2}>
+      <Typography variant="h6" color="text.secondary">
+        {t.keyword + ":  " + filter}
+      </Typography>
+    </Grid>
+  )
+}
+
+const ImageComponent = ({ article }) => {
+  if (article.attributes.thumbnail?.data?.attributes
+    ?.url == null ||
+    article.attributes.thumbnail?.data?.attributes
+      ?.alternativeText == null) {
+    return null
+  }
+  return (
+    <Link href={`/article/${article.attributes.uuid}`}>
+      <Grid
+        container
+        xs={12}
+        mx={1}
+        mb={4}
+      >
+        <Image
+          loader={imageLoader}
+          src={
+            article.attributes.thumbnail.data.attributes.url
+          }
+          className="nextimage"
+          fill
+          alt={
+            article.attributes.thumbnail.data.attributes
+              .alternativeText
+          }
+          sizes="(max-width: 1080px) 100vw, (max-width: 1920px) 50vw, 33vw"
+        />
+      </Grid>
+    </Link>
+  )
+}
+
+const CategoryComponent = ({ article }) => {
+  if (article.attributes.category?.data?.attributes
+    ?.uuid != null) {
+    return null
+  }
+  return (
+    <Grid container justifyContent="flex-end" xs={12} my={1}>
+      <Grid
+        container
+        sx={{ color: "text.link" }}
+        spacing={1}
+        ml={1}
+      >
+        <Grid>
+          <FolderIcon
+            sx={{ color: "text.secondary" }}
+          />
+        </Grid>
+        <Grid>
+          <Link
+            href={{
+              pathname: `/category/${article.attributes.category.data.attributes.uuid}`,
+              query: {
+                name: article.attributes.category.data
+                  .attributes.name,
+              },
+            }}
+          >
+            <Typography color="text.link">
+              {
+                article.attributes.category.data
+                  .attributes.name
+              }
+            </Typography>
+          </Link>
+        </Grid>
+      </Grid>
+    </Grid>
+  )
+}
+
 export const Articles = ({
-  page,
-  setPage,
   articles,
   filter,
 }: ArticlesProps) => {
+
   const { locale, locales, t } = useLocale();
   const router = useRouter();
 
   if (articles.data != null) {
     const pageCount = articles.meta.pagination.pageCount;
     return (
-      <Grid container direction="column" sx={{ flexGrow: 1 }} xs={12}>
-        {filter != null ? (
-          <Grid container xs={12} mx={3} mt={2} mb={1}>
-            <Typography variant="h6" color="text.secondary">
-              {t.keyword + ":  " + filter}
-            </Typography>
-          </Grid>
-        ) : null}
+      <Grid container xs={12} alignContent="flex-start">
+        <FilterComponent t={t} filter={filter} />
         <Grid
           container
           direction="row"
@@ -78,186 +156,103 @@ export const Articles = ({
           spacing={0.2}
           mb={2}
         >
-          <Grid container xs={6} sx={{ flexGrow: 1 }}>
-            {articles?.data.map((article) => {
-              if (article.attributes?.uuid != null) {
-                return (
-                  <Grid
-                    container
-                    direction="column"
-                    sx={{ flexGrow: 1 }}
-                    key={article.id}
-                    xs={12}
-                    md={6}
-                    p={3}
+          {articles?.data.map((article) => {
+            if (article.attributes?.uuid != null) {
+              return (
+                <Grid
+                  container
+                  direction="column"
+                  sx={{ flexGrow: 1 }}
+                  key={article.id}
+                  xs={12}
+                  md={6}
+                  p={3}
+                >
+                  <Card
+                    sx={{
+                      display: "flex",
+                      height: "100%",
+                      backgroundColor: "background.content",
+                    }}
                   >
-                    <Card
-                      sx={{
-                        display: "flex",
-                        justifyContent: "stretch",
-                        alignContent: "stretch",
-                        height: "fit-content",
-                        backgroundColor: "background.content",
-                      }}
-                    >
-                      <Stack sx={{ flexGrow: 1 }}>
-                        <CardContent sx={{ flexGrow: 1, height: "100%" }}>
-                          {article.attributes.thumbnail?.data?.attributes
-                            ?.url != null &&
-                            article.attributes.thumbnail?.data?.attributes
-                              ?.alternativeText != null ? (
-                            <Link href={`/article/${article.attributes.uuid}`}>
-                              <Grid
-                                container
-                                mb={4}
-                              >
-                                <Image
-                                  loader={imageLoader}
-                                  src={
-                                    article.attributes.thumbnail.data.attributes.url
-                                  }
-                                  className="nextimage"
-                                  fill
-                                  alt={
-                                    article.attributes.thumbnail.data.attributes
-                                      .alternativeText
-                                  }
-                                  sizes="(max-width: 1080px) 100vw, (max-width: 1920px) 50vw, 33vw"
-                                />
-                              </Grid>
-                            </Link>
-                          ) : null}
-                          <Grid
-                            container
-                            justifyContent="space-between"
-                            ml={1}
-                            alignContent="center"
-                            alignItems="center"
-                          >
-                            <Grid
-                              container
-                              sx={{ mt: { xs: 1, md: 0 } }}
-                              xs={12}
-                              md={6}
-                            >
-                              <Typography variant="h4" color="text.primary">
-                                {article.attributes.title}
-                              </Typography>
-                            </Grid>
-                            <Grid
-                              container
-                              sx={{ mt: { xs: 1, md: 0 } }}
-                              xs={12}
-                              md={6}
-                              justifyContent="flex-end"
-                            >
-                              <Stack textAlign="right">
-                                <Typography variant="caption">
-                                  {t.updated_at}:{" "}
-                                  {article.attributes.updatedAt
-                                    .replace("T", " ")
-                                    .replace(/\..*$/g, "")
-                                    .replace(/\-/g, "/")}
-                                </Typography>
-                                <Typography variant="caption">
-                                  {t.created_at}:{" "}
-                                  {article.attributes.createdAt
-                                    .replace("T", " ")
-                                    .replace(/\..*$/g, "")
-                                    .replace(/\-/g, "/")}
-                                </Typography>
-                              </Stack>
-                            </Grid>
-                          </Grid>
-                          <Grid container justifyContent="flex-end" mt={1} sx={{ maxWidth: "100vw", maxHeight: "100vh" }}>
-                            {article.attributes.category?.data?.attributes
-                              ?.uuid != null ? (
-                              <Grid
-                                container
-                                sx={{ color: "text.link" }}
-                                spacing={1}
-                                ml={1}
-                              >
-                                <Grid>
-                                  <FolderIcon
-                                    sx={{ color: "text.secondary" }}
-                                  />
-                                </Grid>
-                                <Grid>
-                                  <Link
-                                    href={{
-                                      pathname: `/category/${article.attributes.category.data.attributes.uuid}`,
-                                      query: {
-                                        name: article.attributes.category.data
-                                          .attributes.name,
-                                      },
-                                    }}
-                                  >
-                                    <Typography color="text.link">
-                                      {
-                                        article.attributes.category.data
-                                          .attributes.name
-                                      }
-                                    </Typography>
-                                  </Link>
-                                </Grid>
-                              </Grid>
-                            ) : null}
-                          </Grid>
-                          <Grid
-                            container
-                            direction="column"
-                            sx={{ flexGrow: 1 }}
-                            ml={3}
-                          >
-                            <Typography variant="body1">
-                              {article.attributes.summary}
-                            </Typography>
-                          </Grid>
-                        </CardContent>
-                        <Grid container ml={2} my={1}>
-                          <CardActions sx={{ flexGrow: 1 }}>
-                            <Grid>
-                              <Button
-                                onClick={() => {
-                                  router.push({
-                                    pathname: "/article/[uuid]",
-                                    query: { uuid: article.attributes?.uuid }
-                                  });
-                                }}
-                                size="small"
-                              >
-                                <Typography
-                                  variant="subtitle1"
-                                  color="text.link"
-                                >
-                                  {t.more_details}
-                                </Typography>
-                              </Button>
-                            </Grid>
-                          </CardActions>
+                    <Stack sx={{
+                      flexGrow: 1,
+                    }}>
+                      <CardContent sx={{ flexGrow: 1 }}>
+                        <ImageComponent article={article} />
+                        <Grid
+                          xs={12}
+                          my={1}
+                        >
+                          <Typography sx={{ fontSize: "1.5rem" }} color="text.primary">
+                            {article.attributes.title}
+                          </Typography>
                         </Grid>
-                      </Stack>
-                    </Card>
-                  </Grid>
-                );
-              } else {
-                return null;
-              }
-            })}
-          </Grid>
+                        <Grid
+                          xs={12}
+                          my={2}
+                          justifyContent="flex-end"
+                        >
+                          <Stack textAlign="right" color="text.secondary">
+                            <Typography sx={{ fontSize: "0.8rem" }}>
+                              {t.updated_at}:{" "}
+                              {article.attributes.updatedAt}
+                            </Typography>
+                            <Typography sx={{ fontSize: "0.8rem" }} color="text.secondary">
+                              {t.created_at}:{" "}
+                              {article.attributes.createdAt}
+                            </Typography>
+                          </Stack>
+                        </Grid>
+                        <CategoryComponent article={article} />
+                        <Grid
+                          container
+                          px={2}
+                        >
+                          <Typography sx={{ fontSize: "1.0rem" }} color="text.secondary">
+                            {article.attributes.summary}
+                          </Typography>
+                        </Grid>
+                      </CardContent>
+                      <Grid xs={12} ml={2} mt={1} mb={2}>
+                        <CardActions>
+                          <Grid>
+                            <Button
+                              onClick={() => {
+                                router.push({
+                                  pathname: "/article/[uuid]",
+                                  query: { uuid: article.attributes?.uuid }
+                                });
+                              }}
+                              size="small"
+                            >
+                              <Typography
+                                variant="subtitle1"
+                                color="text.link"
+                              >
+                                {t.more_details}
+                              </Typography>
+                            </Button>
+                          </Grid>
+                        </CardActions>
+                      </Grid>
+                    </Stack>
+                  </Card>
+                </Grid>
+              );
+            } else {
+              return null;
+            }
+          })}
         </Grid>
-        <Grid container direction="row" justifyContent="center">
+        <Grid container xs={12} justifyContent="center" sx={{ height: "3rem" }}>
           <Content
-            page={page}
-            setPage={setPage}
             pageCount={pageCount}
           ></Content>
         </Grid>
         {
-          getMode() !== "PRODUCTION" &&
-          <Grid className="adsbygoogle" container my={2} xs={12}>
-            <Adsense style={{ display: "block" }} adTest={getMode() === "PRODUCTION" ? "off" : "on"} client={getGaId()} format="autorelaxed" slot="1094459397" key="" />
+          <Grid className="adsbygoogle" container my={1} xs={12} sx={{ flexGrow: 1 }}>
+            <Adsense style={{ display: "block" }} adTest={prod ? "off" : "on"} client={getGaId()} format="autorelaxed" slot="1094459397" key="" />
           </Grid>
         }
       </Grid>

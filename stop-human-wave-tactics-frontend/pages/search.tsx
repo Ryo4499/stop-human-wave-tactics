@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Unstable_Grid2";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { request } from "graphql-request";
 import useSWR from "swr";
 import { Articles } from "../components/Articles";
@@ -11,8 +11,9 @@ import { ArticlesCategorisProps } from "../types/general";
 import { SearchNotFound } from "../components/Common/SearchNotFound";
 import { getArticlesCategories } from "../graphql/getArticlesCategories";
 import { GraphqlError } from "../components/Common/DisplayError";
-import { ArticleEntity, GetArticlesCategoriesQuery } from "../types/graphql_res";
+import { ArticleEntity, ArticleEntityResponseCollection, GetArticlesCategoriesQuery } from "../types/graphql_res";
 import Meta from "../components/utils/Head";
+import { convDatetimeArticles } from "../lib/utils";
 
 export const getStaticProps = (async ({
   locale,
@@ -35,7 +36,7 @@ export const getStaticProps = (async ({
   if (res != null && isArticlesCategoriesQuery(res)) {
     const result = {
       props: {
-        articles: res.articles,
+        articles: convDatetimeArticles((res.articles as ArticleEntityResponseCollection)),
         categories: res.categories,
         variables: variables,
       },
@@ -51,12 +52,25 @@ export const getStaticProps = (async ({
   }
 })
 
+const ArticlesContent = () => {
+
+}
+
 const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({
   articles,
   categories,
   variables,
 }) => {
+
   const { data, error } = useSWR([getArticlesCategories, variables], {
+    onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+      // Never retry on 404.
+      if (error.status === 404) return
+      // Only retry up to 10 times.
+      if (retryCount >= 10) return
+      // Retry after 3 seconds.
+      setTimeout(() => revalidate({ retryCount }), 3000)
+    },
     fallbackData: {
       articles: articles,
       categories: categories,
@@ -68,21 +82,6 @@ const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({
     router.query.title != null && typeof router.query.title === "string"
       ? router.query.title
       : "";
-  const [page, setPage] = useState(
-    router.query.page == null ? 1 : parseInt(router.query.page as string, 10)
-  );
-  useEffect(() => {
-    router.beforePopState(({ as }) => {
-      if (as !== router.asPath) {
-        return false;
-      }
-      return true;
-    });
-
-    return () => {
-      router.beforePopState(() => true);
-    };
-  }, [router]);
   if (data != null) {
     const filterArticles = data.articles.data.filter(
       (article: ArticleEntity) => {
@@ -112,19 +111,17 @@ const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({
           description="This page published articles searched by title."
           keyword={filter}
         />
-        <Grid container xs={10} sx={{ flexGrow: 1 }}>
+        <Grid container xs={12} md={10} sx={{ flexGrow: 1 }}>
           {filterArticles.length === 0 ? (
             <SearchNotFound filter={filter} />
           ) : (
             <Articles
-              page={page}
-              setPage={setPage}
               articles={filterArticlesResponseCollection}
               filter={filter}
             />
           )}
         </Grid>
-        <Grid container xs={2} sx={{ flexGrow: 1 }}>
+        <Grid container xs={12} md={2} sx={{ flexGrow: 1 }}>
           <Sidebar categories={data.categories} />
         </Grid>
       </Grid>

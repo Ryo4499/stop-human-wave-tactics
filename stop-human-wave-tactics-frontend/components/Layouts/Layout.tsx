@@ -4,6 +4,7 @@ import React, { ReactNode } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 
 const Layout = ({ children }: { children?: ReactNode }) => {
+  
   return (
     <Grid container direction="column" sx={{ minHeight: "100%", height: "fit-content" }}>
       <Grid container>
