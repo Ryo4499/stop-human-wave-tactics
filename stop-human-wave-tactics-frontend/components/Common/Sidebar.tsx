@@ -19,6 +19,7 @@ import { useRouter } from "next/router";
 import { CategoriesProps } from "../../types/general";
 
 const Sidebar = ({ categories }: CategoriesProps) => {
+  
   const router = useRouter();
   const { locale, locales, t } = useLocale();
 
@@ -45,20 +46,17 @@ const Sidebar = ({ categories }: CategoriesProps) => {
       <Grid container direction="row" justifyContent="center">
         <Grid
           container
-          direction="row"
           justifyContent="center"
-          alignContent="center"
           alignItems="center"
           my={2}
           xs={12}
         >
           <SearchIcon
-            fontSize="medium"
-            sx={{ color: "text.primary", mx: 1, mt: 1 }}
+            sx={{ color: "text.primary", mx: 1, fontSize: "2.0rem" }}
           />
           <TextField
             sx={{
-              fontSize: 14,
+              fontSize: "1.6rem",
               color: "text.primary",
               "& label": { color: "text.primary" },
               width: "auto",
@@ -71,28 +69,26 @@ const Sidebar = ({ categories }: CategoriesProps) => {
         </Grid>
         <Grid container justifyContent="center" py={2} xs={12}>
           <Avatar
-            sx={{ width: "8rem", height: "8rem" }}
+            sx={{ width: "18vh", height: "18vh" }}
             alt="Avater"
             src="/static/images/ar44.webp"
           />
         </Grid>
         <Grid
           container
-          ml={"2rem"}
           direction="row"
           justifyContent="center"
           alignContent="center"
           alignItems="center"
+          ml={2}
           my={2}
           xs={12}
         >
           <Grid xs={12}>
-            <List>
-              <ListItem disablePadding>
-                <Typography variant="subtitle1" color="text.primary">
-                  Author
-                </Typography>
-              </ListItem>
+            <Stack my={1}>
+              <Typography my={1} variant="subtitle1" color="text.primary">
+                Author
+              </Typography>
               <List disablePadding>
                 <ListItem sx={{ pl: 4 }} disablePadding>
                   <Typography variant="subtitle1" color="text.secondary">
@@ -100,17 +96,15 @@ const Sidebar = ({ categories }: CategoriesProps) => {
                   </Typography>
                 </ListItem>
               </List>
-            </List>
+            </Stack>
           </Grid>
           <Grid xs={12}>
-            <List>
-              <ListItem disablePadding>
-                <Typography variant="subtitle1" color="text.primary">
-                  Jobs
-                </Typography>
-              </ListItem>
+            <Stack my={1}>
+              <Typography my={1} variant="subtitle1" color="text.primary">
+                Jobs
+              </Typography>
               <List disablePadding>
-                <ListItem sx={{ pl: 4 }} disablePadding>
+                <ListItem sx={{ pl: 4, py: 0.5 }} disablePadding>
                   <Typography variant="subtitle2" color="text.secondary">
                     AI Enginner
                   </Typography>
@@ -121,60 +115,57 @@ const Sidebar = ({ categories }: CategoriesProps) => {
                   </Typography>
                 </ListItem>
               </List>
-            </List>
+            </Stack>
           </Grid>
           <Grid xs={12}>
-            <List>
-              <ListItem disablePadding>
-                <Typography variant="subtitle1" color="text.primary">
-                  SNS
-                </Typography>
-              </ListItem>
+            <Stack my={1}>
+              <Typography my={1} variant="subtitle1" color="text.primary">
+                SNS
+              </Typography>
               <List disablePadding>
                 <ListItem sx={{ pl: 4 }} disablePadding>
-                  <Stack direction="row" spacing={0.8}>
+                  <Stack direction="row" spacing={1.5}>
                     {githubUrl && (
-                      <Grid px={2}>
+                      <Grid mx={1}>
                         <Link href={githubUrl} >
                           <GitHubIcon
-                            sx={{ fontSize: "1.4rem", color: "text.secondary" }}
+                            sx={{ fontSize: "2.8vh", color: "text.secondary" }}
                           />
                         </Link>
                       </Grid>
                     )}
                     {linkedinUrl && (
-                      <Grid mx={2}>
+                      <Grid mx={1}>
                         <Link href={linkedinUrl} >
                           <LinkedInIcon
-                            sx={{ fontSize: "1.4rem", color: "text.secondary" }}
+                            sx={{ fontSize: "2.8vh", color: "text.secondary" }}
                           />
                         </Link>
                       </Grid>
                     )}
                     {twitterUrl && (
-                      <Grid mx={2}>
+                      <Grid mx={1}>
                         <Link href={twitterUrl}>
                           <TwitterIcon
-                            sx={{ fontSize: "1.4rem", color: "text.secondary" }}
+                            sx={{ fontSize: "2.8vh", color: "text.secondary" }}
                           />
                         </Link>
                       </Grid>
                     )}
                     {facebookUrl && (
-                      <Grid mx={2}>
-
+                      <Grid mx={1}>
                         <Link href={facebookUrl} >
                           <FacebookIcon
-                            sx={{ fontSize: "1.4rem", color: "text.secondary" }}
+                            sx={{ fontSize: "2.8vh", color: "text.secondary" }}
                           />
                         </Link>
                       </Grid>
                     )}
                     {instagramUrl && (
-                      <Grid mx={2}>
+                      <Grid mx={1}>
                         <Link href={instagramUrl} >
                           <InstagramIcon
-                            sx={{ fontSize: "1.4rem", color: "text.secondary" }}
+                            sx={{ fontSize: "2.8vh", color: "text.secondary" }}
                           />
                         </Link>
                       </Grid>
@@ -182,7 +173,7 @@ const Sidebar = ({ categories }: CategoriesProps) => {
                   </Stack>
                 </ListItem>
               </List>
-            </List>
+            </Stack>
           </Grid>
           <Grid xs={12}>
             <Categories categories={categories} />

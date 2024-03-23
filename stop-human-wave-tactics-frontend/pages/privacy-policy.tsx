@@ -137,7 +137,16 @@ const PrivacyPolicy: NextPage<CategoriesResponseProps> = ({
   categories,
   variables,
 }) => {
+  
   const { data, error } = useSWR([getCategories, variables], {
+    onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+      // Never retry on 404.
+      if (error.status === 404) return
+      // Only retry up to 10 times.
+      if (retryCount >= 10) return
+      // Retry after 3 seconds.
+      setTimeout(() => revalidate({ retryCount }), 3000)
+    },
     fallbackData: { categories: categories, variables: variables },
   });
   if (data != null) {

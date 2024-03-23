@@ -1,4 +1,5 @@
 import Typography from "@mui/material/Typography";
+import Stack from "@mui/material/Stack";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Link from "next/link";
@@ -6,6 +7,7 @@ import { useLocale } from "../../lib/locale";
 import { CategoriesProps } from "../../types/general";
 
 export const Categories = ({ categories }: CategoriesProps) => {
+  
   const { locale, locales, t } = useLocale();
 
   if (categories.data.length === 0) {
@@ -16,7 +18,7 @@ export const Categories = ({ categories }: CategoriesProps) => {
         {categories.data.map((category) => {
           if (category.attributes?.uuid != null && category.attributes?.articles?.data.length !== 0) {
             return (
-              <ListItem sx={{ pl: 4 }} key={category.id} disablePadding>
+              <ListItem sx={{ pl: 4, py: 0.5 }} key={category.id} disablePadding>
                 <Link
                   href={{
                     pathname: `/category/${category.attributes.uuid}`,
@@ -37,16 +39,12 @@ export const Categories = ({ categories }: CategoriesProps) => {
       </List>
     );
     return (
-      <>
-        <List>
-          <ListItem sx={{ my: 1 }} disablePadding>
-            <Typography variant="subtitle1" color="text.primary">
-              {t.categories}
-            </Typography>
-          </ListItem>
-          {CategoriesContent}
-        </List>
-      </>
+      <Stack my={2}>
+        <Typography my={1} variant="subtitle1" color="text.primary">
+          {t.categories}
+        </Typography>
+        {CategoriesContent}
+      </Stack>
     );
   }
 };

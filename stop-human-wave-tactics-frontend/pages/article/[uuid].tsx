@@ -1,5 +1,5 @@
 import Grid from "@mui/material/Unstable_Grid2";
-import { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import { GetStaticPaths, NextPage } from "next";
 import { request } from "graphql-request";
 import useSWR from "swr";
 import { ArticleDetails } from "../../components/Article";
@@ -14,6 +14,7 @@ import {
 import { getArticlesCategories } from "../../graphql/getArticlesCategories";
 import { GraphqlError } from "../../components/Common/DisplayError";
 import Meta from "../../components/utils/Head";
+import { convDatetimeArticles } from "../../lib/utils";
 
 export const getStaticPaths = (async ({
   locales,
@@ -61,7 +62,7 @@ export const getStaticProps = (async ({ params, locale }: UUIDParams) => {
   if (res != null && isGetArticlesCategoriesQuery(res)) {
     const result = {
       props: {
-        articles: res.articles,
+        articles: convDatetimeArticles((res.articles as ArticleEntityResponseCollection)),
         categories: res.categories,
         variables: variables,
       },
@@ -82,7 +83,16 @@ const ArticlePage: NextPage<ArticlesCategorisProps> = ({
   categories,
   variables,
 }: { articles: ArticleEntityResponseCollection, categories: CategoryEntityResponseCollection, variables: GetArticlesQueryVariables }) => {
+  
   const { data, error } = useSWR([getArticlesCategories, variables], {
+    onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+      // Never retry on 404.
+      if (error.status === 404) return
+      // Only retry up to 10 times.
+      if (retryCount >= 10) return
+      // Retry after 3 seconds.
+      setTimeout(() => revalidate({ retryCount }), 3000)
+    },
     fallbackData: {
       articles: articles,
       categories: categories,

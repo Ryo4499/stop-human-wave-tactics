@@ -159,6 +159,7 @@ const processor = unified()
     } as RehypeReactOptions)
 
 const MdContent = ({ content }: { content: string }) => {
+
     const [processedContent, setProcessedContent] = useState<any>("")
     preprocessor.process(content).then(res => processor.process(res.value).then(res => {
         setProcessedContent(res.value)
@@ -167,7 +168,7 @@ const MdContent = ({ content }: { content: string }) => {
         {
             (
                 (processedContent !== "") &&
-                <Typography variant="body1" color="text.secondary" dangerouslySetInnerHTML={{ __html: processedContent }}>
+                <Typography sx={{ fontSize: "1.1rem" }} color="text.secondary" dangerouslySetInnerHTML={{ __html: processedContent }}>
                 </Typography>
             )
         }

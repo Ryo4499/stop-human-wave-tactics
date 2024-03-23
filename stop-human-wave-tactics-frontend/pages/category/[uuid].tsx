@@ -2,7 +2,6 @@ import Grid from "@mui/material/Unstable_Grid2";
 import { GetStaticPaths, NextPage } from "next";
 import { useRouter } from "next/router";
 import { request } from "graphql-request";
-import { useState } from "react";
 import useSWR from "swr";
 import { getBackendGraphqlURL } from "../../lib/graphqlClient";
 import { ArticleEntityResponseCollection, CategoryEntity, CategoryEntityResponseCollection, GetArticlesCategoriesQuery, GetArticlesQueryVariables } from "../../types/graphql_res";
@@ -16,6 +15,7 @@ import { Articles } from "../../components/Articles";
 import { GraphqlError } from "../../components/Common/DisplayError";
 import { getArticlesCategories } from "../../graphql/getArticlesCategories";
 import Meta from "../../components/utils/Head";
+import { convDatetimeArticles } from "../../lib/utils";
 
 export const getStaticPaths = (async ({
   locales,
@@ -64,7 +64,7 @@ export const getStaticProps = (async ({ params, locale }) => {
   if (res != null && isGetCategoriesQuery(res)) {
     const result = {
       props: {
-        articles: res.articles,
+        articles: convDatetimeArticles((res.articles as ArticleEntityResponseCollection)),
         categories: res.categories,
         variables: variables,
       },
@@ -85,7 +85,16 @@ const ArticlesPage: NextPage<ArticlesCategorisProps> = ({
   categories,
   variables,
 }: { articles: ArticleEntityResponseCollection, categories: CategoryEntityResponseCollection, variables: GetArticlesQueryVariables }) => {
+  
   const { data, error } = useSWR([getArticlesCategories, variables], {
+    onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+      // Never retry on 404.
+      if (error.status === 404) return
+      // Only retry up to 10 times.
+      if (retryCount >= 10) return
+      // Retry after 3 seconds.
+      setTimeout(() => revalidate({ retryCount }), 3000)
+    },
     fallbackData: {
       articles: articles,
       categories: categories,
@@ -93,11 +102,6 @@ const ArticlesPage: NextPage<ArticlesCategorisProps> = ({
     },
   });
   const router = useRouter();
-  const [page, setPage] = useState(
-    router.query.page === undefined
-      ? 1
-      : parseInt(router.query.page as string, 10)
-  );
   if (data != null && typeof router.query.name === "string") {
     return (
       <Grid container sx={{ flexGrow: 1 }}>
@@ -111,8 +115,6 @@ const ArticlesPage: NextPage<ArticlesCategorisProps> = ({
         <Grid container direction="row" sx={{ flexGrow: 1 }}>
           <Grid container xs={12} md={10} sx={{ flexGrow: 1 }}>
             <Articles
-              page={page}
-              setPage={setPage}
               articles={data.articles}
               filter={router.query.name}
             />

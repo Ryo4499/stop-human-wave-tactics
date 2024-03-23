@@ -13,6 +13,7 @@ interface DisplayErrorProps {
 }
 
 export const DisplayError = ({ error }: { error: string }) => {
+    
   return (
     <Grid container direction="column" mx={5} spacing={3} sx={{ backgroundColor: "background.content", my: { md: 0, xs: 2 }, flexGrow: 1 }}>
       <Grid>
