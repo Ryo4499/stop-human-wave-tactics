@@ -7,7 +7,7 @@ import { useLocale } from "../../lib/locale";
 import { CategoriesProps } from "../../types/general";
 
 export const Categories = ({ categories }: CategoriesProps) => {
-  
+
   const { locale, locales, t } = useLocale();
 
   if (categories.data.length === 0) {
@@ -21,7 +21,7 @@ export const Categories = ({ categories }: CategoriesProps) => {
               <ListItem sx={{ pl: 4, py: 0.5 }} key={category.id} disablePadding>
                 <Link
                   href={{
-                    pathname: `/category/${category.attributes.uuid}`,
+                    pathname: `/category/${category.attributes?.uuid}`,
                     query: { name: category.attributes.name },
                   }}
                 >
