@@ -1,5 +1,5 @@
 import Grid from "@mui/material/Unstable_Grid2";
-import { NextPage } from "next";
+import { GetStaticPaths, NextPage } from "next";
 import { useRouter } from "next/router";
 import { request } from "graphql-request";
 import { useState } from "react";
@@ -10,7 +10,6 @@ import Sidebar from "../../components/Common/Sidebar";
 import {
   ArticlesCategorisProps,
   UUIDParams,
-  UUIDStaticProps,
 } from "../../types/general";
 import { getCategoriesUUID } from "../../graphql/getCategoriesUUID";
 import { Articles } from "../../components/Articles";
@@ -20,8 +19,6 @@ import Meta from "../../components/utils/Head";
 
 export const getStaticPaths = (async ({
   locales,
-}: {
-  locales: Array<string>;
 }) => {
   const paths: Array<UUIDParams> = [];
   if (locales != null) {
@@ -43,9 +40,9 @@ export const getStaticPaths = (async ({
     }
   }
   return { paths: paths, fallback: "blocking" };
-})
+}) satisfies GetStaticPaths
 
-export const getStaticProps = (async ({ params, locale }: UUIDStaticProps) => {
+export const getStaticProps = (async ({ params, locale }) => {
   const isGetCategoriesQuery = (object: any): object is GetArticlesCategoriesQuery => { return 'categories' in object }
   const variables = {
     filters: {

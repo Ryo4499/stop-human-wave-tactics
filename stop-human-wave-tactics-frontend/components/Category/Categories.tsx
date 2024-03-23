@@ -14,7 +14,7 @@ export const Categories = ({ categories }: CategoriesProps) => {
     const CategoriesContent = (
       <List disablePadding>
         {categories.data.map((category) => {
-          if (category.attributes?.uuid != null) {
+          if (category.attributes?.uuid != null && category.attributes?.articles?.data.length !== 0) {
             return (
               <ListItem sx={{ pl: 4 }} key={category.id} disablePadding>
                 <Link

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import * as prod from 'react/jsx-runtime'
 import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
@@ -28,9 +28,82 @@ import Typography from "@mui/material/Typography";
 import CustomImage from "./CustomImage";
 import CustomLink from "./CustomLink";
 
+const sanitizeSchema = {
+    ...defaultSchema,
+    attributes: {
+        ...defaultSchema.attributes,
+        p: [
+            ...(defaultSchema.attributes?.div || []),
+            ["className", "remark-code-title"],
+        ],
+        div: [
+            ...(defaultSchema.attributes?.div || []),
+            ["className", "math", "math-display", "toc", "data-remark-code-title", "remark-code-title"],
+        ],
+        span: [
+            ...(defaultSchema.attributes?.span || []),
+            [
+                "className",
+                "math",
+                "math-inline",
+                "katex",
+                "katex-mathml",
+                "katex-html",
+                "toc",
+            ],
+        ],
+        code: [
+            ...(defaultSchema.attributes?.code || []),
+            [
+                "className",
+                "hljs",
+                "hljs-addition",
+                "hljs-attr",
+                "hljs-attribute",
+                "hljs-built_in",
+                "hljs-bullet",
+                "hljs-char",
+                "hljs-code",
+                "hljs-comment",
+                "hljs-deletion",
+                "hljs-doctag",
+                "hljs-emphasis",
+                "hljs-formula",
+                "hljs-keyword",
+                "hljs-link",
+                "hljs-literal",
+                "hljs-meta",
+                "hljs-name",
+                "hljs-number",
+                "hljs-operator",
+                "hljs-params",
+                "hljs-property",
+                "hljs-punctuation",
+                "hljs-quote",
+                "hljs-regexp",
+                "hljs-section",
+                "hljs-selector-attr",
+                "hljs-selector-class",
+                "hljs-selector-id",
+                "hljs-selector-pseudo",
+                "hljs-selector-tag",
+                "hljs-string",
+                "hljs-strong",
+                "hljs-subst",
+                "hljs-symbol",
+                "hljs-tag",
+                "hljs-template-tag",
+                "hljs-template-variable",
+                "hljs-title",
+                "hljs-type",
+                "hljs-variable",
+            ],
+        ],
+    },
+};
 // remark形式変換 > remark関連のPlugin適用 > rehype変換 > rehype関連のPlugin適用 >
 // md to html
-const preprocessor = (content: string) => unified()
+const preprocessor = unified()
     .use(remarkParse)
     .use(remarkCodeFrontmatter)
     .use(remarkCodeExtra, {
@@ -69,10 +142,10 @@ const preprocessor = (content: string) => unified()
         behavior: 'wrap',
     })
     .use(rehypeStringify)
-    .processSync(content).toString()
 
-const processor = (content: string): React.ReactElement<unknown, string | React.JSXElementConstructor<any>> => unified()
+const processor = unified()
     .use(rehypeParse, { fragment: true })
+    .use(rehypeSanitize, (sanitizeSchema as any))
     .use(rehypeReact, {
         Fragment: prod.Fragment,
         jsx: prod.jsx,
@@ -84,86 +157,20 @@ const processor = (content: string): React.ReactElement<unknown, string | React.
         },
         passNode: true
     } as RehypeReactOptions)
-    .processSync(content).result
 
 const MdContent = ({ content }: { content: string }) => {
-    const sanitizeSchema = {
-        ...defaultSchema,
-        attributes: {
-            ...defaultSchema.attributes,
-            div: [
-                ...(defaultSchema.attributes?.div || []),
-                ["className", "math", "math-display", "toc"],
-            ],
-            span: [
-                ...(defaultSchema.attributes?.span || []),
-                [
-                    "className",
-                    "math",
-                    "math-inline",
-                    "katex",
-                    "katex-mathml",
-                    "katex-html",
-                    "toc",
-                ],
-            ],
-            code: [
-                ...(defaultSchema.attributes?.code || []),
-                [
-                    "className",
-                    "hljs",
-                    "hljs-addition",
-                    "hljs-attr",
-                    "hljs-attribute",
-                    "hljs-built_in",
-                    "hljs-bullet",
-                    "hljs-char",
-                    "hljs-code",
-                    "hljs-comment",
-                    "hljs-deletion",
-                    "hljs-doctag",
-                    "hljs-emphasis",
-                    "hljs-formula",
-                    "hljs-keyword",
-                    "hljs-link",
-                    "hljs-literal",
-                    "hljs-meta",
-                    "hljs-name",
-                    "hljs-number",
-                    "hljs-operator",
-                    "hljs-params",
-                    "hljs-property",
-                    "hljs-punctuation",
-                    "hljs-quote",
-                    "hljs-regexp",
-                    "hljs-section",
-                    "hljs-selector-attr",
-                    "hljs-selector-class",
-                    "hljs-selector-id",
-                    "hljs-selector-pseudo",
-                    "hljs-selector-tag",
-                    "hljs-string",
-                    "hljs-strong",
-                    "hljs-subst",
-                    "hljs-symbol",
-                    "hljs-tag",
-                    "hljs-template-tag",
-                    "hljs-template-variable",
-                    "hljs-title",
-                    "hljs-type",
-                    "hljs-variable",
-                ],
-            ],
-        },
-    };
-
-
-    const result_pre = preprocessor(content)
-    const result = processor(result_pre)
-
+    const [processedContent, setProcessedContent] = useState<any>("")
+    preprocessor.process(content).then(res => processor.process(res.value).then(res => {
+        setProcessedContent(res.value)
+    }))
     return <Grid direction="column" sx={{ flexGrow: 1 }}>
-        <Typography variant="body1" color="text.secondary" dangerouslySetInnerHTML={{ __html: result }}>
-        </Typography>
+        {
+            (
+                (processedContent !== "") &&
+                <Typography variant="body1" color="text.secondary" dangerouslySetInnerHTML={{ __html: processedContent }}>
+                </Typography>
+            )
+        }
     </Grid >
 }
 

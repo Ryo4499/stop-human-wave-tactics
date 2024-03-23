@@ -1,5 +1,4 @@
 import Grid from "@mui/material/Unstable_Grid2";
-import { GetStaticProps } from "next";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -9,17 +8,15 @@ import { Articles } from "../components/Articles";
 import { getBackendGraphqlURL } from "../lib/graphqlClient";
 import { getPageSize } from "../lib/pagination";
 import { GraphqlError } from "../components/Common/DisplayError";
-import { ArticlesCategorisProps, IStaticProps } from "../types/general";
+import { ArticlesCategorisProps } from "../types/general";
 import { getArticlesCategories } from "../graphql/getArticlesCategories";
 import Sidebar from "../components/Common/Sidebar";
 import Meta from "../components/utils/Head";
 import { ArticleEntityResponseCollection, CategoryEntity, CategoryEntityResponseCollection, GetArticlesCategoriesQuery, GetArticlesPagesQueryVariables, GetArticlesQueryVariables } from "../types/graphql_res";
 
 export const getStaticProps = (async ({
-  locales,
   locale,
-  defaultLocale,
-}: IStaticProps) => {
+}) => {
   const isArticlesCategoriesQuery = (object: any): object is GetArticlesCategoriesQuery => { return 'articles' in object && 'categories' in object }
   const variables = {
     filters: {},
@@ -72,8 +69,7 @@ const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({
   useEffect(() => {
     router.beforePopState(({ as }) => {
       if (as !== router.asPath) {
-        // Will run when leaving the current page; on back/forward actions
-        // Add your logic here, like toggling the modal state
+        return false;
       }
       return true;
     });
