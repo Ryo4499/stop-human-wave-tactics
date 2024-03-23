@@ -24,10 +24,22 @@ const Meta = ({ title, description, keyword }: Props): React.ReactNode => {
       <meta name="twitter:site" content="@ar4499_" />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
-      <meta http-equiv="Expires" content={`${new Date().toString()}`} />
-      <meta http-equiv="Cache-Control" content="public, max-age=0" />
-      <meta name="msapplication-config" content="/browserconfig.xml" />
+      <meta httpEquiv="Expires" content={`${new Date().toString()}`} />
+      <meta httpEquiv="Cache-Control" content="no-store max-age=0" />
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-status-bar-style" content="#000" />
+      <meta name="apple-mobile-web-app-title" content="shwt" />
+      <link
+        rel="apple-touch-icon"
+        sizes="150x150"
+        href="/static/images/favicon_150x150.jpg"
+      />
+      <meta name="application-name" content="shwt" />
+      <meta name="theme-color" content="#000" />
+      <meta name="description" content="This is ar44's tech blog" />
+      <link rel="icon" sizes="192x192" href="/static/images/favicon_192x192.jpg" />
       <link rel="shortcut icon" href="/static/images/favicon.ico" />
+      <link rel="manifest" href="/manifest.json" />
       {
         getMode() === "PRODUCTION" && <GoogleAnalytics gaId={`${getGtag()}`} />
       }

@@ -1,5 +1,5 @@
 import Grid from "@mui/material/Unstable_Grid2";
-import { NextPage } from "next";
+import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { request } from "graphql-request";
 import useSWR from "swr";
 import { ArticleDetails } from "../../components/Article";
@@ -10,7 +10,6 @@ import Sidebar from "../../components/Common/Sidebar";
 import {
   ArticlesCategorisProps,
   UUIDParams,
-  UUIDStaticProps,
 } from "../../types/general";
 import { getArticlesCategories } from "../../graphql/getArticlesCategories";
 import { GraphqlError } from "../../components/Common/DisplayError";
@@ -18,8 +17,6 @@ import Meta from "../../components/utils/Head";
 
 export const getStaticPaths = (async ({
   locales,
-}: {
-  locales: Array<string>;
 }) => {
   // get all articles uuid and generate article detail page
   const paths: Array<UUIDParams> = [];
@@ -41,15 +38,15 @@ export const getStaticPaths = (async ({
     }
   }
   return { paths: paths, fallback: "blocking" };
-})
+}) satisfies GetStaticPaths
 
-export const getStaticProps = (async ({ params, locale }: UUIDStaticProps) => {
+export const getStaticProps = (async ({ params, locale }: UUIDParams) => {
   const isGetArticlesCategoriesQuery = (object: any): object is GetArticlesCategoriesQuery => {
     return 'articles' in object && 'categories' in object;
   }
   // get all articles and categories
   const variables = {
-    filters: { uuid: { eq: params.uuid } },
+    filters: { uuid: { eq: params?.uuid } },
     pagination: {},
     sort: ["updatedAt:Desc", "publishedAt:Desc"],
     locale: locale,

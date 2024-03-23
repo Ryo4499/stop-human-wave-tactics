@@ -1,11 +1,9 @@
-/** @type {import('next').NextConfig} */
-module.exports = {
-  distDir: "build",
+const withPWA = require("next-pwa")({ dest: "public" });
+module.exports = withPWA({
   reactStrictMode: true,
   crossOrigin: "anonymous",
   images: {
     domains: ["localhost", "back", process.env.DOMAIN],
-    path: "/images",
   },
   i18n: {
     locales: ["en", "ja"],
@@ -20,4 +18,4 @@ module.exports = {
   experimental: {
     scrollRestoration: false,
   },
-};
+});
