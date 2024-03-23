@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Unstable_Grid2";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { request } from "graphql-request";
 import useSWR from "swr";
 import { Articles } from "../components/Articles";
@@ -12,6 +12,7 @@ import { ArticlesCategorisProps } from "../types/general";
 import { getArticlesCategories } from "../graphql/getArticlesCategories";
 import Sidebar from "../components/Common/Sidebar";
 import Meta from "../components/utils/Head";
+import { convDatetimeArticles } from "../lib/utils";
 import { ArticleEntityResponseCollection, CategoryEntity, CategoryEntityResponseCollection, GetArticlesCategoriesQuery, GetArticlesPagesQueryVariables, GetArticlesQueryVariables } from "../types/graphql_res";
 
 export const getStaticProps = (async ({
@@ -34,7 +35,7 @@ export const getStaticProps = (async ({
   if (res != null && isArticlesCategoriesQuery(res)) {
     const result = {
       props: {
-        articles: res.articles,
+        articles: convDatetimeArticles((res.articles as ArticleEntityResponseCollection)),
         categories: res.categories,
         variables: variables,
       },
@@ -56,28 +57,20 @@ const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({
   variables,
 }: { articles: ArticleEntityResponseCollection, categories: CategoryEntityResponseCollection, variables: GetArticlesQueryVariables }) => {
   const { data, error } = useSWR([getArticlesCategories, variables], {
+    onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+      // Never retry on 404.
+      if (error.status === 404) return
+      // Only retry up to 10 times.
+      if (retryCount >= 10) return
+      // Retry after 3 seconds.
+      setTimeout(() => revalidate({ retryCount }), 3000)
+    },
     fallbackData: {
       articles: articles,
       categories: categories,
       variables: variables,
     },
   });
-  const router = useRouter();
-  const [page, setPage] = useState(
-    router.query.page == null ? 1 : parseInt(router.query.page as string, 10)
-  );
-  useEffect(() => {
-    router.beforePopState(({ as }) => {
-      if (as !== router.asPath) {
-        return false;
-      }
-      return true;
-    });
-
-    return () => {
-      router.beforePopState(() => true);
-    };
-  }, [router]);
   if (data != null) {
     return (
       <Grid container direction="row" sx={{ flexGrow: 1 }}>
@@ -90,8 +83,6 @@ const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({
         />
         <Grid container xs={12} md={10} sx={{ flexGrow: 1 }}>
           <Articles
-            page={page}
-            setPage={setPage}
             articles={data.articles}
             filter={null}
           />

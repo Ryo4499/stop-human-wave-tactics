@@ -4,7 +4,10 @@ import Document, {
   NextScript,
   Main,
 } from "next/document";
-import { getGaId } from "../lib/google";
+import Script from "next/script";
+import { getGaId, getGtag } from "../lib/google";
+import { getDomain, getMode } from "../lib/graphqlClient";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 class MyDocument extends Document {
   render() {
@@ -12,9 +15,32 @@ class MyDocument extends Document {
       <Html>
         <Head>
           <meta name="google-adsense-account" content={getGaId()} />
-          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossOrigin="anonymous" />
-          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark-dimmed.min.css" integrity="sha512-zcatBMvxa7rT7dDklfjauWsfiSFParF+hRfCdf4Zr40/MmA1gkFcBRbop0zMpvYF3FmznYFgcL8wlcuO/GwHoA==" crossOrigin="anonymous" referrerPolicy="no-referrer" />
-          <script async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${getGaId()}`} crossOrigin="anonymous" />
+          <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossOrigin="anonymous" />
+          <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark-dimmed.min.css" crossOrigin="anonymous" />
+          <meta property="og:type" content="blog" />
+          <meta property="og:url" content={`https://${getDomain()}`} />
+          <meta name="twitter:card" content="summary" />
+          <meta name="twitter:site" content="@ar4499_" />
+          <meta httpEquiv="Expires" content={`${new Date().toString()}`} />
+          <meta httpEquiv="Cache-Control" content="no-store max-age=0" />
+          <meta name="apple-mobile-web-app-capable" content="yes" />
+          <meta name="apple-mobile-web-app-status-bar-style" content="#000" />
+          <meta name="apple-mobile-web-app-title" content="shwt" />
+          <link
+            rel="apple-touch-icon"
+            sizes="150x150"
+            href="/static/images/favicon_150x150.jpg"
+          />
+          <meta name="application-name" content="shwt" />
+          <meta name="theme-color" content="#000" />
+          <meta name="description" content="This is ar44's tech blog" />
+          <link rel="icon" sizes="192x192" href="/static/images/favicon_192x192.jpg" />
+          <link rel="shortcut icon" href="/static/images/favicon.ico" />
+          <link rel="manifest" href="/manifest.json" />
+          <Script strategy="beforeInteractive" src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${getGaId()}`} />
+          {
+            getMode() === "PRODUCTION" && <GoogleAnalytics gaId={`${getGtag()}`} />
+          }
         </Head>
         <body>
           <Main />

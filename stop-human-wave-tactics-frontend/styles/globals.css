@@ -40,7 +40,14 @@ canvas {
 
 a {
   text-decoration: none;
+}
+
+a:link {
   color: #4889ee;
+}
+
+a:visited {
+  color: #3778dd;
 }
 
 .remark-code-title {
