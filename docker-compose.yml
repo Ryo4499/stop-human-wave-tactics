@@ -146,7 +146,7 @@ services:
       mode: global
     networks:
       monitor_back_net:
-      app_net:  
+      app_net:
 
   exporter:
     image: prom/node-exporter:latest
@@ -208,7 +208,7 @@ services:
       mode: global
     networks:
       monitor_back_net:
-  
+
   influxdb:
     image: influxdb:alpine
     env_file:
@@ -322,6 +322,8 @@ services:
       db_net:
       app_net:
       monitor_back_net:
+      # debug
+      #monitor_front_net:
 
   front:
     build:
@@ -375,8 +377,9 @@ services:
     restart: always
     networks:
       app_net:
-      monitor_front_net:
       monitor_back_net:
+      # debug
+      #monitor_front_net:
 
 secrets:
   DB_NAME:
@@ -453,4 +456,3 @@ networks:
       driver: default
       config:
         - subnet: 172.30.11.0/24
-
