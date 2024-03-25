@@ -52,10 +52,6 @@ export const getStaticProps = (async ({
   }
 })
 
-const ArticlesContent = () => {
-
-}
-
 const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({
   articles,
   categories,
