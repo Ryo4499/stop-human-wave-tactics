@@ -19,9 +19,26 @@ frontend environment variables
 ```env
 PAGESIZE=6
 FRONT_PORT=
-NEXT_PUBLIC_PROXY_URL='http://localhost'
+NEXT_PUBLIC_DOMAIN="${DOMAIN}"
 NEXT_PUBLIC_BACKEND_URL="http://back:${BACK_PORT}"
-GTAG=''
+# Analytics
+NEXT_PUBLIC_GTAG=
+# Google Adsense
+NEXT_PUBLIC_GA_ID=
+# Tag Manager
+NEXT_PUBLIC_GTM_ID=
+```
+
+monitoring environment variables
+
+```env
+# grafana
+GF_SECURITY_ADMIN_USER=
+GF_SECURITY_ADMIN_PASSWORD=
+GF_USERS_ALLOW_SIGN_UP=false
+# k6
+INFLUXDB_DB=k6
+K6_OUT='influxdb=http://influxdb:8086/k6'
 ```
 
 backend environment variables
@@ -49,16 +66,22 @@ TRANSFER_TOKEN_SALT=/run/secrets/TRANSFER_TOKEN_SALT
 DEEPL_API_KEY=/run/secrets/DEEPL_API_KEY
 ```
 
-## Generate SSL dev key
+## Generate SSL key
 
 ```sh
 # disable ssl server conf
-mv nginx/conf.d/ssl_server.conf nginx/conf.d/ssl_server.conf.txt
+mv nginx/conf.d/default.conf nginx/conf.d/default.conf.tmp
+mv nginx/conf.d/default.conf.txt nginx/conf.d/default.conf
 # up
-./build.up
+docker compose up -d proxy certbot
 # unlock packet filter 80,443
-docker compose exec certbot sh
-certbot certonly --webroot -w /usr/share/nginx/html --email $EMAIL -d $DOMAIN --agree-tos
+./create-cert.sh
+```
+
+if not exist localhost.crt, localhost.key
+
+```sh
+./certbot/config/create-dev-key.sh
 ```
 
 ## How to switch dev
