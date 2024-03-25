@@ -183,6 +183,7 @@ export const Articles = ({
                         <Grid
                           xs={12}
                           my={1}
+                          px={1}
                         >
                           <Typography sx={{ fontSize: "1.5rem" }} color="text.primary">
                             {article.attributes.title}
