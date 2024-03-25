@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://datsujinkai.com
+Host: https://localhost
 
 # Sitemaps
-Sitemap: https://datsujinkai.com/sitemap.xml
+Sitemap: https://localhost/sitemap.xml
