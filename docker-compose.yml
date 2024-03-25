@@ -323,7 +323,7 @@ services:
       app_net:
       monitor_back_net:
       # debug
-      #monitor_front_net:
+      monitor_front_net:
 
   front:
     build:

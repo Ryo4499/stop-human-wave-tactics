@@ -1,3 +1,5 @@
+import { useEffect } from "react"
+import { useRouter } from "next/router";
 import Grid from "@mui/material/Unstable_Grid2";
 import { GetStaticPaths, NextPage } from "next";
 import { request } from "graphql-request";
@@ -83,7 +85,7 @@ const ArticlePage: NextPage<ArticlesCategorisProps> = ({
   categories,
   variables,
 }: { articles: ArticleEntityResponseCollection, categories: CategoryEntityResponseCollection, variables: GetArticlesQueryVariables }) => {
-  
+
   const { data, error } = useSWR([getArticlesCategories, variables], {
     onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
       // Never retry on 404.
@@ -99,6 +101,19 @@ const ArticlePage: NextPage<ArticlesCategorisProps> = ({
       variables: variables,
     },
   });
+  const router = useRouter();
+  useEffect(() => {
+    router.beforePopState(({ as }) => {
+      if (as !== router.asPath) {
+        return false
+      }
+      return true;
+    });
+
+    return () => {
+      router.beforePopState(() => true);
+    };
+  }, [router]);
   if (data != null) {
     return (
       <Grid container sx={{ flexGrow: 1 }}>
