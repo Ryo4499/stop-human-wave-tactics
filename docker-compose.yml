@@ -22,6 +22,7 @@ services:
         condition: service_started
     networks:
       app_net:
+      monitor_front_net:
 
   proxy:
     build:
@@ -323,7 +324,7 @@ services:
       app_net:
       monitor_back_net:
       # debug
-      #monitor_front_net:
+      monitor_front_net:
 
   front:
     build:
@@ -379,7 +380,7 @@ services:
       app_net:
       monitor_back_net:
       # debug
-      #monitor_front_net:
+      monitor_front_net:
 
 secrets:
   DB_NAME:
