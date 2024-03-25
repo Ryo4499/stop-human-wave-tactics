@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import Grid from "@mui/material/Unstable_Grid2";
 import { GetStaticPaths, NextPage } from "next";
 import { useRouter } from "next/router";
@@ -85,7 +86,7 @@ const ArticlesPage: NextPage<ArticlesCategorisProps> = ({
   categories,
   variables,
 }: { articles: ArticleEntityResponseCollection, categories: CategoryEntityResponseCollection, variables: GetArticlesQueryVariables }) => {
-  
+
   const { data, error } = useSWR([getArticlesCategories, variables], {
     onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
       // Never retry on 404.
@@ -102,6 +103,18 @@ const ArticlesPage: NextPage<ArticlesCategorisProps> = ({
     },
   });
   const router = useRouter();
+  useEffect(() => {
+    router.beforePopState(({ as }) => {
+      if (as !== router.asPath) {
+        return false
+      }
+      return true;
+    });
+
+    return () => {
+      router.beforePopState(() => true);
+    };
+  }, [router]);
   if (data != null && typeof router.query.name === "string") {
     return (
       <Grid container sx={{ flexGrow: 1 }}>
