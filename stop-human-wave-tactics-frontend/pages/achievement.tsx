@@ -1,11 +1,9 @@
 import { request } from "graphql-request";
 import Grid from "@mui/material/Unstable_Grid2";
 import Link from "next/link";
-import { useEffect } from "react"
 import Typography from "@mui/material/Typography";
 import type { NextPage } from "next";
 import useSWR from "swr";
-import { useRouter } from "next/router";
 import { getBackendGraphqlURL } from "../lib/graphqlClient";
 import { getCategories } from "../graphql/getCategories";
 import { CategoryEntity, CategoryEntityResponseCollection } from "../types/graphql_res";
@@ -163,19 +161,6 @@ const Achievement: NextPage<CategoriesResponseProps> = ({
     },
     fallbackData: { categories: categories, variables: variables },
   });
-  const router = useRouter()
-  useEffect(() => {
-    router.beforePopState(({ as }) => {
-      if (as !== router.asPath) {
-        return false
-      }
-      return true;
-    });
-
-    return () => {
-      router.beforePopState(() => true);
-    };
-  }, [router]);
   if (data != null) {
     return (
       <Grid container sx={{ flexGrow: 1 }}>
