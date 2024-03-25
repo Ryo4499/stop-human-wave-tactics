@@ -4,8 +4,6 @@ import Typography from "@mui/material/Typography";
 import { request } from "graphql-request";
 import useSWR from "swr";
 import { useLocale } from "../lib/locale";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
 import type { NextPage } from "next";
 import Sidebar from "../components/Common/Sidebar";
 import { getCategories } from "../graphql/getCategories";
@@ -151,19 +149,6 @@ const PrivacyPolicy: NextPage<CategoriesResponseProps> = ({
     },
     fallbackData: { categories: categories, variables: variables },
   });
-  const router = useRouter()
-  useEffect(() => {
-    router.beforePopState(({ as }) => {
-      if (as !== router.asPath) {
-        return false
-      }
-      return true;
-    });
-
-    return () => {
-      router.beforePopState(() => true);
-    };
-  }, [router]);
   if (data != null) {
     return (
       <Grid container sx={{ flexGrow: 1 }}>

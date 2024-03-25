@@ -1,6 +1,5 @@
 import Grid from "@mui/material/Unstable_Grid2";
 import type { NextPage } from "next";
-import { useEffect } from "react"
 import { useRouter } from "next/router";
 import { request } from "graphql-request";
 import useSWR from "swr";
@@ -72,18 +71,6 @@ const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({
     },
   });
   const router = useRouter()
-  useEffect(() => {
-    router.beforePopState(({ as }) => {
-      if (as !== router.asPath) {
-        return false
-      }
-      return true;
-    });
-
-    return () => {
-      router.beforePopState(() => true);
-    };
-  }, [router]);
   if (data != null) {
     return (
       <Grid container direction="row" sx={{ flexGrow: 1 }}>

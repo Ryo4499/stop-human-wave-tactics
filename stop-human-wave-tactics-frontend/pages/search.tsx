@@ -74,18 +74,6 @@ const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({
     },
   });
   const router = useRouter();
-  useEffect(() => {
-    router.beforePopState(({ as }) => {
-      if (as !== router.asPath) {
-        return false
-      }
-      return true;
-    });
-
-    return () => {
-      router.beforePopState(() => true);
-    };
-  }, [router]);
   const filter =
     router.query.title != null && typeof router.query.title === "string"
       ? router.query.title

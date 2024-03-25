@@ -19,7 +19,7 @@ import { useRouter } from "next/router";
 import { CategoriesProps } from "../../types/general";
 
 const Sidebar = ({ categories }: CategoriesProps) => {
-  
+
   const router = useRouter();
   const { locale, locales, t } = useLocale();
 
@@ -59,7 +59,6 @@ const Sidebar = ({ categories }: CategoriesProps) => {
               fontSize: "1.6rem",
               color: "text.primary",
               "& label": { color: "text.primary" },
-              width: "auto",
             }}
             id="outlined-basic"
             label={t.search}
