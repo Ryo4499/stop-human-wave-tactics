@@ -351,15 +351,15 @@ services:
         target: "/node_modules"
     tty: true
     entrypoint: sh
-    #command:
-    #  - -c
-    #  - |
-    #    yarn build; \
-    #    if [ "${MODE}" = "PRODUCTION" ]; then \
-    #      NODE_ENV="production" && yarn start; \
-    #    else \
-    #      yarn dev; \
-    #    fi
+    command:
+      - -c
+      - |
+        yarn build; \
+        if [ "${MODE}" = "PRODUCTION" ]; then \
+          NODE_ENV="production" && yarn start; \
+        else \
+          yarn dev; \
+        fi
     depends_on:
       db:
         condition: service_healthy
@@ -380,7 +380,7 @@ services:
       app_net:
       monitor_back_net:
       # debug
-      monitor_front_net:
+      # monitor_front_net:
 
 secrets:
   DB_NAME:
