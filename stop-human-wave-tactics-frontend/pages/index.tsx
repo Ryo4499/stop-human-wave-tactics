@@ -7,17 +7,16 @@ import { Articles } from "../components/Articles";
 import { getBackendGraphqlURL } from "../lib/graphqlClient";
 import { getPageSize } from "../lib/pagination";
 import { GraphqlError } from "../components/Common/DisplayError";
-import { ArticlesCategorisProps } from "../types/general";
-import { getArticlesCategories } from "../graphql/getArticlesCategories";
+import { ArticlesCategorisTagsProps } from "../types/general";
+import { getArticlesWithCategoriesAndTags } from "../graphql/getArticlesWithCategoriesAndTags";
 import Sidebar from "../components/Common/Sidebar";
 import Meta from "../components/utils/Head";
-import { convDatetimeArticles } from "../lib/utils";
-import { ArticleEntityResponseCollection, CategoryEntity, CategoryEntityResponseCollection, GetArticlesCategoriesQuery, GetArticlesPagesQueryVariables, GetArticlesQueryVariables } from "../types/graphql_res";
+import { convDatetimeArticles, inArticlesCategoriesTags } from "../lib/utils";
+import { ArticleEntityResponseCollection, CategoryEntity, CategoryEntityResponseCollection, GetArticlesQueryVariables, TagEntityResponseCollection } from "../types/graphql_res";
 
 export const getStaticProps = (async ({
   locale,
 }) => {
-  const isArticlesCategoriesQuery = (object: any): object is GetArticlesCategoriesQuery => { return 'articles' in object && 'categories' in object }
   const variables = {
     filters: {},
     pagination: { page: 1, pageSize: getPageSize() },
@@ -26,16 +25,17 @@ export const getStaticProps = (async ({
   };
   const res = await request(
     getBackendGraphqlURL(),
-    getArticlesCategories,
+    getArticlesWithCategoriesAndTags,
     variables
   ).then((result) => {
     return result;
   });
-  if (res != null && isArticlesCategoriesQuery(res)) {
+  if (res != null && inArticlesCategoriesTags(res)) {
     const result = {
       props: {
         articles: convDatetimeArticles((res.articles as ArticleEntityResponseCollection)),
         categories: res.categories,
+        tags: res.tags,
         variables: variables,
       },
       notFound: false,
@@ -50,12 +50,13 @@ export const getStaticProps = (async ({
   }
 })
 
-const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({
+const ArticlesIndex: NextPage<ArticlesCategorisTagsProps> = ({
   articles,
   categories,
+  tags,
   variables,
-}: { articles: ArticleEntityResponseCollection, categories: CategoryEntityResponseCollection, variables: GetArticlesQueryVariables }) => {
-  const { data, error } = useSWR([getArticlesCategories, variables], {
+}: { articles: ArticleEntityResponseCollection, categories: CategoryEntityResponseCollection, tags: TagEntityResponseCollection, variables: GetArticlesQueryVariables }) => {
+  const { data, error } = useSWR([getArticlesWithCategoriesAndTags, variables], {
     onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
       // Never retry on 404.
       if (error.status === 404) return
@@ -67,6 +68,7 @@ const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({
     fallbackData: {
       articles: articles,
       categories: categories,
+      tags: tags,
       variables: variables,
     },
   });
@@ -88,7 +90,7 @@ const ArticlesIndex: NextPage<ArticlesCategorisProps> = ({
           />
         </Grid>
         <Grid container xs={12} md={2} sx={{ flexGrow: 1 }}>
-          <Sidebar categories={data.categories} />
+          <Sidebar categories={data.categories} tags={data.tags} />
         </Grid>
       </Grid>
     );

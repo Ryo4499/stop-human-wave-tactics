@@ -1,9 +1,9 @@
 import { gql } from "graphql-request"
 
-export const getArticle = gql`query($id: ID!, $locale: I18NLocaleCode!) {
+export const getArticle = gql`
+query getArticle($id: ID!, $locale: I18NLocaleCode!) {
   article(id: $id, locale: $locale) {
     data {
-      id
       attributes {
         uuid
         title
@@ -24,15 +24,21 @@ export const getArticle = gql`query($id: ID!, $locale: I18NLocaleCode!) {
         }
         category {
           data {
-            id
             attributes {
               uuid
               name
             }
           }
         }
+        tags {
+          data {
+            attributes{
+              uuid
+              name
+            }
+          }
+        }
         Seo {
-          id
           metaTitle
           metaDescription
           metaImage {

@@ -163,7 +163,7 @@ export const Articles = ({
                   container
                   direction="column"
                   sx={{ flexGrow: 1 }}
-                  key={article.id}
+                  key={article.attributes?.uuid}
                   xs={12}
                   md={6}
                   p={3}

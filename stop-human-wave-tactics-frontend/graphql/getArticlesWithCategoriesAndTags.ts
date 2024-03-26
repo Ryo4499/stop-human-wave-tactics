@@ -1,0 +1,128 @@
+import { gql } from "graphql-request"
+
+export const getArticlesWithCategoriesAndTags = gql`
+query getArticlesWithCategoriesAndTags(
+  $filters: ArticleFiltersInput
+  $pagination: PaginationArg!
+  $sort: [String]
+  $locale: I18NLocaleCode!
+) {
+  articles(
+    filters: $filters
+    pagination: $pagination
+    sort: $sort
+    locale: $locale
+    publicationState: LIVE
+  ) {
+    data {
+      attributes {
+        uuid
+        title
+        summary
+        content
+        thumbnail {
+          data {
+            attributes {
+              name
+              alternativeText
+              caption
+              width
+              height
+              url
+              previewUrl
+            }
+          }
+        }
+        category {
+          data {
+            attributes {
+              uuid
+              name
+            }
+          }
+        }
+        tags{
+          data{
+            attributes{
+              uuid
+              name
+            }
+          }
+        }
+        Seo {
+          metaTitle
+          metaDescription
+          metaImage {
+            data {
+              attributes {
+                name
+                alternativeText
+                caption
+                width
+                height
+                url
+                previewUrl
+              }
+            }
+          }
+          keywords
+          metaRobots
+          structuredData
+          metaViewport
+          canonicalURL
+        }
+        createdAt
+        updatedAt
+        publishedAt
+        locale
+      }
+    }
+    meta {
+      pagination {
+        total
+        page
+        pageSize
+        pageCount
+      }
+    }
+  }
+  categories(filters: {}, pagination: {}, sort: [], locale: $locale) {
+    data {
+      attributes {
+        uuid
+        name
+        articles(
+          filters: { publishedAt: { ne: null } }
+          publicationState: LIVE
+        ) {
+          data {
+            attributes {
+              uuid
+            }
+          }
+        }
+        locale
+      }
+    }
+  }
+  tags(filters: {}, pagination: {}, sort: [], locale: $locale) {
+    data {
+      attributes {
+        uuid
+        name
+        articles(
+          filters: { publishedAt: { ne: null } }
+          publicationState: LIVE
+        ) {
+          data {
+            attributes {
+              uuid
+            }
+          }
+        }
+        locale
+      }
+    }
+  }
+}
+`

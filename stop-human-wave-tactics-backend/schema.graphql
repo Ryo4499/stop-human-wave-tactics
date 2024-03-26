@@ -30,6 +30,7 @@ input IDFilterInput {
   eq: ID
   eqi: ID
   ne: ID
+  nei: ID
   startsWith: ID
   endsWith: ID
   contains: ID
@@ -54,6 +55,7 @@ input BooleanFilterInput {
   eq: Boolean
   eqi: Boolean
   ne: Boolean
+  nei: Boolean
   startsWith: Boolean
   endsWith: Boolean
   contains: Boolean
@@ -78,6 +80,7 @@ input StringFilterInput {
   eq: String
   eqi: String
   ne: String
+  nei: String
   startsWith: String
   endsWith: String
   contains: String
@@ -102,6 +105,7 @@ input IntFilterInput {
   eq: Int
   eqi: Int
   ne: Int
+  nei: Int
   startsWith: Int
   endsWith: Int
   contains: Int
@@ -126,6 +130,7 @@ input FloatFilterInput {
   eq: Float
   eqi: Float
   ne: Float
+  nei: Float
   startsWith: Float
   endsWith: Float
   contains: Float
@@ -150,6 +155,7 @@ input DateTimeFilterInput {
   eq: DateTime
   eqi: DateTime
   ne: DateTime
+  nei: DateTime
   startsWith: DateTime
   endsWith: DateTime
   contains: DateTime
@@ -174,6 +180,7 @@ input JSONFilterInput {
   eq: JSON
   eqi: JSON
   ne: JSON
+  nei: JSON
   startsWith: JSON
   endsWith: JSON
   contains: JSON
@@ -273,6 +280,7 @@ input ArticleFiltersInput {
   content: StringFilterInput
   category: CategoryFiltersInput
   Seo: ComponentSharedSeoFiltersInput
+  tags: TagFiltersInput
   createdAt: DateTimeFilterInput
   updatedAt: DateTimeFilterInput
   publishedAt: DateTimeFilterInput
@@ -290,18 +298,28 @@ input ArticleInput {
   content: String
   thumbnail: ID
   category: ID
-  Seo: ComponentSharedSeoInput
+  Seo: [ComponentSharedSeoInput]
+  tags: [ID]
   publishedAt: DateTime
 }
 
 type Article {
-  uuid: String!
+  uuid: String
   title: String!
   summary: String!
   content: String!
-  thumbnail: UploadFileEntityResponse
+  thumbnail: UploadFileEntityResponse!
   category: CategoryEntityResponse
-  Seo: ComponentSharedSeo
+  Seo(
+    filters: ComponentSharedSeoFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+  ): [ComponentSharedSeo]
+  tags(
+    filters: TagFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+  ): TagRelationResponseCollection
   createdAt: DateTime
   updatedAt: DateTime
   publishedAt: DateTime
@@ -353,7 +371,7 @@ input CategoryInput {
 }
 
 type Category {
-  uuid: String!
+  uuid: String
   name: String!
   articles(
     filters: ArticleFiltersInput
@@ -387,6 +405,63 @@ type CategoryEntityResponseCollection {
 
 type CategoryRelationResponseCollection {
   data: [CategoryEntity!]!
+}
+
+input TagFiltersInput {
+  id: IDFilterInput
+  uuid: StringFilterInput
+  name: StringFilterInput
+  articles: ArticleFiltersInput
+  createdAt: DateTimeFilterInput
+  updatedAt: DateTimeFilterInput
+  localizations: TagFiltersInput
+  locale: StringFilterInput
+  and: [TagFiltersInput]
+  or: [TagFiltersInput]
+  not: TagFiltersInput
+}
+
+input TagInput {
+  uuid: String
+  name: String
+  articles: [ID]
+}
+
+type Tag {
+  uuid: String
+  name: String!
+  articles(
+    filters: ArticleFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+    publicationState: PublicationState = LIVE
+  ): ArticleRelationResponseCollection
+  createdAt: DateTime
+  updatedAt: DateTime
+  localizations(
+    filters: TagFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+  ): TagRelationResponseCollection
+  locale: String
+}
+
+type TagEntity {
+  id: ID
+  attributes: Tag
+}
+
+type TagEntityResponse {
+  data: TagEntity
+}
+
+type TagEntityResponseCollection {
+  data: [TagEntity!]!
+  meta: ResponseCollectionMeta!
+}
+
+type TagRelationResponseCollection {
+  data: [TagEntity!]!
 }
 
 input UploadFileFiltersInput {
@@ -530,6 +605,71 @@ type UploadFolderEntityResponseCollection {
 
 type UploadFolderRelationResponseCollection {
   data: [UploadFolderEntity!]!
+}
+
+enum ENUM_TRANSLATEBATCHTRANSLATEJOB_STATUS {
+  created
+  setup
+  running
+  paused
+  finished
+  cancelled
+  failed
+}
+
+input TranslateBatchTranslateJobFiltersInput {
+  id: IDFilterInput
+  contentType: StringFilterInput
+  sourceLocale: StringFilterInput
+  targetLocale: StringFilterInput
+  entityIds: JSONFilterInput
+  status: StringFilterInput
+  failureReason: JSONFilterInput
+  progress: FloatFilterInput
+  autoPublish: BooleanFilterInput
+  createdAt: DateTimeFilterInput
+  updatedAt: DateTimeFilterInput
+  and: [TranslateBatchTranslateJobFiltersInput]
+  or: [TranslateBatchTranslateJobFiltersInput]
+  not: TranslateBatchTranslateJobFiltersInput
+}
+
+input TranslateBatchTranslateJobInput {
+  contentType: String
+  sourceLocale: String
+  targetLocale: String
+  entityIds: JSON
+  status: ENUM_TRANSLATEBATCHTRANSLATEJOB_STATUS
+  failureReason: JSON
+  progress: Float
+  autoPublish: Boolean
+}
+
+type TranslateBatchTranslateJob {
+  contentType: String
+  sourceLocale: String
+  targetLocale: String
+  entityIds: JSON
+  status: ENUM_TRANSLATEBATCHTRANSLATEJOB_STATUS
+  failureReason: JSON
+  progress: Float
+  autoPublish: Boolean
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+type TranslateBatchTranslateJobEntity {
+  id: ID
+  attributes: TranslateBatchTranslateJob
+}
+
+type TranslateBatchTranslateJobEntityResponse {
+  data: TranslateBatchTranslateJobEntity
+}
+
+type TranslateBatchTranslateJobEntityResponseCollection {
+  data: [TranslateBatchTranslateJobEntity!]!
+  meta: ResponseCollectionMeta!
 }
 
 input I18NLocaleFiltersInput {
@@ -704,56 +844,19 @@ type UsersPermissionsUserRelationResponseCollection {
   data: [UsersPermissionsUserEntity!]!
 }
 
-input TodoTaskFiltersInput {
-  id: IDFilterInput
-  name: StringFilterInput
-  isDone: BooleanFilterInput
-  createdAt: DateTimeFilterInput
-  updatedAt: DateTimeFilterInput
-  and: [TodoTaskFiltersInput]
-  or: [TodoTaskFiltersInput]
-  not: TodoTaskFiltersInput
-}
-
-input TodoTaskInput {
-  name: String
-  isDone: Boolean
-}
-
-type TodoTask {
-  name: String!
-  isDone: Boolean
-  related: GenericMorph
-  createdAt: DateTime
-  updatedAt: DateTime
-}
-
-type TodoTaskEntity {
-  id: ID
-  attributes: TodoTask
-}
-
-type TodoTaskEntityResponse {
-  data: TodoTaskEntity
-}
-
-type TodoTaskEntityResponseCollection {
-  data: [TodoTaskEntity!]!
-  meta: ResponseCollectionMeta!
-}
-
 union GenericMorph =
     ComponentSharedMetaSocial
   | ComponentSharedSeo
   | Article
   | Category
+  | Tag
   | UploadFile
   | UploadFolder
+  | TranslateBatchTranslateJob
   | I18NLocale
   | UsersPermissionsPermission
   | UsersPermissionsRole
   | UsersPermissionsUser
-  | TodoTask
 
 input FileInfoInput {
   name: String
@@ -836,6 +939,13 @@ type Query {
     sort: [String] = []
     locale: I18NLocaleCode
   ): CategoryEntityResponseCollection
+  tag(id: ID, locale: I18NLocaleCode): TagEntityResponse
+  tags(
+    filters: TagFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+    locale: I18NLocaleCode
+  ): TagEntityResponseCollection
   uploadFile(id: ID): UploadFileEntityResponse
   uploadFiles(
     filters: UploadFileFiltersInput
@@ -848,6 +958,12 @@ type Query {
     pagination: PaginationArg = {}
     sort: [String] = []
   ): UploadFolderEntityResponseCollection
+  translateBatchTranslateJob(id: ID): TranslateBatchTranslateJobEntityResponse
+  translateBatchTranslateJobs(
+    filters: TranslateBatchTranslateJobFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+  ): TranslateBatchTranslateJobEntityResponseCollection
   i18NLocale(id: ID): I18NLocaleEntityResponse
   i18NLocales(
     filters: I18NLocaleFiltersInput
@@ -866,12 +982,6 @@ type Query {
     pagination: PaginationArg = {}
     sort: [String] = []
   ): UsersPermissionsUserEntityResponseCollection
-  todoTask(id: ID): TodoTaskEntityResponse
-  todoTasks(
-    filters: TodoTaskFiltersInput
-    pagination: PaginationArg = {}
-    sort: [String] = []
-  ): TodoTaskEntityResponseCollection
   me: UsersPermissionsMe
 }
 
@@ -896,6 +1006,9 @@ type Mutation {
     locale: I18NLocaleCode
   ): CategoryEntityResponse
   deleteCategory(id: ID!, locale: I18NLocaleCode): CategoryEntityResponse
+  createTag(data: TagInput!, locale: I18NLocaleCode): TagEntityResponse
+  updateTag(id: ID!, data: TagInput!, locale: I18NLocaleCode): TagEntityResponse
+  deleteTag(id: ID!, locale: I18NLocaleCode): TagEntityResponse
   createUploadFile(data: UploadFileInput!): UploadFileEntityResponse
   updateUploadFile(id: ID!, data: UploadFileInput!): UploadFileEntityResponse
   deleteUploadFile(id: ID!): UploadFileEntityResponse
@@ -905,9 +1018,16 @@ type Mutation {
     data: UploadFolderInput!
   ): UploadFolderEntityResponse
   deleteUploadFolder(id: ID!): UploadFolderEntityResponse
-  createTodoTask(data: TodoTaskInput!): TodoTaskEntityResponse
-  updateTodoTask(id: ID!, data: TodoTaskInput!): TodoTaskEntityResponse
-  deleteTodoTask(id: ID!): TodoTaskEntityResponse
+  createTranslateBatchTranslateJob(
+    data: TranslateBatchTranslateJobInput!
+  ): TranslateBatchTranslateJobEntityResponse
+  updateTranslateBatchTranslateJob(
+    id: ID!
+    data: TranslateBatchTranslateJobInput!
+  ): TranslateBatchTranslateJobEntityResponse
+  deleteTranslateBatchTranslateJob(
+    id: ID!
+  ): TranslateBatchTranslateJobEntityResponse
   upload(
     refId: ID
     ref: String
@@ -933,6 +1053,11 @@ type Mutation {
     data: CategoryInput
     locale: I18NLocaleCode
   ): CategoryEntityResponse
+  createTagLocalization(
+    id: ID
+    data: TagInput
+    locale: I18NLocaleCode
+  ): TagEntityResponse
 
   # Create a new role
   createUsersPermissionsRole(

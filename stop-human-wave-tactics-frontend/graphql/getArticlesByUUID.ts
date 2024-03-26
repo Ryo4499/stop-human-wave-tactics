@@ -1,4 +1,7 @@
-query getArticlesUUID(
+import { gql } from "graphql-request"
+
+export const getArticlesByUUID = gql`
+query getArticlesByUUID(
   $filters: ArticleFiltersInput
   $pagination: PaginationArg!
   $sort: [String]
@@ -18,3 +21,4 @@ query getArticlesUUID(
     }
   }
 }
+`

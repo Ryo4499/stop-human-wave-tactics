@@ -1,4 +1,4 @@
-import { ArticleEntity, ArticleEntityResponse, ArticleEntityResponseCollection } from "../types/graphql_res"
+import { GetArticlesWithCategoriesAndTagsQuery, ArticleEntity, ArticleEntityResponseCollection } from "../types/graphql_res"
 
 export const convDatetimeFormat = (datetime: string) => datetime.replace("T", " ").replace(/\..*$/g, "").replace(/\-/g, "/")
 
@@ -13,3 +13,4 @@ export const convDatetimeArticles = (articles: ArticleEntityResponseCollection) 
     articles.data = convArticles
     return articles
 }
+export const inArticlesCategoriesTags = (object: any): object is GetArticlesWithCategoriesAndTagsQuery => { return "articles" in object && 'categories' in object && "tags" in object }

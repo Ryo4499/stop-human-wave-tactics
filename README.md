@@ -118,3 +118,13 @@ vi ~/.ssh/config
 # Host machine
 curl localhost:$BACK_PORT/admin
 ```
+
+## Modify db tables
+
+```sh
+docker-compose exec back sh
+yarn dev
+# access graphql playground
+# download schema.graphql sdl
+graphql-codegen
+```

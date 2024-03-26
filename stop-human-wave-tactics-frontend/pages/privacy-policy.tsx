@@ -6,25 +6,26 @@ import useSWR from "swr";
 import { useLocale } from "../lib/locale";
 import type { NextPage } from "next";
 import Sidebar from "../components/Common/Sidebar";
-import { getCategories } from "../graphql/getCategories";
+import { getCategoriesAndTags } from "../graphql/getCategoriesAndTags";
 import { getBackendGraphqlURL } from "../lib/graphqlClient";
-import { CategoryEntityResponseCollection, GetCategoriesQuery } from "../types/graphql_res";
+import { CategoryEntityResponseCollection, GetCategoriesQuery, TagEntityResponseCollection } from "../types/graphql_res";
 import { GraphqlError } from "../components/Common/DisplayError";
-import { CategoriesResponseProps } from "../types/general";
+import { CategoriesAndTagsResponseProps } from "../types/general";
 import Meta from "../components/utils/Head";
 
 export const getStaticProps = (async ({
   locale,
 }) => {
-  const variables = { filters: {}, pagination: {}, locale: locale };
-  const result = await request<{ categories: CategoryEntityResponseCollection }>(
+  const variables = { categoryFilters: {}, tagFilters: {}, categoryPagination: {}, tagPagination: {}, categorySort: [], tagSort: [], locale: locale };
+  const result = await request<{ categories: CategoryEntityResponseCollection, tags: TagEntityResponseCollection }>(
     getBackendGraphqlURL(),
-    getCategories,
+    getCategoriesAndTags,
     variables
-  ).then(({ categories }: { categories: CategoryEntityResponseCollection }) => {
+  ).then(({ categories, tags }: { categories: CategoryEntityResponseCollection, tags: TagEntityResponseCollection }) => {
     return {
       props: {
         categories: categories,
+        tags: tags,
         variables: variables,
       },
       notFound: false,
@@ -42,7 +43,7 @@ export const getStaticProps = (async ({
 })
 
 
-const PrivacyPolicyContent: NextPage = () => {
+const PrivacyPolicyContent = () => {
   const { locale, locales, t } = useLocale();
   const typo = (text: string) =>
     text.split("\n").map((line, key) => (
@@ -133,12 +134,13 @@ const PrivacyPolicyContent: NextPage = () => {
   );
 };
 
-const PrivacyPolicy: NextPage<CategoriesResponseProps> = ({
+const PrivacyPolicy: NextPage<CategoriesAndTagsResponseProps> = ({
   categories,
+  tags,
   variables,
 }) => {
 
-  const { data, error } = useSWR([getCategories, variables], {
+  const { data, error } = useSWR([getCategoriesAndTags, variables], {
     onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
       // Never retry on 404.
       if (error.status === 404) return
@@ -147,7 +149,7 @@ const PrivacyPolicy: NextPage<CategoriesResponseProps> = ({
       // Retry after 3 seconds.
       setTimeout(() => revalidate({ retryCount }), 3000)
     },
-    fallbackData: { categories: categories, variables: variables },
+    fallbackData: { categories: categories, tags: tags, variables: variables },
   });
   if (data != null) {
     return (
@@ -164,7 +166,7 @@ const PrivacyPolicy: NextPage<CategoriesResponseProps> = ({
             <PrivacyPolicyContent />
           </Grid>
           <Grid container xs={12} md={2} sx={{ flexGrow: 1 }}>
-            <Sidebar categories={data.categories} />
+            <Sidebar categories={data.categories} tags={data.tags} />
           </Grid>
         </Grid>
       </Grid>
