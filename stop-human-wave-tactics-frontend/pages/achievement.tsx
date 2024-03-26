@@ -5,26 +5,27 @@ import Typography from "@mui/material/Typography";
 import type { NextPage } from "next";
 import useSWR from "swr";
 import { getBackendGraphqlURL } from "../lib/graphqlClient";
-import { getCategories } from "../graphql/getCategories";
-import { CategoryEntity, CategoryEntityResponseCollection } from "../types/graphql_res";
+import { CategoryEntity, CategoryEntityResponseCollection, TagEntityResponseCollection } from "../types/graphql_res";
 import { GraphqlError } from "../components/Common/DisplayError";
-import { CategoriesResponseProps } from "../types/general";
+import { CategoriesAndTagsResponseProps } from "../types/general";
 import { useLocale } from "../lib/locale";
 import Sidebar from "../components/Common/Sidebar";
 import Meta from "../components/utils/Head";
+import { getCategoriesAndTags } from "../graphql/getCategoriesAndTags";
 
 export const getStaticProps = (async ({
   locale,
 }) => {
   const variables = { filters: {}, pagination: {}, locale: locale };
-  const result = await request<{ categories: CategoryEntityResponseCollection }>(
+  const result = await request<{ categories: CategoryEntityResponseCollection, tags: TagEntityResponseCollection }>(
     getBackendGraphqlURL(),
-    getCategories,
+    getCategoriesAndTags,
     variables
-  ).then(({ categories }: { categories: CategoryEntityResponseCollection }) => {
+  ).then(({ categories, tags }: { categories: CategoryEntityResponseCollection, tags: TagEntityResponseCollection }) => {
     return {
       props: {
         categories: categories,
+        tags: tags,
         variables: variables,
       },
       notFound: false,
@@ -145,12 +146,12 @@ const AchievementContent = () => {
   );
 };
 
-const Achievement: NextPage<CategoriesResponseProps> = ({
+const Achievement: NextPage<CategoriesAndTagsResponseProps> = ({
   categories,
+  tags,
   variables,
 }) => {
-
-  const { data, error } = useSWR([getCategories, variables], {
+  const { data, error } = useSWR([getCategoriesAndTags, variables], {
     onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
       // Never retry on 404.
       if (error.status === 404) return
@@ -159,7 +160,7 @@ const Achievement: NextPage<CategoriesResponseProps> = ({
       // Retry after 3 seconds.
       setTimeout(() => revalidate({ retryCount }), 3000)
     },
-    fallbackData: { categories: categories, variables: variables },
+    fallbackData: { categories: categories, tags: tags, variables: variables },
   });
   if (data != null) {
     return (
@@ -179,7 +180,7 @@ const Achievement: NextPage<CategoriesResponseProps> = ({
             <AchievementContent />
           </Grid>
           <Grid container xs={12} md={2} sx={{ flexGrow: 1 }}>
-            <Sidebar categories={data.categories} />
+            <Sidebar categories={data.categories} tags={data.tags} />
           </Grid>
         </Grid>
       </Grid>

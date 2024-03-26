@@ -14,13 +14,11 @@ query getCategories(
     locale: $locale
   ) {
     data {
-      id
       attributes {
         uuid
         name
         articles(filters: { publishedAt: { ne: null } }, publicationState: LIVE) {
           data {
-            id
             attributes {
               uuid
             }
@@ -41,5 +39,4 @@ query getCategories(
     }
   }
 }
-
 `

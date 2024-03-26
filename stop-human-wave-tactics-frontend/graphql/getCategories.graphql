@@ -11,7 +11,6 @@ query getCategories(
     locale: $locale
   ) {
     data {
-      id
       attributes {
         uuid
         name
@@ -20,7 +19,6 @@ query getCategories(
           publicationState: LIVE
         ) {
           data {
-            id
             attributes {
               uuid
             }
