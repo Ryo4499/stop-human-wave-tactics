@@ -274,7 +274,7 @@ services:
         GID: $GID
         MY_USER: $MY_USER
         MY_GROUP: $MY_GROUP
-        MODE: $MODE
+        NODE_ENV: $NODE_ENV
     working_dir: "/home/${MY_USER}/stop-human-wave-tactics-backend"
     user: $MY_USER:$MY_GROUP
     secrets:
@@ -303,8 +303,8 @@ services:
       - -c
       - |
         yarn build && \
-        if [ "${MODE}" = "PRODUCTION" ]; then \
-          NODE_ENV="production" && yarn start; \
+        if [ "${NODE_ENV}" = "production" ]; then \
+          yarn start; \
         else \
           yarn dev; \
         fi
@@ -336,7 +336,7 @@ services:
         GID: $GID
         MY_USER: $MY_USER
         MY_GROUP: $MY_GROUP
-        MODE: $MODE
+        NODE_ENV: $NODE_ENV
         DOMAIN: $DOMAIN
     env_file:
       - .env
@@ -355,8 +355,8 @@ services:
       - -c
       - |
         yarn build; \
-        if [ "${MODE}" = "PRODUCTION" ]; then \
-          NODE_ENV="production" && yarn start; \
+        if [ "${NODE_ENV}" = "production" ]; then \
+          yarn start; \
         else \
           yarn dev; \
         fi

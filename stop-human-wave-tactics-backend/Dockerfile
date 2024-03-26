@@ -4,7 +4,7 @@ ARG UID
 ARG GID
 ARG MY_USER
 ARG MY_GROUP
-ARG MODE
+ARG NODE_ENV
 
 # measures Webpack Memory leak
 ENV NODE_OPTIONS="--max-old-space-size=1024"
@@ -14,7 +14,7 @@ USER $MY_USER
 
 WORKDIR "/home/${MY_USER}/stop-human-wave-tactics-backend"
 
-RUN chown $UID:$GID -R ./ 
+RUN chown $UID:$GID -R ./
 
 # PROD & rm bind mount
 # COPY --chown=$MY_USER:$MY_GROUP . .
@@ -25,9 +25,9 @@ COPY --chown=$UID:$GID ./public/ .
 
 ENV PATH=/node_modules/.bin:$PATH
 
-RUN if [ "${MODE}" = "PRODUCTION" ]; then \
-    yarn install --production=true --frozen-lockfile --force ; \
-    else \
-    yarn install --production=false ; \
-    fi
+RUN if [ "${NODE_ENV}" = "production" ]; then \
+  yarn install --production=true --frozen-lockfile --force ; \
+  else \
+  yarn install --production=false ; \
+  fi
 

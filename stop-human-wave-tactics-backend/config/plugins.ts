@@ -6,7 +6,7 @@ export default ({ env }) => ({
     config: {
       endpoint: "/graphql",
       shadowCRUD: true,
-      playgroundAlways: env("MODE") === "DEV" ? true : false,
+      playgroundAlways: env("NODE_ENV") === "development" ? true : false,
       depthLimit: 25,
       amountLimit: 30,
     },
