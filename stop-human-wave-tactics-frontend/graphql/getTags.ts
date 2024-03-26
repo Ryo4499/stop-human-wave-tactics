@@ -1,0 +1,47 @@
+import { gql } from "graphql-request"
+
+export const getTags = gql`
+query getTags(
+  $filters: TagFiltersInput
+  $pagination: PaginationArg!
+  $sort: [String]
+  $locale: I18NLocaleCode!
+) {
+  tags(
+    filters: $filters
+    pagination: $pagination
+    sort: $sort
+    locale: $locale
+  ) {
+    data {
+      id
+      attributes {
+        uuid
+        name
+        articles(
+          filters: { publishedAt: { ne: null } }
+          publicationState: LIVE
+        ) {
+          data {
+            id
+            attributes {
+              uuid
+            }
+          }
+        }
+        createdAt
+        updatedAt
+        locale
+      }
+    }
+    meta {
+      pagination {
+        total
+        page
+        pageSize
+        pageCount
+      }
+    }
+  }
+}
+`

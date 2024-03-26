@@ -280,6 +280,7 @@ input ArticleFiltersInput {
   content: StringFilterInput
   category: CategoryFiltersInput
   Seo: ComponentSharedSeoFiltersInput
+  tags: TagFiltersInput
   createdAt: DateTimeFilterInput
   updatedAt: DateTimeFilterInput
   publishedAt: DateTimeFilterInput
@@ -298,6 +299,7 @@ input ArticleInput {
   thumbnail: ID
   category: ID
   Seo: [ComponentSharedSeoInput]
+  tags: [ID]
   publishedAt: DateTime
 }
 
@@ -313,6 +315,11 @@ type Article {
     pagination: PaginationArg = {}
     sort: [String] = []
   ): [ComponentSharedSeo]
+  tags(
+    filters: TagFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+  ): TagRelationResponseCollection
   createdAt: DateTime
   updatedAt: DateTime
   publishedAt: DateTime
@@ -398,6 +405,63 @@ type CategoryEntityResponseCollection {
 
 type CategoryRelationResponseCollection {
   data: [CategoryEntity!]!
+}
+
+input TagFiltersInput {
+  id: IDFilterInput
+  uuid: StringFilterInput
+  name: StringFilterInput
+  articles: ArticleFiltersInput
+  createdAt: DateTimeFilterInput
+  updatedAt: DateTimeFilterInput
+  localizations: TagFiltersInput
+  locale: StringFilterInput
+  and: [TagFiltersInput]
+  or: [TagFiltersInput]
+  not: TagFiltersInput
+}
+
+input TagInput {
+  uuid: String
+  name: String
+  articles: [ID]
+}
+
+type Tag {
+  uuid: String
+  name: String!
+  articles(
+    filters: ArticleFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+    publicationState: PublicationState = LIVE
+  ): ArticleRelationResponseCollection
+  createdAt: DateTime
+  updatedAt: DateTime
+  localizations(
+    filters: TagFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+  ): TagRelationResponseCollection
+  locale: String
+}
+
+type TagEntity {
+  id: ID
+  attributes: Tag
+}
+
+type TagEntityResponse {
+  data: TagEntity
+}
+
+type TagEntityResponseCollection {
+  data: [TagEntity!]!
+  meta: ResponseCollectionMeta!
+}
+
+type TagRelationResponseCollection {
+  data: [TagEntity!]!
 }
 
 input UploadFileFiltersInput {
@@ -785,6 +849,7 @@ union GenericMorph =
   | ComponentSharedSeo
   | Article
   | Category
+  | Tag
   | UploadFile
   | UploadFolder
   | TranslateBatchTranslateJob
@@ -874,6 +939,13 @@ type Query {
     sort: [String] = []
     locale: I18NLocaleCode
   ): CategoryEntityResponseCollection
+  tag(id: ID, locale: I18NLocaleCode): TagEntityResponse
+  tags(
+    filters: TagFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+    locale: I18NLocaleCode
+  ): TagEntityResponseCollection
   uploadFile(id: ID): UploadFileEntityResponse
   uploadFiles(
     filters: UploadFileFiltersInput
@@ -934,6 +1006,9 @@ type Mutation {
     locale: I18NLocaleCode
   ): CategoryEntityResponse
   deleteCategory(id: ID!, locale: I18NLocaleCode): CategoryEntityResponse
+  createTag(data: TagInput!, locale: I18NLocaleCode): TagEntityResponse
+  updateTag(id: ID!, data: TagInput!, locale: I18NLocaleCode): TagEntityResponse
+  deleteTag(id: ID!, locale: I18NLocaleCode): TagEntityResponse
   createUploadFile(data: UploadFileInput!): UploadFileEntityResponse
   updateUploadFile(id: ID!, data: UploadFileInput!): UploadFileEntityResponse
   deleteUploadFile(id: ID!): UploadFileEntityResponse
@@ -978,6 +1053,11 @@ type Mutation {
     data: CategoryInput
     locale: I18NLocaleCode
   ): CategoryEntityResponse
+  createTagLocalization(
+    id: ID
+    data: TagInput
+    locale: I18NLocaleCode
+  ): TagEntityResponse
 
   # Create a new role
   createUsersPermissionsRole(

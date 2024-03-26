@@ -1,7 +1,6 @@
 query getArticle($id: ID!, $locale: I18NLocaleCode!) {
   article(id: $id, locale: $locale) {
     data {
-      id
       attributes {
         uuid
         title
@@ -22,15 +21,21 @@ query getArticle($id: ID!, $locale: I18NLocaleCode!) {
         }
         category {
           data {
-            id
             attributes {
               uuid
               name
             }
           }
         }
+        tags {
+          data {
+            attributes{
+              uuid
+              name
+            }
+          }
+        }
         Seo {
-          id
           metaTitle
           metaDescription
           metaImage {

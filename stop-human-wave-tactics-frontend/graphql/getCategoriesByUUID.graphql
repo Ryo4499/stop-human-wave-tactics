@@ -1,6 +1,4 @@
-import { gql } from "graphql-request"
-
-export const getCategoriesUUID = gql`query getCategoriesUUID(
+query getCategoriesByUUID(
   $filters: CategoryFiltersInput
   $pagination: PaginationArg!
   $sort: [String]
@@ -13,12 +11,13 @@ export const getCategoriesUUID = gql`query getCategoriesUUID(
     locale: $locale
   ) {
     data {
-      id
       attributes {
         uuid
-        articles(filters: { publishedAt: { ne: null } }, publicationState: LIVE) {
+        articles(
+          filters: { publishedAt: { ne: null } }
+          publicationState: LIVE
+        ) {
           data {
-            id
             attributes {
               uuid
             }
@@ -37,4 +36,3 @@ export const getCategoriesUUID = gql`query getCategoriesUUID(
     }
   }
 }
-`

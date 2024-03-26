@@ -2,14 +2,17 @@ import {
   ArticleEntityResponseCollection,
   CategoryEntityResponseCollection,
   GetArticlesQueryVariables,
+  TagEntityResponseCollection,
 } from "./graphql_res";
 
-export interface CategoriesProps {
+export interface CategoriesAndTagsProps {
   categories: CategoryEntityResponseCollection;
+  tags: TagEntityResponseCollection
 }
 
-export interface CategoriesResponseProps {
+export interface CategoriesAndTagsResponseProps {
   categories: CategoryEntityResponseCollection;
+  tags: TagEntityResponseCollection;
   variables: object;
 }
 
@@ -18,9 +21,10 @@ export interface ArticlesResponseProps {
   variables: object;
 }
 
-export interface ArticlesCategorisProps {
+export interface ArticlesCategorisTagsProps {
   articles: ArticleEntityResponseCollection;
   categories: CategoryEntityResponseCollection;
+  tags: TagEntityResponseCollection
   variables: GetArticlesQueryVariables;
 }
 

@@ -8,7 +8,7 @@ export const SearchNotFound = ({ filter }: { filter: string }) => {
         <Grid container direction="column" mx={5} spacing={3} sx={{ backgroundColor: "background.content", my: { md: 0, xs: 2 }, flexGrow: 1 }}>
             <Grid container xs={12} mx={3} mt={2} mb={1}>
                 <Typography variant="h6" color="text.secondary">
-                    {t.keyword + ":  " + filter}
+                    {filter}
                 </Typography>
             </Grid>
             <Grid container mx={5} my={2}>

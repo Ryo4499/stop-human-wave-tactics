@@ -407,8 +407,6 @@ volumes:
   prometheusData:
   grafanaData:
   dbData:
-  frontStaticData:
-  backStaticData:
   frontModules:
   backModules:
 

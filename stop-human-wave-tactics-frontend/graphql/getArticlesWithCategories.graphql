@@ -1,4 +1,4 @@
-query getArticlesCategories(
+query getArticlesWithCategories(
   $filters: ArticleFiltersInput
   $pagination: PaginationArg!
   $sort: [String]
@@ -12,7 +12,6 @@ query getArticlesCategories(
     publicationState: LIVE
   ) {
     data {
-      id
       attributes {
         uuid
         title
@@ -33,15 +32,21 @@ query getArticlesCategories(
         }
         category {
           data {
-            id
             attributes {
               uuid
               name
             }
           }
         }
+        tags{
+          data{
+            attributes{
+              uuid
+              name
+            }
+          }
+        }
         Seo {
-          id
           metaTitle
           metaDescription
           metaImage {
@@ -80,7 +85,6 @@ query getArticlesCategories(
   }
   categories(filters: {}, pagination: {}, sort: [], locale: $locale) {
     data {
-      id
       attributes {
         uuid
         name
@@ -89,7 +93,6 @@ query getArticlesCategories(
           publicationState: LIVE
         ) {
           data {
-            id
             attributes {
               uuid
             }

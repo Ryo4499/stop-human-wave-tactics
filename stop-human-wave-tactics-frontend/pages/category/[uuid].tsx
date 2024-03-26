@@ -4,18 +4,18 @@ import { useRouter } from "next/router";
 import { request } from "graphql-request";
 import useSWR from "swr";
 import { getBackendGraphqlURL } from "../../lib/graphqlClient";
-import { ArticleEntityResponseCollection, CategoryEntity, CategoryEntityResponseCollection, GetArticlesCategoriesQuery, GetArticlesQueryVariables } from "../../types/graphql_res";
+import { ArticleEntityResponseCollection, CategoryEntity, CategoryEntityResponseCollection, GetCategoriesByUuidQuery, GetArticlesQueryVariables, GetTagsByUuidDocument, TagEntityResponseCollection, GetArticlesWithCategoriesAndTagsQuery } from "../../types/graphql_res";
 import Sidebar from "../../components/Common/Sidebar";
 import {
-  ArticlesCategorisProps,
+  ArticlesCategorisTagsProps,
   UUIDParams,
 } from "../../types/general";
-import { getCategoriesUUID } from "../../graphql/getCategoriesUUID";
+import { getCategoriesByUUID } from "../../graphql/getCategoriesByUUID";
 import { Articles } from "../../components/Articles";
 import { GraphqlError } from "../../components/Common/DisplayError";
-import { getArticlesCategories } from "../../graphql/getArticlesCategories";
 import Meta from "../../components/utils/Head";
-import { convDatetimeArticles } from "../../lib/utils";
+import { convDatetimeArticles, inArticlesCategoriesTags } from "../../lib/utils";
+import { getArticlesWithCategoriesAndTags } from "../../graphql/getArticlesWithCategoriesAndTags";
 
 export const getStaticPaths = (async ({
   locales,
@@ -24,7 +24,7 @@ export const getStaticPaths = (async ({
   if (locales != null) {
     for (const locale of locales) {
       const variables = { pagination: {}, locale: locale };
-      await request(getBackendGraphqlURL(), getCategoriesUUID, variables).then(
+      await request(getBackendGraphqlURL(), getCategoriesByUUID, variables).then(
         (response) => {
           const { categories } = response as { categories: CategoryEntityResponseCollection };
           categories.data.map((category: CategoryEntity) => {
@@ -43,7 +43,6 @@ export const getStaticPaths = (async ({
 }) satisfies GetStaticPaths
 
 export const getStaticProps = (async ({ params, locale }) => {
-  const isGetCategoriesQuery = (object: any): object is GetArticlesCategoriesQuery => { return 'categories' in object }
   const variables = {
     filters: {
       category: {
@@ -56,16 +55,17 @@ export const getStaticProps = (async ({ params, locale }) => {
   };
   const res = await request(
     getBackendGraphqlURL(),
-    getArticlesCategories,
+    getArticlesWithCategoriesAndTags,
     variables
   ).then((result) => {
     return result;
   });
-  if (res != null && isGetCategoriesQuery(res)) {
+  if (res != null && inArticlesCategoriesTags(res)) {
     const result = {
       props: {
         articles: convDatetimeArticles((res.articles as ArticleEntityResponseCollection)),
         categories: res.categories,
+        tags: res.tags,
         variables: variables,
       },
       notFound: false,
@@ -80,13 +80,14 @@ export const getStaticProps = (async ({ params, locale }) => {
   }
 })
 
-const ArticlesPage: NextPage<ArticlesCategorisProps> = ({
+const ArticlesPage: NextPage<ArticlesCategorisTagsProps> = ({
   articles,
   categories,
+  tags,
   variables,
-}: { articles: ArticleEntityResponseCollection, categories: CategoryEntityResponseCollection, variables: GetArticlesQueryVariables }) => {
+}: { articles: ArticleEntityResponseCollection, categories: CategoryEntityResponseCollection, tags: TagEntityResponseCollection, variables: GetArticlesQueryVariables }) => {
 
-  const { data, error } = useSWR([getArticlesCategories, variables], {
+  const { data, error } = useSWR([getArticlesWithCategoriesAndTags, variables], {
     onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
       // Never retry on 404.
       if (error.status === 404) return
@@ -98,6 +99,7 @@ const ArticlesPage: NextPage<ArticlesCategorisProps> = ({
     fallbackData: {
       articles: articles,
       categories: categories,
+      tags: tags,
       variables: variables,
     },
   });
@@ -120,7 +122,7 @@ const ArticlesPage: NextPage<ArticlesCategorisProps> = ({
             />
           </Grid>
           <Grid container xs={12} md={2} sx={{ flexGrow: 1 }}>
-            <Sidebar categories={data.categories} />
+            <Sidebar categories={data.categories} tags={data.tags} />
           </Grid>
         </Grid>
       </Grid>

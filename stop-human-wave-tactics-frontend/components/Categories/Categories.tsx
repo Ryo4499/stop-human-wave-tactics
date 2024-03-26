@@ -4,30 +4,28 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Link from "next/link";
 import { useLocale } from "../../lib/locale";
-import { CategoriesProps } from "../../types/general";
 
-export const Categories = ({ categories }: CategoriesProps) => {
-
+export const Categories = ({ contents }) => {
   const { locale, locales, t } = useLocale();
 
-  if (categories.data.length === 0) {
+  if (contents.data.length === 0) {
     return null;
   } else {
-    const CategoriesContent = (
+    const Content = (
       <List disablePadding>
-        {categories.data.map((category) => {
-          if (category.attributes?.uuid != null && category.attributes?.articles?.data.length !== 0) {
+        {contents.data.map((content) => {
+          if (content.attributes?.uuid != null && content.attributes?.articles?.data.length !== 0) {
             return (
-              <ListItem sx={{ pl: 4, py: 0.5 }} key={category.id} disablePadding>
+              <ListItem sx={{ pl: 4, py: 0.5 }} key={content.attributes?.uuid} disablePadding>
                 <Link
                   href={{
-                    pathname: `/category/${category.attributes?.uuid}`,
-                    query: { name: category.attributes.name },
+                    pathname: `/category/${content.attributes?.uuid}`,
+                    query: { name: content.attributes.name },
                   }}
                 >
                   <Typography color="text.link">
-                    {category.attributes?.name} (
-                    {category.attributes?.articles?.data.length})
+                    {content.attributes?.name} (
+                    {content.attributes?.articles?.data.length})
                   </Typography>
                 </Link>
               </ListItem>
@@ -39,12 +37,12 @@ export const Categories = ({ categories }: CategoriesProps) => {
       </List>
     );
     return (
-      <Stack my={2}>
+      <Stack my={1}>
         <Typography my={1} variant="subtitle1" color="text.primary">
           {t.categories}
         </Typography>
-        {CategoriesContent}
+        {Content}
       </Stack>
     );
   }
-};
+}

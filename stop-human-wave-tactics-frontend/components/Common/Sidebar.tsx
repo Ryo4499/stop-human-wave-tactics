@@ -14,11 +14,12 @@ import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import Stack from "@mui/material/Stack";
 import { useLocale } from "../../lib/locale";
-import { Categories } from "../Category";
+import { Categories } from "../Categories";
+import { Tags } from "../Tags";
 import { useRouter } from "next/router";
-import { CategoriesProps } from "../../types/general";
+import { CategoriesAndTagsProps } from "../../types/general";
 
-const Sidebar = ({ categories }: CategoriesProps) => {
+const Sidebar = ({ categories, tags }: CategoriesAndTagsProps) => {
 
   const router = useRouter();
   const { locale, locales, t } = useLocale();
@@ -175,7 +176,10 @@ const Sidebar = ({ categories }: CategoriesProps) => {
             </Stack>
           </Grid>
           <Grid xs={12}>
-            <Categories categories={categories} />
+            <Categories contents={categories} />
+          </Grid>
+          <Grid xs={12}>
+            <Tags contents={tags} />
           </Grid>
         </Grid>
       </Grid>
