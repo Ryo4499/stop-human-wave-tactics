@@ -3,7 +3,6 @@ import Grid from "@mui/material/Unstable_Grid2"
 import { useLocale } from "../../lib/locale"
 
 export const SearchNotFound = ({ filter }: { filter: string }) => {
-    
     const { t } = useLocale()
     return (
         <Grid container direction="column" mx={5} spacing={3} sx={{ backgroundColor: "background.content", my: { md: 0, xs: 2 }, flexGrow: 1 }}>

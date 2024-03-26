@@ -4,7 +4,6 @@ import Link from "next/link";
 import Typography from "@mui/material/Typography";
 import type { NextPage } from "next";
 import useSWR from "swr";
-import { useRouter } from "next/router";
 import { getBackendGraphqlURL } from "../lib/graphqlClient";
 import { getCategories } from "../graphql/getCategories";
 import { CategoryEntity, CategoryEntityResponseCollection } from "../types/graphql_res";
@@ -150,8 +149,16 @@ const Achievement: NextPage<CategoriesResponseProps> = ({
   categories,
   variables,
 }) => {
-  
+
   const { data, error } = useSWR([getCategories, variables], {
+    onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+      // Never retry on 404.
+      if (error.status === 404) return
+      // Only retry up to 10 times.
+      if (retryCount >= 10) return
+      // Retry after 3 seconds.
+      setTimeout(() => revalidate({ retryCount }), 3000)
+    },
     fallbackData: { categories: categories, variables: variables },
   });
   if (data != null) {

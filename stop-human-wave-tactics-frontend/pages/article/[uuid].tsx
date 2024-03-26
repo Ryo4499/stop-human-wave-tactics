@@ -83,7 +83,7 @@ const ArticlePage: NextPage<ArticlesCategorisProps> = ({
   categories,
   variables,
 }: { articles: ArticleEntityResponseCollection, categories: CategoryEntityResponseCollection, variables: GetArticlesQueryVariables }) => {
-  
+
   const { data, error } = useSWR([getArticlesCategories, variables], {
     onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
       // Never retry on 404.
