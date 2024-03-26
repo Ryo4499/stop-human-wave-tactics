@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import * as prod from 'react/jsx-runtime'
 import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
@@ -159,11 +159,11 @@ const processor = unified()
     } as RehypeReactOptions)
 
 const MdContent = ({ content }: { content: string }) => {
-
     const [processedContent, setProcessedContent] = useState<any>("")
-    preprocessor.process(content).then(res => processor.process(res.value).then(res => {
+    const handler = useCallback(() => preprocessor.process(content).then(res => processor.process(res.value).then(res => {
         setProcessedContent(res.value)
-    }))
+    })), [content])
+    handler()
     return <Grid direction="column" sx={{ flexGrow: 1 }}>
         {
             (
