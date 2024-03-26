@@ -1,6 +1,4 @@
-import { gql } from "graphql-request"
-export const getArticlesCategories = gql`
-query getArticlesCategories(
+query getArticlesWithCategoriesAndTags(
   $filters: ArticleFiltersInput
   $pagination: PaginationArg!
   $sort: [String]
@@ -10,11 +8,10 @@ query getArticlesCategories(
     filters: $filters
     pagination: $pagination
     sort: $sort
-    publicationState: LIVE
     locale: $locale
+    publicationState: LIVE
   ) {
     data {
-      id
       attributes {
         uuid
         title
@@ -35,15 +32,21 @@ query getArticlesCategories(
         }
         category {
           data {
-            id
             attributes {
               uuid
               name
             }
           }
         }
+        tags{
+          data{
+            attributes{
+              uuid
+              name
+            }
+          }
+        }
         Seo {
-          id
           metaTitle
           metaDescription
           metaImage {
@@ -80,20 +83,16 @@ query getArticlesCategories(
       }
     }
   }
-  categories(
-    filters: {}
-    pagination: {}
-    sort: []
-    locale: $locale
-  ) {
+  categories(filters: {}, pagination: {}, sort: [], locale: $locale) {
     data {
-      id
       attributes {
         uuid
         name
-        articles(filters: { publishedAt: { ne: null } }, publicationState: LIVE) {
+        articles(
+          filters: { publishedAt: { ne: null } }
+          publicationState: LIVE
+        ) {
           data {
-            id
             attributes {
               uuid
             }
@@ -102,14 +101,24 @@ query getArticlesCategories(
         locale
       }
     }
-    meta {
-      pagination {
-        total
-        page
-        pageSize
-        pageCount
+  }
+  tags(filters: {}, pagination: {}, sort: [], locale: $locale) {
+    data {
+      attributes {
+        uuid
+        name
+        articles(
+          filters: { publishedAt: { ne: null } }
+          publicationState: LIVE
+        ) {
+          data {
+            attributes {
+              uuid
+            }
+          }
+        }
+        locale
       }
     }
   }
 }
-`

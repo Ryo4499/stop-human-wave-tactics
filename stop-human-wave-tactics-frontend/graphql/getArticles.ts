@@ -1,11 +1,21 @@
 import { gql } from "graphql-request"
 
 export const getArticles = gql`
-query($filters:ArticleFiltersInput,$pagination:PaginationArg!,$sort:[String],$locale:I18NLocaleCode!){
-  articles(filters:$filters,pagination:$pagination,sort:$sort,locale:$locale,publicationState:LIVE){
-    data{
-      id
-      attributes{
+query getArticles(
+  $filters: ArticleFiltersInput
+  $pagination: PaginationArg!
+  $sort: [String]
+  $locale: I18NLocaleCode!
+) {
+  articles(
+    filters: $filters
+    pagination: $pagination
+    sort: $sort
+    locale: $locale
+    publicationState: LIVE
+  ) {
+    data {
+      attributes {
         uuid
         title
         summary
@@ -25,7 +35,14 @@ query($filters:ArticleFiltersInput,$pagination:PaginationArg!,$sort:[String],$lo
         }
         category {
           data {
-            id
+            attributes {
+              uuid
+              name
+            }
+          }
+        }
+        tags {
+          data {
             attributes {
               uuid
               name
@@ -33,7 +50,6 @@ query($filters:ArticleFiltersInput,$pagination:PaginationArg!,$sort:[String],$lo
           }
         }
         Seo {
-          id
           metaTitle
           metaDescription
           metaImage {
@@ -61,8 +77,8 @@ query($filters:ArticleFiltersInput,$pagination:PaginationArg!,$sort:[String],$lo
         locale
       }
     }
-    meta{
-      pagination{
+    meta {
+      pagination {
         total
         page
         pageSize

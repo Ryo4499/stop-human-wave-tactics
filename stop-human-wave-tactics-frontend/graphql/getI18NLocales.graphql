@@ -5,7 +5,6 @@ query getI18NLocales(
 ) {
   i18NLocales(filters: $filters, pagination: $pagination, sort: $sort) {
     data {
-      id
       attributes {
         name
         code

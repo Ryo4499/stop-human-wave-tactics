@@ -12,7 +12,6 @@ query getArticles(
     publicationState: LIVE
   ) {
     data {
-      id
       attributes {
         uuid
         title
@@ -33,7 +32,14 @@ query getArticles(
         }
         category {
           data {
-            id
+            attributes {
+              uuid
+              name
+            }
+          }
+        }
+        tags {
+          data {
             attributes {
               uuid
               name
@@ -41,7 +47,6 @@ query getArticles(
           }
         }
         Seo {
-          id
           metaTitle
           metaDescription
           metaImage {

@@ -1,6 +1,8 @@
 import Grid from "@mui/material/Unstable_Grid2";
+import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import FolderIcon from '@mui/icons-material/Folder';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import MdContent from "../Common/MdContent";
 import Link from "next/link";
 import {
@@ -10,6 +12,31 @@ import { useLocale } from "../../lib/locale";
 import { Adsense } from '@ctrl/react-adsense';
 import { prod } from "../../lib/graphqlClient";
 import { getGaId } from "../../lib/google";
+
+const TagsLinkComponent = ({ article }) => {
+  if (article.tags == null) {
+    return null
+  }
+  else {
+    return (
+      <Grid container direction="row" sx={{ color: "text.link" }} justifyContent="flex-end" alignItems="center">
+        <Grid container mx={1}>
+          <LocalOfferIcon sx={{ color: "text.secondary", fontSize: "3vh" }} />
+        </Grid>
+        <Stack>
+          {
+            article.tags.data.map(tag => (
+              <Link key={tag.attributes.uuid} href={{ pathname: `/tag/${tag.attributes.uuid}`, query: { name: tag.attributes.name } }}>
+                <Typography sx={{ fontSize: "1.0rem" }} color="text.link">
+                  {tag.attributes.name}
+                </Typography>
+              </Link>
+            ))
+          }
+        </Stack>
+      </Grid>)
+  }
+}
 
 const CategoryLinkComponent = ({ article }) => {
   if (article.category?.data?.attributes?.uuid == null) {
@@ -45,6 +72,7 @@ export const ArticleDetails = ({ articles }: { articles: ArticleEntityResponseCo
         </Grid>
         <Grid direction="row" my={2} alignContent="center" alignItems="center">
           <CategoryLinkComponent article={article} />
+          <TagsLinkComponent article={article} />
           <Grid textAlign={"right"} my={2}>
             <Typography sx={{ fontSize: "0.9rem" }} color={"text.secondary"} >
               {t.updated_at}: {article.updatedAt}
