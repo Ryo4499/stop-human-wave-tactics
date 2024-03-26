@@ -316,9 +316,9 @@ services:
     healthcheck:
       test: wget --spider back:${BACK_PORT}${ADMIN_URL}
       interval: 5s
-      retries: 10
+      retries: 20
       start_period: 30s
-      timeout: 80s
+      timeout: 130s
     networks:
       db_net:
       app_net:
@@ -372,9 +372,9 @@ services:
     healthcheck:
       test: wget --spider front:${FRONT_PORT}
       interval: 5s
-      retries: 10
+      retries: 20
       start_period: 30s
-      timeout: 80s
+      timeout: 130s
     restart: always
     networks:
       app_net:

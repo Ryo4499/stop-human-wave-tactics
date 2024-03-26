@@ -137,7 +137,7 @@ const PrivacyPolicy: NextPage<CategoriesResponseProps> = ({
   categories,
   variables,
 }) => {
-  
+
   const { data, error } = useSWR([getCategories, variables], {
     onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
       // Never retry on 404.

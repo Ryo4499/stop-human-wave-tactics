@@ -96,7 +96,9 @@ const ImageComponent = ({ article }) => {
 
 const CategoryComponent = ({ article }) => {
   if (article.attributes.category?.data?.attributes
-    ?.uuid != null) {
+    ?.uuid == null ||
+    article.attributes.category.data?.attributes.name == null
+  ) {
     return null
   }
   return (
@@ -115,17 +117,15 @@ const CategoryComponent = ({ article }) => {
         <Grid>
           <Link
             href={{
-              pathname: `/category/${article.attributes.category.data.attributes.uuid}`,
+              pathname: `/category/${article.attributes.category.data?.attributes.uuid}`,
               query: {
-                name: article.attributes.category.data
-                  .attributes.name,
+                name: article.attributes.category.data?.attributes.name,
               },
             }}
           >
             <Typography color="text.link">
               {
-                article.attributes.category.data
-                  .attributes.name
+                article.attributes.category.data?.attributes.name
               }
             </Typography>
           </Link>

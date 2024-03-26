@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Unstable_Grid2";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect } from "react";
 import { request } from "graphql-request";
 import useSWR from "swr";
 import { Articles } from "../components/Articles";
