@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useState } from "react"
 import Grid from "@mui/material/Unstable_Grid2";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -76,25 +76,13 @@ const ArticlesIndex: NextPage<ArticlesCategorisTagsProps> = ({
   });
   const { t } = useLocale()
   const router = useRouter();
-  const filter = useCallback(() => {
-    if (router.asPath.includes("category")) {
-      return router.query.title != null && typeof router.query.title === "string"
-        ? `${t.categories}: ${router.query.title}`
-        : "";
-    } else if (router.asPath.includes("tag")) {
-      return router.query.title != null && typeof router.query.title === "string"
-        ? `${t.tags}: ${router.query.title}`
-        : "";
-    } else {
-      return router.query.title != null && typeof router.query.title === "string"
-        ? `${t.keyword}: ${router.query.title}`
-        : "";
-    }
-  }, [router.query.title])
+  const title = router.query.title != null && typeof router.query.title === "string" ? router.query.title : "";
+  const filter = title != "" ? `${t.keyword}: ${title}` : ""
+
   if (data != null) {
     const filterArticles = data.articles.data.filter(
       (article: ArticleEntity) => {
-        return article.attributes?.title.toLowerCase().includes(filter().toLowerCase());
+        return article.attributes?.title.toLowerCase().includes(title.toLowerCase());
       }
     );
 
@@ -118,15 +106,15 @@ const ArticlesIndex: NextPage<ArticlesCategorisTagsProps> = ({
         <Meta
           title="Searched articles by title"
           description="This page published articles searched by title."
-          keyword={filter()}
+          keyword={filter}
         />
         <Grid container xs={12} md={10} sx={{ flexGrow: 1 }}>
           {filterArticles.length === 0 ? (
-            <SearchNotFound filter={filter()} />
+            <SearchNotFound filter={filter} />
           ) : (
             <Articles
               articles={filterArticlesResponseCollection}
-              filter={filter()}
+              filter={filter}
             />
           )}
         </Grid>
