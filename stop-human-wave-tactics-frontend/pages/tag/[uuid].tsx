@@ -17,6 +17,7 @@ import { getArticlesWithTags } from "../../graphql/getArticlesWithTags";
 import Meta from "../../components/utils/Head";
 import { convDatetimeArticles, inArticlesCategoriesTags } from "../../lib/utils";
 import { getArticlesWithCategoriesAndTags } from "../../graphql/getArticlesWithCategoriesAndTags";
+import { useLocale } from "../../lib/locale";
 
 export const getStaticPaths = (async ({
   locales,
@@ -105,6 +106,7 @@ const ArticlesPage: NextPage<ArticlesCategorisTagsProps> = ({
     },
   });
   const router = useRouter();
+  const { t } = useLocale()
   if (data != null && typeof router.query.name === "string") {
     return (
       <Grid container sx={{ flexGrow: 1 }}>
@@ -119,7 +121,7 @@ const ArticlesPage: NextPage<ArticlesCategorisTagsProps> = ({
           <Grid container xs={12} md={10} sx={{ flexGrow: 1 }}>
             <Articles
               articles={data.articles}
-              filter={router.query.name}
+              filter={`${t.tags}: ${router.query.name}`}
             />
           </Grid>
           <Grid container xs={12} md={2} sx={{ flexGrow: 1 }}>

@@ -9,20 +9,19 @@ import PaginationItem from "@mui/material/PaginationItem"
 import Typography from "@mui/material/Typography"
 import Button from "@mui/material/Button";
 import Link from "next/link";
-import FolderIcon from "@mui/icons-material/Folder";
 import Image from "next/image";
 import { ArticleEntityResponseCollection } from "../../types/graphql_res";
 import { useRouter } from "next/router";
 import { useLocale } from "../../lib/locale";
 import { imageLoader } from "../../lib/loader";
-import { Adsense } from '@ctrl/react-adsense';
-import { prod } from "../../lib/graphqlClient";
-import { getGaId } from "../../lib/google";
+import { Adsense } from "../Common/Adsense";
 import { PageContext } from "../../pages/_app";
+import { CategoryLinkComponent } from "../Categories/Categories";
+import { TagsLinkComponent } from "../Tags/Tags";
 
 interface ArticlesProps {
   articles: ArticleEntityResponseCollection;
-  filter: string | string[] | null | undefined;
+  filter: string
 }
 
 interface ArticlesPropsContent {
@@ -48,17 +47,13 @@ const Content = ({ pageCount }: ArticlesPropsContent) => {
   );
 };
 
-const FilterComponent = ({ t, filter }) => {
-  if (filter == null) {
-    return null;
-  }
-  return (
-    <Grid container xs={12} ml={2} my={2}>
+const FilterComponent = ({ filter }) => {
+  return filter !== "" ?
+    (<Grid container xs={12} ml={2} my={2}>
       <Typography variant="h6" color="text.secondary">
-        {t.keyword + ":  " + filter}
+        {filter}
       </Typography>
-    </Grid>
-  )
+    </Grid>) : null
 }
 
 const ImageComponent = ({ article }) => {
@@ -87,51 +82,11 @@ const ImageComponent = ({ article }) => {
             article.attributes.thumbnail.data.attributes
               .alternativeText
           }
+          unoptimized
           sizes="(max-width: 1080px) 100vw, (max-width: 1920px) 50vw, 33vw"
         />
       </Grid>
     </Link>
-  )
-}
-
-const CategoryComponent = ({ article }) => {
-  if (article.attributes.category?.data?.attributes
-    ?.uuid == null ||
-    article.attributes.category.data?.attributes.name == null
-  ) {
-    return null
-  }
-  return (
-    <Grid container justifyContent="flex-end" xs={12} my={1}>
-      <Grid
-        container
-        sx={{ color: "text.link" }}
-        spacing={1}
-        ml={1}
-      >
-        <Grid>
-          <FolderIcon
-            sx={{ color: "text.secondary" }}
-          />
-        </Grid>
-        <Grid>
-          <Link
-            href={{
-              pathname: `/category/${article.attributes.category.data?.attributes.uuid}`,
-              query: {
-                name: article.attributes.category.data?.attributes.name,
-              },
-            }}
-          >
-            <Typography color="text.link">
-              {
-                article.attributes.category.data?.attributes.name
-              }
-            </Typography>
-          </Link>
-        </Grid>
-      </Grid>
-    </Grid>
   )
 }
 
@@ -140,14 +95,14 @@ export const Articles = ({
   filter,
 }: ArticlesProps) => {
 
-  const { locale, locales, t } = useLocale();
+  const { t } = useLocale();
   const router = useRouter();
 
   if (articles.data != null) {
     const pageCount = articles.meta.pagination.pageCount;
     return (
       <Grid container xs={12} alignContent="flex-start">
-        <FilterComponent t={t} filter={filter} />
+        <FilterComponent filter={filter} />
         <Grid
           container
           direction="row"
@@ -205,7 +160,8 @@ export const Articles = ({
                             </Typography>
                           </Stack>
                         </Grid>
-                        <CategoryComponent article={article} />
+                        <CategoryLinkComponent article={article.attributes} />
+                        <TagsLinkComponent article={article.attributes} />
                         <Grid
                           container
                           px={2}
@@ -252,9 +208,7 @@ export const Articles = ({
           ></Content>
         </Grid>
         {
-          <Grid className="adsbygoogle" container my={1} xs={12} sx={{ flexGrow: 1 }}>
-            <Adsense style={{ display: "block" }} adTest={prod ? "off" : "on"} client={getGaId()} format="autorelaxed" slot="1094459397" key="" />
-          </Grid>
+          <Adsense style={{ display: "block", width: "80vw", height: "50vh" }} format="autorelaxed" slot="1094459397" fullWidth="true" adStatus="filled" />
         }
       </Grid>
     );

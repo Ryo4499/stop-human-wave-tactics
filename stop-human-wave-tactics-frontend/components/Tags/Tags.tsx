@@ -3,7 +3,10 @@ import Stack from "@mui/material/Stack";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Link from "next/link";
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import Grid from "@mui/material/Unstable_Grid2";
 import { useLocale } from "../../lib/locale";
+import { Article } from "../../types/graphql_res";
 
 export const Tags = ({ contents }) => {
   const { locale, locales, t } = useLocale();
@@ -44,5 +47,30 @@ export const Tags = ({ contents }) => {
         {Content}
       </Stack>
     );
+  }
+}
+
+export const TagsLinkComponent = ({ article }: { article: Article }) => {
+  if (article.tags?.data.length !== 0) {
+    return (
+      <Grid container my={1} direction="row" sx={{ color: "text.link" }} justifyContent="flex-end" alignItems="center">
+        <Grid container mx={1}>
+          <LocalOfferIcon sx={{ color: "text.secondary", fontSize: "3vh" }} />
+        </Grid>
+        <Stack direction="row">
+          {
+            article.tags?.data.map(tag => (
+              <Link key={tag.attributes?.uuid} href={{ pathname: `/tag/${tag.attributes?.uuid}`, query: { name: tag.attributes?.name } }}>
+                <Typography sx={{ fontSize: "1.0rem" }} color="text.link">
+                  {tag.attributes?.name}
+                </Typography>
+              </Link>
+            ))
+          }
+        </Stack>
+      </Grid>)
+  }
+  else {
+    return null
   }
 }

@@ -16,7 +16,7 @@ import { getCategoriesAndTags } from "../graphql/getCategoriesAndTags";
 export const getStaticProps = (async ({
   locale,
 }) => {
-  const variables = { filters: {}, pagination: {}, locale: locale };
+  const variables = { categoryFilters: {}, tagFilters: {}, categoryPagination: {}, tagPagination: {}, categorySort: [], tagSort: [], locale: locale };
   const result = await request<{ categories: CategoryEntityResponseCollection, tags: TagEntityResponseCollection }>(
     getBackendGraphqlURL(),
     getCategoriesAndTags,

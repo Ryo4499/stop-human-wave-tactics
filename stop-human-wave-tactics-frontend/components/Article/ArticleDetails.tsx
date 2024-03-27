@@ -1,61 +1,13 @@
 import Grid from "@mui/material/Unstable_Grid2";
-import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import FolderIcon from '@mui/icons-material/Folder';
-import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import MdContent from "../Common/MdContent";
-import Link from "next/link";
 import {
   ArticleEntityResponseCollection,
 } from "../../types/graphql_res";
 import { useLocale } from "../../lib/locale";
-import { Adsense } from '@ctrl/react-adsense';
-import { prod } from "../../lib/graphqlClient";
-import { getGaId } from "../../lib/google";
-
-const TagsLinkComponent = ({ article }) => {
-  if (article.tags == null) {
-    return null
-  }
-  else {
-    return (
-      <Grid container direction="row" sx={{ color: "text.link" }} justifyContent="flex-end" alignItems="center">
-        <Grid container mx={1}>
-          <LocalOfferIcon sx={{ color: "text.secondary", fontSize: "3vh" }} />
-        </Grid>
-        <Stack>
-          {
-            article.tags.data.map(tag => (
-              <Link key={tag.attributes.uuid} href={{ pathname: `/tag/${tag.attributes.uuid}`, query: { name: tag.attributes.name } }}>
-                <Typography sx={{ fontSize: "1.0rem" }} color="text.link">
-                  {tag.attributes.name}
-                </Typography>
-              </Link>
-            ))
-          }
-        </Stack>
-      </Grid>)
-  }
-}
-
-const CategoryLinkComponent = ({ article }) => {
-  if (article.category?.data?.attributes?.uuid == null) {
-    return null
-  }
-  return (
-    <Grid container direction="row" sx={{ color: "text.link" }} justifyContent="flex-end" alignItems="center">
-      <Grid container mx={1}>
-        <FolderIcon sx={{ color: "text.secondary", fontSize: "3vh" }} />
-      </Grid>
-      <Grid container>
-        <Link href={{ pathname: `/category/${article.category.data?.attributes?.uuid}`, query: { name: article.category.data.attributes.name } }}>
-          <Typography sx={{ fontSize: "1.0rem" }} color="text.link">
-            {article.category?.data?.attributes?.name}
-          </Typography>
-        </Link>
-      </Grid>
-    </Grid>)
-}
+import { Adsense } from "../Common/Adsense";
+import { CategoryLinkComponent } from "../Categories/Categories";
+import { TagsLinkComponent } from "../Tags/Tags";
 
 export const ArticleDetails = ({ articles }: { articles: ArticleEntityResponseCollection }) => {
 
@@ -64,15 +16,19 @@ export const ArticleDetails = ({ articles }: { articles: ArticleEntityResponseCo
   if (articles?.data[0]?.attributes != null) {
     const article = articles.data[0]?.attributes;
     return (
-      <Grid direction="column" justifyContent={"center"} my={2} px={5} mx={5} xs={12} sx={{ flexGrow: 1, backgroundColor: "background.content" }}>
+      <Grid direction="column" justifyContent={"center"} my={2} xs={12} sx={{ mx: { xs: 2, sm: 5 }, px: { xs: 2, sm: 5 }, flexGrow: 1, backgroundColor: "background.content" }}>
         <Grid>
           <Typography py={2} sx={{ fontSize: "2.0rem" }} color={"text.primary"}>
             {article.title}
           </Typography>
         </Grid>
         <Grid direction="row" my={2} alignContent="center" alignItems="center">
-          <CategoryLinkComponent article={article} />
-          <TagsLinkComponent article={article} />
+          {
+            article.category?.data != null ? <CategoryLinkComponent article={article} /> : null
+          }
+          {
+            article.tags?.data.length !== 0 ? <TagsLinkComponent article={article} /> : null
+          }
           <Grid textAlign={"right"} my={2}>
             <Typography sx={{ fontSize: "0.9rem" }} color={"text.secondary"} >
               {t.updated_at}: {article.updatedAt}
@@ -85,9 +41,7 @@ export const ArticleDetails = ({ articles }: { articles: ArticleEntityResponseCo
         <Grid direction="row" py={2}>
           <MdContent content={article.content}></MdContent>
           {
-            <Grid className="adsbygoogle" container my={2} xs={12} >
-              <Adsense style={{ display: "block", textAlign: "center" }} adTest={prod ? "off" : "on"} client={getGaId()} format="fluid" slot="7513378149" key="in-article" />
-            </Grid>
+            <Adsense style={{ display: "block", textAlign: "center", width: "80vw", height: "50vh" }} format="fluid" slot="4924859350" fullWidth="true" adStatus="filled" key="+3f+qw+4f-n8+fw" />
           }
         </Grid>
       </Grid>
