@@ -208,7 +208,7 @@ export const Articles = ({
           ></Content>
         </Grid>
         {
-          <Adsense style={{ display: "block", width: "80vw", height: "50vh" }} format="autorelaxed" slot="1094459397" fullWidth="true" adStatus="filled" />
+          <Adsense style={{ display: "block", width: "80vw", height: "40vh" }} format="autorelaxed" slot="1094459397" fullWidth="true" adStatus="filled" />
         }
       </Grid>
     );
