@@ -37,7 +37,7 @@ class MyDocument extends Document {
           <link rel="icon" sizes="192x192" href="/static/images/favicon_192x192.jpg" />
           <link rel="shortcut icon" href="/favicon.ico" />
           <link rel="manifest" href="/manifest.json" />
-          <script async
+          <script async crossOrigin="anonymous"
             src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${getGaId()}`}
           />
           <Script async strategy="afterInteractive" src="https://securepubads.g.doubleclick.net/tag/js/gpt.js" />
