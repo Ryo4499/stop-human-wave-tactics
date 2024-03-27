@@ -2299,7 +2299,7 @@ export const GetTagsByUuidDocument = gql`
 }
     `;
 
-export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string, variables?: any) => Promise<T>;
+export type SdkFunctionWrapper = <T>(action: (requestHeaders?: Record<string, string>) => Promise<T>, operationName: string, operationType?: string, variables?: any) => Promise<T>;
 
 
 const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType, _variables) => action();
@@ -2307,49 +2307,49 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
     getArticle(variables: GetArticleQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetArticleQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetArticleQuery>(GetArticleDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getArticle', 'query', variables);
+      return withWrapper((wrappedRequestHeaders) => client.request<GetArticleQuery>(GetArticleDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getArticle', 'query', variables);
     },
     getArticles(variables: GetArticlesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetArticlesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetArticlesQuery>(GetArticlesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getArticles', 'query', variables);
+      return withWrapper((wrappedRequestHeaders) => client.request<GetArticlesQuery>(GetArticlesDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getArticles', 'query', variables);
     },
     getArticlesByUUID(variables: GetArticlesByUuidQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetArticlesByUuidQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetArticlesByUuidQuery>(GetArticlesByUuidDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getArticlesByUUID', 'query', variables);
+      return withWrapper((wrappedRequestHeaders) => client.request<GetArticlesByUuidQuery>(GetArticlesByUuidDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getArticlesByUUID', 'query', variables);
     },
     getArticlesPages(variables: GetArticlesPagesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetArticlesPagesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetArticlesPagesQuery>(GetArticlesPagesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getArticlesPages', 'query', variables);
+      return withWrapper((wrappedRequestHeaders) => client.request<GetArticlesPagesQuery>(GetArticlesPagesDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getArticlesPages', 'query', variables);
     },
     getArticlesWithCategories(variables: GetArticlesWithCategoriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetArticlesWithCategoriesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetArticlesWithCategoriesQuery>(GetArticlesWithCategoriesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getArticlesWithCategories', 'query', variables);
+      return withWrapper((wrappedRequestHeaders) => client.request<GetArticlesWithCategoriesQuery>(GetArticlesWithCategoriesDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getArticlesWithCategories', 'query', variables);
     },
     getArticlesWithCategoriesAndTags(variables: GetArticlesWithCategoriesAndTagsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetArticlesWithCategoriesAndTagsQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetArticlesWithCategoriesAndTagsQuery>(GetArticlesWithCategoriesAndTagsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getArticlesWithCategoriesAndTags', 'query', variables);
+      return withWrapper((wrappedRequestHeaders) => client.request<GetArticlesWithCategoriesAndTagsQuery>(GetArticlesWithCategoriesAndTagsDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getArticlesWithCategoriesAndTags', 'query', variables);
     },
     getArticlesWithTags(variables: GetArticlesWithTagsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetArticlesWithTagsQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetArticlesWithTagsQuery>(GetArticlesWithTagsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getArticlesWithTags', 'query', variables);
+      return withWrapper((wrappedRequestHeaders) => client.request<GetArticlesWithTagsQuery>(GetArticlesWithTagsDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getArticlesWithTags', 'query', variables);
     },
     getCategories(variables: GetCategoriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetCategoriesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetCategoriesQuery>(GetCategoriesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCategories', 'query', variables);
+      return withWrapper((wrappedRequestHeaders) => client.request<GetCategoriesQuery>(GetCategoriesDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getCategories', 'query', variables);
     },
     getCategoriesAndTags(variables: GetCategoriesAndTagsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetCategoriesAndTagsQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetCategoriesAndTagsQuery>(GetCategoriesAndTagsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCategoriesAndTags', 'query', variables);
+      return withWrapper((wrappedRequestHeaders) => client.request<GetCategoriesAndTagsQuery>(GetCategoriesAndTagsDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getCategoriesAndTags', 'query', variables);
     },
     getCategoriesByUUID(variables: GetCategoriesByUuidQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetCategoriesByUuidQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetCategoriesByUuidQuery>(GetCategoriesByUuidDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCategoriesByUUID', 'query', variables);
+      return withWrapper((wrappedRequestHeaders) => client.request<GetCategoriesByUuidQuery>(GetCategoriesByUuidDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getCategoriesByUUID', 'query', variables);
     },
     getCategory(variables: GetCategoryQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetCategoryQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetCategoryQuery>(GetCategoryDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCategory', 'query', variables);
+      return withWrapper((wrappedRequestHeaders) => client.request<GetCategoryQuery>(GetCategoryDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getCategory', 'query', variables);
     },
     getI18NLocales(variables?: GetI18NLocalesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetI18NLocalesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetI18NLocalesQuery>(GetI18NLocalesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getI18NLocales', 'query', variables);
+      return withWrapper((wrappedRequestHeaders) => client.request<GetI18NLocalesQuery>(GetI18NLocalesDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getI18NLocales', 'query', variables);
     },
     getTag(variables: GetTagQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetTagQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetTagQuery>(GetTagDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getTag', 'query', variables);
+      return withWrapper((wrappedRequestHeaders) => client.request<GetTagQuery>(GetTagDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getTag', 'query', variables);
     },
     getTags(variables: GetTagsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetTagsQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetTagsQuery>(GetTagsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getTags', 'query', variables);
+      return withWrapper((wrappedRequestHeaders) => client.request<GetTagsQuery>(GetTagsDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getTags', 'query', variables);
     },
     getTagsByUUID(variables: GetTagsByUuidQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetTagsByUuidQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetTagsByUuidQuery>(GetTagsByUuidDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getTagsByUUID', 'query', variables);
+      return withWrapper((wrappedRequestHeaders) => client.request<GetTagsByUuidQuery>(GetTagsByUuidDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getTagsByUUID', 'query', variables);
     }
   };
 }

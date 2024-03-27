@@ -2,8 +2,7 @@
   "compilerOptions": {
     "target": "es5",
     "types": [
-      "node",
-      "@types/gtag.js"
+      "node"
     ],
     "lib": [
       "dom",

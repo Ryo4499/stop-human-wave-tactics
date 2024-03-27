@@ -55,7 +55,7 @@ const ArticlesIndex: NextPage<ArticlesCategorisTagsProps> = ({
   categories,
   tags,
   variables,
-}: { articles: ArticleEntityResponseCollection, categories: CategoryEntityResponseCollection, tags: TagEntityResponseCollection, variables: GetArticlesQueryVariables }) => {
+}) => {
   const { data, error } = useSWR([getArticlesWithCategoriesAndTags, variables], {
     onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
       // Never retry on 404.
@@ -79,14 +79,12 @@ const ArticlesIndex: NextPage<ArticlesCategorisTagsProps> = ({
         <Meta
           title="Top Page"
           description="This page published latest articles."
-          keyword={categories.data
-            .map((value: CategoryEntity) => value.attributes?.name)
-            .join(" ")}
+          keyword={categories.data.map((value: CategoryEntity) => value.attributes?.name).join(" ")}
         />
         <Grid container xs={12} md={10} sx={{ flexGrow: 1 }}>
           <Articles
             articles={data.articles}
-            filter={null}
+            filter=""
           />
         </Grid>
         <Grid container xs={12} md={2} sx={{ flexGrow: 1 }}>
