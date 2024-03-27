@@ -41,7 +41,7 @@ export const ArticleDetails = ({ articles }: { articles: ArticleEntityResponseCo
         <Grid direction="row" py={2}>
           <MdContent content={article.content}></MdContent>
           {
-            <Adsense style={{ display: "block", textAlign: "center", width: "80vw", height: "50vh" }} format="fluid" slot="4924859350" fullWidth="true" adStatus="filled" key="+3f+qw+4f-n8+fw" />
+            <Adsense style={{ display: "block", textAlign: "center", width: "80vw", height: "40vh" }} format="fluid" slot="4924859350" fullWidth="true" adStatus="filled" key="+3f+qw+4f-n8+fw" />
           }
         </Grid>
       </Grid>
