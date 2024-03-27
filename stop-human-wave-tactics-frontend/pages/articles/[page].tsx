@@ -7,7 +7,7 @@ import { Articles } from "../../components/Articles";
 import { getArticlesPages } from "../../graphql/getArticlesPages";
 import { getBackendGraphqlURL } from "../../lib/graphqlClient";
 import { getPageSize } from "../../lib/pagination";
-import { ArticleEntityResponseCollection, CategoryEntityResponseCollection, GetArticlesQueryVariables, GetArticlesWithCategoriesAndTagsQuery } from "../../types/graphql_res";
+import { ArticleEntityResponseCollection, CategoryEntityResponseCollection, GetArticlesPagesQuery, GetArticlesQueryVariables, GetArticlesWithCategoriesAndTagsQuery } from "../../types/graphql_res";
 import { GraphqlError } from "../../components/Common/DisplayError";
 import Sidebar from "../../components/Common/Sidebar";
 import {
@@ -15,7 +15,7 @@ import {
   PageParams,
 } from "../../types/general";
 import Meta from "../../components/utils/Head";
-import { convDatetimeArticles } from "../../lib/utils";
+import { convDatetimeArticles, inArticlesCategoriesTags } from "../../lib/utils";
 import { getArticlesWithCategoriesAndTags } from "../../graphql/getArticlesWithCategoriesAndTags";
 
 export const getStaticPaths = (async ({
@@ -29,8 +29,8 @@ export const getStaticPaths = (async ({
         locale: locale,
       };
       await request(getBackendGraphqlURL(), getArticlesPages, variables).then(
-        (response) => {
-          const { articles } = response as { articles: ArticleEntityResponseCollection };
+        (res) => {
+          const articles = (res as GetArticlesPagesQuery).articles;
           const pageCount = articles?.meta.pagination.pageCount;
           if (pageCount != null) {
             const pages = Array.from({ length: pageCount }, (v, k) => k + 1);
@@ -47,7 +47,6 @@ export const getStaticPaths = (async ({
 }) satisfies GetStaticPaths
 
 export const getStaticProps = (async ({ params, locale }) => {
-  const isGetArticlesQuery = (object: any): object is GetArticlesWithCategoriesAndTagsQuery => { return 'articles' in object }
   const variables = {
     pagination: { page: parseInt(params.page, 10), pageSize: getPageSize() },
     sort: ["updatedAt:Desc", "publishedAt:Desc"],
@@ -60,7 +59,7 @@ export const getStaticProps = (async ({ params, locale }) => {
   ).then((result) => {
     return result;
   });
-  if (res != null && isGetArticlesQuery(res)) {
+  if (res != null && inArticlesCategoriesTags(res)) {
     const result = {
       props: {
         articles: convDatetimeArticles((res.articles as ArticleEntityResponseCollection)),
@@ -83,8 +82,9 @@ export const getStaticProps = (async ({ params, locale }) => {
 const ArticlesPage: NextPage<ArticlesCategorisTagsProps> = ({
   articles,
   categories,
+  tags,
   variables,
-}: { articles: ArticleEntityResponseCollection, categories: CategoryEntityResponseCollection, variables: GetArticlesQueryVariables }) => {
+}) => {
 
   const { data, error } = useSWR([getArticlesWithCategoriesAndTags, variables], {
     onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
@@ -98,6 +98,7 @@ const ArticlesPage: NextPage<ArticlesCategorisTagsProps> = ({
     fallbackData: {
       articles: articles,
       categories: categories,
+      tags: tags,
       variables: variables,
     },
   });
@@ -115,7 +116,7 @@ const ArticlesPage: NextPage<ArticlesCategorisTagsProps> = ({
           <Grid container xs={12} md={10} sx={{ flexGrow: 1 }}>
             <Articles
               articles={data.articles}
-              filter={null}
+              filter=""
             />
           </Grid>
           <Grid container xs={12} md={2} sx={{ flexGrow: 1 }}>
