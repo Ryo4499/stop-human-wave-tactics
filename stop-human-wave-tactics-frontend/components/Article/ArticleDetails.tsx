@@ -8,6 +8,7 @@ import { useLocale } from "../../lib/locale";
 import { Adsense } from "../Common/Adsense";
 import { CategoryLinkComponent } from "../Categories/Categories";
 import { TagsLinkComponent } from "../Tags/Tags";
+import { adsenseEnabled } from "../../lib/google";
 
 export const ArticleDetails = ({ articles }: { articles: ArticleEntityResponseCollection }) => {
 
@@ -41,6 +42,7 @@ export const ArticleDetails = ({ articles }: { articles: ArticleEntityResponseCo
         <Grid direction="row" py={2}>
           <MdContent content={article.content}></MdContent>
           {
+            adsenseEnabled() &&
             <Adsense style={{ display: "block", textAlign: "center", width: "80vw", height: "40vh" }} format="fluid" slot="4924859350" fullWidth="true" adStatus="filled" key="+3f+qw+4f-n8+fw" />
           }
         </Grid>
