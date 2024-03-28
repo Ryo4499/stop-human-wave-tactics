@@ -1,10 +1,28 @@
-# 脱・人海戦術 フロントエンド
+# Stop Human Wave Tactics Frontend
 
-## GraphQLの型宣言の自動生成
+## About environment variables
 
-1. スキーマを定義してgraphql以下に.graphqlと.ts配置
-2. playgroundからSDLダウンロードして./に配置
-3. 以下のコマンド実行(./types/graphql_res.ts に型宣言が出力される)
+please refer to .env.sample
+
+```env
+PAGESIZE=6
+FRONT_PORT=
+GOOGLE_ADSENSE_ENABLED=
+FRONT_SENTRY_DSN=
+NEXT_PUBLIC_DOMAIN=
+NEXT_PUBLIC_BACKEND_URL=
+NEXT_PUBLIC_GTAG=
+# Google Adsense
+NEXT_PUBLIC_GA_ID=
+# Tag Manager
+NEXT_PUBLIC_GTM_ID=
+```
+
+## GraphQL Type Auto Generate 
+
+1. schema definition and .graphql and .ts files are placed in graphql directory
+2. Download SDL from playground and place it in the root directory
+3. Run the following command (type declarations are output to ./types/graphql_res.ts)
 
 ```bash
 yarn run graphql-codegen

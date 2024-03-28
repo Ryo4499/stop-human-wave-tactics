@@ -286,7 +286,7 @@ services:
       - APP_KEYS
       - DEEPL_API_KEY
       - TRANSFER_TOKEN_SALT
-      - SENTRY_DSN
+      - BACK_SENTRY_DSN
     env_file:
       - .env
     volumes:
@@ -399,8 +399,8 @@ secrets:
     file: .secrets/DEEPL_API_KEY
   TRANSFER_TOKEN_SALT:
     file: .secrets/TRANSFER_TOKEN_SALT
-  SENTRY_DSN:
-    file: .secrets/SENTRY_DSN
+  BACK_SENTRY_DSN:
+    file: .secrets/BACK_SENTRY_DSN
 
 volumes:
   influxdbData:
