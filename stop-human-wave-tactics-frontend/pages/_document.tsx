@@ -37,17 +37,15 @@ class MyDocument extends Document {
           <link rel="icon" sizes="192x192" href="/static/images/favicon_192x192.jpg" />
           <link rel="shortcut icon" href="/favicon.ico" />
           <link rel="manifest" href="/manifest.json" />
-          <script async crossOrigin="anonymous"
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${getGaId()}`}
-          />
-          <Script async strategy="afterInteractive" src="https://securepubads.g.doubleclick.net/tag/js/gpt.js" />
+          <script async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${getGaId()}`} />
+          <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js" />
           <Script
             id="gpt-head"
             dangerouslySetInnerHTML={{
               __html: `window.googletag = window.googletag || { cmd: [] };`,
             }}
           />
-          <script async custom-element="amp-ad" src="https://cdn.ampproject.org/v0/amp-ad-0.1.js" crossOrigin="anonymous" />
+          <script async custom-element="amp-ad" src="https://cdn.ampproject.org/v0/amp-ad-0.1.js" />
           {
             prod && <GoogleAnalytics gaId={`${getGtag()}`} />
           }

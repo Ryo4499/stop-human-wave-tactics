@@ -1,7 +1,7 @@
 import fs from "fs";
 
 export default ({ env }) => {
-  const dsn = fs.readFileSync(env("SENTRY_DSN"), "utf8").replace("\n", "")
+  const dsn = fs.readFileSync(env("BACK_SENTRY_DSN"), "utf8").replace("\n", "")
   const deeplApiKey = fs.readFileSync(env("DEEPL_API_KEY"), "utf8").replace("\n", "")
   return {
     graphql: {
@@ -39,7 +39,7 @@ export default ({ env }) => {
             // see <https://github.com/DeepLcom/deepl-node#text-translation-options> for supported options.
             // note that tagHandling Mode cannot be set this way.
             // use with caution, as non-default values may break translation of markdown
-            formality: "default",
+            formality: "prefer_more"
           },
         },
       },
