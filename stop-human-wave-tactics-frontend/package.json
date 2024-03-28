@@ -19,6 +19,7 @@
     "@mui/icons-material": "^5.15.9",
     "@mui/material": "^5.15.9",
     "@next/third-parties": "^14.1.4",
+    "@sentry/nextjs": "^7.105.0",
     "@tsparticles/engine": "^3.2.1",
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.2.1",

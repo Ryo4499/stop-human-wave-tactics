@@ -1,34 +1,27 @@
-# 脱・人海戦術 バックエンド
+# Stop Human Wave Tactics Backend
 
-## TSについて
+## About environment variables
 
-version 4.2.3では動作することが確認できなかった。  
-また、betaモデルでなければ正常に動作しない模様  
-
-## ENVについて
+please refer to .env.sample
 
 ```env
-# ADMINのURL(http不要)
 ADMIN_URL='/admin'
-# ROOTのURL
-URL='/'
-# 以下キー名の通り
-HOST
-BACK_PORT
-APP_KEYS
-API_TOKEN_SALT
-ADMIN_JWT_SECRET
-JWT_SECRET
-SENTRY_DSN
-```
-
-### PLUGINについて
-
-ckeditorプラグインは下記の方法で追加
-
-```sh
-# clone plugin
-git clone git@github.com:ckeditor/strapi-plugin-ckeditor.git src/plugins/strapi-plugin-ckeditor
-# "workspaces": ["./src/plugins/strapi-plugin-ckeditor"]
-vim src/plugins/strapi-plugin-ckeditor/package.json
+HOST=''
+BACK_PORT=
+URL=''
+DATABASE_HOST='db'
+DATABASE_PORT=$PG_PORT
+DATABASE_CLIENT='postgres'
+DATABASE_NAME=$POSTGRES_DB_FILE
+DATABASE_USERNAME=$POSTGRES_USER_FILE
+DATABASE_PASSWORD=$POSTGRES_PASSWORD_FILE
+DATABASE_DRIVER='postgresql+asyncpg'
+DATABASE_SSL=false
+BACK_SENTRY_DSN=/run/secrets/BACK_SENTRY_DSN
+APP_KEYS=/run/secrets/APP_KEYS
+API_TOKEN_SALT=/run/secrets/API_TOKEN_SALT
+ADMIN_JWT_SECRET=/run/secrets/ADMIN_JWT_SECRET
+JWT_SECRET=/run/secrets/JWT_SECRET
+TRANSFER_TOKEN_SALT=/run/secrets/TRANSFER_TOKEN_SALT
+DEEPL_API_KEY=/run/secrets/DEEPL_API_KEY
 ```
