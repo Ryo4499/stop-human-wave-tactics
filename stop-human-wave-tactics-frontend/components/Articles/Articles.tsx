@@ -18,6 +18,7 @@ import { Adsense } from "../Common/Adsense";
 import { PageContext } from "../../pages/_app";
 import { CategoryLinkComponent } from "../Categories/Categories";
 import { TagsLinkComponent } from "../Tags/Tags";
+import { adsenseEnabled } from "../../lib/google";
 
 interface ArticlesProps {
   articles: ArticleEntityResponseCollection;
@@ -208,6 +209,7 @@ export const Articles = ({
           ></Content>
         </Grid>
         {
+          adsenseEnabled() &&
           <Adsense style={{ display: "block", width: "80vw", height: "40vh" }} format="autorelaxed" slot="1094459397" fullWidth="true" adStatus="filled" />
         }
       </Grid>
