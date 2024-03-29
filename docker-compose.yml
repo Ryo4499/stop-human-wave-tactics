@@ -28,6 +28,10 @@ services:
     build:
       context: ./nginx
       dockerfile: Dockerfile
+      args:
+        DOMAIN: $DOMAIN
+        FRONT_PORT: $FRONT_PORT
+        BACK_PORT: $BACK_PORT
     ports:
       - 0.0.0.0:80:80
       - 0.0.0.0:443:443
@@ -36,14 +40,8 @@ services:
     tty: true
     volumes:
       - type: bind
-        source: ./nginx/nginx.conf
-        target: /etc/nginx/nginx.conf
-      - type: bind
         source: ./nginx/modsecurity/
         target: /etc/modsecurity.d/
-      - type: bind
-        source: ./nginx/conf.d/
-        target: /etc/nginx/conf.d/
       - type: bind
         source: ./nginx/log
         target: /var/log/nginx
@@ -56,7 +54,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    command: '/bin/sh -c ''while :; do sleep 20d & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
+    command: '/bin/sh -c ''nginx -t && while :; do sleep 20d & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
     restart: always
     healthcheck:
       test: service nginx status || exit 1
@@ -284,7 +282,7 @@ services:
       - ADMIN_JWT_SECRET
       - API_TOKEN_SALT
       - APP_KEYS
-      - DEEPL_API_KEY
+      - DEEPL_KEY
       - TRANSFER_TOKEN_SALT
       - BACK_SENTRY_DSN
     env_file:
@@ -395,8 +393,8 @@ secrets:
     file: .secrets/API_TOKEN_SALT
   APP_KEYS:
     file: .secrets/APP_KEYS
-  DEEPL_API_KEY:
-    file: .secrets/DEEPL_API_KEY
+  DEEPL_KEY:
+    file: .secrets/DEEPL_KEY
   TRANSFER_TOKEN_SALT:
     file: .secrets/TRANSFER_TOKEN_SALT
   BACK_SENTRY_DSN:

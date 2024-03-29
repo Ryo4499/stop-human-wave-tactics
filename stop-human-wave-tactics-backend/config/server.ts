@@ -6,6 +6,7 @@ export default ({ env }) => {
     host: env("HOST"),
     port: env.int("BACK_PORT"),
     url: env("URL"),
+    proxy: true,
     app: {
       keys: keys,
     },

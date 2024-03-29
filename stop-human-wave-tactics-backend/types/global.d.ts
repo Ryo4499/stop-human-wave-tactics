@@ -15,7 +15,7 @@ declare namespace NodeJS {
     readonly ADMIN_JWT_SECRET: string
     readonly JWT_SECRET: string
     readonly TRANSFER_TOKEN_SALT: string
-    readonly DEEPL_API_KEY: string
+    readonly DEEPL_KEY: string
     readonly BACK_SENTRY_DSN: string
   }
 }
