@@ -17,8 +17,8 @@ class MyDocument extends Document {
           <meta name="google-adsense-account" content={getGaId()} />
           <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossOrigin="anonymous" />
           <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark-dimmed.min.css" crossOrigin="anonymous" />
+          <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0" />
           <meta property="og:type" content="blog" />
-          <meta property="og:url" content={`https://${getDomain()}`} />
           <meta name="twitter:card" content="summary" />
           <meta name="twitter:site" content="@ar4499_" />
           <meta httpEquiv="Expires" content={`${new Date().toString()}`} />

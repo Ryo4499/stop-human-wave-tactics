@@ -14,7 +14,7 @@ import { getTagsByUUID } from "../../graphql/getTagsByUUID";
 import { Articles } from "../../components/Articles";
 import { GraphqlError } from "../../components/Common/DisplayError";
 import { getArticlesWithTags } from "../../graphql/getArticlesWithTags";
-import Meta from "../../components/utils/Head";
+import Meta from "../../components/Common/Meta";
 import { convDatetimeArticles, inArticlesCategoriesTags } from "../../lib/utils";
 import { getArticlesWithCategoriesAndTags } from "../../graphql/getArticlesWithCategoriesAndTags";
 import { useLocale } from "../../lib/locale";
@@ -113,9 +113,6 @@ const ArticlesPage: NextPage<ArticlesCategorisTagsProps> = ({
         <Meta
           title="Searched articles by category name"
           description="This page published articles searched by category name."
-          keyword={categories.data
-            .map((value) => value.attributes?.name)
-            .join(" ")}
         />
         <Grid container direction="row" sx={{ flexGrow: 1 }}>
           <Grid container xs={12} md={10} sx={{ flexGrow: 1 }}>
