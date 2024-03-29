@@ -49,7 +49,7 @@ query getArticlesWithCategoriesAndTags(
             }
           }
         }
-        Seo {
+        seo {
           metaTitle
           metaDescription
           metaImage {

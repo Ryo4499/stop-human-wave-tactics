@@ -4,7 +4,12 @@ CURRENT=$(
     pwd
 )
 echo $CURRENT
+
 # Need to gunzip backup file 
 if [ -e $1 ]; then
-	docker compose exec -it db psql -U $(cat .secrets/DB_USER) -d $(cat .secrets/DB_NAME) < $1;
+    file=$(basename $1)
+    docker compose cp $1 db:/tmp;
+    args="psql -U $(cat .secrets/DB_USER) -d $(cat .secrets/DB_NAME) < /tmp/$file";
+    echo $args
+	docker compose exec db sh -c "$args";
 fi
