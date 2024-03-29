@@ -23,7 +23,7 @@ const Header = () => {
   const { locale, locales, t } = useLocale();
   const handleLocaleChange = (event: any) => {
     const selectLocale = event.target.innerText;
-    router.push(router.pathname, router.pathname, { locale: selectLocale })
+    router.push("/", "/", { locale: selectLocale })
   }
   if (locales != null) {
     return (
