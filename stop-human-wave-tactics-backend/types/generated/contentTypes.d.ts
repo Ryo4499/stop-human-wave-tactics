@@ -362,280 +362,6 @@ export interface AdminTransferTokenPermission extends Schema.CollectionType {
   };
 }
 
-export interface ApiArticleArticle extends Schema.CollectionType {
-  collectionName: 'articles';
-  info: {
-    singularName: 'article';
-    pluralName: 'articles';
-    displayName: 'Article';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  pluginOptions: {
-    versions: {
-      versioned: true;
-    };
-    i18n: {
-      localized: true;
-    };
-  };
-  attributes: {
-    uuid: Attribute.UID &
-      Attribute.CustomField<'plugin::field-uuid.uuid'> &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    title: Attribute.String &
-      Attribute.Required &
-      Attribute.Unique &
-      Attribute.SetPluginOptions<{
-        versions: {
-          versioned: true;
-        };
-        i18n: {
-          localized: true;
-        };
-        translate: {
-          translate: 'translate';
-        };
-      }> &
-      Attribute.SetMinMaxLength<{
-        minLength: 1;
-        maxLength: 150;
-      }>;
-    summary: Attribute.String &
-      Attribute.Required &
-      Attribute.Unique &
-      Attribute.SetPluginOptions<{
-        versions: {
-          versioned: true;
-        };
-        i18n: {
-          localized: true;
-        };
-        translate: {
-          translate: 'translate';
-        };
-      }> &
-      Attribute.SetMinMaxLength<{
-        minLength: 1;
-        maxLength: 200;
-      }>;
-    content: Attribute.RichText &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-        translate: {
-          translate: 'translate';
-        };
-      }> &
-      Attribute.SetMinMaxLength<{
-        minLength: 1;
-      }>;
-    thumbnail: Attribute.Media &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        versions: {
-          versioned: true;
-        };
-        i18n: {
-          localized: false;
-        };
-        translate: {
-          translate: '';
-        };
-      }>;
-    category: Attribute.Relation<
-      'api::article.article',
-      'manyToOne',
-      'api::category.category'
-    > &
-      Attribute.SetPluginOptions<{
-        translate: {
-          translate: 'translate';
-        };
-      }>;
-    Seo: Attribute.Component<'shared.seo', true> &
-      Attribute.SetPluginOptions<{
-        versions: {
-          versioned: true;
-        };
-        i18n: {
-          localized: true;
-        };
-        translate: {
-          translate: 'translate';
-        };
-      }>;
-    tags: Attribute.Relation<
-      'api::article.article',
-      'manyToMany',
-      'api::tag.tag'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::article.article',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::article.article',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    localizations: Attribute.Relation<
-      'api::article.article',
-      'oneToMany',
-      'api::article.article'
-    >;
-    locale: Attribute.String;
-  };
-}
-
-export interface ApiCategoryCategory extends Schema.CollectionType {
-  collectionName: 'categories';
-  info: {
-    singularName: 'category';
-    pluralName: 'categories';
-    displayName: 'Category';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  pluginOptions: {
-    i18n: {
-      localized: true;
-    };
-  };
-  attributes: {
-    uuid: Attribute.UID &
-      Attribute.CustomField<'plugin::field-uuid.uuid'> &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    name: Attribute.String &
-      Attribute.Required &
-      Attribute.Unique &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-        translate: {
-          translate: 'translate';
-        };
-      }> &
-      Attribute.SetMinMaxLength<{
-        minLength: 1;
-        maxLength: 30;
-      }>;
-    articles: Attribute.Relation<
-      'api::category.category',
-      'oneToMany',
-      'api::article.article'
-    > &
-      Attribute.SetPluginOptions<{
-        translate: {
-          translate: 'translate';
-        };
-      }>;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::category.category',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::category.category',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    localizations: Attribute.Relation<
-      'api::category.category',
-      'oneToMany',
-      'api::category.category'
-    >;
-    locale: Attribute.String;
-  };
-}
-
-export interface ApiTagTag extends Schema.CollectionType {
-  collectionName: 'tags';
-  info: {
-    singularName: 'tag';
-    pluralName: 'tags';
-    displayName: 'Tag';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  pluginOptions: {
-    i18n: {
-      localized: true;
-    };
-  };
-  attributes: {
-    uuid: Attribute.UID &
-      Attribute.CustomField<'plugin::field-uuid.uuid'> &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    name: Attribute.String &
-      Attribute.Required &
-      Attribute.Unique &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-        translate: {
-          translate: 'translate';
-        };
-      }> &
-      Attribute.SetMinMaxLength<{
-        minLength: 1;
-        maxLength: 50;
-      }>;
-    articles: Attribute.Relation<
-      'api::tag.tag',
-      'manyToMany',
-      'api::article.article'
-    > &
-      Attribute.SetPluginOptions<{
-        translate: {
-          translate: 'translate';
-        };
-      }>;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<'api::tag.tag', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<'api::tag.tag', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
-    localizations: Attribute.Relation<
-      'api::tag.tag',
-      'oneToMany',
-      'api::tag.tag'
-    >;
-    locale: Attribute.String;
-  };
-}
-
 export interface PluginUploadFile extends Schema.CollectionType {
   collectionName: 'files';
   info: {
@@ -1119,6 +845,278 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
 }
 
+export interface ApiArticleArticle extends Schema.CollectionType {
+  collectionName: 'articles';
+  info: {
+    singularName: 'article';
+    pluralName: 'articles';
+    displayName: 'Article';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    uuid: Attribute.UID &
+      Attribute.CustomField<'plugin::field-uuid.uuid'> &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+        translate: {
+          translate: 'translate';
+        };
+      }>;
+    title: Attribute.String &
+      Attribute.Required &
+      Attribute.Unique &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+        translate: {
+          translate: 'translate';
+        };
+      }> &
+      Attribute.SetMinMaxLength<{
+        minLength: 1;
+        maxLength: 150;
+      }>;
+    summary: Attribute.String &
+      Attribute.Required &
+      Attribute.Unique &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+        translate: {
+          translate: 'translate';
+        };
+      }> &
+      Attribute.SetMinMaxLength<{
+        minLength: 1;
+        maxLength: 200;
+      }>;
+    content: Attribute.RichText &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+        translate: {
+          translate: 'translate';
+        };
+      }> &
+      Attribute.SetMinMaxLength<{
+        minLength: 1;
+      }>;
+    thumbnail: Attribute.Media &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+        translate: {
+          translate: 'copy';
+        };
+      }>;
+    category: Attribute.Relation<
+      'api::article.article',
+      'manyToOne',
+      'api::category.category'
+    > &
+      Attribute.SetPluginOptions<{
+        translate: {
+          translate: 'translate';
+        };
+      }>;
+    tags: Attribute.Relation<
+      'api::article.article',
+      'manyToMany',
+      'api::tag.tag'
+    > &
+      Attribute.SetPluginOptions<{
+        translate: {
+          translate: 'translate';
+        };
+      }>;
+    seo: Attribute.Component<'shared.seo'> &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+        translate: {
+          translate: 'translate';
+        };
+      }>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::article.article',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::article.article',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    localizations: Attribute.Relation<
+      'api::article.article',
+      'oneToMany',
+      'api::article.article'
+    >;
+    locale: Attribute.String;
+  };
+}
+
+export interface ApiCategoryCategory extends Schema.CollectionType {
+  collectionName: 'categories';
+  info: {
+    singularName: 'category';
+    pluralName: 'categories';
+    displayName: 'Category';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    uuid: Attribute.UID &
+      Attribute.CustomField<'plugin::field-uuid.uuid'> &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+        translate: {
+          translate: 'translate';
+        };
+      }>;
+    name: Attribute.String &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+        translate: {
+          translate: 'translate';
+        };
+      }> &
+      Attribute.SetMinMaxLength<{
+        minLength: 1;
+        maxLength: 30;
+      }>;
+    articles: Attribute.Relation<
+      'api::category.category',
+      'oneToMany',
+      'api::article.article'
+    > &
+      Attribute.SetPluginOptions<{
+        translate: {
+          translate: 'translate';
+        };
+      }>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::category.category',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::category.category',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    localizations: Attribute.Relation<
+      'api::category.category',
+      'oneToMany',
+      'api::category.category'
+    >;
+    locale: Attribute.String;
+  };
+}
+
+export interface ApiTagTag extends Schema.CollectionType {
+  collectionName: 'tags';
+  info: {
+    singularName: 'tag';
+    pluralName: 'tags';
+    displayName: 'Tag';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    uuid: Attribute.UID &
+      Attribute.CustomField<'plugin::field-uuid.uuid'> &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+        translate: {
+          translate: 'translate';
+        };
+      }>;
+    name: Attribute.String &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+        translate: {
+          translate: 'translate';
+        };
+      }> &
+      Attribute.SetMinMaxLength<{
+        minLength: 1;
+        maxLength: 30;
+      }>;
+    articles: Attribute.Relation<
+      'api::tag.tag',
+      'manyToMany',
+      'api::article.article'
+    > &
+      Attribute.SetPluginOptions<{
+        translate: {
+          translate: 'translate';
+        };
+      }>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::tag.tag', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::tag.tag', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    localizations: Attribute.Relation<
+      'api::tag.tag',
+      'oneToMany',
+      'api::tag.tag'
+    >;
+    locale: Attribute.String;
+  };
+}
+
 declare module '@strapi/types' {
   export module Shared {
     export interface ContentTypes {
@@ -1129,9 +1127,6 @@ declare module '@strapi/types' {
       'admin::api-token-permission': AdminApiTokenPermission;
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
-      'api::article.article': ApiArticleArticle;
-      'api::category.category': ApiCategoryCategory;
-      'api::tag.tag': ApiTagTag;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::content-releases.release': PluginContentReleasesRelease;
@@ -1141,6 +1136,9 @@ declare module '@strapi/types' {
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
+      'api::article.article': ApiArticleArticle;
+      'api::category.category': ApiCategoryCategory;
+      'api::tag.tag': ApiTagTag;
     }
   }
 }

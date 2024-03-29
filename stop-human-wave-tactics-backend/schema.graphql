@@ -259,7 +259,7 @@ type ComponentSharedSeo {
   id: ID!
   metaTitle: String!
   metaDescription: String!
-  metaImage: UploadFileEntityResponse!
+  metaImage: UploadFileEntityResponse
   metaSocial(
     filters: ComponentSharedMetaSocialFiltersInput
     pagination: PaginationArg = {}
@@ -270,198 +270,6 @@ type ComponentSharedSeo {
   structuredData: JSON
   metaViewport: String
   canonicalURL: String
-}
-
-input ArticleFiltersInput {
-  id: IDFilterInput
-  uuid: StringFilterInput
-  title: StringFilterInput
-  summary: StringFilterInput
-  content: StringFilterInput
-  category: CategoryFiltersInput
-  Seo: ComponentSharedSeoFiltersInput
-  tags: TagFiltersInput
-  createdAt: DateTimeFilterInput
-  updatedAt: DateTimeFilterInput
-  publishedAt: DateTimeFilterInput
-  localizations: ArticleFiltersInput
-  locale: StringFilterInput
-  and: [ArticleFiltersInput]
-  or: [ArticleFiltersInput]
-  not: ArticleFiltersInput
-}
-
-input ArticleInput {
-  uuid: String
-  title: String
-  summary: String
-  content: String
-  thumbnail: ID
-  category: ID
-  Seo: [ComponentSharedSeoInput]
-  tags: [ID]
-  publishedAt: DateTime
-}
-
-type Article {
-  uuid: String
-  title: String!
-  summary: String!
-  content: String!
-  thumbnail: UploadFileEntityResponse!
-  category: CategoryEntityResponse
-  Seo(
-    filters: ComponentSharedSeoFiltersInput
-    pagination: PaginationArg = {}
-    sort: [String] = []
-  ): [ComponentSharedSeo]
-  tags(
-    filters: TagFiltersInput
-    pagination: PaginationArg = {}
-    sort: [String] = []
-  ): TagRelationResponseCollection
-  createdAt: DateTime
-  updatedAt: DateTime
-  publishedAt: DateTime
-  localizations(
-    filters: ArticleFiltersInput
-    pagination: PaginationArg = {}
-    sort: [String] = []
-    publicationState: PublicationState = LIVE
-  ): ArticleRelationResponseCollection
-  locale: String
-}
-
-type ArticleEntity {
-  id: ID
-  attributes: Article
-}
-
-type ArticleEntityResponse {
-  data: ArticleEntity
-}
-
-type ArticleEntityResponseCollection {
-  data: [ArticleEntity!]!
-  meta: ResponseCollectionMeta!
-}
-
-type ArticleRelationResponseCollection {
-  data: [ArticleEntity!]!
-}
-
-input CategoryFiltersInput {
-  id: IDFilterInput
-  uuid: StringFilterInput
-  name: StringFilterInput
-  articles: ArticleFiltersInput
-  createdAt: DateTimeFilterInput
-  updatedAt: DateTimeFilterInput
-  localizations: CategoryFiltersInput
-  locale: StringFilterInput
-  and: [CategoryFiltersInput]
-  or: [CategoryFiltersInput]
-  not: CategoryFiltersInput
-}
-
-input CategoryInput {
-  uuid: String
-  name: String
-  articles: [ID]
-}
-
-type Category {
-  uuid: String
-  name: String!
-  articles(
-    filters: ArticleFiltersInput
-    pagination: PaginationArg = {}
-    sort: [String] = []
-    publicationState: PublicationState = LIVE
-  ): ArticleRelationResponseCollection
-  createdAt: DateTime
-  updatedAt: DateTime
-  localizations(
-    filters: CategoryFiltersInput
-    pagination: PaginationArg = {}
-    sort: [String] = []
-  ): CategoryRelationResponseCollection
-  locale: String
-}
-
-type CategoryEntity {
-  id: ID
-  attributes: Category
-}
-
-type CategoryEntityResponse {
-  data: CategoryEntity
-}
-
-type CategoryEntityResponseCollection {
-  data: [CategoryEntity!]!
-  meta: ResponseCollectionMeta!
-}
-
-type CategoryRelationResponseCollection {
-  data: [CategoryEntity!]!
-}
-
-input TagFiltersInput {
-  id: IDFilterInput
-  uuid: StringFilterInput
-  name: StringFilterInput
-  articles: ArticleFiltersInput
-  createdAt: DateTimeFilterInput
-  updatedAt: DateTimeFilterInput
-  localizations: TagFiltersInput
-  locale: StringFilterInput
-  and: [TagFiltersInput]
-  or: [TagFiltersInput]
-  not: TagFiltersInput
-}
-
-input TagInput {
-  uuid: String
-  name: String
-  articles: [ID]
-}
-
-type Tag {
-  uuid: String
-  name: String!
-  articles(
-    filters: ArticleFiltersInput
-    pagination: PaginationArg = {}
-    sort: [String] = []
-    publicationState: PublicationState = LIVE
-  ): ArticleRelationResponseCollection
-  createdAt: DateTime
-  updatedAt: DateTime
-  localizations(
-    filters: TagFiltersInput
-    pagination: PaginationArg = {}
-    sort: [String] = []
-  ): TagRelationResponseCollection
-  locale: String
-}
-
-type TagEntity {
-  id: ID
-  attributes: Tag
-}
-
-type TagEntityResponse {
-  data: TagEntity
-}
-
-type TagEntityResponseCollection {
-  data: [TagEntity!]!
-  meta: ResponseCollectionMeta!
-}
-
-type TagRelationResponseCollection {
-  data: [TagEntity!]!
 }
 
 input UploadFileFiltersInput {
@@ -844,12 +652,197 @@ type UsersPermissionsUserRelationResponseCollection {
   data: [UsersPermissionsUserEntity!]!
 }
 
+input ArticleFiltersInput {
+  id: IDFilterInput
+  uuid: StringFilterInput
+  title: StringFilterInput
+  summary: StringFilterInput
+  content: StringFilterInput
+  category: CategoryFiltersInput
+  tags: TagFiltersInput
+  seo: ComponentSharedSeoFiltersInput
+  createdAt: DateTimeFilterInput
+  updatedAt: DateTimeFilterInput
+  publishedAt: DateTimeFilterInput
+  localizations: ArticleFiltersInput
+  locale: StringFilterInput
+  and: [ArticleFiltersInput]
+  or: [ArticleFiltersInput]
+  not: ArticleFiltersInput
+}
+
+input ArticleInput {
+  uuid: String
+  title: String
+  summary: String
+  content: String
+  thumbnail: ID
+  category: ID
+  tags: [ID]
+  seo: ComponentSharedSeoInput
+  publishedAt: DateTime
+}
+
+type Article {
+  uuid: String
+  title: String!
+  summary: String!
+  content: String!
+  thumbnail: UploadFileEntityResponse
+  category: CategoryEntityResponse
+  tags(
+    filters: TagFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+  ): TagRelationResponseCollection
+  seo: ComponentSharedSeo
+  createdAt: DateTime
+  updatedAt: DateTime
+  publishedAt: DateTime
+  localizations(
+    filters: ArticleFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+    publicationState: PublicationState = LIVE
+  ): ArticleRelationResponseCollection
+  locale: String
+}
+
+type ArticleEntity {
+  id: ID
+  attributes: Article
+}
+
+type ArticleEntityResponse {
+  data: ArticleEntity
+}
+
+type ArticleEntityResponseCollection {
+  data: [ArticleEntity!]!
+  meta: ResponseCollectionMeta!
+}
+
+type ArticleRelationResponseCollection {
+  data: [ArticleEntity!]!
+}
+
+input CategoryFiltersInput {
+  id: IDFilterInput
+  uuid: StringFilterInput
+  name: StringFilterInput
+  articles: ArticleFiltersInput
+  createdAt: DateTimeFilterInput
+  updatedAt: DateTimeFilterInput
+  localizations: CategoryFiltersInput
+  locale: StringFilterInput
+  and: [CategoryFiltersInput]
+  or: [CategoryFiltersInput]
+  not: CategoryFiltersInput
+}
+
+input CategoryInput {
+  uuid: String
+  name: String
+  articles: [ID]
+}
+
+type Category {
+  uuid: String
+  name: String!
+  articles(
+    filters: ArticleFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+    publicationState: PublicationState = LIVE
+  ): ArticleRelationResponseCollection
+  createdAt: DateTime
+  updatedAt: DateTime
+  localizations(
+    filters: CategoryFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+  ): CategoryRelationResponseCollection
+  locale: String
+}
+
+type CategoryEntity {
+  id: ID
+  attributes: Category
+}
+
+type CategoryEntityResponse {
+  data: CategoryEntity
+}
+
+type CategoryEntityResponseCollection {
+  data: [CategoryEntity!]!
+  meta: ResponseCollectionMeta!
+}
+
+type CategoryRelationResponseCollection {
+  data: [CategoryEntity!]!
+}
+
+input TagFiltersInput {
+  id: IDFilterInput
+  uuid: StringFilterInput
+  name: StringFilterInput
+  articles: ArticleFiltersInput
+  createdAt: DateTimeFilterInput
+  updatedAt: DateTimeFilterInput
+  localizations: TagFiltersInput
+  locale: StringFilterInput
+  and: [TagFiltersInput]
+  or: [TagFiltersInput]
+  not: TagFiltersInput
+}
+
+input TagInput {
+  uuid: String
+  name: String
+  articles: [ID]
+}
+
+type Tag {
+  uuid: String
+  name: String!
+  articles(
+    filters: ArticleFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+    publicationState: PublicationState = LIVE
+  ): ArticleRelationResponseCollection
+  createdAt: DateTime
+  updatedAt: DateTime
+  localizations(
+    filters: TagFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+  ): TagRelationResponseCollection
+  locale: String
+}
+
+type TagEntity {
+  id: ID
+  attributes: Tag
+}
+
+type TagEntityResponse {
+  data: TagEntity
+}
+
+type TagEntityResponseCollection {
+  data: [TagEntity!]!
+  meta: ResponseCollectionMeta!
+}
+
+type TagRelationResponseCollection {
+  data: [TagEntity!]!
+}
+
 union GenericMorph =
     ComponentSharedMetaSocial
   | ComponentSharedSeo
-  | Article
-  | Category
-  | Tag
   | UploadFile
   | UploadFolder
   | TranslateBatchTranslateJob
@@ -857,6 +850,9 @@ union GenericMorph =
   | UsersPermissionsPermission
   | UsersPermissionsRole
   | UsersPermissionsUser
+  | Article
+  | Category
+  | Tag
 
 input FileInfoInput {
   name: String
@@ -924,28 +920,6 @@ input PaginationArg {
 }
 
 type Query {
-  article(id: ID, locale: I18NLocaleCode): ArticleEntityResponse
-  articles(
-    filters: ArticleFiltersInput
-    pagination: PaginationArg = {}
-    sort: [String] = []
-    publicationState: PublicationState = LIVE
-    locale: I18NLocaleCode
-  ): ArticleEntityResponseCollection
-  category(id: ID, locale: I18NLocaleCode): CategoryEntityResponse
-  categories(
-    filters: CategoryFiltersInput
-    pagination: PaginationArg = {}
-    sort: [String] = []
-    locale: I18NLocaleCode
-  ): CategoryEntityResponseCollection
-  tag(id: ID, locale: I18NLocaleCode): TagEntityResponse
-  tags(
-    filters: TagFiltersInput
-    pagination: PaginationArg = {}
-    sort: [String] = []
-    locale: I18NLocaleCode
-  ): TagEntityResponseCollection
   uploadFile(id: ID): UploadFileEntityResponse
   uploadFiles(
     filters: UploadFileFiltersInput
@@ -982,10 +956,51 @@ type Query {
     pagination: PaginationArg = {}
     sort: [String] = []
   ): UsersPermissionsUserEntityResponseCollection
+  article(id: ID, locale: I18NLocaleCode): ArticleEntityResponse
+  articles(
+    filters: ArticleFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+    publicationState: PublicationState = LIVE
+    locale: I18NLocaleCode
+  ): ArticleEntityResponseCollection
+  category(id: ID, locale: I18NLocaleCode): CategoryEntityResponse
+  categories(
+    filters: CategoryFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+    locale: I18NLocaleCode
+  ): CategoryEntityResponseCollection
+  tag(id: ID, locale: I18NLocaleCode): TagEntityResponse
+  tags(
+    filters: TagFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+    locale: I18NLocaleCode
+  ): TagEntityResponseCollection
   me: UsersPermissionsMe
 }
 
 type Mutation {
+  createUploadFile(data: UploadFileInput!): UploadFileEntityResponse
+  updateUploadFile(id: ID!, data: UploadFileInput!): UploadFileEntityResponse
+  deleteUploadFile(id: ID!): UploadFileEntityResponse
+  createUploadFolder(data: UploadFolderInput!): UploadFolderEntityResponse
+  updateUploadFolder(
+    id: ID!
+    data: UploadFolderInput!
+  ): UploadFolderEntityResponse
+  deleteUploadFolder(id: ID!): UploadFolderEntityResponse
+  createTranslateBatchTranslateJob(
+    data: TranslateBatchTranslateJobInput!
+  ): TranslateBatchTranslateJobEntityResponse
+  updateTranslateBatchTranslateJob(
+    id: ID!
+    data: TranslateBatchTranslateJobInput!
+  ): TranslateBatchTranslateJobEntityResponse
+  deleteTranslateBatchTranslateJob(
+    id: ID!
+  ): TranslateBatchTranslateJobEntityResponse
   createArticle(
     data: ArticleInput!
     locale: I18NLocaleCode
@@ -1009,25 +1024,6 @@ type Mutation {
   createTag(data: TagInput!, locale: I18NLocaleCode): TagEntityResponse
   updateTag(id: ID!, data: TagInput!, locale: I18NLocaleCode): TagEntityResponse
   deleteTag(id: ID!, locale: I18NLocaleCode): TagEntityResponse
-  createUploadFile(data: UploadFileInput!): UploadFileEntityResponse
-  updateUploadFile(id: ID!, data: UploadFileInput!): UploadFileEntityResponse
-  deleteUploadFile(id: ID!): UploadFileEntityResponse
-  createUploadFolder(data: UploadFolderInput!): UploadFolderEntityResponse
-  updateUploadFolder(
-    id: ID!
-    data: UploadFolderInput!
-  ): UploadFolderEntityResponse
-  deleteUploadFolder(id: ID!): UploadFolderEntityResponse
-  createTranslateBatchTranslateJob(
-    data: TranslateBatchTranslateJobInput!
-  ): TranslateBatchTranslateJobEntityResponse
-  updateTranslateBatchTranslateJob(
-    id: ID!
-    data: TranslateBatchTranslateJobInput!
-  ): TranslateBatchTranslateJobEntityResponse
-  deleteTranslateBatchTranslateJob(
-    id: ID!
-  ): TranslateBatchTranslateJobEntityResponse
   upload(
     refId: ID
     ref: String

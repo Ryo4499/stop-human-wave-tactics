@@ -38,7 +38,7 @@ query getArticle($id: ID!, $locale: I18NLocaleCode!) {
             }
           }
         }
-        Seo {
+        seo {
           metaTitle
           metaDescription
           metaImage {

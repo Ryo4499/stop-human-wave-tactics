@@ -23,26 +23,19 @@ export type Scalars = {
 
 export type Article = {
   __typename?: 'Article';
-  Seo?: Maybe<Array<Maybe<ComponentSharedSeo>>>;
   category?: Maybe<CategoryEntityResponse>;
   content: Scalars['String']['output'];
   createdAt?: Maybe<Scalars['DateTime']['output']>;
   locale?: Maybe<Scalars['String']['output']>;
   localizations?: Maybe<ArticleRelationResponseCollection>;
   publishedAt?: Maybe<Scalars['DateTime']['output']>;
+  seo?: Maybe<ComponentSharedSeo>;
   summary: Scalars['String']['output'];
   tags?: Maybe<TagRelationResponseCollection>;
-  thumbnail: UploadFileEntityResponse;
+  thumbnail?: Maybe<UploadFileEntityResponse>;
   title: Scalars['String']['output'];
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
   uuid?: Maybe<Scalars['String']['output']>;
-};
-
-
-export type ArticleSeoArgs = {
-  filters?: InputMaybe<ComponentSharedSeoFiltersInput>;
-  pagination?: InputMaybe<PaginationArg>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
@@ -78,7 +71,6 @@ export type ArticleEntityResponseCollection = {
 };
 
 export type ArticleFiltersInput = {
-  Seo?: InputMaybe<ComponentSharedSeoFiltersInput>;
   and?: InputMaybe<Array<InputMaybe<ArticleFiltersInput>>>;
   category?: InputMaybe<CategoryFiltersInput>;
   content?: InputMaybe<StringFilterInput>;
@@ -89,6 +81,7 @@ export type ArticleFiltersInput = {
   not?: InputMaybe<ArticleFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<ArticleFiltersInput>>>;
   publishedAt?: InputMaybe<DateTimeFilterInput>;
+  seo?: InputMaybe<ComponentSharedSeoFiltersInput>;
   summary?: InputMaybe<StringFilterInput>;
   tags?: InputMaybe<TagFiltersInput>;
   title?: InputMaybe<StringFilterInput>;
@@ -97,10 +90,10 @@ export type ArticleFiltersInput = {
 };
 
 export type ArticleInput = {
-  Seo?: InputMaybe<Array<InputMaybe<ComponentSharedSeoInput>>>;
   category?: InputMaybe<Scalars['ID']['input']>;
   content?: InputMaybe<Scalars['String']['input']>;
   publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  seo?: InputMaybe<ComponentSharedSeoInput>;
   summary?: InputMaybe<Scalars['String']['input']>;
   tags?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   thumbnail?: InputMaybe<Scalars['ID']['input']>;
@@ -238,7 +231,7 @@ export type ComponentSharedSeo = {
   id: Scalars['ID']['output'];
   keywords?: Maybe<Scalars['String']['output']>;
   metaDescription: Scalars['String']['output'];
-  metaImage: UploadFileEntityResponse;
+  metaImage?: Maybe<UploadFileEntityResponse>;
   metaRobots?: Maybe<Scalars['String']['output']>;
   metaSocial?: Maybe<Array<Maybe<ComponentSharedMetaSocial>>>;
   metaTitle: Scalars['String']['output'];
@@ -1700,16 +1693,16 @@ export type ResolversParentTypes = {
 };
 
 export type ArticleResolvers<ContextType = any, ParentType extends ResolversParentTypes['Article'] = ResolversParentTypes['Article']> = {
-  Seo?: Resolver<Maybe<Array<Maybe<ResolversTypes['ComponentSharedSeo']>>>, ParentType, ContextType, RequireFields<ArticleSeoArgs, 'pagination' | 'sort'>>;
   category?: Resolver<Maybe<ResolversTypes['CategoryEntityResponse']>, ParentType, ContextType>;
   content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   locale?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   localizations?: Resolver<Maybe<ResolversTypes['ArticleRelationResponseCollection']>, ParentType, ContextType, RequireFields<ArticleLocalizationsArgs, 'pagination' | 'publicationState' | 'sort'>>;
   publishedAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  seo?: Resolver<Maybe<ResolversTypes['ComponentSharedSeo']>, ParentType, ContextType>;
   summary?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   tags?: Resolver<Maybe<ResolversTypes['TagRelationResponseCollection']>, ParentType, ContextType, RequireFields<ArticleTagsArgs, 'pagination' | 'sort'>>;
-  thumbnail?: Resolver<ResolversTypes['UploadFileEntityResponse'], ParentType, ContextType>;
+  thumbnail?: Resolver<Maybe<ResolversTypes['UploadFileEntityResponse']>, ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   uuid?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -1785,7 +1778,7 @@ export type ComponentSharedSeoResolvers<ContextType = any, ParentType extends Re
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   keywords?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   metaDescription?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  metaImage?: Resolver<ResolversTypes['UploadFileEntityResponse'], ParentType, ContextType>;
+  metaImage?: Resolver<Maybe<ResolversTypes['UploadFileEntityResponse']>, ParentType, ContextType>;
   metaRobots?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   metaSocial?: Resolver<Maybe<Array<Maybe<ResolversTypes['ComponentSharedMetaSocial']>>>, ParentType, ContextType, RequireFields<ComponentSharedSeoMetaSocialArgs, 'pagination' | 'sort'>>;
   metaTitle?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
