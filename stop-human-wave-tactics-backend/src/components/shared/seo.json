@@ -10,20 +10,32 @@
     "metaTitle": {
       "required": true,
       "type": "string",
-      "maxLength": 120
+      "maxLength": 60,
+      "pluginOptions": {
+        "translate": {
+          "translate": "translate"
+        }
+      }
     },
     "metaDescription": {
       "type": "string",
       "required": true,
-      "maxLength": 220,
-      "minLength": 30
+      "maxLength": 160,
+      "minLength": 50,
+      "pluginOptions": {
+        "translate": {
+          "translate": "translate"
+        }
+      }
     },
     "metaImage": {
       "type": "media",
       "multiple": false,
-      "required": true,
+      "required": false,
       "allowedTypes": [
-        "images"
+        "images",
+        "files",
+        "videos"
       ]
     },
     "metaSocial": {
@@ -33,20 +45,40 @@
     },
     "keywords": {
       "type": "text",
-      "regex": "[^,]+"
+      "regex": "[^,]+",
+      "pluginOptions": {
+        "translate": {
+          "translate": "translate"
+        }
+      }
     },
     "metaRobots": {
       "type": "string",
-      "regex": "[^,]+"
+      "regex": "[^,]+",
+      "pluginOptions": {
+        "translate": {
+          "translate": "copy"
+        }
+      }
     },
     "structuredData": {
       "type": "json"
     },
     "metaViewport": {
-      "type": "string"
+      "type": "string",
+      "pluginOptions": {
+        "translate": {
+          "translate": "copy"
+        }
+      }
     },
     "canonicalURL": {
-      "type": "string"
+      "type": "string",
+      "pluginOptions": {
+        "translate": {
+          "translate": "copy"
+        }
+      }
     }
   }
 }

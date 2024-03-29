@@ -48,7 +48,7 @@ query getArticlesWithCategories(
             }
           }
         }
-        Seo {
+        seo {
           metaTitle
           metaDescription
           metaImage {

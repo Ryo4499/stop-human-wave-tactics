@@ -5,19 +5,30 @@ export interface SharedMetaSocial extends Schema.Component {
   info: {
     displayName: 'metaSocial';
     icon: 'project-diagram';
+    description: '';
   };
   attributes: {
     socialNetwork: Attribute.Enumeration<['Facebook', 'Twitter']> &
       Attribute.Required;
     title: Attribute.String &
       Attribute.Required &
+      Attribute.SetPluginOptions<{
+        translate: {
+          translate: 'translate';
+        };
+      }> &
       Attribute.SetMinMaxLength<{
-        maxLength: 120;
+        maxLength: 60;
       }>;
     description: Attribute.String &
       Attribute.Required &
+      Attribute.SetPluginOptions<{
+        translate: {
+          translate: 'translate';
+        };
+      }> &
       Attribute.SetMinMaxLength<{
-        maxLength: 220;
+        maxLength: 65;
       }>;
     image: Attribute.Media;
   };
@@ -33,22 +44,52 @@ export interface SharedSeo extends Schema.Component {
   attributes: {
     metaTitle: Attribute.String &
       Attribute.Required &
+      Attribute.SetPluginOptions<{
+        translate: {
+          translate: 'translate';
+        };
+      }> &
       Attribute.SetMinMaxLength<{
-        maxLength: 120;
+        maxLength: 60;
       }>;
     metaDescription: Attribute.String &
       Attribute.Required &
+      Attribute.SetPluginOptions<{
+        translate: {
+          translate: 'translate';
+        };
+      }> &
       Attribute.SetMinMaxLength<{
-        minLength: 30;
-        maxLength: 220;
+        minLength: 50;
+        maxLength: 160;
       }>;
-    metaImage: Attribute.Media & Attribute.Required;
+    metaImage: Attribute.Media;
     metaSocial: Attribute.Component<'shared.meta-social', true>;
-    keywords: Attribute.Text;
-    metaRobots: Attribute.String;
+    keywords: Attribute.Text &
+      Attribute.SetPluginOptions<{
+        translate: {
+          translate: 'translate';
+        };
+      }>;
+    metaRobots: Attribute.String &
+      Attribute.SetPluginOptions<{
+        translate: {
+          translate: 'copy';
+        };
+      }>;
     structuredData: Attribute.JSON;
-    metaViewport: Attribute.String;
-    canonicalURL: Attribute.String;
+    metaViewport: Attribute.String &
+      Attribute.SetPluginOptions<{
+        translate: {
+          translate: 'copy';
+        };
+      }>;
+    canonicalURL: Attribute.String &
+      Attribute.SetPluginOptions<{
+        translate: {
+          translate: 'copy';
+        };
+      }>;
   };
 }
 

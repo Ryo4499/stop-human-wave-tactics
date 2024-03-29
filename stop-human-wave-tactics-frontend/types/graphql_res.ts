@@ -23,26 +23,19 @@ export type Scalars = {
 
 export type Article = {
   __typename?: 'Article';
-  Seo?: Maybe<Array<Maybe<ComponentSharedSeo>>>;
   category?: Maybe<CategoryEntityResponse>;
   content: Scalars['String']['output'];
   createdAt?: Maybe<Scalars['DateTime']['output']>;
   locale?: Maybe<Scalars['String']['output']>;
   localizations?: Maybe<ArticleRelationResponseCollection>;
   publishedAt?: Maybe<Scalars['DateTime']['output']>;
+  seo?: Maybe<ComponentSharedSeo>;
   summary: Scalars['String']['output'];
   tags?: Maybe<TagRelationResponseCollection>;
-  thumbnail: UploadFileEntityResponse;
+  thumbnail?: Maybe<UploadFileEntityResponse>;
   title: Scalars['String']['output'];
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
   uuid?: Maybe<Scalars['String']['output']>;
-};
-
-
-export type ArticleSeoArgs = {
-  filters?: InputMaybe<ComponentSharedSeoFiltersInput>;
-  pagination?: InputMaybe<PaginationArg>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 
@@ -78,7 +71,6 @@ export type ArticleEntityResponseCollection = {
 };
 
 export type ArticleFiltersInput = {
-  Seo?: InputMaybe<ComponentSharedSeoFiltersInput>;
   and?: InputMaybe<Array<InputMaybe<ArticleFiltersInput>>>;
   category?: InputMaybe<CategoryFiltersInput>;
   content?: InputMaybe<StringFilterInput>;
@@ -89,6 +81,7 @@ export type ArticleFiltersInput = {
   not?: InputMaybe<ArticleFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<ArticleFiltersInput>>>;
   publishedAt?: InputMaybe<DateTimeFilterInput>;
+  seo?: InputMaybe<ComponentSharedSeoFiltersInput>;
   summary?: InputMaybe<StringFilterInput>;
   tags?: InputMaybe<TagFiltersInput>;
   title?: InputMaybe<StringFilterInput>;
@@ -97,10 +90,10 @@ export type ArticleFiltersInput = {
 };
 
 export type ArticleInput = {
-  Seo?: InputMaybe<Array<InputMaybe<ComponentSharedSeoInput>>>;
   category?: InputMaybe<Scalars['ID']['input']>;
   content?: InputMaybe<Scalars['String']['input']>;
   publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  seo?: InputMaybe<ComponentSharedSeoInput>;
   summary?: InputMaybe<Scalars['String']['input']>;
   tags?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   thumbnail?: InputMaybe<Scalars['ID']['input']>;
@@ -238,7 +231,7 @@ export type ComponentSharedSeo = {
   id: Scalars['ID']['output'];
   keywords?: Maybe<Scalars['String']['output']>;
   metaDescription: Scalars['String']['output'];
-  metaImage: UploadFileEntityResponse;
+  metaImage?: Maybe<UploadFileEntityResponse>;
   metaRobots?: Maybe<Scalars['String']['output']>;
   metaSocial?: Maybe<Array<Maybe<ComponentSharedMetaSocial>>>;
   metaTitle: Scalars['String']['output'];
@@ -1419,7 +1412,7 @@ export type GetArticleQueryVariables = Exact<{
 }>;
 
 
-export type GetArticleQuery = { __typename?: 'Query', article?: { __typename?: 'ArticleEntityResponse', data?: { __typename?: 'ArticleEntity', attributes?: { __typename?: 'Article', uuid?: string | null, title: string, summary: string, content: string, createdAt?: any | null, updatedAt?: any | null, publishedAt?: any | null, locale?: string | null, thumbnail: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', name: string, alternativeText?: string | null, caption?: string | null, width?: number | null, height?: number | null, url: string, previewUrl?: string | null } | null } | null }, category?: { __typename?: 'CategoryEntityResponse', data?: { __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', uuid?: string | null, name: string } | null } | null } | null, tags?: { __typename?: 'TagRelationResponseCollection', data: Array<{ __typename?: 'TagEntity', attributes?: { __typename?: 'Tag', uuid?: string | null, name: string } | null }> } | null, Seo?: Array<{ __typename?: 'ComponentSharedSeo', metaTitle: string, metaDescription: string, keywords?: string | null, metaRobots?: string | null, structuredData?: any | null, metaViewport?: string | null, canonicalURL?: string | null, metaImage: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', name: string, alternativeText?: string | null, caption?: string | null, width?: number | null, height?: number | null, url: string, previewUrl?: string | null } | null } | null } } | null> | null } | null } | null } | null };
+export type GetArticleQuery = { __typename?: 'Query', article?: { __typename?: 'ArticleEntityResponse', data?: { __typename?: 'ArticleEntity', attributes?: { __typename?: 'Article', uuid?: string | null, title: string, summary: string, content: string, createdAt?: any | null, updatedAt?: any | null, publishedAt?: any | null, locale?: string | null, thumbnail?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', name: string, alternativeText?: string | null, caption?: string | null, width?: number | null, height?: number | null, url: string, previewUrl?: string | null } | null } | null } | null, category?: { __typename?: 'CategoryEntityResponse', data?: { __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', uuid?: string | null, name: string } | null } | null } | null, tags?: { __typename?: 'TagRelationResponseCollection', data: Array<{ __typename?: 'TagEntity', attributes?: { __typename?: 'Tag', uuid?: string | null, name: string } | null }> } | null, seo?: { __typename?: 'ComponentSharedSeo', metaTitle: string, metaDescription: string, keywords?: string | null, metaRobots?: string | null, structuredData?: any | null, metaViewport?: string | null, canonicalURL?: string | null, metaImage?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', name: string, alternativeText?: string | null, caption?: string | null, width?: number | null, height?: number | null, url: string, previewUrl?: string | null } | null } | null } | null } | null } | null } | null } | null };
 
 export type GetArticlesQueryVariables = Exact<{
   filters?: InputMaybe<ArticleFiltersInput>;
@@ -1429,7 +1422,7 @@ export type GetArticlesQueryVariables = Exact<{
 }>;
 
 
-export type GetArticlesQuery = { __typename?: 'Query', articles?: { __typename?: 'ArticleEntityResponseCollection', data: Array<{ __typename?: 'ArticleEntity', attributes?: { __typename?: 'Article', uuid?: string | null, title: string, summary: string, content: string, createdAt?: any | null, updatedAt?: any | null, publishedAt?: any | null, locale?: string | null, thumbnail: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', name: string, alternativeText?: string | null, caption?: string | null, width?: number | null, height?: number | null, url: string, previewUrl?: string | null } | null } | null }, category?: { __typename?: 'CategoryEntityResponse', data?: { __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', uuid?: string | null, name: string } | null } | null } | null, tags?: { __typename?: 'TagRelationResponseCollection', data: Array<{ __typename?: 'TagEntity', attributes?: { __typename?: 'Tag', uuid?: string | null, name: string } | null }> } | null, Seo?: Array<{ __typename?: 'ComponentSharedSeo', metaTitle: string, metaDescription: string, keywords?: string | null, metaRobots?: string | null, structuredData?: any | null, metaViewport?: string | null, canonicalURL?: string | null, metaImage: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', name: string, alternativeText?: string | null, caption?: string | null, width?: number | null, height?: number | null, url: string, previewUrl?: string | null } | null } | null } } | null> | null } | null }>, meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number } } } | null };
+export type GetArticlesQuery = { __typename?: 'Query', articles?: { __typename?: 'ArticleEntityResponseCollection', data: Array<{ __typename?: 'ArticleEntity', attributes?: { __typename?: 'Article', uuid?: string | null, title: string, summary: string, content: string, createdAt?: any | null, updatedAt?: any | null, publishedAt?: any | null, locale?: string | null, thumbnail?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', name: string, alternativeText?: string | null, caption?: string | null, width?: number | null, height?: number | null, url: string, previewUrl?: string | null } | null } | null } | null, category?: { __typename?: 'CategoryEntityResponse', data?: { __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', uuid?: string | null, name: string } | null } | null } | null, tags?: { __typename?: 'TagRelationResponseCollection', data: Array<{ __typename?: 'TagEntity', attributes?: { __typename?: 'Tag', uuid?: string | null, name: string } | null }> } | null, seo?: { __typename?: 'ComponentSharedSeo', metaTitle: string, metaDescription: string, keywords?: string | null, metaRobots?: string | null, structuredData?: any | null, metaViewport?: string | null, canonicalURL?: string | null, metaImage?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', name: string, alternativeText?: string | null, caption?: string | null, width?: number | null, height?: number | null, url: string, previewUrl?: string | null } | null } | null } | null } | null } | null }>, meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number } } } | null };
 
 export type GetArticlesByUuidQueryVariables = Exact<{
   filters?: InputMaybe<ArticleFiltersInput>;
@@ -1459,7 +1452,7 @@ export type GetArticlesWithCategoriesQueryVariables = Exact<{
 }>;
 
 
-export type GetArticlesWithCategoriesQuery = { __typename?: 'Query', articles?: { __typename?: 'ArticleEntityResponseCollection', data: Array<{ __typename?: 'ArticleEntity', attributes?: { __typename?: 'Article', uuid?: string | null, title: string, summary: string, content: string, createdAt?: any | null, updatedAt?: any | null, publishedAt?: any | null, locale?: string | null, thumbnail: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', name: string, alternativeText?: string | null, caption?: string | null, width?: number | null, height?: number | null, url: string, previewUrl?: string | null } | null } | null }, category?: { __typename?: 'CategoryEntityResponse', data?: { __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', uuid?: string | null, name: string } | null } | null } | null, tags?: { __typename?: 'TagRelationResponseCollection', data: Array<{ __typename?: 'TagEntity', attributes?: { __typename?: 'Tag', uuid?: string | null, name: string } | null }> } | null, Seo?: Array<{ __typename?: 'ComponentSharedSeo', metaTitle: string, metaDescription: string, keywords?: string | null, metaRobots?: string | null, structuredData?: any | null, metaViewport?: string | null, canonicalURL?: string | null, metaImage: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', name: string, alternativeText?: string | null, caption?: string | null, width?: number | null, height?: number | null, url: string, previewUrl?: string | null } | null } | null } } | null> | null } | null }>, meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number } } } | null, categories?: { __typename?: 'CategoryEntityResponseCollection', data: Array<{ __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', uuid?: string | null, name: string, locale?: string | null, articles?: { __typename?: 'ArticleRelationResponseCollection', data: Array<{ __typename?: 'ArticleEntity', attributes?: { __typename?: 'Article', uuid?: string | null } | null }> } | null } | null }>, meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number } } } | null };
+export type GetArticlesWithCategoriesQuery = { __typename?: 'Query', articles?: { __typename?: 'ArticleEntityResponseCollection', data: Array<{ __typename?: 'ArticleEntity', attributes?: { __typename?: 'Article', uuid?: string | null, title: string, summary: string, content: string, createdAt?: any | null, updatedAt?: any | null, publishedAt?: any | null, locale?: string | null, thumbnail?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', name: string, alternativeText?: string | null, caption?: string | null, width?: number | null, height?: number | null, url: string, previewUrl?: string | null } | null } | null } | null, category?: { __typename?: 'CategoryEntityResponse', data?: { __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', uuid?: string | null, name: string } | null } | null } | null, tags?: { __typename?: 'TagRelationResponseCollection', data: Array<{ __typename?: 'TagEntity', attributes?: { __typename?: 'Tag', uuid?: string | null, name: string } | null }> } | null, seo?: { __typename?: 'ComponentSharedSeo', metaTitle: string, metaDescription: string, keywords?: string | null, metaRobots?: string | null, structuredData?: any | null, metaViewport?: string | null, canonicalURL?: string | null, metaImage?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', name: string, alternativeText?: string | null, caption?: string | null, width?: number | null, height?: number | null, url: string, previewUrl?: string | null } | null } | null } | null } | null } | null }>, meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number } } } | null, categories?: { __typename?: 'CategoryEntityResponseCollection', data: Array<{ __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', uuid?: string | null, name: string, locale?: string | null, articles?: { __typename?: 'ArticleRelationResponseCollection', data: Array<{ __typename?: 'ArticleEntity', attributes?: { __typename?: 'Article', uuid?: string | null } | null }> } | null } | null }>, meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number } } } | null };
 
 export type GetArticlesWithCategoriesAndTagsQueryVariables = Exact<{
   filters?: InputMaybe<ArticleFiltersInput>;
@@ -1469,7 +1462,7 @@ export type GetArticlesWithCategoriesAndTagsQueryVariables = Exact<{
 }>;
 
 
-export type GetArticlesWithCategoriesAndTagsQuery = { __typename?: 'Query', articles?: { __typename?: 'ArticleEntityResponseCollection', data: Array<{ __typename?: 'ArticleEntity', attributes?: { __typename?: 'Article', uuid?: string | null, title: string, summary: string, content: string, createdAt?: any | null, updatedAt?: any | null, publishedAt?: any | null, locale?: string | null, thumbnail: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', name: string, alternativeText?: string | null, caption?: string | null, width?: number | null, height?: number | null, url: string, previewUrl?: string | null } | null } | null }, category?: { __typename?: 'CategoryEntityResponse', data?: { __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', uuid?: string | null, name: string } | null } | null } | null, tags?: { __typename?: 'TagRelationResponseCollection', data: Array<{ __typename?: 'TagEntity', attributes?: { __typename?: 'Tag', uuid?: string | null, name: string } | null }> } | null, Seo?: Array<{ __typename?: 'ComponentSharedSeo', metaTitle: string, metaDescription: string, keywords?: string | null, metaRobots?: string | null, structuredData?: any | null, metaViewport?: string | null, canonicalURL?: string | null, metaImage: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', name: string, alternativeText?: string | null, caption?: string | null, width?: number | null, height?: number | null, url: string, previewUrl?: string | null } | null } | null } } | null> | null } | null }>, meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number } } } | null, categories?: { __typename?: 'CategoryEntityResponseCollection', data: Array<{ __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', uuid?: string | null, name: string, locale?: string | null, articles?: { __typename?: 'ArticleRelationResponseCollection', data: Array<{ __typename?: 'ArticleEntity', attributes?: { __typename?: 'Article', uuid?: string | null } | null }> } | null } | null }> } | null, tags?: { __typename?: 'TagEntityResponseCollection', data: Array<{ __typename?: 'TagEntity', attributes?: { __typename?: 'Tag', uuid?: string | null, name: string, locale?: string | null, articles?: { __typename?: 'ArticleRelationResponseCollection', data: Array<{ __typename?: 'ArticleEntity', attributes?: { __typename?: 'Article', uuid?: string | null } | null }> } | null } | null }> } | null };
+export type GetArticlesWithCategoriesAndTagsQuery = { __typename?: 'Query', articles?: { __typename?: 'ArticleEntityResponseCollection', data: Array<{ __typename?: 'ArticleEntity', attributes?: { __typename?: 'Article', uuid?: string | null, title: string, summary: string, content: string, createdAt?: any | null, updatedAt?: any | null, publishedAt?: any | null, locale?: string | null, thumbnail?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', name: string, alternativeText?: string | null, caption?: string | null, width?: number | null, height?: number | null, url: string, previewUrl?: string | null } | null } | null } | null, category?: { __typename?: 'CategoryEntityResponse', data?: { __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', uuid?: string | null, name: string } | null } | null } | null, tags?: { __typename?: 'TagRelationResponseCollection', data: Array<{ __typename?: 'TagEntity', attributes?: { __typename?: 'Tag', uuid?: string | null, name: string } | null }> } | null, seo?: { __typename?: 'ComponentSharedSeo', metaTitle: string, metaDescription: string, keywords?: string | null, metaRobots?: string | null, structuredData?: any | null, metaViewport?: string | null, canonicalURL?: string | null, metaImage?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', name: string, alternativeText?: string | null, caption?: string | null, width?: number | null, height?: number | null, url: string, previewUrl?: string | null } | null } | null } | null } | null } | null }>, meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number } } } | null, categories?: { __typename?: 'CategoryEntityResponseCollection', data: Array<{ __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', uuid?: string | null, name: string, locale?: string | null, articles?: { __typename?: 'ArticleRelationResponseCollection', data: Array<{ __typename?: 'ArticleEntity', attributes?: { __typename?: 'Article', uuid?: string | null } | null }> } | null } | null }> } | null, tags?: { __typename?: 'TagEntityResponseCollection', data: Array<{ __typename?: 'TagEntity', attributes?: { __typename?: 'Tag', uuid?: string | null, name: string, locale?: string | null, articles?: { __typename?: 'ArticleRelationResponseCollection', data: Array<{ __typename?: 'ArticleEntity', attributes?: { __typename?: 'Article', uuid?: string | null } | null }> } | null } | null }> } | null };
 
 export type GetArticlesWithTagsQueryVariables = Exact<{
   filters?: InputMaybe<ArticleFiltersInput>;
@@ -1479,7 +1472,7 @@ export type GetArticlesWithTagsQueryVariables = Exact<{
 }>;
 
 
-export type GetArticlesWithTagsQuery = { __typename?: 'Query', articles?: { __typename?: 'ArticleEntityResponseCollection', data: Array<{ __typename?: 'ArticleEntity', id?: string | null, attributes?: { __typename?: 'Article', uuid?: string | null, title: string, summary: string, content: string, createdAt?: any | null, updatedAt?: any | null, publishedAt?: any | null, locale?: string | null, thumbnail: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', name: string, alternativeText?: string | null, caption?: string | null, width?: number | null, height?: number | null, url: string, previewUrl?: string | null } | null } | null }, category?: { __typename?: 'CategoryEntityResponse', data?: { __typename?: 'CategoryEntity', id?: string | null, attributes?: { __typename?: 'Category', uuid?: string | null, name: string } | null } | null } | null, tags?: { __typename?: 'TagRelationResponseCollection', data: Array<{ __typename?: 'TagEntity', id?: string | null, attributes?: { __typename?: 'Tag', uuid?: string | null, name: string } | null }> } | null, Seo?: Array<{ __typename?: 'ComponentSharedSeo', id: string, metaTitle: string, metaDescription: string, keywords?: string | null, metaRobots?: string | null, structuredData?: any | null, metaViewport?: string | null, canonicalURL?: string | null, metaImage: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', name: string, alternativeText?: string | null, caption?: string | null, width?: number | null, height?: number | null, url: string, previewUrl?: string | null } | null } | null } } | null> | null } | null }>, meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number } } } | null, tags?: { __typename?: 'TagEntityResponseCollection', data: Array<{ __typename?: 'TagEntity', id?: string | null, attributes?: { __typename?: 'Tag', uuid?: string | null, name: string, locale?: string | null, articles?: { __typename?: 'ArticleRelationResponseCollection', data: Array<{ __typename?: 'ArticleEntity', id?: string | null, attributes?: { __typename?: 'Article', uuid?: string | null } | null }> } | null } | null }>, meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number } } } | null };
+export type GetArticlesWithTagsQuery = { __typename?: 'Query', articles?: { __typename?: 'ArticleEntityResponseCollection', data: Array<{ __typename?: 'ArticleEntity', id?: string | null, attributes?: { __typename?: 'Article', uuid?: string | null, title: string, summary: string, content: string, createdAt?: any | null, updatedAt?: any | null, publishedAt?: any | null, locale?: string | null, thumbnail?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', name: string, alternativeText?: string | null, caption?: string | null, width?: number | null, height?: number | null, url: string, previewUrl?: string | null } | null } | null } | null, category?: { __typename?: 'CategoryEntityResponse', data?: { __typename?: 'CategoryEntity', id?: string | null, attributes?: { __typename?: 'Category', uuid?: string | null, name: string } | null } | null } | null, tags?: { __typename?: 'TagRelationResponseCollection', data: Array<{ __typename?: 'TagEntity', id?: string | null, attributes?: { __typename?: 'Tag', uuid?: string | null, name: string } | null }> } | null, seo?: { __typename?: 'ComponentSharedSeo', id: string, metaTitle: string, metaDescription: string, keywords?: string | null, metaRobots?: string | null, structuredData?: any | null, metaViewport?: string | null, canonicalURL?: string | null, metaImage?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', name: string, alternativeText?: string | null, caption?: string | null, width?: number | null, height?: number | null, url: string, previewUrl?: string | null } | null } | null } | null } | null } | null }>, meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number } } } | null, tags?: { __typename?: 'TagEntityResponseCollection', data: Array<{ __typename?: 'TagEntity', id?: string | null, attributes?: { __typename?: 'Tag', uuid?: string | null, name: string, locale?: string | null, articles?: { __typename?: 'ArticleRelationResponseCollection', data: Array<{ __typename?: 'ArticleEntity', id?: string | null, attributes?: { __typename?: 'Article', uuid?: string | null } | null }> } | null } | null }>, meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number } } } | null };
 
 export type GetCategoriesQueryVariables = Exact<{
   filters?: InputMaybe<CategoryFiltersInput>;
@@ -1598,7 +1591,7 @@ export const GetArticleDocument = gql`
             }
           }
         }
-        Seo {
+        seo {
           metaTitle
           metaDescription
           metaImage {
@@ -1673,7 +1666,7 @@ export const GetArticlesDocument = gql`
             }
           }
         }
-        Seo {
+        seo {
           metaTitle
           metaDescription
           metaImage {
@@ -1793,7 +1786,7 @@ export const GetArticlesWithCategoriesDocument = gql`
             }
           }
         }
-        Seo {
+        seo {
           metaTitle
           metaDescription
           metaImage {
@@ -1900,7 +1893,7 @@ export const GetArticlesWithCategoriesAndTagsDocument = gql`
             }
           }
         }
-        Seo {
+        seo {
           metaTitle
           metaDescription
           metaImage {
@@ -2018,7 +2011,7 @@ export const GetArticlesWithTagsDocument = gql`
             }
           }
         }
-        Seo {
+        seo {
           id
           metaTitle
           metaDescription
@@ -2299,7 +2292,7 @@ export const GetTagsByUuidDocument = gql`
 }
     `;
 
-export type SdkFunctionWrapper = <T>(action: (requestHeaders?: Record<string, string>) => Promise<T>, operationName: string, operationType?: string, variables?: any) => Promise<T>;
+export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string, variables?: any) => Promise<T>;
 
 
 const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType, _variables) => action();
@@ -2307,49 +2300,49 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
     getArticle(variables: GetArticleQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetArticleQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetArticleQuery>(GetArticleDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getArticle', 'query', variables);
+      return withWrapper((wrappedRequestHeaders) => client.request<GetArticleQuery>(GetArticleDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getArticle', 'query', variables);
     },
     getArticles(variables: GetArticlesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetArticlesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetArticlesQuery>(GetArticlesDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getArticles', 'query', variables);
+      return withWrapper((wrappedRequestHeaders) => client.request<GetArticlesQuery>(GetArticlesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getArticles', 'query', variables);
     },
     getArticlesByUUID(variables: GetArticlesByUuidQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetArticlesByUuidQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetArticlesByUuidQuery>(GetArticlesByUuidDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getArticlesByUUID', 'query', variables);
+      return withWrapper((wrappedRequestHeaders) => client.request<GetArticlesByUuidQuery>(GetArticlesByUuidDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getArticlesByUUID', 'query', variables);
     },
     getArticlesPages(variables: GetArticlesPagesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetArticlesPagesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetArticlesPagesQuery>(GetArticlesPagesDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getArticlesPages', 'query', variables);
+      return withWrapper((wrappedRequestHeaders) => client.request<GetArticlesPagesQuery>(GetArticlesPagesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getArticlesPages', 'query', variables);
     },
     getArticlesWithCategories(variables: GetArticlesWithCategoriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetArticlesWithCategoriesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetArticlesWithCategoriesQuery>(GetArticlesWithCategoriesDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getArticlesWithCategories', 'query', variables);
+      return withWrapper((wrappedRequestHeaders) => client.request<GetArticlesWithCategoriesQuery>(GetArticlesWithCategoriesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getArticlesWithCategories', 'query', variables);
     },
     getArticlesWithCategoriesAndTags(variables: GetArticlesWithCategoriesAndTagsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetArticlesWithCategoriesAndTagsQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetArticlesWithCategoriesAndTagsQuery>(GetArticlesWithCategoriesAndTagsDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getArticlesWithCategoriesAndTags', 'query', variables);
+      return withWrapper((wrappedRequestHeaders) => client.request<GetArticlesWithCategoriesAndTagsQuery>(GetArticlesWithCategoriesAndTagsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getArticlesWithCategoriesAndTags', 'query', variables);
     },
     getArticlesWithTags(variables: GetArticlesWithTagsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetArticlesWithTagsQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetArticlesWithTagsQuery>(GetArticlesWithTagsDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getArticlesWithTags', 'query', variables);
+      return withWrapper((wrappedRequestHeaders) => client.request<GetArticlesWithTagsQuery>(GetArticlesWithTagsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getArticlesWithTags', 'query', variables);
     },
     getCategories(variables: GetCategoriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetCategoriesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetCategoriesQuery>(GetCategoriesDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getCategories', 'query', variables);
+      return withWrapper((wrappedRequestHeaders) => client.request<GetCategoriesQuery>(GetCategoriesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCategories', 'query', variables);
     },
     getCategoriesAndTags(variables: GetCategoriesAndTagsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetCategoriesAndTagsQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetCategoriesAndTagsQuery>(GetCategoriesAndTagsDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getCategoriesAndTags', 'query', variables);
+      return withWrapper((wrappedRequestHeaders) => client.request<GetCategoriesAndTagsQuery>(GetCategoriesAndTagsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCategoriesAndTags', 'query', variables);
     },
     getCategoriesByUUID(variables: GetCategoriesByUuidQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetCategoriesByUuidQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetCategoriesByUuidQuery>(GetCategoriesByUuidDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getCategoriesByUUID', 'query', variables);
+      return withWrapper((wrappedRequestHeaders) => client.request<GetCategoriesByUuidQuery>(GetCategoriesByUuidDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCategoriesByUUID', 'query', variables);
     },
     getCategory(variables: GetCategoryQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetCategoryQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetCategoryQuery>(GetCategoryDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getCategory', 'query', variables);
+      return withWrapper((wrappedRequestHeaders) => client.request<GetCategoryQuery>(GetCategoryDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCategory', 'query', variables);
     },
     getI18NLocales(variables?: GetI18NLocalesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetI18NLocalesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetI18NLocalesQuery>(GetI18NLocalesDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getI18NLocales', 'query', variables);
+      return withWrapper((wrappedRequestHeaders) => client.request<GetI18NLocalesQuery>(GetI18NLocalesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getI18NLocales', 'query', variables);
     },
     getTag(variables: GetTagQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetTagQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetTagQuery>(GetTagDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getTag', 'query', variables);
+      return withWrapper((wrappedRequestHeaders) => client.request<GetTagQuery>(GetTagDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getTag', 'query', variables);
     },
     getTags(variables: GetTagsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetTagsQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetTagsQuery>(GetTagsDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getTags', 'query', variables);
+      return withWrapper((wrappedRequestHeaders) => client.request<GetTagsQuery>(GetTagsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getTags', 'query', variables);
     },
     getTagsByUUID(variables: GetTagsByUuidQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetTagsByUuidQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetTagsByUuidQuery>(GetTagsByUuidDocument, variables, { ...requestHeaders, ...wrappedRequestHeaders }), 'getTagsByUUID', 'query', variables);
+      return withWrapper((wrappedRequestHeaders) => client.request<GetTagsByUuidQuery>(GetTagsByUuidDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getTagsByUUID', 'query', variables);
     }
   };
 }

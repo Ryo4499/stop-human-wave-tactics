@@ -20,6 +20,9 @@
       "pluginOptions": {
         "i18n": {
           "localized": true
+        },
+        "translate": {
+          "translate": "translate"
         }
       },
       "type": "customField",
@@ -37,14 +40,11 @@
       "type": "string",
       "minLength": 1,
       "maxLength": 150,
-      "required": true,
-      "unique": true
+      "unique": true,
+      "required": true
     },
     "summary": {
       "pluginOptions": {
-        "versions": {
-          "versioned": true
-        },
         "i18n": {
           "localized": true
         },
@@ -68,25 +68,22 @@
         }
       },
       "type": "richtext",
-      "minLength": 1,
-      "required": true
+      "required": true,
+      "minLength": 1
     },
     "thumbnail": {
       "type": "media",
       "multiple": false,
-      "required": true,
+      "required": false,
       "allowedTypes": [
         "images"
       ],
       "pluginOptions": {
-        "versions": {
-          "versioned": true
-        },
         "i18n": {
-          "localized": false
+          "localized": true
         },
         "translate": {
-          "translate": ""
+          "translate": "copy"
         }
       }
     },
@@ -94,16 +91,27 @@
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::category.category",
-      "inversedBy": "articles",
       "pluginOptions": {
         "translate": {
           "translate": "translate"
         }
-      }
+      },
+      "inversedBy": "articles"
     },
-    "Seo": {
+    "tags": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::tag.tag",
+      "pluginOptions": {
+        "translate": {
+          "translate": "translate"
+        }
+      },
+      "mappedBy": "articles"
+    },
+    "seo": {
       "type": "component",
-      "repeatable": true,
+      "repeatable": false,
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -113,12 +121,6 @@
         }
       },
       "component": "shared.seo"
-    },
-    "tags": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::tag.tag",
-      "mappedBy": "articles"
     }
   }
 }
