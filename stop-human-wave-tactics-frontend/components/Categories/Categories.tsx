@@ -51,16 +51,16 @@ export const Categories = ({ contents }) => {
 }
 
 export const CategoryLinkComponent = ({ article }: { article: Article }) => {
-  if (article.category != null) {
+  if (article.category?.data != null) {
     return (
       <Grid container my={1} direction="row" sx={{ color: "text.link" }} justifyContent="flex-end" alignItems="center">
         <Grid container mx={1}>
           <FolderIcon sx={{ color: "text.secondary", fontSize: "3vh" }} />
         </Grid>
         <Grid container>
-          <Link href={{ pathname: `/category/${article.category.data?.attributes?.uuid}`, query: { name: article.category.data?.attributes?.name } }}>
+          <Link href={{ pathname: `/category/${article.category.data.attributes?.uuid}`, query: { name: article.category.data.attributes?.name } }}>
             <Typography sx={{ fontSize: "1.0rem" }} color="text.link">
-              {article.category.data?.attributes?.name}
+              {article.category.data.attributes?.name}
             </Typography>
           </Link>
         </Grid>
