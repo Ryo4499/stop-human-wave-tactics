@@ -54,7 +54,7 @@ export const ArticleDetails = ({ articles }: { articles: ArticleEntityResponseCo
             </Typography>
           </Grid>
         </Grid>
-        <Grid direction="row" py={2}>
+        <Grid direction="row" pb={2}>
           <MdContent content={article.content}></MdContent>
           {
             adsenseEnabled() &&
