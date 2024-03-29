@@ -10,7 +10,7 @@ import { GraphqlError } from "../components/Common/DisplayError";
 import { ArticlesCategorisTagsProps } from "../types/general";
 import { getArticlesWithCategoriesAndTags } from "../graphql/getArticlesWithCategoriesAndTags";
 import Sidebar from "../components/Common/Sidebar";
-import Meta from "../components/utils/Head";
+import Meta from "../components/Common/Meta";
 import { convDatetimeArticles, inArticlesCategoriesTags } from "../lib/utils";
 import { ArticleEntityResponseCollection, CategoryEntity, CategoryEntityResponseCollection, GetArticlesQueryVariables, TagEntityResponseCollection } from "../types/graphql_res";
 
@@ -79,7 +79,6 @@ const ArticlesIndex: NextPage<ArticlesCategorisTagsProps> = ({
         <Meta
           title="Top Page"
           description="This page published latest articles."
-          keyword={categories.data.map((value: CategoryEntity) => value.attributes?.name).join(" ")}
         />
         <Grid container xs={12} md={10} sx={{ flexGrow: 1 }}>
           <Articles

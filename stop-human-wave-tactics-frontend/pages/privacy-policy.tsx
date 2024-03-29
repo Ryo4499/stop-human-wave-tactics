@@ -11,7 +11,7 @@ import { getBackendGraphqlURL } from "../lib/graphqlClient";
 import { CategoryEntityResponseCollection, GetCategoriesQuery, TagEntityResponseCollection } from "../types/graphql_res";
 import { GraphqlError } from "../components/Common/DisplayError";
 import { CategoriesAndTagsResponseProps } from "../types/general";
-import Meta from "../components/utils/Head";
+import Meta from "../components/Common/Meta";
 
 export const getStaticProps = (async ({
   locale,
@@ -157,9 +157,6 @@ const PrivacyPolicy: NextPage<CategoriesAndTagsResponseProps> = ({
         <Meta
           title="Privacy Policy Page"
           description="This page published about privacy policy."
-          keyword={data.categories.data
-            .map((value) => value.attributes?.name)
-            .join(" ")}
         />
         <Grid container direction="row" sx={{ flexGrow: 1 }}>
           <Grid container py={2} xs={12} md={10} sx={{ flexGrow: 1 }}>
