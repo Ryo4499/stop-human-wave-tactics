@@ -23,5 +23,5 @@ scrape_configs:
           - exporter:9100
           - nginx-exporter:9113
           - cadvisor:8080
-          - back:1337
-          - front:3000
+          - back:${BACK_PORT}
+          - front:${FRONT_PORT}

@@ -1,7 +1,7 @@
 server {
         listen 80;
 
-        server_name datsujinkai.com;
+        server_name ${DOMAIN};
         limit_req zone=one burst=5 nodelay;
         root /usr/share/nginx/html;
 
