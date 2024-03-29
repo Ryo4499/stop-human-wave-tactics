@@ -74,12 +74,12 @@ http {
     upstream strapi {
             keepalive 128;
             keepalive_time 10m;
-            server back:1337;
+            server back:${BACK_PORT};
     }
 
     upstream next {
             keepalive 128;
             keepalive_time 10m;
-            server front:3000;
+            server front:${FRONT_PORT};
     }
 }
