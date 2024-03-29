@@ -2,7 +2,7 @@ import fs from "fs";
 
 export default ({ env }) => {
   const dsn = fs.readFileSync(env("BACK_SENTRY_DSN"), "utf8").replace("\n", "")
-  const deeplApiKey = fs.readFileSync(env("DEEPL_API_KEY"), "utf8").replace("\n", "")
+  const deeplApiKey = fs.readFileSync(env("DEEPL_KEY"), "utf8").replace("\n", "")
   return {
     graphql: {
       enabled: true,
