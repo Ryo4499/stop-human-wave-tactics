@@ -12,7 +12,7 @@ import {
   UUIDParams,
 } from "../../types/general";
 import { GraphqlError } from "../../components/Common/DisplayError";
-import Meta from "../../components/utils/Head";
+import Meta from "../../components/Common/Meta";
 import { convDatetimeArticles, inArticlesCategoriesTags } from "../../lib/utils";
 import { getArticlesWithCategoriesAndTags } from "../../graphql/getArticlesWithCategoriesAndTags";
 
@@ -102,13 +102,6 @@ const ArticlePage: NextPage<ArticlesCategorisTagsProps> = ({
   if (data != null) {
     return (
       <Grid container sx={{ flexGrow: 1 }}>
-        <Meta
-          title="Article Details Page"
-          description="This page published article details."
-          keyword={categories.data
-            .map((value) => value.attributes?.name)
-            .join(" ")}
-        />
         <Grid container direction="row" sx={{ flexGrow: 1 }}>
           <Grid container xs={12} md={10} sx={{ flexGrow: 1 }}>
             <ArticleDetails articles={data.articles} />

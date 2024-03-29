@@ -10,7 +10,7 @@ import { GraphqlError } from "../components/Common/DisplayError";
 import { CategoriesAndTagsResponseProps } from "../types/general";
 import { useLocale } from "../lib/locale";
 import Sidebar from "../components/Common/Sidebar";
-import Meta from "../components/utils/Head";
+import Meta from "../components/Common/Meta";
 import { getCategoriesAndTags } from "../graphql/getCategoriesAndTags";
 
 export const getStaticProps = (async ({
@@ -168,12 +168,6 @@ const Achievement: NextPage<CategoriesAndTagsResponseProps> = ({
         <Meta
           title="Portfolios Page"
           description="This page introduce my portfolios."
-          keyword={categories.data
-            .map(
-              (value: CategoryEntity) =>
-                value.attributes?.name as string
-            )
-            .join(" ")}
         />
         <Grid container direction="row" sx={{ flexGrow: 1 }}>
           <Grid container py={2} xs={12} md={10} sx={{ flexGrow: 1 }}>
