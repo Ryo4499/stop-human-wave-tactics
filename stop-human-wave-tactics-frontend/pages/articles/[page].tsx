@@ -14,7 +14,7 @@ import {
   ArticlesCategorisTagsProps,
   PageParams,
 } from "../../types/general";
-import Meta from "../../components/utils/Head";
+import Meta from "../../components/Common/Meta";
 import { convDatetimeArticles, inArticlesCategoriesTags } from "../../lib/utils";
 import { getArticlesWithCategoriesAndTags } from "../../graphql/getArticlesWithCategoriesAndTags";
 
@@ -108,9 +108,6 @@ const ArticlesPage: NextPage<ArticlesCategorisTagsProps> = ({
         <Meta
           title="Articles Page"
           description="This page published articles sorted in descing ordered of the latest modified date."
-          keyword={categories.data
-            .map((value) => value.attributes?.name)
-            .join(" ")}
         />
         <Grid container direction="row" sx={{ flexGrow: 1 }}>
           <Grid container xs={12} md={10} sx={{ flexGrow: 1 }}>

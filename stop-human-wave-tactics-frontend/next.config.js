@@ -7,18 +7,6 @@ const nextConfig = {
   //    {
   //      source: '/:path*',
   //      headers: [
-  //        {
-  //          key: "Access-Control-Allow-Origin",
-  //          value: "https://datsujinkai.com",
-  //        },
-  //        {
-  //          key: "Access-Control-Allow-Headers",
-  //          value: "Conetnt-Type",
-  //        },
-  //        {
-  //          key: "Access-Control-Allow-Methods",
-  //          value: "GET",
-  //        }
   //        //{
   //        //  key: 'Content-Security-Policy',
   //        //  value: "default-src 'self' datsujinkai.com; script-src 'self' www.googletagmanager.com pagead2.googlesyndication.com datsujinkai.com; style-src 'self' datsujinkai.com cdn.jsdelivr.net cdnjs.cloudflare.com; font-src 'self' cdn.jsdelivr.net cdnjs.cloudflare.com datsujinkai.com; img-src https://*;",
@@ -27,6 +15,7 @@ const nextConfig = {
   //    },
   //  ]
   //},
+  distDir: 'dist',
   reactStrictMode: true,
   crossOrigin: "anonymous",
   images: {

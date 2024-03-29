@@ -12,7 +12,7 @@ import { SearchNotFound } from "../components/Common/SearchNotFound";
 import { getArticlesWithCategoriesAndTags } from "../graphql/getArticlesWithCategoriesAndTags";
 import { GraphqlError } from "../components/Common/DisplayError";
 import { ArticleEntity, ArticleEntityResponseCollection, GetArticlesWithCategoriesAndTagsQuery } from "../types/graphql_res";
-import Meta from "../components/utils/Head";
+import Meta from "../components/Common/Meta";
 import { convDatetimeArticles, inArticlesCategoriesTags } from "../lib/utils";
 import { useLocale } from "../lib/locale";
 
@@ -106,7 +106,6 @@ const ArticlesIndex: NextPage<ArticlesCategorisTagsProps> = ({
         <Meta
           title="Searched articles by title"
           description="This page published articles searched by title."
-          keyword={filter}
         />
         <Grid container xs={12} md={10} sx={{ flexGrow: 1 }}>
           {filterArticles.length === 0 ? (
