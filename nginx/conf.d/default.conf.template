@@ -123,7 +123,7 @@ server {
 
 
         location / {
-                add_header Acess-Control-Allow-Origin "https://datsujinkai.com";
+                add_header Acess-Control-Allow-Origin "https://${DOMAIN}";
                 add_header Acess-Control-Allow-Methods "GET, POST, OPTIONS";
                 add_header Acess-Control-Allow-Headers "Content-Type";
                 proxy_pass http://next;
