@@ -270,8 +270,8 @@ services:
       context: ./stop-human-wave-tactics-backend
       dockerfile: Dockerfile
       args:
-        UID: $UID
-        GID: $GID
+        UID: $HOST_UID
+        GID: $HOST_GID
         MY_USER: $MY_USER
         MY_GROUP: $MY_GROUP
         NODE_ENV: $NODE_ENV
@@ -332,8 +332,8 @@ services:
       network: host
       dockerfile: Dockerfile
       args:
-        UID: $UID
-        GID: $GID
+        UID: $HOST_UID
+        GID: $HOST_GID
         MY_USER: $MY_USER
         MY_GROUP: $MY_GROUP
         NODE_ENV: $NODE_ENV
