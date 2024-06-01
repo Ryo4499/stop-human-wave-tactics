@@ -21,12 +21,18 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "noImplicitAny": false,
-    "incremental": true
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    "next.config.js"
+    "next.config.js",
+    "dist/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"
