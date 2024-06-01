@@ -1,6 +1,6 @@
-version: "3.9"
 services:
   certbot:
+    container_name: certbot
     build:
       context: ./certbot
       dockerfile: Dockerfile
@@ -25,6 +25,7 @@ services:
       monitor_front_net:
 
   proxy:
+    container_name: proxy
     build:
       context: ./nginx
       dockerfile: Dockerfile
@@ -68,6 +69,7 @@ services:
 
   prometheus:
     image: prom/prometheus:latest
+    container_name: prometheus
     env_file:
       - .env
     volumes:
@@ -90,6 +92,7 @@ services:
 
   grafana:
     image: grafana/grafana:latest
+    container_name: grafana
     user: "427"
     env_file:
       - .env
@@ -112,6 +115,7 @@ services:
 
   alertmanager:
     image: prom/alertmanager:latest
+    container_name: alertmanager
     env_file:
       - .env
     volumes:
@@ -124,11 +128,17 @@ services:
     restart: unless-stopped
     ports:
       - 127.0.0.1:9093:9093
+    depends_on:
+      prometheus:
+        condition: service_started
+      grafana:
+        condition: service_started
     networks:
       monitor_back_net:
 
   nginx-exporter:
     image: nginx/nginx-prometheus-exporter
+    container_name: nginx-exporter
     env_file:
       - .env
     command:
@@ -149,6 +159,7 @@ services:
 
   exporter:
     image: prom/node-exporter:latest
+    container_name: node-exporter
     env_file:
       - .env
     command:
@@ -182,6 +193,7 @@ services:
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:v0.47.2
+    container_name: cadvisor
     volumes:
       - type: bind
         source: /
@@ -210,6 +222,7 @@ services:
 
   influxdb:
     image: influxdb:alpine
+    container_name: influxdb
     env_file:
       - .env
     volumes:
@@ -226,6 +239,7 @@ services:
 
   k6:
     image: grafana/k6:latest
+    container_name: k6
     env_file:
       - .env
     volumes:
@@ -240,6 +254,7 @@ services:
       k6_net:
 
   db:
+    container_name: db
     build:
       context: ./db
       dockerfile: Dockerfile
@@ -262,10 +277,11 @@ services:
       test: ["CMD-SHELL", "pg_isready"]
       interval: 5s
       retries: 5
-      start_period: 5s
-      timeout: 30s
+      start_period: 1s
+      timeout: 10s
 
   back:
+    container_name: back
     build:
       context: ./stop-human-wave-tactics-backend
       dockerfile: Dockerfile
@@ -316,9 +332,9 @@ services:
     healthcheck:
       test: wget --spider back:${BACK_PORT}${ADMIN_URL}
       interval: 5s
-      retries: 20
-      start_period: 30s
-      timeout: 130s
+      retries: 4
+      start_period: 20s
+      timeout: 40s
     networks:
       db_net:
       app_net:
@@ -327,6 +343,7 @@ services:
       monitor_front_net:
 
   front:
+    container_name: front
     build:
       context: ./stop-human-wave-tactics-frontend
       network: host
@@ -351,15 +368,15 @@ services:
         target: "/node_modules"
     tty: true
     entrypoint: sh
-    command:
-      - -c
-      - |
-        yarn build; \
-        if [ "${NODE_ENV}" = "production" ]; then \
-          yarn start; \
-        else \
-          yarn dev; \
-        fi
+    #command:
+    #  - -c
+    #  - |
+    #    yarn build; \
+    #    if [ "${NODE_ENV}" = "production" ]; then \
+    #      yarn start; \
+    #    else \
+    #      yarn dev; \
+    #    fi
     depends_on:
       db:
         condition: service_healthy
@@ -372,9 +389,9 @@ services:
     healthcheck:
       test: wget --spider front:${FRONT_PORT}
       interval: 5s
-      retries: 20
-      start_period: 30s
-      timeout: 130s
+      retries: 5
+      start_period: 20s
+      timeout: 40s
     restart: always
     networks:
       app_net:
