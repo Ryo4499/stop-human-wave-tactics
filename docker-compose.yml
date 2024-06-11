@@ -389,9 +389,9 @@ services:
     healthcheck:
       test: wget --spider front:${FRONT_PORT}
       interval: 5s
-      retries: 5
-      start_period: 20s
-      timeout: 40s
+      retries: 8
+      start_period: 30s
+      timeout: 70s
     restart: always
     networks:
       app_net:
