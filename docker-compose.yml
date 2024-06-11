@@ -274,7 +274,7 @@ services:
       db_net:
       monitor_back_net:
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
+      test: ["CMD-SHELL", "pg_isready", "$(cat $POSTGRES_USER_FILE)"]
       interval: 5s
       retries: 5
       start_period: 1s
