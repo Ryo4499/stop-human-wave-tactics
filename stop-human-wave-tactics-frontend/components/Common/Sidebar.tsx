@@ -92,7 +92,7 @@ const Sidebar = ({ categories, tags }: CategoriesAndTagsProps) => {
               <List disablePadding>
                 <ListItem sx={{ pl: 4 }} disablePadding>
                   <Typography variant="subtitle1" color="text.secondary">
-                    {t.user}
+                    {t.author}
                   </Typography>
                 </ListItem>
               </List>
