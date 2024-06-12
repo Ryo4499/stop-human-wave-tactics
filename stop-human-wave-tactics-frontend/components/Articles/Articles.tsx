@@ -50,8 +50,8 @@ const Content = ({ pageCount }: ArticlesPropsContent) => {
 
 const FilterComponent = ({ filter }) => {
   return filter !== "" ?
-    (<Grid container xs={12} my={2} pl={4} py={1} sx={{ backgroundColor: "background.content" }}>
-      <Typography variant="h6" color="text.secondary">
+    (<Grid container xs={12} my={2} pl={4} py={1}>
+      <Typography variant="h6" color="text.secondary" sx={{ fontWeight: 600 }}>
         {filter}
       </Typography>
     </Grid>) : null
