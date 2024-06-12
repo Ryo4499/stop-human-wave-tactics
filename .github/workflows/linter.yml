@@ -1,0 +1,186 @@
+name: lint
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+      - feat/*
+      - fix/*
+      - refactor/*
+  pull_request:
+    branches:
+      - main
+      - dev
+      - feat/*
+      - fix/*
+      - refactor/*
+  workflow_dispatch:
+
+env:
+  DOMAIN: ${{vars.DOMAIN}}
+  EMAIL: ${{vars.EMAIL}}
+  DOCKER_CONTENT_TRUST: ${{vars.DOCKER_CONTENT_TRUST}}
+  TZ: ${{vars.TZ}}
+  LANG: ${{vars.LANG}}
+  LANGUAGE: ${{vars.LANGUAGE}}
+  HOST_UID: ${{vars.HOST_UID}}
+  HOST_GID: ${{vars.HOST_GID}}
+  MY_USER: ${{vars.MY_USER}}
+  MY_GROUP: ${{vars.MY_GROUP}}
+  POSTGRES_HOST: ${{vars.POSTGRES_HOST}}
+  POSTGRES_DB_FILE: ${{vars.POSTGRES_DB_FILE}}
+  POSTGRES_USER_FILE: ${{vars.POSTGRES_USER_FILE}}
+  POSTGRES_PASSWORD_FILE: ${{vars.POSTGRES_PASSWORD_FILE}}
+  PG_PORT: ${{vars.PG_PORT}}
+  NODE_ENV: ${{vars.NODE_ENV}}
+  ADMIN_URL: ${{vars.ADMIN_URL}}
+  HOST: ${{vars.HOST}}
+  BACK_PORT: ${{vars.BACK_PORT}}
+  URL: ${{vars.URL}}
+  STRAPI_TELEMETRY_DISABLED: ${{vars.STRAPI_TELEMETRY_DISABLED}}
+  DATABASE_HOST: ${{vars.DATABASE_HOST}}
+  DATABASE_PORT: ${{vars.PG_PORT}}
+  DATABASE_NAME: ${{vars.POSTGRES_DB_FILE}}
+  DATABASE_USERNAME: ${{vars.POSTGRES_USER_FILE}}
+  DATABASE_PASSWORD: ${{vars.POSTGRES_PASSWORD_FILE}}
+  DATABASE_CLIENT: ${{vars.DATABASE_CLIENT}}
+  DATABASE_DRIVER: ${{vars.DATABASE_DRIVER}}
+  DATABASE_SSL: ${{vars.DATABASE_SSL}}
+  BACK_SENTRY_DSN: ${{vars.BACK_SENTRY_DSN}}
+  APP_KEYS: ${{vars.APP_KEYS}}
+  API_TOKEN_SALT: ${{vars.API_TOKEN_SALT}}
+  ADMIN_JWT_SECRET: ${{vars.ADMIN_JWT_SECRET}}
+  JWT_SECRET: ${{vars.JWT_SECRET}}
+  TRANSFER_TOKEN_SALT: ${{vars.TRANSFER_TOKEN_SALT}}
+  DEEPL_KEY: ${{vars.DEEPL_KEY}}
+  PAGESIZE: ${{vars.PAGESIZE}}
+  FRONT_PORT: ${{vars.FRONT_PORT}}
+  GOOGLE_ADSENSE_ENABLED: ${{vars.GOOGLE_ADSENSE_ENABLED}}
+  FRONT_SENTRY_DSN: ${{vars.FRONT_SENTRY_DSN}}
+  NEXT_PUBLIC_DOMAIN: ${{vars.DOMAIN}}
+  NEXT_PUBLIC_BACKEND_URL: ${{vars.NEXT_PUBLIC_BACKEND_URL}}
+  NEXT_PUBLIC_GA_ID: ${{vars.NEXT_PUBLIC_GA_ID}}
+  NEXT_PUBLIC_GTM_ID: ${{vars.NEXT_PUBLIC_GTM_ID}}
+
+jobs:
+  lint:
+    runs-on: [self-hosted, linux, x64]
+    environment: Production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup Env
+        run: |
+          mkdir -p stop-human-wave-tactics-backend/public
+          cd db && chmod +x create-cert.sh && ./create-cert.sh && cd ..
+          cd certbot && mkdir -p letsencrypt/live/${{env.DOMAIN}} && \
+          cd config && chmod +x ./create-dev-key.sh && ./create-dev-key.sh && \
+          mv localhost.crt ../letsencrypt/live/${{env.DOMAIN}}/fullchain.pem && \
+          mv localhost.key ../letsencrypt/live/${{env.DOMAIN}}/privkey.pem && \
+          cd ../..
+          mkdir -p .secrets
+          echo ${{secrets.ADMIN_JWT_SECRET}} > .secrets/ADMIN_JWT_SECRET
+          echo ${{secrets.API_TOKEN_SALT}} > .secrets/API_TOKEN_SALT
+          echo ${{secrets.APP_KEYS}} > .secrets/APP_KEYS
+          echo ${{secrets.BACK_SENTRY_DSN}} > .secrets/BACK_SENTRY_DSN
+          echo ${{secrets.DB_NAME}} > .secrets/DB_NAME
+          echo ${{secrets.DB_PASS}} > .secrets/DB_PASS
+          echo ${{secrets.DB_USER}} > .secrets/DB_USER
+          echo ${{secrets.DEEPL_KEY}} > .secrets/DEEPL_KEY
+          echo ${{secrets.GA_ID}} > .secrets/GA_ID
+          echo ${{secrets.GA_SLOT}} > .secrets/GA_SLOT
+          echo ${{secrets.GTAG}} > .secrets/GTAG
+          echo ${{secrets.JWT_SECRET}} > .secrets/JWT_SECRET
+          echo ${{secrets.TRANSFER_TOKEN_SALT}} > .secrets/TRANSFER_TOKEN_SALT
+          echo '${{toJson(env)}}' | jq -r 'keys[] as $k | "\($k)=\(.[$k])"' >> .env
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+      - uses: docker/setup-buildx-action@v3
+      - name: Cache Docker layers DB
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.buildx-db-cache
+          key: ${{ github.ref }}-${{ github.sha }}
+          restore-keys: |
+            ${{ github.ref }}-${{ github.sha }}
+            ${{ github.ref }}
+            refs/head/main
+      - name: Cache Docker layers Back
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.buildx-back-cache
+          key: ${{ github.ref }}-${{ github.sha }}
+          restore-keys: |
+            ${{ github.ref }}-${{ github.sha }}
+            ${{ github.ref }}
+            refs/head/main
+      - name: Cache Docker layers Nginx
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.buildx-nginx-cache
+          key: ${{ github.ref }}-${{ github.sha }}
+          restore-keys: |
+            ${{ github.ref }}-${{ github.sha }}
+            ${{ github.ref }}
+            refs/head/main
+      - name: Cache Docker layers Front
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.buildx-front-cache
+          key: ${{ github.ref }}-${{ github.sha }}
+          restore-keys: |
+            ${{ github.ref }}-${{ github.sha }}
+            ${{ github.ref }}
+            refs/head/main
+      - name: Build DB
+        uses: docker/build-push-action@v5
+        with:
+          context: db
+          cache-from: type=local,src=/tmp/.buildx-db-cache
+          cache-to: type=local,dest=/tmp/.buildx-db-cache
+      - name: Build Back
+        uses: docker/build-push-action@v5
+        with:
+          context: stop-human-wave-tactics-backend
+          cache-from: type=local,src=/tmp/.buildx-back-cache
+          cache-to: type=local,dest=/tmp/.buildx-back-cache
+          build-args: |
+            HOST_UID=${{env.HOST_UID}}
+            HOST_GID=${{env.HOST_GID}}
+            MY_USER=${{env.MY_USER}}
+            MY_GROUP=${{env.MY_GROUP}}
+            NODE_ENV=${{env.NODE_ENV}}
+      - name: Build Nginx
+        uses: docker/build-push-action@v5
+        with:
+          context: nginx
+          cache-from: type=local,src=/tmp/.buildx-nginx-cache
+          cache-to: type=local,dest=/tmp/.buildx-nginx-cache
+          build-args: |
+            DOMAIN=${{env.DOMAIN}}
+            FRONT_PORT=${{env.FRONT_PORT}}
+            BACK_PORT=${{env.BACK_PORT}}
+      - name: Build Front
+        uses: docker/build-push-action@v5
+        with:
+          context: stop-human-wave-tactics-frontend
+          cache-from: type=local,src=/tmp/.buildx-front-cache
+          cache-to: type=local,dest=/tmp/.buildx-front-cache
+          build-args: |
+            HOST_UID=${{env.HOST_UID}}
+            HOST_GID=${{env.HOST_GID}}
+            MY_USER=${{env.MY_USER}}
+            MY_GROUP=${{env.MY_GROUP}}
+            NODE_ENV=${{env.NODE_ENV}}
+      - name: Up Container
+        run: |
+          docker compose restart db proxy back front
+        shell: bash
+      - name: Lint
+        # https://github.com/supabase/supabase/issues/16777
+        run: |
+          docker compose exec front yarn lint
+        shell: bash
