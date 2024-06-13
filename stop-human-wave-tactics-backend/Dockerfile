@@ -1,4 +1,4 @@
-FROM node:20-alpine
+FROM node:18-alpine
 
 ARG HOST_UID
 ARG HOST_GID
