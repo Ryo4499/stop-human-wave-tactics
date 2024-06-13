@@ -53,9 +53,9 @@ export const Categories = ({ contents }) => {
 export const CategoryLinkComponent = ({ article }: { article: Article }) => {
   if (article.category?.data != null) {
     return (
-      <Grid container my={1} direction="row" sx={{ color: "text.link" }} justifyContent="flex-end" alignItems="center">
+      <Grid container direction="row" sx={{ color: "text.link" }} justifyContent="flex-end" alignItems="center">
         <Grid container mx={1}>
-          <FolderIcon sx={{ color: "text.secondary", fontSize: "3vh" }} />
+          <FolderIcon sx={{ color: "text.secondary", fontSize: "2.2vh" }} />
         </Grid>
         <Grid container>
           <Link href={{ pathname: `/category/${article.category.data.attributes?.uuid}`, query: { name: article.category.data.attributes?.name } }}>
