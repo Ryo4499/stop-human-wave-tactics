@@ -7,6 +7,8 @@ import CardActions from "@mui/material/CardActions"
 import Pagination from "@mui/material/Pagination"
 import PaginationItem from "@mui/material/PaginationItem"
 import Typography from "@mui/material/Typography"
+import UpdateIcon from '@mui/icons-material/Update';
+import CreateIcon from '@mui/icons-material/Create';
 import Button from "@mui/material/Button";
 import Link from "next/link";
 import Image from "next/image";
@@ -65,13 +67,13 @@ const ImageComponent = ({ article }) => {
     return null
   }
   return (
-    <Link href={`/article/${article.attributes.uuid}`}>
-      <Grid
-        container
-        xs={12}
-        mx={1}
-        mb={4}
-      >
+    <Grid
+      container
+      justifyContent="center"
+      minHeight="25vh"
+      xs={12}
+    >
+      <Link href={`/article/${article.attributes.uuid}`}>
         <Image
           loader={imageLoader}
           src={
@@ -86,8 +88,8 @@ const ImageComponent = ({ article }) => {
           unoptimized
           sizes="(max-width: 1080px) 100vw, (max-width: 1920px) 50vw, 33vw"
         />
-      </Grid>
-    </Link>
+      </Link>
+    </Grid>
   )
 }
 
@@ -121,7 +123,8 @@ export const Articles = ({
                   sx={{ flexGrow: 1 }}
                   key={article.attributes?.uuid}
                   xs={12}
-                  md={6}
+                  sm={6}
+                  xl={4}
                   p={3}
                 >
                   <Card
@@ -147,16 +150,18 @@ export const Articles = ({
                         </Grid>
                         <Grid
                           xs={12}
-                          my={2}
-                          justifyContent="flex-end"
+                          my={1}
+                          color="text.secondary"
                         >
-                          <Stack textAlign="right" color="text.secondary">
-                            <Typography sx={{ fontSize: "0.8rem" }}>
-                              {t.updated_at}:{" "}
+                          <Stack direction="row" justifyContent="flex-end" my={0.2}>
+                            <UpdateIcon />
+                            <Typography sx={{ fontSize: "0.9rem" }} ml={0.8}>
                               {article.attributes.updatedAt}
                             </Typography>
-                            <Typography sx={{ fontSize: "0.8rem" }} color="text.secondary">
-                              {t.created_at}:{" "}
+                          </Stack>
+                          <Stack direction="row" justifyContent="flex-end" >
+                            <CreateIcon />
+                            <Typography sx={{ fontSize: "0.9rem" }} ml={0.8}>
                               {article.attributes.createdAt}
                             </Typography>
                           </Stack>
