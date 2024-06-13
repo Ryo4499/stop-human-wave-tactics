@@ -1,6 +1,5 @@
 server {
         listen 80;
-        listen [::]:80;
 
         server_name ${DOMAIN};
 
@@ -53,7 +52,6 @@ server {
 
 server {
         listen 443 ssl;
-        listen [::]:443 ssl;
 
         server_name ${DOMAIN};
 
