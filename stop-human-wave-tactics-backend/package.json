@@ -15,17 +15,17 @@
     "@strapi/plugin-sentry": "4.25.0",
     "@strapi/plugin-seo": "^1.9.8",
     "@strapi/plugin-users-permissions": "4.25.0",
-    "@strapi/strapi": "4.25.0",
+    "@strapi/strapi": "^4.25.0",
     "@strapi/typescript-utils": "4.25.0",
     "pg": "8.12.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "6.23.1",
+    "react-router-dom": "5.3.4",
     "strapi-auto-uuid": "^0.0.8",
     "strapi-plugin-preview-button": "^2.2.2",
     "strapi-plugin-translate": "^1.2.4",
     "strapi-provider-translate-deepl": "^1.1.12",
-    "styled-components": "6.1.11"
+    "styled-components": "5.3.11"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.2",
