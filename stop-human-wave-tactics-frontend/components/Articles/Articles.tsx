@@ -148,24 +148,6 @@ export const Articles = ({
                             {article.attributes.title}
                           </Typography>
                         </Grid>
-                        <Grid
-                          xs={12}
-                          my={1}
-                          color="text.secondary"
-                        >
-                          <Stack direction="row" justifyContent="flex-end" my={0.2}>
-                            <UpdateIcon />
-                            <Typography sx={{ fontSize: "0.9rem" }} ml={0.8}>
-                              {article.attributes.updatedAt}
-                            </Typography>
-                          </Stack>
-                          <Stack direction="row" justifyContent="flex-end" >
-                            <CreateIcon />
-                            <Typography sx={{ fontSize: "0.9rem" }} ml={0.8}>
-                              {article.attributes.createdAt}
-                            </Typography>
-                          </Stack>
-                        </Grid>
                         <CategoryLinkComponent article={article.attributes} />
                         <TagsLinkComponent article={article.attributes} />
                         <Grid
@@ -177,28 +159,49 @@ export const Articles = ({
                           </Typography>
                         </Grid>
                       </CardContent>
-                      <Grid xs={12} ml={2} mt={1} mb={2}>
-                        <CardActions>
-                          <Grid>
-                            <Button
-                              onClick={() => {
-                                router.push({
-                                  pathname: "/article/[uuid]",
-                                  query: { uuid: article.attributes?.uuid }
-                                });
-                              }}
-                              size="small"
-                            >
-                              <Typography
-                                variant="subtitle1"
-                                color="text.link"
+                      <Stack direction="row" mx={1}>
+                        <Grid xs={12} ml={2} mt={1} mb={2}>
+                          <CardActions>
+                            <Grid>
+                              <Button
+                                onClick={() => {
+                                  router.push({
+                                    pathname: "/article/[uuid]",
+                                    query: { uuid: article.attributes?.uuid }
+                                  });
+                                }}
+                                size="small"
                               >
-                                {t.more_details}
-                              </Typography>
-                            </Button>
-                          </Grid>
-                        </CardActions>
-                      </Grid>
+                                <Typography
+                                  sx={{ fontSize: "1.1rem" }}
+                                  color="text.link"
+                                >
+                                  {t.more_details}
+                                </Typography>
+                              </Button>
+                            </Grid>
+                          </CardActions>
+                        </Grid>
+                        <Grid
+                          xs={12}
+                          my={1}
+                          mx={1}
+                          color="text.secondary"
+                        >
+                          <Stack direction="row" justifyContent="flex-end" alignItems="center">
+                            <UpdateIcon />
+                            <Typography sx={{ fontSize: "0.8rem" }} ml={0.8}>
+                              {article.attributes.updatedAt}
+                            </Typography>
+                          </Stack>
+                          <Stack direction="row" justifyContent="flex-end" alignItems="center">
+                            <CreateIcon />
+                            <Typography sx={{ fontSize: "0.8rem" }} ml={0.8}>
+                              {article.attributes.createdAt}
+                            </Typography>
+                          </Stack>
+                        </Grid>
+                      </Stack>
                     </Stack>
                   </Card>
                 </Grid>
