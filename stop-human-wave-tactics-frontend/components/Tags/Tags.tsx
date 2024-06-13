@@ -53,9 +53,9 @@ export const Tags = ({ contents }) => {
 export const TagsLinkComponent = ({ article }: { article: Article }) => {
   if (article.tags?.data.length !== 0) {
     return (
-      <Grid container my={1} direction="row" sx={{ color: "text.link" }} justifyContent="flex-end" alignItems="center">
+      <Grid container direction="row" sx={{ color: "text.link" }} justifyContent="flex-end" alignItems="center">
         <Grid container mx={1}>
-          <LocalOfferIcon sx={{ color: "text.secondary", fontSize: "2vh" }} />
+          <LocalOfferIcon sx={{ color: "text.secondary", fontSize: "2.2vh" }} />
         </Grid>
         <Stack direction="row" my={1}>
           {
