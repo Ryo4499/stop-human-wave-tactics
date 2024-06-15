@@ -2,7 +2,7 @@ import Grid from "@mui/material/Unstable_Grid2";
 import { FC, CSSProperties, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { prod } from '../../lib/graphqlClient';
-import { getGaId } from '../../lib/google';
+import { getGadId } from '../../lib/google';
 
 interface AdsenseProps {
     style: CSSProperties;
@@ -31,7 +31,7 @@ export const Adsense: FC<AdsenseProps> = ({ style, slot, format, fullWidth, adSt
                 style={style}
                 data-adtest={prod ? 'off' : 'on'}
                 data-ad-format={format}
-                data-ad-client={getGaId()}
+                data-ad-client={getGadId()}
                 data-ad-layout-key={key}
                 data-ad-slot={slot}
                 data-ad-status={adStatus}
