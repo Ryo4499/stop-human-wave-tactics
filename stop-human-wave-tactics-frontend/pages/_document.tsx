@@ -5,7 +5,7 @@ import Document, {
   Main,
 } from "next/document";
 import Script from "next/script";
-import { adsenseEnabled, getGaId, getGtag } from "../lib/google";
+import { adsenseEnabled, getGadId, getGanId } from "../lib/google";
 import { prod } from "../lib/graphqlClient";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
@@ -14,7 +14,7 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          <meta name="google-adsense-account" content={getGaId()} />
+          <meta name="google-adsense-account" content={getGadId()} />
           <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossOrigin="anonymous" />
           <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark-dimmed.min.css" crossOrigin="anonymous" />
           <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0" />
@@ -40,7 +40,7 @@ class MyDocument extends Document {
           {
             adsenseEnabled() && (
               <>
-                <script async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${getGaId()}`} />
+                <script async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${getGadId()}`} />
                 <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js" />
                 <Script
                   id="gpt-head"
@@ -53,7 +53,7 @@ class MyDocument extends Document {
             )
           }
           {
-            prod && <GoogleAnalytics gaId={`${getGtag()}`} />
+            prod && <GoogleAnalytics gaId={`${getGanId()}`} />
           }
         </Head>
         <body>
