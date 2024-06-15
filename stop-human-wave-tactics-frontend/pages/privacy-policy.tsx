@@ -44,7 +44,7 @@ export const getStaticProps = (async ({
 
 
 const PrivacyPolicyContent = () => {
-  const { locale, locales, t } = useLocale();
+  const { locale, t } = useLocale();
   const typo = (text: string) =>
     text.split("\n").map((line, key) => (
       <Typography key={key} variant="body1" color="text.secondary">

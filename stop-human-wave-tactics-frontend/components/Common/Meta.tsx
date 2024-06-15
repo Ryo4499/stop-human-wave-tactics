@@ -15,10 +15,11 @@ const Meta = ({ title, description }: Props): React.ReactNode => {
   return (
     <Head>
       <title>{title}</title>
+      <meta name="description" content={description} />
       <meta property="og:title" content={title} key="title" />
       <meta property="og:description" content={description} key="description" />
       <meta property="og:site_name" content={title} key={getDomain()} />
-      <link rel="canonical" href={getDomain() + currentUrl} />
+      <link rel="canonical" href={"https://" + getDomain() + currentUrl} />
     </Head>
   );
 };

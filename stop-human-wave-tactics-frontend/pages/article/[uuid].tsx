@@ -12,7 +12,6 @@ import {
   UUIDParams,
 } from "../../types/general";
 import { GraphqlError } from "../../components/Common/DisplayError";
-import Meta from "../../components/Common/Meta";
 import { convDatetimeArticles, inArticlesCategoriesTags } from "../../lib/utils";
 import { getArticlesWithCategoriesAndTags } from "../../graphql/getArticlesWithCategoriesAndTags";
 

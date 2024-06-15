@@ -4,7 +4,6 @@ x-template: &env_tty
   tty: true
 services:
   certbot:
-    container_name: certbot
     build:
       context: ./certbot
       dockerfile: Dockerfile
@@ -27,7 +26,6 @@ services:
     <<: *env_tty
 
   proxy:
-    container_name: proxy
     build:
       context: ./nginx
       dockerfile: Dockerfile
@@ -69,7 +67,6 @@ services:
 
   prometheus:
     image: prom/prometheus:latest
-    container_name: prometheus
     volumes:
       - type: bind
         source: ./prometheus
@@ -91,7 +88,6 @@ services:
 
   grafana:
     image: grafana/grafana:latest
-    container_name: grafana
     user: "427"
     <<: *env_tty
     volumes:
@@ -113,7 +109,6 @@ services:
 
   alertmanager:
     image: prom/alertmanager:latest
-    container_name: alertmanager
     <<: *env_tty
     volumes:
       - type: bind
@@ -135,7 +130,6 @@ services:
 
   nginx-exporter:
     image: nginx/nginx-prometheus-exporter
-    container_name: nginx-exporter
     <<: *env_tty
     command:
       - -nginx.scrape-uri=https://proxy/stub_status
@@ -155,7 +149,6 @@ services:
 
   exporter:
     image: prom/node-exporter:latest
-    container_name: node-exporter
     <<: *env_tty
     command:
       - "--path.rootfs=/host"
@@ -188,7 +181,6 @@ services:
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:v0.47.2
-    container_name: cadvisor
     volumes:
       - type: bind
         source: /
@@ -217,7 +209,6 @@ services:
 
   influxdb:
     image: influxdb:alpine
-    container_name: influxdb
     <<: *env_tty
     volumes:
       - type: volume
@@ -233,7 +224,6 @@ services:
 
   k6:
     image: grafana/k6:latest
-    container_name: k6
     <<: *env_tty
     volumes:
       - type: bind
@@ -247,7 +237,6 @@ services:
       k6_net:
 
   db:
-    container_name: db
     build:
       context: ./db
       dockerfile: Dockerfile
@@ -272,7 +261,6 @@ services:
       timeout: 10s
 
   back:
-    container_name: back
     build:
       context: ./stop-human-wave-tactics-backend
       dockerfile: Dockerfile
@@ -332,7 +320,6 @@ services:
       monitor_front_net:
 
   front:
-    container_name: front
     build:
       context: ./stop-human-wave-tactics-frontend
       network: host
@@ -395,7 +382,6 @@ services:
         MY_USER: $MY_USER
         MY_GROUP: $MY_GROUP
         RUNNER_WORKDIR: $RUNNER_WORKDIR
-    container_name: runner
     user: $MY_USER:$MY_GROUP
     <<: *env_tty
     volumes:
@@ -452,55 +438,27 @@ networks:
     name: runner_net
     driver: bridge
     internal: false
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.30.23.0/24
   nginx_net:
     name: nginx_net
     driver: bridge
     internal: false
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.30.0.0/24
   app_net:
     name: app_net
     driver: bridge
     internal: true
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.30.3.0/24
   db_net:
     name: db_net
     driver: bridge
     internal: true
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.30.5.0/24
   monitor_front_net:
     name: monitor_front_net
     driver: bridge
     internal: false
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.30.7.0/24
   monitor_back_net:
     name: monitor_back_net
     driver: bridge
     internal: true
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.30.9.0/24
   k6_net:
     name: k6_net
     driver: bridge
     internal: true
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.30.11.0/24

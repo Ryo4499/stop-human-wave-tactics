@@ -175,6 +175,7 @@ export const Articles = ({
                                 <Typography
                                   sx={{ fontSize: "1.1rem" }}
                                   color="text.link"
+                                  className="raise"
                                 >
                                   {t.more_details}
                                 </Typography>
