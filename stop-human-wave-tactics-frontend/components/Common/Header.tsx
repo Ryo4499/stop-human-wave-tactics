@@ -7,18 +7,10 @@ import Toolbar from "@mui/material/Toolbar";
 import TranslateIcon from "@mui/icons-material/Translate";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
-import IconButton from "@mui/material/IconButton"
 import { useLocale } from "../../lib/locale";
 import { useRouter } from "next/router"
-import { ColorModeContext } from "../../pages/_app";
-import { useContext } from "react";
-import { useTheme } from "@mui/material/styles";
 
 const Header = () => {
-  const theme = useTheme();
-  //const colorContext = useContext(ColorModeContext)
   const router = useRouter()
   const { locale, locales, t } = useLocale();
   const handleLocaleChange = (event: any) => {
@@ -54,14 +46,6 @@ const Header = () => {
                   </Select>
                 </FormControl>
               </Grid>
-              {
-                // true ? null :
-                //   <Grid container alignItems="center">
-                //     <IconButton aria-label="toggle color" onClick={colorContext.toggleColorMode} sx={{ color: "text.primary" }}>
-                //       {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-                //     </IconButton>
-                //   </Grid>
-              }
             </Grid>
           </Toolbar>
         </AppBar>
