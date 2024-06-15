@@ -9,7 +9,7 @@ import { useLocale } from "../../lib/locale";
 import { Article } from "../../types/graphql_res";
 
 export const Tags = ({ contents }) => {
-  const { locale, locales, t } = useLocale();
+  const { t } = useLocale();
 
   if (contents.data.length === 0) {
     return null;

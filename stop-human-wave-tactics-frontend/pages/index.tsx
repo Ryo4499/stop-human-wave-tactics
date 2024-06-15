@@ -12,7 +12,7 @@ import { getArticlesWithCategoriesAndTags } from "../graphql/getArticlesWithCate
 import Sidebar from "../components/Common/Sidebar";
 import Meta from "../components/Common/Meta";
 import { convDatetimeArticles, inArticlesCategoriesTags } from "../lib/utils";
-import { ArticleEntityResponseCollection, CategoryEntity, CategoryEntityResponseCollection, GetArticlesQueryVariables, TagEntityResponseCollection } from "../types/graphql_res";
+import { ArticleEntityResponseCollection } from "../types/graphql_res";
 
 export const getStaticProps = (async ({
   locale,

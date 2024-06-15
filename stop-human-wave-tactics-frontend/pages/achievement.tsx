@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import type { NextPage } from "next";
 import useSWR from "swr";
 import { getBackendGraphqlURL } from "../lib/graphqlClient";
-import { CategoryEntity, CategoryEntityResponseCollection, TagEntityResponseCollection } from "../types/graphql_res";
+import { CategoryEntityResponseCollection, TagEntityResponseCollection } from "../types/graphql_res";
 import { GraphqlError } from "../components/Common/DisplayError";
 import { CategoriesAndTagsResponseProps } from "../types/general";
 import { useLocale } from "../lib/locale";
@@ -43,7 +43,7 @@ export const getStaticProps = (async ({
 })
 
 const AchievementContent = () => {
-  const { locale, locales, t } = useLocale();
+  const { t } = useLocale();
   const about_portfolios = t.portfolios_text.map((value, index, array) => (
     <Grid key={index}>
       <Typography variant="h5" color="text.primary">

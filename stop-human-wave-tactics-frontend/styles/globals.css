@@ -66,3 +66,9 @@ code {
   position: relative !important;
   max-height: 25vh;
 }
+
+.raise:hover,
+.raise:focus {
+  box-shadow: 0 0.5em 0.5em -0.4em var(--hover);
+  transform: translateY(-0.25em);
+}
