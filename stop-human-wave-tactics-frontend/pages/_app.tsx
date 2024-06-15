@@ -14,7 +14,7 @@ import { loadSlim } from "@tsparticles/slim";
 import ParticlesComponents, { initParticlesEngine } from "@tsparticles/react";
 import { type Container } from "@tsparticles/engine";
 import { GoogleTagManager } from "@next/third-parties/google";
-import { getGtag } from "../lib/google";
+import { getGtmId } from "../lib/google";
 import type { PaletteMode } from "@mui/material";
 
 export const ColorModeContext = createContext({ toggleColorMode: () => { } });
@@ -76,7 +76,7 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
             </Layout>
           </PageContext.Provider>
         </ThemeProvider>
-        <GoogleTagManager gtmId={`${getGtag()}`} />
+        <GoogleTagManager gtmId={`${getGtmId()}`} />
       </SWRConfig>
     </StrictMode >
   );
