@@ -5,7 +5,10 @@ import Typography from "@mui/material/Typography";
 import type { NextPage } from "next";
 import useSWR from "swr";
 import { getBackendGraphqlURL } from "../lib/graphqlClient";
-import { CategoryEntityResponseCollection, TagEntityResponseCollection } from "../types/graphql_res";
+import {
+  CategoryEntityResponseCollection,
+  TagEntityResponseCollection,
+} from "../types/graphql_res";
 import { GraphqlError } from "../components/Common/DisplayError";
 import { CategoriesAndTagsResponseProps } from "../types/general";
 import { useLocale } from "../lib/locale";
@@ -13,25 +16,38 @@ import Sidebar from "../components/Common/Sidebar";
 import Meta from "../components/Common/Meta";
 import { getCategoriesAndTags } from "../graphql/getCategoriesAndTags";
 
-export const getStaticProps = (async ({
-  locale,
-}) => {
-  const variables = { categoryFilters: {}, tagFilters: {}, categoryPagination: {}, tagPagination: {}, categorySort: [], tagSort: [], locale: locale };
-  const result = await request<{ categories: CategoryEntityResponseCollection, tags: TagEntityResponseCollection }>(
-    getBackendGraphqlURL(),
-    getCategoriesAndTags,
-    variables
-  ).then(({ categories, tags }: { categories: CategoryEntityResponseCollection, tags: TagEntityResponseCollection }) => {
-    return {
-      props: {
-        categories: categories,
-        tags: tags,
-        variables: variables,
-      },
-      notFound: false,
-      revalidate: 3600,
-    };
-  });
+export const getStaticProps = async ({ locale }) => {
+  const variables = {
+    categoryFilters: {},
+    tagFilters: {},
+    categoryPagination: {},
+    tagPagination: {},
+    categorySort: [],
+    tagSort: [],
+    locale: locale,
+  };
+  const result = await request<{
+    categories: CategoryEntityResponseCollection;
+    tags: TagEntityResponseCollection;
+  }>(getBackendGraphqlURL(), getCategoriesAndTags, variables).then(
+    ({
+      categories,
+      tags,
+    }: {
+      categories: CategoryEntityResponseCollection;
+      tags: TagEntityResponseCollection;
+    }) => {
+      return {
+        props: {
+          categories: categories,
+          tags: tags,
+          variables: variables,
+        },
+        notFound: false,
+        revalidate: 3600,
+      };
+    },
+  );
   if (result != null) {
     return result;
   } else {
@@ -40,7 +56,7 @@ export const getStaticProps = (async ({
       revalidate: 3600,
     };
   }
-})
+};
 
 const AchievementContent = () => {
   const { t } = useLocale();
@@ -100,7 +116,7 @@ const AchievementContent = () => {
           </Typography>
         ))}
       </Grid>
-    </Grid >
+    </Grid>
   ));
   const about_instance = (
     <Grid spacing={2}>
@@ -141,7 +157,7 @@ const AchievementContent = () => {
           </Typography>
         </Grid>
       </Grid>
-      <Grid >{about_portfolios}</Grid>
+      <Grid>{about_portfolios}</Grid>
     </Grid>
   );
 };
@@ -154,11 +170,11 @@ const Achievement: NextPage<CategoriesAndTagsResponseProps> = ({
   const { data, error } = useSWR([getCategoriesAndTags, variables], {
     onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
       // Never retry on 404.
-      if (error.status === 404) return
+      if (error.status === 404) return;
       // Only retry up to 10 times.
-      if (retryCount >= 10) return
+      if (retryCount >= 10) return;
       // Retry after 3 seconds.
-      setTimeout(() => revalidate({ retryCount }), 3000)
+      setTimeout(() => revalidate({ retryCount }), 3000);
     },
     fallbackData: { categories: categories, tags: tags, variables: variables },
   });

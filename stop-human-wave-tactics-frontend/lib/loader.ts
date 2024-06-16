@@ -1,6 +1,6 @@
 "use client";
 import path from "path";
-import type { ImageLoaderProps } from 'next/image';
+import type { ImageLoaderProps } from "next/image";
 
 export const imageLoader = ({
   src,
