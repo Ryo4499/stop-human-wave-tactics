@@ -10,14 +10,16 @@ import { ArticlesCategorisTagsProps } from "../types/general";
 import { SearchNotFound } from "../components/Common/SearchNotFound";
 import { getArticlesWithCategoriesAndTags } from "../graphql/getArticlesWithCategoriesAndTags";
 import { GraphqlError } from "../components/Common/DisplayError";
-import { ArticleEntity, ArticleEntityResponseCollection, GetArticlesWithCategoriesAndTagsQuery } from "../types/graphql_res";
+import {
+  ArticleEntity,
+  ArticleEntityResponseCollection,
+  GetArticlesWithCategoriesAndTagsQuery,
+} from "../types/graphql_res";
 import Meta from "../components/Common/Meta";
 import { convDatetimeArticles, inArticlesCategoriesTags } from "../lib/utils";
 import { useLocale } from "../lib/locale";
 
-export const getStaticProps = (async ({
-  locale,
-}) => {
+export const getStaticProps = async ({ locale }) => {
   const variables = {
     pagination: {},
     sort: ["updatedAt:Desc", "publishedAt:Desc"],
@@ -26,14 +28,16 @@ export const getStaticProps = (async ({
   const res = await request(
     getBackendGraphqlURL(),
     getArticlesWithCategoriesAndTags,
-    variables
+    variables,
   ).then((result) => {
     return result;
   });
   if (res != null && inArticlesCategoriesTags(res)) {
     const result = {
       props: {
-        articles: convDatetimeArticles((res.articles as ArticleEntityResponseCollection)),
+        articles: convDatetimeArticles(
+          res.articles as ArticleEntityResponseCollection,
+        ),
         categories: res.categories,
         tags: res.tags,
         variables: variables,
@@ -48,7 +52,7 @@ export const getStaticProps = (async ({
       revalidate: 3600,
     };
   }
-})
+};
 
 const ArticlesIndex: NextPage<ArticlesCategorisTagsProps> = ({
   articles,
@@ -56,33 +60,40 @@ const ArticlesIndex: NextPage<ArticlesCategorisTagsProps> = ({
   tags,
   variables,
 }) => {
-
-  const { data, error } = useSWR([getArticlesWithCategoriesAndTags, variables], {
-    onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
-      // Never retry on 404.
-      if (error.status === 404) return
-      // Only retry up to 10 times.
-      if (retryCount >= 10) return
-      // Retry after 3 seconds.
-      setTimeout(() => revalidate({ retryCount }), 3000)
+  const { data, error } = useSWR(
+    [getArticlesWithCategoriesAndTags, variables],
+    {
+      onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+        // Never retry on 404.
+        if (error.status === 404) return;
+        // Only retry up to 10 times.
+        if (retryCount >= 10) return;
+        // Retry after 3 seconds.
+        setTimeout(() => revalidate({ retryCount }), 3000);
+      },
+      fallbackData: {
+        articles: articles,
+        categories: categories,
+        tags: tags,
+        variables: variables,
+      },
     },
-    fallbackData: {
-      articles: articles,
-      categories: categories,
-      tags: tags,
-      variables: variables,
-    },
-  });
-  const { t } = useLocale()
+  );
+  const { t } = useLocale();
   const router = useRouter();
-  const title = router.query.title != null && typeof router.query.title === "string" ? router.query.title : "";
-  const filter = title != "" ? `${t.keyword}: ${title}` : ""
+  const title =
+    router.query.title != null && typeof router.query.title === "string"
+      ? router.query.title
+      : "";
+  const filter = title != "" ? `${t.keyword}: ${title}` : "";
 
   if (data != null) {
     const filterArticles = data.articles.data.filter(
       (article: ArticleEntity) => {
-        return article.attributes?.title.toLowerCase().includes(title.toLowerCase());
-      }
+        return article.attributes?.title
+          .toLowerCase()
+          .includes(title.toLowerCase());
+      },
     );
 
     const filterArticlesCollection = {
@@ -98,7 +109,7 @@ const ArticlesIndex: NextPage<ArticlesCategorisTagsProps> = ({
     };
     const filterArticlesResponseCollection = Object.assign(
       data.articles,
-      filterArticlesCollection
+      filterArticlesCollection,
     );
     return (
       <Grid container direction="row" sx={{ flexGrow: 1 }}>
