@@ -163,7 +163,6 @@ export const Articles = ({ articles, filter }: ArticlesProps) => {
                                 <Typography
                                   sx={{ fontSize: "1.1rem" }}
                                   color="text.link"
-                                  className="raise"
                                 >
                                   {t.more_details}
                                 </Typography>
