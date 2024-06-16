@@ -1,11 +1,17 @@
 import "../styles/globals.css";
 import type { NextPage } from "next";
 import { SWRConfig } from "swr";
-import React, { createContext, StrictMode, useState, useMemo, useEffect } from "react";
+import React, {
+  createContext,
+  StrictMode,
+  useState,
+  useMemo,
+  useEffect,
+} from "react";
 import { AppProps } from "next/app";
 import CssBaseline from "@mui/material/CssBaseline";
 import { useRouter } from "next/router";
-import { ThemeProvider, createTheme } from '@mui/material/styles'
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { darkPalette, lightPalette } from "../lib/theme";
 import mainParticle from "../styles/presets/basic.json";
 import { client } from "../lib/graphqlClient";
@@ -17,29 +23,39 @@ import { GoogleTagManager } from "@next/third-parties/google";
 import { getGtmId } from "../lib/google";
 import type { PaletteMode } from "@mui/material";
 
-export const ColorModeContext = createContext({ toggleColorMode: () => { } });
-export const PageContext = createContext({ page: 1, setPage: (value: number) => { } });
-const ParticleContext = createContext({ particle: mainParticle, setParticle: (value: any) => { } })
+export const ColorModeContext = createContext({ toggleColorMode: () => {} });
+export const PageContext = createContext({
+  page: 1,
+  setPage: (value: number) => {},
+});
+const ParticleContext = createContext({
+  particle: mainParticle,
+  setParticle: (value: any) => {},
+});
 
 const PsComponents = () => {
   const { particle } = React.useContext(ParticleContext);
   useEffect(() => {
     initParticlesEngine(async (engine: any) => {
       await loadSlim(engine);
-    })
-  }, [particle])
-  const particlesLoaded = async (container?: Container): Promise<void> => { }
-  return (<ParticlesComponents
-    id="tsparticles"
-    particlesLoaded={particlesLoaded}
-    options={(particle as object)}
-  />)
-}
+    });
+  }, [particle]);
+  const particlesLoaded = async (container?: Container): Promise<void> => {};
+  return (
+    <ParticlesComponents
+      id="tsparticles"
+      particlesLoaded={particlesLoaded}
+      options={particle as object}
+    />
+  );
+};
 
 const MyApp: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
   const [mode, setMode] = useState<PaletteMode>("dark");
-  const [page, setPage] = useState<number>(router.query.page == null ? 1 : parseInt(router.query.page as string, 10));
+  const [page, setPage] = useState<number>(
+    router.query.page == null ? 1 : parseInt(router.query.page as string, 10),
+  );
 
   const theme = useMemo(
     () =>
@@ -49,7 +65,7 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
           ...(mode === "dark" ? darkPalette : lightPalette),
         },
       }),
-    [mode]
+    [mode],
   );
 
   const fetcher = (query: any, variables: any) =>
@@ -78,8 +94,8 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
         </ThemeProvider>
         <GoogleTagManager gtmId={`${getGtmId()}`} />
       </SWRConfig>
-    </StrictMode >
+    </StrictMode>
   );
-}
+};
 
 export default MyApp;

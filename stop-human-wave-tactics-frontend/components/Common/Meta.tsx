@@ -25,4 +25,3 @@ const Meta = ({ title, description }: Props): React.ReactNode => {
 };
 
 export default Meta;
-
