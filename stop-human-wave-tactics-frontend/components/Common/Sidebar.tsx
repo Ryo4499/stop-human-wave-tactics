@@ -1,4 +1,4 @@
-import type { KeyboardEvent } from "react"
+import type { KeyboardEvent } from "react";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
@@ -20,14 +20,16 @@ import { useRouter } from "next/router";
 import { CategoriesAndTagsProps } from "../../types/general";
 
 const Sidebar = ({ categories, tags }: CategoriesAndTagsProps) => {
-
   const router = useRouter();
   const { locale, locales, t } = useLocale();
 
   const submitHandle = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      router.push({ pathname: "/search", query: { title: (e.target as HTMLInputElement).value } });
+      router.push({
+        pathname: "/search",
+        query: { title: (e.target as HTMLInputElement).value },
+      });
     }
   };
 
@@ -92,7 +94,7 @@ const Sidebar = ({ categories, tags }: CategoriesAndTagsProps) => {
               <List disablePadding>
                 <ListItem sx={{ pl: 4 }} disablePadding>
                   <Typography variant="subtitle1" color="text.secondary">
-                    {t.user}
+                    {t.author}
                   </Typography>
                 </ListItem>
               </List>
@@ -127,7 +129,7 @@ const Sidebar = ({ categories, tags }: CategoriesAndTagsProps) => {
                   <Stack direction="row" spacing={1.5}>
                     {githubUrl && (
                       <Grid mx={1}>
-                        <Link href={githubUrl} >
+                        <Link href={githubUrl}>
                           <GitHubIcon
                             sx={{ fontSize: "2.8vh", color: "text.secondary" }}
                           />
@@ -136,7 +138,7 @@ const Sidebar = ({ categories, tags }: CategoriesAndTagsProps) => {
                     )}
                     {linkedinUrl && (
                       <Grid mx={1}>
-                        <Link href={linkedinUrl} >
+                        <Link href={linkedinUrl}>
                           <LinkedInIcon
                             sx={{ fontSize: "2.8vh", color: "text.secondary" }}
                           />
@@ -154,7 +156,7 @@ const Sidebar = ({ categories, tags }: CategoriesAndTagsProps) => {
                     )}
                     {facebookUrl && (
                       <Grid mx={1}>
-                        <Link href={facebookUrl} >
+                        <Link href={facebookUrl}>
                           <FacebookIcon
                             sx={{ fontSize: "2.8vh", color: "text.secondary" }}
                           />
@@ -163,7 +165,7 @@ const Sidebar = ({ categories, tags }: CategoriesAndTagsProps) => {
                     )}
                     {instagramUrl && (
                       <Grid mx={1}>
-                        <Link href={instagramUrl} >
+                        <Link href={instagramUrl}>
                           <InstagramIcon
                             sx={{ fontSize: "2.8vh", color: "text.secondary" }}
                           />

@@ -60,8 +60,10 @@ env:
   FRONT_SENTRY_DSN: ${{vars.FRONT_SENTRY_DSN}}
   NEXT_PUBLIC_DOMAIN: ${{vars.DOMAIN}}
   NEXT_PUBLIC_BACKEND_URL: ${{vars.NEXT_PUBLIC_BACKEND_URL}}
-  NEXT_PUBLIC_GA_ID: ${{vars.NEXT_PUBLIC_GA_ID}}
+  NEXT_PUBLIC_GAD_ID: ${{vars.NEXT_PUBLIC_GAD_ID}}
+  NEXT_PUBLIC_GAN_ID: ${{vars.NEXT_PUBLIC_GAN_ID}}
   NEXT_PUBLIC_GTM_ID: ${{vars.NEXT_PUBLIC_GTM_ID}}
+  SENTRY_AUTH_TOKEN: ${{vars.SENTRY_AUTH_TOKEN}}
 
 jobs:
   lint:
@@ -88,9 +90,9 @@ jobs:
           echo ${{secrets.DB_PASS}} > .secrets/DB_PASS
           echo ${{secrets.DB_USER}} > .secrets/DB_USER
           echo ${{secrets.DEEPL_KEY}} > .secrets/DEEPL_KEY
-          echo ${{secrets.GA_ID}} > .secrets/GA_ID
+          echo ${{secrets.GAD_ID}} > .secrets/GAD_ID
           echo ${{secrets.GA_SLOT}} > .secrets/GA_SLOT
-          echo ${{secrets.GTAG}} > .secrets/GTAG
+          echo ${{secrets.GAN_ID}} > .secrets/GAN_ID
           echo ${{secrets.JWT_SECRET}} > .secrets/JWT_SECRET
           echo ${{secrets.TRANSFER_TOKEN_SALT}} > .secrets/TRANSFER_TOKEN_SALT
           echo '${{toJson(env)}}' | jq -r 'keys[] as $k | "\($k)=\(.[$k])"' >> .env
