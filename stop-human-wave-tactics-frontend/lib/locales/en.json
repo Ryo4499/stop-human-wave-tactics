@@ -42,49 +42,49 @@
     {
       "title": "Image Registration for Medical Image",
       "description": "A research project that uses models such as VoxelMorph to perform superimposition on two images of the same subject taken in different fields of view and time frames.",
-      "skill": "OpenCV(Python),Numpy,Pytorch,TensorFlow,Git,ShellScript,Docker,Docker Compose,Ubuntu",
+      "skill": "OpenCV(Python), Numpy, Pytorch, TensorFlow, Git, ShellScript, Docker, Docker Compose, Ubuntu",
       "date": "2023/10/01~2023/12/31"
     },
     {
       "title": "Estimation of camera parameters using 3D skeletal model",
       "description": "Research project to estimate the location of camera parameters from human skeletal information obtained by estimation using OpenPose and VoxelPose.",
-      "skill": "OpenCV(Python),Numpy,Pytorch,Git,ShellScript,Docker,Docker Compose,Ubuntu",
+      "skill": "OpenCV(Python), Numpy, Pytorch, Git, ShellScript, Docker, Docker Compose, Ubuntu",
       "date": "2023/06/01~2023/09/30"
     },
     {
       "title": "Performance evaluation of generic language models",
       "description": "Research projects aimed at improving the all-coupling layer, improving the Embedding layer, and evaluating and improving the performance of continuous learning using the Bert model.",
-      "skill": "Pytorch,C11,Cython,Csh,ShellScript,Git,Docker,Docker Compose,Ubuntu,CentOS,GCE(GCP)",
+      "skill": "Pytorch, C11, Cython, Csh, ShellScript, Git, Docker, Docker Compose, Ubuntu, CentOS, GCE(GCP)",
       "date": "2022/02/01~2023/04/30"
     },
     {
       "title": "Operation and maintenance of in-house wiki",
       "description": "Operation and maintenance of the internal wiki created in August 2021.",
-      "skill": "Flask,Nextjs,Mariadb,Git,Docker,Docker Compose,EC2(AWS),AmazonLinux",
+      "skill": "Flask, Nextjs, Mariadb, Git, Docker, Docker Compose, EC2(AWS), AmazonLinux",
       "date": "2022/02/01~2023/04/30"
     },
     {
       "title": "Distribution of Windows Security Patch",
       "description": "Distribute Windows security patches to PCs in the same domain.",
-      "skill": "PowerShell,WQL,VBA,Windows Server,Active Directory",
+      "skill": "PowerShell, WQL, VBA, Windows Server, Active Directory",
       "date": "2021/12/01~2022/01/31"
     },
     {
       "title": "Testing of bandwidth control applications",
       "description": "Create a test for the Python code that performs network bandwidth control.",
-      "skill": "Pytest,ShellScript,Git,Docker,Docker Compose,Amazon Linux",
+      "skill": "Pytest, ShellScript, Git, Docker, Docker Compose, Amazon Linux",
       "date": "2021/09/01~2022/11/30"
     },
     {
       "title": "Development of an internal wiki",
       "description": "Create a technology sharing website for internal use.",
-      "skill": "Flask,Nextjs,Mariadb,Git,Docker,Docker Compose,EC2(AWS),AmazonLinux",
+      "skill": "Flask, Nextjs, Mariadb, Git, Docker, Docker Compose, AWS(EC2), AmazonLinux",
       "date": "2021/08/01~2022/08/31"
     },
     {
       "title": "Web site development for internal use",
       "description": "Create a website to share information for internal use.",
-      "skill": "Spring Boot,Spring Security,Nextjs,PostgreSQL,Heroku",
+      "skill": "Spring Boot, Spring Security, Nextjs, PostgreSQL, Heroku",
       "date": "2021/06/01~2022/07/31"
     }
   ],

@@ -17,74 +17,74 @@
   "achievement_text": [
     {
       "title": "アイドルのチャットボット作成",
-      "description": "AzureOpenAIを使用したChatBotの作成、RAGの構築,LLMの比較",
-      "skill": "Azure(AzureOpenAI),AWS(Bedrock),MySQL,Ubuntu,Alpine,Nginx,Docker,Docker Compose,Kubernetes,Python(LangChain,Streamlit,Pytorch,Transformers)",
+      "description": "AzureOpenAIを使用したChatBotの作成、RAGの構築, LLMの比較",
+      "skill": "Azure(AzureOpenAI), AWS(Bedrock), MySQL, Ubuntu, Alpine, Nginx, Docker, Docker Compose, Kubernetes, Python(LangChain, Streamlit, Pytorch, Transformers)",
       "date": "2024/04/01~2024/05/31"
     },
     {
       "title": "ソフトフォンと連携して顧客情報を表示するシステムの上流工程",
       "description": "現行のシステムを踏襲して、基本設計書、詳細設計書の作成を行う",
-      "skill": "AWS(Lambda),Alpine,Dockre,Docker Compose,TypeScript(Angular),ShellScript,Git",
+      "skill": "AWS(Lambda), Alpine, Dockre, Docker Compose, TypeScript(Angular), ShellScript, Git",
       "date": "2024/01/01~2024/02/29"
     },
     {
       "title": "プログラミング講師",
       "description": "副業、業界未経験の生徒に対してWeb開発やAI開発についてマンツーマン指導を行う",
-      "skill": "AWS,PostgreSQL,MariaDB,MongoDB,Ubuntu,Alpine,AmazonLinux,Docker,Docker Compose,Java(Spring Boot),Python(Flask,Django,Scikit-Learn),ShellScript,Git",
+      "skill": "AWS, PostgreSQL, MariaDB, MongoDB, Ubuntu, Alpine, AmazonLinux, Docker, Docker Compose, Java(Spring Boot), Python(Flask, Django, Scikit-Learn), ShellScript, Git",
       "date": "2023/12/01~2024/06/30"
     },
     {
       "title": "脳波データを用いた音楽のリコメンド",
       "description": "副業、脳波データを解析するMATLABコードをPythonに移植し、FastAPIを使用したAPIの構築",
-      "skill": "MATLAB,AWS(EC2),FastAPI,Python(Pytorch, Scikit-Learn),ShellScript,Docker,Docker Compose,Ubuntu",
+      "skill": "MATLAB, AWS(EC2), FastAPI, Python(Pytorch,  Scikit-Learn), ShellScript, Docker, Docker Compose, Ubuntu",
       "date": "2023/11/01~2024/01/31"
     },
     {
       "title": "医療画像の位置合わせ",
       "description": "VoxelMorphなどのモデルを使用して、異なる視野、時間軸で撮影された同一被写体の2枚の画像に対して重ね合わせを行う研究プロジェクト。",
-      "skill": "OpenCV(Python),Numpy,Pytorch,TensorFlow,Git,ShellScript,Docker,Docker Compose,Ubuntu",
+      "skill": "OpenCV(Python), Numpy, Pytorch, TensorFlow, Git, ShellScript, Docker, Docker Compose, Ubuntu",
       "date": "2023/10/01~2023/12/31"
     },
     {
       "title": "3D骨格モデルを使用したカメラパラメータの推定",
-      "description": "OpenPose,VoxelPoseを使用して、推定を行って得られた人間の骨格情報からカメラパラメータの位置を推定する研究プロジェクト。",
-      "skill": "OpenCV(Python),Numpy,Pytorch,Git,ShellScript,Docker,Docker Compose,Ubuntu",
+      "description": "OpenPose, VoxelPoseを使用して、推定を行って得られた人間の骨格情報からカメラパラメータの位置を推定する研究プロジェクト。",
+      "skill": "OpenCV(Python), Numpy, Pytorch, Git, ShellScript, Docker, Docker Compose, Ubuntu",
       "date": "2023/06/01~2023/09/30"
     },
     {
       "title": "汎用言語モデルの性能評価",
       "description": "全結合層の改良、Embedding層の改良、Bertモデルを使用した継続学習の性能評価および向上を目的とした研究プロジェクト。",
-      "skill": "Pytorch,C11,Cython,Csh,ShellScript,Git,Docker,Docker Compose,Ubuntu,CentOS,GCE(GCP)",
+      "skill": "Pytorch, C11, Cython, Csh, ShellScript, Git, Docker, Docker Compose, Ubuntu, CentOS, GCE(GCP)",
       "date": "2022/02/01~2023/04/30"
     },
     {
       "title": "社内Wiki運用、保守",
       "description": "2021年8月に作成した社内Wikiの運用、保守。",
-      "skill": "Flask,Nextjs,Mariadb,Git,Docker,Docker Compose,EC2(AWS),AmazonLinux",
+      "skill": "Flask, Nextjs, Mariadb, Git, Docker, Docker Compose, EC2(AWS), AmazonLinux",
       "date": "2022/02/01~2023/04/30"
     },
     {
       "title": "Windows Security Patchの配布",
       "description": "同一ドメインのPCにWindowsのセキュリティパッチを配布する。",
-      "skill": "PowerShell,WQL,VBA,Windows Server,Active Directory",
+      "skill": "PowerShell, WQL, VBA, Windows Server, Active Directory",
       "date": "2021/12/01~2022/01/31"
     },
     {
       "title": "帯域制御アプリのテスト",
       "description": "ネットワーク帯域制御を行うPythonコードのテストを作成する。",
-      "skill": "Pytest,ShellScript,Git,Docker,Docker Compose,Amazon Linux",
+      "skill": "Pytest, ShellScript, Git, Docker, Docker Compose, Amazon Linux",
       "date": "2021/09/01~2022/11/30"
     },
     {
       "title": "社内Wiki開発",
       "description": "社内用の技術共有サイトを制作する。",
-      "skill": "Flask,Nextjs,Mariadb,Git,Docker,Docker Compose,EC2(AWS),AmazonLinux",
+      "skill": "Flask, Nextjs, Mariadb, Git, Docker, Docker Compose, EC2(AWS), AmazonLinux",
       "date": "2021/08/01~2021/08/31"
     },
     {
       "title": "社内用Webサイト開発",
       "description": "社内用の情報共有を行うWebサイトを制作する。",
-      "skill": "Spring Boot,Spring Security,Nextjs,PostgreSQL,Heroku",
+      "skill": "Spring Boot, Spring Security, Nextjs, PostgreSQL, Heroku",
       "date": "2021/06/01~2021/07/31"
     }
   ],
