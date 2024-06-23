@@ -10,8 +10,8 @@ import {
   GetCategoriesAndTagsQuery,
   TagEntityResponseCollection,
 } from "../types/graphql_res";
-import { GraphqlError } from "../components/Common/DisplayError";
 import { CategoriesAndTagsResponseProps } from "../types/general";
+import { GraphqlError } from "../components/Common/DisplayError";
 import { useLocale } from "../lib/locale";
 import Sidebar from "../components/Common/Sidebar";
 import Meta from "../components/Common/Meta";
@@ -32,25 +32,30 @@ export const getStaticProps = async ({ locale }) => {
     tags: TagEntityResponseCollection;
   }>(getBackendGraphqlURL(), getCategoriesAndTags, variables).then(
     (res: GetCategoriesAndTagsQuery) => {
-      return {
-        props: {
-          categories: res.categories,
-          tags: res.tags,
-          variables: variables,
-        },
-        notFound: false,
-        revalidate: 3600,
-      };
+      if (res.categories == null && res.tags == null) {
+        return {
+          props: {
+            categories: null,
+            tags: null,
+            variables: variables,
+          },
+          notFound: true,
+          revalidate: 3600,
+        };
+      } else {
+        return {
+          props: {
+            categories: res.categories,
+            tags: res.tags,
+            variables: variables,
+          },
+          notFound: false,
+          revalidate: 3600,
+        };
+      }
     },
   );
-  if (result != null) {
-    return result;
-  } else {
-    return {
-      notFound: true,
-      revalidate: 3600,
-    };
-  }
+  return result;
 };
 
 const AchievementContent = () => {
