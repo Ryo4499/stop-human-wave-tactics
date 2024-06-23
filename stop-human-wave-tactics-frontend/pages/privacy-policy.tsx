@@ -10,6 +10,7 @@ import { getCategoriesAndTags } from "../graphql/getCategoriesAndTags";
 import { getBackendGraphqlURL } from "../lib/graphqlClient";
 import {
   CategoryEntityResponseCollection,
+  GetCategoriesAndTagsQuery,
   TagEntityResponseCollection,
 } from "../types/graphql_res";
 import { GraphqlError } from "../components/Common/DisplayError";
@@ -30,7 +31,7 @@ export const getStaticProps = async ({ locale }) => {
     categories: CategoryEntityResponseCollection;
     tags: TagEntityResponseCollection;
   }>(getBackendGraphqlURL(), getCategoriesAndTags, variables).then(
-    (res) => {
+    (res: GetCategoriesAndTagsQuery) => {
       return {
         props: {
           categories: res.categories,

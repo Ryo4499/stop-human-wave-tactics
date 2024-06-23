@@ -7,6 +7,7 @@ import useSWR from "swr";
 import { getBackendGraphqlURL } from "../lib/graphqlClient";
 import {
   CategoryEntityResponseCollection,
+  GetCategoriesAndTagsQuery,
   TagEntityResponseCollection,
 } from "../types/graphql_res";
 import { GraphqlError } from "../components/Common/DisplayError";
@@ -30,7 +31,7 @@ export const getStaticProps = async ({ locale }) => {
     categories: CategoryEntityResponseCollection;
     tags: TagEntityResponseCollection;
   }>(getBackendGraphqlURL(), getCategoriesAndTags, variables).then(
-    (res) => {
+    (res: GetCategoriesAndTagsQuery) => {
       return {
         props: {
           categories: res.categories,
@@ -72,8 +73,13 @@ const AchievementContent = () => {
         ))}
       </Grid>
       <Grid my={2} ml={2}>
+        <Typography variant="body1" color="text.secondary">
+          {t.technology_stack}:{" " + value.skill}
+        </Typography>
+      </Grid>
+      <Grid my={2} ml={2}>
         {value.url != "" && (
-          <Typography variant="subtitle2" color="text.secondary">
+          <Typography variant="body1" color="text.secondary">
             URL:{" "}
             <Link href={value.url} color="text.link">
               {value.url}
@@ -83,7 +89,7 @@ const AchievementContent = () => {
       </Grid>
       <Grid my={2} ml={2}>
         {value.github != "" && (
-          <Typography variant="subtitle2" color="text.secondary">
+          <Typography variant="body1" color="text.secondary">
             GitHub:{" "}
             <Link href={value.github} color="text.link">
               {value.github}
@@ -109,6 +115,11 @@ const AchievementContent = () => {
             {line}
           </Typography>
         ))}
+      </Grid>
+      <Grid my={2} ml={2}>
+        <Typography variant="body1" color="text.secondary">
+          {t.technology_stack}:{" " + value.skill}
+        </Typography>
       </Grid>
     </Grid>
   ));
