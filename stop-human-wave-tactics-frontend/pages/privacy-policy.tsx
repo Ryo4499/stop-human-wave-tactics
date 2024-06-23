@@ -8,30 +8,47 @@ import type { NextPage } from "next";
 import Sidebar from "../components/Common/Sidebar";
 import { getCategoriesAndTags } from "../graphql/getCategoriesAndTags";
 import { getBackendGraphqlURL } from "../lib/graphqlClient";
-import { CategoryEntityResponseCollection, GetCategoriesQuery, TagEntityResponseCollection } from "../types/graphql_res";
+import {
+  CategoryEntityResponseCollection,
+  GetCategoriesQuery,
+  TagEntityResponseCollection,
+} from "../types/graphql_res";
 import { GraphqlError } from "../components/Common/DisplayError";
 import { CategoriesAndTagsResponseProps } from "../types/general";
 import Meta from "../components/Common/Meta";
 
-export const getStaticProps = (async ({
-  locale,
-}) => {
-  const variables = { categoryFilters: {}, tagFilters: {}, categoryPagination: {}, tagPagination: {}, categorySort: [], tagSort: [], locale: locale };
-  const result = await request<{ categories: CategoryEntityResponseCollection, tags: TagEntityResponseCollection }>(
-    getBackendGraphqlURL(),
-    getCategoriesAndTags,
-    variables
-  ).then(({ categories, tags }: { categories: CategoryEntityResponseCollection, tags: TagEntityResponseCollection }) => {
-    return {
-      props: {
-        categories: categories,
-        tags: tags,
-        variables: variables,
-      },
-      notFound: false,
-      revalidate: 3600,
-    };
-  });
+export const getStaticProps = async ({ locale }) => {
+  const variables = {
+    categoryFilters: {},
+    tagFilters: {},
+    categoryPagination: {},
+    tagPagination: {},
+    categorySort: [],
+    tagSort: [],
+    locale: locale,
+  };
+  const result = await request<{
+    categories: CategoryEntityResponseCollection;
+    tags: TagEntityResponseCollection;
+  }>(getBackendGraphqlURL(), getCategoriesAndTags, variables).then(
+    ({
+      categories,
+      tags,
+    }: {
+      categories: CategoryEntityResponseCollection;
+      tags: TagEntityResponseCollection;
+    }) => {
+      return {
+        props: {
+          categories: categories,
+          tags: tags,
+          variables: variables,
+        },
+        notFound: false,
+        revalidate: 3600,
+      };
+    },
+  );
   if (result != null) {
     return result;
   } else {
@@ -40,11 +57,10 @@ export const getStaticProps = (async ({
       revalidate: 3600,
     };
   }
-})
-
+};
 
 const PrivacyPolicyContent = () => {
-  const { locale, locales, t } = useLocale();
+  const { locale, t } = useLocale();
   const typo = (text: string) =>
     text.split("\n").map((line, key) => (
       <Typography key={key} variant="body1" color="text.secondary">
@@ -53,12 +69,10 @@ const PrivacyPolicyContent = () => {
     ));
   const site_info = typo(t.site_text);
 
-  const google_ad_url =
-    `https://support.google.com/adspolicy/answer/54818?hl=${locale}`;
+  const google_ad_url = `https://support.google.com/adspolicy/answer/54818?hl=${locale}`;
   const google_ad_info = typo(t.google_ad_text);
   const google_analysis_info = typo(t.google_analysis_text);
-  const google_analysis_url =
-    `https://marketingplatform.google.com/about/analytics/terms/${locale === 'ja' ? 'jp' : 'us'}/`;
+  const google_analysis_url = `https://marketingplatform.google.com/about/analytics/terms/${locale === "ja" ? "jp" : "us"}/`;
 
   const copy_right_info = typo(t.copy_right_text);
   const link_free_info = typo(t.link_free_text);
@@ -88,7 +102,9 @@ const PrivacyPolicyContent = () => {
           <Typography color="text.primary" variant="h5">
             {t.site_info}
           </Typography>
-          <Grid my={2} ml={2}>{site_info}</Grid>
+          <Grid my={2} ml={2}>
+            {site_info}
+          </Grid>
         </Grid>
         <Grid my={2}>
           <Typography color="text.primary" variant="h5">
@@ -116,19 +132,26 @@ const PrivacyPolicyContent = () => {
           <Typography color="text.primary" variant="h5">
             {t.copy_right}
           </Typography>
-          <Grid my={2} ml={2}>{copy_right_info}</Grid>
+          <Grid my={2} ml={2}>
+            {copy_right_info}
+          </Grid>
         </Grid>
         <Grid my={2}>
           <Typography color="text.primary" variant="h5">
             {t.link_free}
           </Typography>
-          <Grid my={2} ml={2}>{link_free_info}</Grid>
+          <Grid my={2} ml={2}>
+            {link_free_info}
+          </Grid>
         </Grid>
         <Grid my={2}>
           <Typography color="text.primary" variant="h5">
             {t.disclaimer}
           </Typography>
-          <Grid my={2} ml={2}>{disclaimer_info}</Grid></Grid>
+          <Grid my={2} ml={2}>
+            {disclaimer_info}
+          </Grid>
+        </Grid>
       </Grid>
     </Grid>
   );
@@ -139,15 +162,14 @@ const PrivacyPolicy: NextPage<CategoriesAndTagsResponseProps> = ({
   tags,
   variables,
 }) => {
-
   const { data, error } = useSWR([getCategoriesAndTags, variables], {
     onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
       // Never retry on 404.
-      if (error.status === 404) return
+      if (error.status === 404) return;
       // Only retry up to 10 times.
-      if (retryCount >= 10) return
+      if (retryCount >= 10) return;
       // Retry after 3 seconds.
-      setTimeout(() => revalidate({ retryCount }), 3000)
+      setTimeout(() => revalidate({ retryCount }), 3000);
     },
     fallbackData: { categories: categories, tags: tags, variables: variables },
   });

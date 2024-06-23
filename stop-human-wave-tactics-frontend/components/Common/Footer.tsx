@@ -6,7 +6,6 @@ import Grid from "@mui/material/Unstable_Grid2";
 import { useLocale } from "../../lib/locale";
 
 const Footer = () => {
-  
   const { locale, locales, t } = useLocale();
   return (
     <Grid container xs={12}>
@@ -58,7 +57,7 @@ const Footer = () => {
           </Grid>
         </Toolbar>
       </AppBar>
-    </Grid >
+    </Grid>
   );
 };
 export default Footer;
