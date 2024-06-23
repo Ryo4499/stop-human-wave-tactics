@@ -2,18 +2,23 @@ import {
   ArticleEntityResponseCollection,
   CategoryEntityResponseCollection,
   GetArticlesQueryVariables,
+  GetCategoriesAndTagsQueryVariables,
   TagEntityResponseCollection,
 } from "./graphql_res";
+
+export interface CategoriesAndTagsStaticProps {
+  props: CategoriesAndTagsProps;
+  notFound: boolean;
+  revalidate: number;
+}
 
 export interface CategoriesAndTagsProps {
   categories: CategoryEntityResponseCollection;
   tags: TagEntityResponseCollection
 }
 
-export interface CategoriesAndTagsResponseProps {
-  categories: CategoryEntityResponseCollection;
-  tags: TagEntityResponseCollection;
-  variables: object;
+export interface CategoriesAndTagsResponseProps extends CategoriesAndTagsProps {
+  variables: GetCategoriesAndTagsQueryVariables | undefined | null;
 }
 
 export interface ArticlesResponseProps {
