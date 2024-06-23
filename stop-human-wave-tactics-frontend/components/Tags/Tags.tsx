@@ -70,7 +70,7 @@ export const TagsLinkComponent = ({ article }: { article: Article }) => {
         <Grid container mx={1}>
           <LocalOfferIcon sx={{ color: "text.secondary", fontSize: "2.2vh" }} />
         </Grid>
-        <Stack direction="row" my={1}>
+        <Stack direction="row" my={1} spacing={1}>
           {article.tags?.data.map((tag) => (
             <Link
               key={tag.attributes?.uuid}
