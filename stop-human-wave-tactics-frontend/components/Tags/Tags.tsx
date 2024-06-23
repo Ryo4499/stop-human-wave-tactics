@@ -6,9 +6,13 @@ import Link from "next/link";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import Grid from "@mui/material/Unstable_Grid2";
 import { useLocale } from "../../lib/locale";
-import { Article } from "../../types/graphql_res";
+import { Article, TagEntityResponseCollection } from "../../types/graphql_res";
 
-export const Tags = ({ contents }) => {
+interface TagsProps {
+  contents: TagEntityResponseCollection;
+}
+
+export const Tags = ({ contents }: TagsProps) => {
   const { t } = useLocale();
 
   if (contents.data.length === 0) {

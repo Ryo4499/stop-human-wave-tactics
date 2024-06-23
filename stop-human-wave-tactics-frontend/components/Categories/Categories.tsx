@@ -6,9 +6,16 @@ import Link from "next/link";
 import FolderIcon from "@mui/icons-material/Folder";
 import Grid from "@mui/material/Unstable_Grid2";
 import { useLocale } from "../../lib/locale";
-import { Article } from "../../types/graphql_res";
+import {
+  Article,
+  CategoryEntityResponseCollection,
+} from "../../types/graphql_res";
 
-export const Categories = ({ contents }) => {
+interface CategoriesProps {
+  contents: CategoryEntityResponseCollection;
+}
+
+export const Categories = ({ contents }: CategoriesProps) => {
   const { locale, locales, t } = useLocale();
 
   if (contents.data.length === 0) {
