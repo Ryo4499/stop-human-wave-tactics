@@ -4,24 +4,28 @@ import { useRouter } from "next/router";
 import { request } from "graphql-request";
 import useSWR from "swr";
 import { getBackendGraphqlURL } from "../../lib/graphqlClient";
-import { ArticleEntityResponseCollection, GetArticlesQueryVariables, TagEntityResponseCollection, TagEntity, CategoryEntityResponseCollection } from "../../types/graphql_res";
-import Sidebar from "../../components/Common/Sidebar";
 import {
-  ArticlesCategorisTagsProps,
-  UUIDParams,
-} from "../../types/general";
+  ArticleEntityResponseCollection,
+  GetArticlesQueryVariables,
+  TagEntityResponseCollection,
+  TagEntity,
+  CategoryEntityResponseCollection,
+} from "../../types/graphql_res";
+import Sidebar from "../../components/Common/Sidebar";
+import { ArticlesCategorisTagsProps, UUIDParams } from "../../types/general";
 import { getTagsByUUID } from "../../graphql/getTagsByUUID";
 import { Articles } from "../../components/Articles";
 import { GraphqlError } from "../../components/Common/DisplayError";
 import { getArticlesWithTags } from "../../graphql/getArticlesWithTags";
 import Meta from "../../components/Common/Meta";
-import { convDatetimeArticles, inArticlesCategoriesTags } from "../../lib/utils";
+import {
+  convDatetimeArticles,
+  inArticlesCategoriesTags,
+} from "../../lib/utils";
 import { getArticlesWithCategoriesAndTags } from "../../graphql/getArticlesWithCategoriesAndTags";
 import { useLocale } from "../../lib/locale";
 
-export const getStaticPaths = (async ({
-  locales,
-}) => {
+export const getStaticPaths = (async ({ locales }) => {
   const paths: Array<UUIDParams> = [];
   if (locales != null) {
     for (const locale of locales) {
@@ -34,17 +38,17 @@ export const getStaticPaths = (async ({
               paths.push({
                 params: { uuid: tag.attributes.uuid },
                 locale: locale,
-              })
+              });
             }
           });
-        }
+        },
       );
     }
   }
   return { paths: paths, fallback: "blocking" };
-}) satisfies GetStaticPaths
+}) satisfies GetStaticPaths;
 
-export const getStaticProps = (async ({ params, locale }) => {
+export const getStaticProps = async ({ params, locale }) => {
   const variables = {
     filters: {
       tags: {
@@ -58,14 +62,16 @@ export const getStaticProps = (async ({ params, locale }) => {
   const res = await request(
     getBackendGraphqlURL(),
     getArticlesWithCategoriesAndTags,
-    variables
+    variables,
   ).then((result) => {
     return result;
   });
   if (res != null && inArticlesCategoriesTags(res)) {
     const result = {
       props: {
-        articles: convDatetimeArticles((res.articles as ArticleEntityResponseCollection)),
+        articles: convDatetimeArticles(
+          res.articles as ArticleEntityResponseCollection,
+        ),
         categories: res.categories,
         tags: res.tags,
         variables: variables,
@@ -80,23 +86,27 @@ export const getStaticProps = (async ({ params, locale }) => {
       revalidate: 3600,
     };
   }
-})
+};
 
 const ArticlesPage: NextPage<ArticlesCategorisTagsProps> = ({
   articles,
   categories,
   tags,
   variables,
-}: { articles: ArticleEntityResponseCollection, categories: CategoryEntityResponseCollection, tags: TagEntityResponseCollection, variables: GetArticlesQueryVariables }) => {
-
+}: {
+  articles: ArticleEntityResponseCollection;
+  categories: CategoryEntityResponseCollection;
+  tags: TagEntityResponseCollection;
+  variables: GetArticlesQueryVariables;
+}) => {
   const { data, error } = useSWR([getArticlesWithTags, variables], {
     onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
       // Never retry on 404.
-      if (error.status === 404) return
+      if (error.status === 404) return;
       // Only retry up to 10 times.
-      if (retryCount >= 10) return
+      if (retryCount >= 10) return;
       // Retry after 3 seconds.
-      setTimeout(() => revalidate({ retryCount }), 3000)
+      setTimeout(() => revalidate({ retryCount }), 3000);
     },
     fallbackData: {
       articles: articles,
@@ -106,7 +116,7 @@ const ArticlesPage: NextPage<ArticlesCategorisTagsProps> = ({
     },
   });
   const router = useRouter();
-  const { t } = useLocale()
+  const { t } = useLocale();
   if (data != null && typeof router.query.name === "string") {
     return (
       <Grid container sx={{ flexGrow: 1 }}>

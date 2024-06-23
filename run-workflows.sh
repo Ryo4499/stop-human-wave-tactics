@@ -1,9 +1,11 @@
 #!/bin/bash
 gh variable set -f .env
+gh variable set NODE_ENV -b development
 gh variable delete REPO_URL
 gh variable delete ACCESS_TOKEN
 gh variable delete RUNNER_WORKDIR
 gh variable delete LABELS
+gh variable delete WEB_HOOK_URL
 
 # ar44 @ MAINDESK in ~/promgramming/ne
 array=( $(find .secrets -type f) )
