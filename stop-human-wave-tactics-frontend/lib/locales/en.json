@@ -16,6 +16,30 @@
   "achievement": "Achievement",
   "achievement_text": [
     {
+      "title": "Creating an Idol Chatbot",
+      "description": "Creating a ChatBot using AzureOpenAI, building RAG, comparing LLM",
+      "skill": "Azure(AzureOpenAI), AWS(Bedrock), MySQL, Ubuntu, Alpine, Nginx, Docker, Docker Compose, Kubernetes, Python(LangChain, Streamlit, Pytorch, Transformers)",
+      "date": "2024/04/01~2024/05/31"
+    },
+    {
+      "title": "Upstream Process of System to Display Customer Information Linked with Softphone",
+      "description": "Create basic design documents and detailed design documents following the existing system",
+      "skill": "AWS(Lambda), Alpine, Docker, Docker Compose, TypeScript(Angular), ShellScript, Git",
+      "date": "2024/01/01~2024/02/29"
+    },
+    {
+      "title": "Programming Instructor",
+      "description": "Part-time job, providing one-on-one instruction on web development and AI development to students with no industry experience",
+      "skill": "AWS, PostgreSQL, MariaDB, MongoDB, Ubuntu, Alpine, AmazonLinux, Docker, Docker Compose, Java(Spring Boot), Python(Flask, Django, Scikit-Learn), ShellScript, Git",
+      "date": "2023/12/01~2024/06/30"
+    },
+    {
+      "title": "Music Recommendation Using EEG Data",
+      "description": "Part-time job, port MATLAB code for analyzing EEG data to Python, and build API using FastAPI",
+      "skill": "MATLAB, AWS(EC2), FastAPI, Python(Pytorch, Scikit-Learn), ShellScript, Docker, Docker Compose, Ubuntu",
+      "date": "2023/11/01~2024/01/31"
+    },
+    {
       "title": "Image Registration for Medical Image",
       "description": "A research project that uses models such as VoxelMorph to perform superimposition on two images of the same subject taken in different fields of view and time frames.",
       "skill": "OpenCV(Python),Numpy,Pytorch,TensorFlow,Git,ShellScript,Docker,Docker Compose,Ubuntu",
@@ -72,7 +96,7 @@
       "date": "Created by 2023",
       "skill": "Nextjs(ISR),Strapi,Docker Compose",
       "url": "https://datsujinkai.com/",
-      "github": ""
+      "github": "https://github.com/Ryo4499/stop-human-wave-tactics"
     },
     {
       "title": "DeepLearning Demo",
@@ -94,7 +118,7 @@
       "title": "BookMemo",
       "description": "Book review app.",
       "date": "Created by 2020",
-      "skill": "Nextjs(ISR),Strapi,Docker Compose",
+      "skill": "Thymeleaf,Spring Boot,Docker Compose",
       "url": "",
       "github": "https://github.com/Ryo4499/BookMemo"
     }

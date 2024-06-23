@@ -16,6 +16,30 @@
   "achievement": "実績",
   "achievement_text": [
     {
+      "title": "アイドルのチャットボット作成",
+      "description": "AzureOpenAIを使用したChatBotの作成、RAGの構築,LLMの比較",
+      "skill": "Azure(AzureOpenAI),AWS(Bedrock),MySQL,Ubuntu,Alpine,Nginx,Docker,Docker Compose,Kubernetes,Python(LangChain,Streamlit,Pytorch,Transformers)",
+      "date": "2024/04/01~2024/05/31"
+    },
+    {
+      "title": "ソフトフォンと連携して顧客情報を表示するシステムの上流工程",
+      "description": "現行のシステムを踏襲して、基本設計書、詳細設計書の作成を行う",
+      "skill": "AWS(Lambda),Alpine,Dockre,Docker Compose,TypeScript(Angular),ShellScript,Git",
+      "date": "2024/01/01~2024/02/29"
+    },
+    {
+      "title": "プログラミング講師",
+      "description": "副業、業界未経験の生徒に対してWeb開発やAI開発についてマンツーマン指導を行う",
+      "skill": "AWS,PostgreSQL,MariaDB,MongoDB,Ubuntu,Alpine,AmazonLinux,Docker,Docker Compose,Java(Spring Boot),Python(Flask,Django,Scikit-Learn),ShellScript,Git",
+      "date": "2023/12/01~2024/06/30"
+    },
+    {
+      "title": "脳波データを用いた音楽のリコメンド",
+      "description": "副業、脳波データを解析するMATLABコードをPythonに移植し、FastAPIを使用したAPIの構築",
+      "skill": "MATLAB,AWS(EC2),FastAPI,Python(Pytorch, Scikit-Learn),ShellScript,Docker,Docker Compose,Ubuntu",
+      "date": "2023/11/01~2024/01/31"
+    },
+    {
       "title": "医療画像の位置合わせ",
       "description": "VoxelMorphなどのモデルを使用して、異なる視野、時間軸で撮影された同一被写体の2枚の画像に対して重ね合わせを行う研究プロジェクト。",
       "skill": "OpenCV(Python),Numpy,Pytorch,TensorFlow,Git,ShellScript,Docker,Docker Compose,Ubuntu",
@@ -72,7 +96,7 @@
       "date": "2023年作",
       "skill": "Nextjs(ISR),Strapi,Docker Compose",
       "url": "https://datsujinkai.com/",
-      "github": ""
+      "github": "https://github.com/Ryo4499/stop-human-wave-tactics"
     },
     {
       "title": "DeepLearning Demo",
@@ -94,7 +118,7 @@
       "title": "BookMemo",
       "description": "書評アプリ。",
       "date": "2020年作",
-      "skill": "Nextjs(ISR),Strapi,Docker Compose",
+      "skill": "Thymeleaf,Spring Boot,Docker Compose",
       "url": "",
       "github": "https://github.com/Ryo4499/BookMemo"
     }
