@@ -346,6 +346,7 @@ services:
       - -c
       - |
         if [ "${NODE_ENV}" = "production" ]; then \
+          yarn lint --fix && \
           yarn build && \
           yarn start; \
         else \
