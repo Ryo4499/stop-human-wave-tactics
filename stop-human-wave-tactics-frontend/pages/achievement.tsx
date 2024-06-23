@@ -30,17 +30,11 @@ export const getStaticProps = async ({ locale }) => {
     categories: CategoryEntityResponseCollection;
     tags: TagEntityResponseCollection;
   }>(getBackendGraphqlURL(), getCategoriesAndTags, variables).then(
-    ({
-      categories,
-      tags,
-    }: {
-      categories: CategoryEntityResponseCollection;
-      tags: TagEntityResponseCollection;
-    }) => {
+    (res) => {
       return {
         props: {
-          categories: categories,
-          tags: tags,
+          categories: res.categories,
+          tags: res.tags,
           variables: variables,
         },
         notFound: false,
