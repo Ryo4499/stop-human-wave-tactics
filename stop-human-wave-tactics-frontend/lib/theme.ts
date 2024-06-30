@@ -44,7 +44,7 @@ export const darkPalette = {
   },
   shadow: {
     scrollbar: "#e1f000",
-  }
+  },
 };
 
 export const lightPalette = {
