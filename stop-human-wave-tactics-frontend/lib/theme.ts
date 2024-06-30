@@ -20,6 +20,8 @@ export const darkPalette = {
     paper: "#000000",
     content: alpha("#202020", 0.7),
     sidebar: "#0C0C0C",
+    button: "#2C2C2C",
+    scrollbar: "#000000",
   },
   text: {
     primary: "#DA59D9",
@@ -40,6 +42,9 @@ export const darkPalette = {
       '"Segoe UI Symbol"',
     ].join(","),
   },
+  shadow: {
+    scrollbar: "#e1f000",
+  }
 };
 
 export const lightPalette = {
@@ -62,11 +67,12 @@ export const lightPalette = {
     paper: "#fffff8",
     content: "#ddd8dF",
     sidebar: "#80a3c5",
+    button: "#3e3e3e",
   },
   text: {
     primary: "#131313",
     secondary: "#212121",
-    link: "#E88244",
+    link: "#bb44aa",
   },
   typography: {
     fontFamily: [
