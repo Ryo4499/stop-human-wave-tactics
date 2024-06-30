@@ -20,8 +20,8 @@ const Header = () => {
   if (locales != null) {
     return (
       <Grid container xs={12}>
-        <AppBar position="static" sx={{ flexGrow: 1 }}>
-          <Toolbar sx={{ flexGrow: 1, justifyContent: "space-between" }}>
+        <AppBar position="relative">
+          <Toolbar>
             <Grid container sm={4} xs={6}>
               <Link href="/" as="/">
                 <Typography variant="h6" color="text.primary">
@@ -34,7 +34,6 @@ const Header = () => {
               container
               alignItems="center"
               justifyContent="flex-end"
-              sx={{ flexGrow: 1 }}
               xs={6}
               sm={8}
             >
