@@ -1,5 +1,7 @@
+import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Unstable_Grid2";
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import { useLocale } from "../../lib/locale";
 
 export const SearchNotFound = ({ filter }: { filter: string }) => {
@@ -9,24 +11,31 @@ export const SearchNotFound = ({ filter }: { filter: string }) => {
       container
       direction="column"
       mx={5}
-      spacing={3}
+      my={2}
       sx={{
         backgroundColor: "background.content",
-        my: { md: 0, xs: 2 },
         flexGrow: 1,
       }}
     >
       {filter != "" ? (
-        <Grid container xs={12} mx={3} mt={2} mb={1}>
+        <Grid container mx={3} my={3}>
           <Typography variant="h6" color="text.secondary">
             {filter}
           </Typography>
         </Grid>
       ) : null}
-      <Grid container mx={5} my={2}>
-        <Typography variant="h4" color="text.secondary">
-          {t.not_found}
-        </Typography>
+      <Grid container mx={5} mb={5}>
+        <Stack
+          direction="row"
+          justifyContent="flex-end"
+          alignItems="anchor-center"
+          spacing={1}
+        >
+          <SentimentVeryDissatisfiedIcon sx={{ color: "text.secondary", fontSize: "4.0vh" }} />
+          <Typography variant="body1" color="text.secondary">
+            {t.not_found}
+          </Typography>
+        </Stack>
       </Grid>
     </Grid>
   );

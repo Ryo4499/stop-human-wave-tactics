@@ -73,22 +73,23 @@ export const CategoryLinkComponent = ({ article }: { article: Article }) => {
         sx={{ color: "text.link" }}
         justifyContent="flex-end"
         alignItems="center"
+        my={1}
       >
         <Grid container mx={1}>
           <FolderIcon sx={{ color: "text.secondary", fontSize: "2.2vh" }} />
         </Grid>
-        <Grid container>
+        <Stack direction="column" textAlign="right">
           <Link
             href={{
               pathname: `/category/${article.category.data.attributes?.uuid}`,
               query: { name: article.category.data.attributes?.name },
             }}
           >
-            <Typography sx={{ fontSize: "1.0rem" }} color="text.link">
+            <Typography sx={{ fontSize: "l.8vh" }} color="text.link">
               {article.category.data.attributes?.name}
             </Typography>
           </Link>
-        </Grid>
+        </Stack>
       </Grid>
     );
   } else {
