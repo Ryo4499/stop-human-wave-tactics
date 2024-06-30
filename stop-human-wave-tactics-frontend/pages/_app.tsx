@@ -23,14 +23,14 @@ import { GoogleTagManager } from "@next/third-parties/google";
 import { getGtmId } from "../lib/google";
 import type { PaletteMode } from "@mui/material";
 
-export const ColorModeContext = createContext({ toggleColorMode: () => {} });
+export const ColorModeContext = createContext({ toggleColorMode: () => { } });
 export const PageContext = createContext({
   page: 1,
-  setPage: (value: number) => {},
+  setPage: (value: number) => { },
 });
 const ParticleContext = createContext({
   particle: mainParticle,
-  setParticle: (value: any) => {},
+  setParticle: (value: any) => { },
 });
 
 const PsComponents = () => {
@@ -40,7 +40,7 @@ const PsComponents = () => {
       await loadSlim(engine);
     });
   }, [particle]);
-  const particlesLoaded = async (container?: Container): Promise<void> => {};
+  const particlesLoaded = async (container?: Container): Promise<void> => { };
   return (
     <ParticlesComponents
       id="tsparticles"
