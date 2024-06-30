@@ -1,4 +1,5 @@
-.env
+.env*
+!.env.sample
 *.csr
 *.key
 *.crt
@@ -9,3 +10,4 @@
 .docker
 .secrets/
 backup/
+*db_bk*
