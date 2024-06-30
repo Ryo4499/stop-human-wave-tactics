@@ -73,7 +73,7 @@ export const TagsLinkComponent = ({ article }: { article: Article }) => {
         my={1}
       >
         <Grid container mx={1}>
-          <LocalOfferIcon sx={{ color: "text.secondary", fontSize: "2.2vh" }} />
+          <LocalOfferIcon sx={{ color: "text.secondary", fontSize: "1rem" }} />
         </Grid>
         <Stack direction="column" spacing={0.4} textAlign="right">
           {article.tags?.data.map((tag) => (
@@ -84,7 +84,7 @@ export const TagsLinkComponent = ({ article }: { article: Article }) => {
                 query: { name: tag.attributes?.name },
               }}
             >
-              <Typography sx={{ fontSize: "1.8vh" }} color="text.link">
+              <Typography sx={{ fontSize: "1rem" }} color="text.link">
                 {tag.attributes?.name}
               </Typography>
             </Link>
