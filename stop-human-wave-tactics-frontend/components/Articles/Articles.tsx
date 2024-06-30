@@ -1,4 +1,4 @@
-import { ChangeEvent, useContext } from "react";
+import { ChangeEvent, useContext, useState } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import Stack from "@mui/material/Stack";
 import Card from "@mui/material/Card";
@@ -87,6 +87,8 @@ const ImageComponent = ({ article }) => {
 export const Articles = ({ articles, filter }: ArticlesProps) => {
   const { t } = useLocale();
   const router = useRouter();
+  const [hoverBtnNum, setHoverBtnNum] = useState(-1);
+  const [pressedBtnNum, setPressedBtnNum] = useState(-1);
 
   if (articles.data != null) {
     const pageCount = articles.meta.pagination.pageCount;
@@ -101,7 +103,7 @@ export const Articles = ({ articles, filter }: ArticlesProps) => {
           spacing={0.2}
           mb={2}
         >
-          {articles?.data.map((article) => {
+          {articles?.data.map((article, i) => {
             if (article.attributes?.uuid != null) {
               return (
                 <Grid
@@ -147,34 +149,42 @@ export const Articles = ({ articles, filter }: ArticlesProps) => {
                           </Typography>
                         </Grid>
                       </CardContent>
-                      <Stack direction="row" mx={1}>
-                        <Grid xs={12} ml={2} mt={1} mb={2}>
-                          <CardActions>
-                            <Grid>
-                              <Button
-                                onClick={() => {
-                                  router.push({
-                                    pathname: "/article/[uuid]",
-                                    query: { uuid: article.attributes?.uuid },
-                                  });
-                                }}
-                                size="small"
-                              >
-                                <Typography
-                                  sx={{ fontSize: "1.1rem" }}
-                                  color="text.link"
-                                >
-                                  {t.more_details}
-                                </Typography>
-                              </Button>
-                            </Grid>
-                          </CardActions>
-                        </Grid>
-                        <Grid xs={12} my={1} mx={1} color="text.secondary">
+                      <Stack direction="row" m={2} mb={2} justifyContent="space-between" alignItems="center" >
+                        <CardActions >
+                          <Button
+                            onClick={() => {
+                              router.push({
+                                pathname: "/article/[uuid]",
+                                query: { uuid: article.attributes?.uuid },
+                              });
+                            }}
+                            onPointerOver={() => setHoverBtnNum(i)}
+                            onPointerOut={() => setHoverBtnNum(-1)}
+                            onMouseDown={() => setPressedBtnNum(i)}
+                            onMouseUp={() => setPressedBtnNum(-1)}
+                            size="small"
+                            sx={{
+                              backgroundColor: "background.button",
+                            }}
+                            className={`
+                                  ${pressedBtnNum === i ? 'transform scale-95' : ''}
+                                  ${hoverBtnNum === i ? 'rainbow-shadow' : ''}
+                                `}
+                          >
+                            <Typography
+                              sx={{ fontSize: "1.8vh" }}
+                              color="text.link"
+                              m={1}
+                            >
+                              {t.more_details}
+                            </Typography>
+                          </Button>
+                        </CardActions>
+                        <Stack direction="column" sx={{ color: "text.secondary" }}>
                           <Stack
                             direction="row"
                             justifyContent="flex-end"
-                            alignItems="center"
+                            alignItems="anchor-center"
                           >
                             <UpdateIcon />
                             <Typography sx={{ fontSize: "0.8rem" }} ml={0.8}>
@@ -184,14 +194,14 @@ export const Articles = ({ articles, filter }: ArticlesProps) => {
                           <Stack
                             direction="row"
                             justifyContent="flex-end"
-                            alignItems="center"
+                            alignItems="anchor-center"
                           >
                             <CreateIcon />
                             <Typography sx={{ fontSize: "0.8rem" }} ml={0.8}>
                               {article.attributes.createdAt}
                             </Typography>
                           </Stack>
-                        </Grid>
+                        </Stack>
                       </Stack>
                     </Stack>
                   </Card>

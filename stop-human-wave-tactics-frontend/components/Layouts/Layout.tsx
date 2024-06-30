@@ -1,11 +1,12 @@
 import Header from "../Common/Header";
 import Footer from "../Common/Footer";
 import React, { ReactNode } from "react";
+import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Unstable_Grid2";
 
 const Layout = ({ children }: { children?: ReactNode }) => {
   return (
-    <Grid
+    <Stack
       container
       direction="column"
       sx={{ minHeight: "100%", height: "fit-content" }}
@@ -19,7 +20,7 @@ const Layout = ({ children }: { children?: ReactNode }) => {
       <Grid container>
         <Footer />
       </Grid>
-    </Grid>
+    </Stack>
   );
 };
 export default Layout;
