@@ -76,16 +76,16 @@ export const CategoryLinkComponent = ({ article }: { article: Article }) => {
         my={1}
       >
         <Grid container mx={1}>
-          <FolderIcon sx={{ color: "text.secondary", fontSize: "2.2vh" }} />
+          <FolderIcon sx={{ color: "text.secondary", fontSize: "1rem" }} />
         </Grid>
-        <Stack direction="column" textAlign="right">
+        <Stack direction="column" spacing={0.4} textAlign="right">
           <Link
             href={{
               pathname: `/category/${article.category.data.attributes?.uuid}`,
               query: { name: article.category.data.attributes?.name },
             }}
           >
-            <Typography sx={{ fontSize: "l.8vh" }} color="text.link">
+            <Typography sx={{ fontSize: "lrem" }} color="text.link">
               {article.category.data.attributes?.name}
             </Typography>
           </Link>
