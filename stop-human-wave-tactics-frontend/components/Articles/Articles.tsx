@@ -149,8 +149,14 @@ export const Articles = ({ articles, filter }: ArticlesProps) => {
                           </Typography>
                         </Grid>
                       </CardContent>
-                      <Stack direction="row" m={2} mb={2} justifyContent="space-between" alignItems="center" >
-                        <CardActions >
+                      <Stack
+                        direction="row"
+                        m={2}
+                        mb={2}
+                        justifyContent="space-between"
+                        alignItems="center"
+                      >
+                        <CardActions>
                           <Button
                             onClick={() => {
                               router.push({
@@ -167,8 +173,8 @@ export const Articles = ({ articles, filter }: ArticlesProps) => {
                               backgroundColor: "background.button",
                             }}
                             className={`
-                                  ${pressedBtnNum === i ? 'transform scale-95' : ''}
-                                  ${hoverBtnNum === i ? 'rainbow-shadow' : ''}
+                                  ${pressedBtnNum === i ? "transform scale-95" : ""}
+                                  ${hoverBtnNum === i ? "rainbow-shadow" : ""}
                                 `}
                           >
                             <Typography
@@ -180,7 +186,10 @@ export const Articles = ({ articles, filter }: ArticlesProps) => {
                             </Typography>
                           </Button>
                         </CardActions>
-                        <Stack direction="column" sx={{ color: "text.secondary" }}>
+                        <Stack
+                          direction="column"
+                          sx={{ color: "text.secondary" }}
+                        >
                           <Stack
                             direction="row"
                             justifyContent="flex-end"
