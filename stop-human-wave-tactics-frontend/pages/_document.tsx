@@ -46,9 +46,9 @@ class MyDocument extends Document {
           <link
             rel="icon"
             sizes="192x192"
-            href="/static/images/favicon_192x192.jpg"
+            href="/static/images/favicon_192x192.svg"
           />
-          <link rel="shortcut icon" href="/favicon.ico" />
+          <link rel="shortcut icon" href="/icon" />
           <link rel="manifest" href="/manifest.json" />
           {adsenseEnabled() && (
             <>
