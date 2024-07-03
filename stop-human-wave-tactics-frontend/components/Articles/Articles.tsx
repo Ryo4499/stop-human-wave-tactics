@@ -104,7 +104,7 @@ export const Articles = ({ articles, filter }: ArticlesProps) => {
           mb={2}
         >
           {articles?.data.map((article, i) => {
-            if (article.id != null) {
+            if (article.id != null && article.attributes != null) {
               return (
                 <Grid
                   container

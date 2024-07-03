@@ -29,11 +29,7 @@ export const Categories = ({ contents }: CategoriesProps) => {
             content.attributes?.articles?.data.length !== 0
           ) {
             return (
-              <ListItem
-                sx={{ pl: 4, py: 0.5 }}
-                key={content.id}
-                disablePadding
-              >
+              <ListItem sx={{ pl: 4, py: 0.5 }} key={content.id} disablePadding>
                 <Link
                   href={{
                     pathname: `/category/${content.id}`,
@@ -64,8 +60,12 @@ export const Categories = ({ contents }: CategoriesProps) => {
   }
 };
 
-export const CategoryLinkComponent = ({ article }: { article: Article }) => {
-  if (article.category?.data != null) {
+export const CategoryLinkComponent = ({
+  article,
+}: {
+  article: Article | undefined;
+}) => {
+  if (article?.category?.data != null) {
     return (
       <Grid
         container

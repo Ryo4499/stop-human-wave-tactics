@@ -26,11 +26,7 @@ export const Tags = ({ contents }: TagsProps) => {
             content.attributes?.articles?.data.length !== 0
           ) {
             return (
-              <ListItem
-                sx={{ pl: 4, py: 0.5 }}
-                key={content.id}
-                disablePadding
-              >
+              <ListItem sx={{ pl: 4, py: 0.5 }} key={content.id} disablePadding>
                 <Link
                   href={{
                     pathname: `/tag/${content.id}`,
