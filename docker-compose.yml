@@ -289,7 +289,7 @@ services:
         target: "/home/${MY_USER}/stop-human-wave-tactics-backend"
       - type: volume
         source: backModules
-        target: "/node_modules"
+        target: "/home/${MY_USER}/stop-human-wave-tactics-backend/node_modules"
     ports:
       - 127.0.0.1:$BACK_PORT:$BACK_PORT
     entrypoint: sh
@@ -340,7 +340,7 @@ services:
         target: "/home/${MY_USER}/stop-human-wave-tactics-frontend"
       - type: volume
         source: frontModules
-        target: "/node_modules"
+        target: "/home/${MY_USER}/stop-human-wave-tactics-frontend/node_modules"
     entrypoint: sh
     command:
       - -c

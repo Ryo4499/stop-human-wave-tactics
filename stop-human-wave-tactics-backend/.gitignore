@@ -111,3 +111,4 @@ dist/
 dist
 .strapi/
 public/
+node_modules/
