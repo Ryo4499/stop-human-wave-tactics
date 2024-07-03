@@ -15,8 +15,8 @@ query getArticlesWithTags(
     publicationState: LIVE
   ) {
     data {
+      id
       attributes {
-        uuid
         title
         summary
         content
@@ -35,16 +35,16 @@ query getArticlesWithTags(
         }
         category {
           data {
+            id
             attributes {
-              uuid
               name
             }
           }
         }
         tags {
           data {
+            id
             attributes {
-              uuid
               name
             }
           }
@@ -88,8 +88,8 @@ query getArticlesWithTags(
   }
   tags(filters: {}, pagination: {}, sort: [], locale: $locale) {
     data {
+      id
       attributes {
-        uuid
         name
         articles(
           filters: { publishedAt: { ne: null } }
@@ -97,9 +97,6 @@ query getArticlesWithTags(
         ) {
           data {
             id
-            attributes {
-              uuid
-            }
           }
         }
         locale

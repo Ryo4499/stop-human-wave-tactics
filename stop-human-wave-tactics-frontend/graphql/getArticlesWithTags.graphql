@@ -14,7 +14,6 @@ query getArticlesWithTags(
     data {
       id
       attributes {
-        uuid
         title
         summary
         content
@@ -35,7 +34,6 @@ query getArticlesWithTags(
           data {
             id
             attributes {
-              uuid
               name
             }
           }
@@ -44,7 +42,6 @@ query getArticlesWithTags(
           data {
             id
             attributes {
-              uuid
               name
             }
           }
@@ -91,7 +88,6 @@ query getArticlesWithTags(
     data {
       id
       attributes {
-        uuid
         name
         articles(
           filters: { publishedAt: { ne: null } }
@@ -99,9 +95,6 @@ query getArticlesWithTags(
         ) {
           data {
             id
-            attributes {
-              uuid
-            }
           }
         }
         locale

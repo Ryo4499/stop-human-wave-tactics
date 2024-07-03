@@ -5,12 +5,12 @@ query getArticle($id: ID!, $locale: I18NLocaleCode!) {
   article(id: $id, locale: $locale) {
     data {
       attributes {
-        uuid
         title
         summary
         content
         thumbnail {
           data {
+            id
             attributes {
               name
               alternativeText
@@ -24,16 +24,16 @@ query getArticle($id: ID!, $locale: I18NLocaleCode!) {
         }
         category {
           data {
+            id
             attributes {
-              uuid
               name
             }
           }
         }
         tags {
           data {
+            id
             attributes{
-              uuid
               name
             }
           }

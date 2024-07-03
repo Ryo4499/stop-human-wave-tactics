@@ -15,8 +15,8 @@ query getArticles(
     publicationState: LIVE
   ) {
     data {
+      id
       attributes {
-        uuid
         title
         summary
         content
@@ -35,16 +35,16 @@ query getArticles(
         }
         category {
           data {
+            id
             attributes {
-              uuid
               name
             }
           }
         }
         tags {
           data {
+            id
             attributes {
-              uuid
               name
             }
           }

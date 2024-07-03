@@ -14,8 +14,8 @@ query getArticlesWithCategories(
     locale: $locale
   ) {
     data {
+      id
       attributes {
-        uuid
         title
         summary
         content
@@ -34,16 +34,16 @@ query getArticlesWithCategories(
         }
         category {
           data {
+            id
             attributes {
-              uuid
               name
             }
           }
         }
         tags{
           data{
+            id
             attributes{
-              uuid
               name
             }
           }
@@ -92,14 +92,12 @@ query getArticlesWithCategories(
     locale: $locale
   ) {
     data {
+      id
       attributes {
-        uuid
         name
         articles(filters: { publishedAt: { ne: null } }, publicationState: LIVE) {
           data {
-            attributes {
-              uuid
-            }
+            id
           }
         }
         locale

@@ -16,16 +16,12 @@ query getTagsByUUID(
     data {
       id
       attributes {
-        uuid
         articles(
           filters: { publishedAt: { ne: null } }
           publicationState: LIVE
         ) {
           data {
             id
-            attributes {
-              uuid
-            }
           }
         }
         locale

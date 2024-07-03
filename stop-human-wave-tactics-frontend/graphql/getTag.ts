@@ -4,17 +4,15 @@ export const getTag = gql`
 query getTag($id: ID!, $locale: I18NLocaleCode!) {
   tag(id: $id, locale: $locale) {
     data {
+      id
       attributes {
-        uuid
         name
         articles(
           filters: { publishedAt: { ne: null } }
           publicationState: LIVE
         ) {
           data {
-            attributes {
-              uuid
-            }
+            id
           }
         }
         createdAt
