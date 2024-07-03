@@ -22,19 +22,19 @@ export const Tags = ({ contents }: TagsProps) => {
       <List disablePadding>
         {contents.data.map((content) => {
           if (
-            content.attributes?.uuid != null &&
+            content.id != null &&
             content.attributes?.articles?.data.length !== 0
           ) {
             return (
               <ListItem
                 sx={{ pl: 4, py: 0.5 }}
-                key={content.attributes?.uuid}
+                key={content.id}
                 disablePadding
               >
                 <Link
                   href={{
-                    pathname: `/tag/${content.attributes?.uuid}`,
-                    query: { name: content.attributes.name },
+                    pathname: `/tag/${content.id}`,
+                    query: { name: content.attributes?.name },
                   }}
                 >
                   <Typography color="text.link">
@@ -78,9 +78,9 @@ export const TagsLinkComponent = ({ article }: { article: Article }) => {
         <Stack direction="column" spacing={0.4} textAlign="right">
           {article.tags?.data.map((tag) => (
             <Link
-              key={tag.attributes?.uuid}
+              key={tag.id}
               href={{
-                pathname: `/tag/${tag.attributes?.uuid}`,
+                pathname: `/tag/${tag.id}`,
                 query: { name: tag.attributes?.name },
               }}
             >
