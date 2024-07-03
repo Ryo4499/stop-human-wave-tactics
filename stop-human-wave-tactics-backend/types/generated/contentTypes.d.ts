@@ -862,16 +862,6 @@ export interface ApiArticleArticle extends Schema.CollectionType {
     };
   };
   attributes: {
-    uuid: Attribute.UID &
-      Attribute.CustomField<'plugin::field-uuid.uuid'> &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-        translate: {
-          translate: 'translate';
-        };
-      }>;
     title: Attribute.String &
       Attribute.Required &
       Attribute.Unique &
@@ -994,16 +984,6 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
     };
   };
   attributes: {
-    uuid: Attribute.UID &
-      Attribute.CustomField<'plugin::field-uuid.uuid'> &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-        translate: {
-          translate: 'translate';
-        };
-      }>;
     name: Attribute.String &
       Attribute.Required &
       Attribute.SetPluginOptions<{
@@ -1068,16 +1048,6 @@ export interface ApiTagTag extends Schema.CollectionType {
     };
   };
   attributes: {
-    uuid: Attribute.UID &
-      Attribute.CustomField<'plugin::field-uuid.uuid'> &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-        translate: {
-          translate: 'translate';
-        };
-      }>;
     name: Attribute.String &
       Attribute.Required &
       Attribute.SetPluginOptions<{

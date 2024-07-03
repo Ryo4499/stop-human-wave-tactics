@@ -18,7 +18,7 @@ export interface SharedMetaSocial extends Schema.Component {
         };
       }> &
       Attribute.SetMinMaxLength<{
-        maxLength: 60;
+        maxLength: 250;
       }>;
     description: Attribute.String &
       Attribute.Required &
@@ -28,7 +28,7 @@ export interface SharedMetaSocial extends Schema.Component {
         };
       }> &
       Attribute.SetMinMaxLength<{
-        maxLength: 65;
+        maxLength: 500;
       }>;
     image: Attribute.Media<'images' | 'files' | 'videos'>;
   };
@@ -50,7 +50,7 @@ export interface SharedSeo extends Schema.Component {
         };
       }> &
       Attribute.SetMinMaxLength<{
-        maxLength: 60;
+        maxLength: 250;
       }>;
     metaDescription: Attribute.String &
       Attribute.Required &
@@ -60,8 +60,8 @@ export interface SharedSeo extends Schema.Component {
         };
       }> &
       Attribute.SetMinMaxLength<{
-        minLength: 50;
-        maxLength: 160;
+        minLength: 30;
+        maxLength: 500;
       }>;
     metaImage: Attribute.Media<'images' | 'files' | 'videos'>;
     metaSocial: Attribute.Component<'shared.meta-social', true>;

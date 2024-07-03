@@ -16,18 +16,6 @@
     }
   },
   "attributes": {
-    "uuid": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        },
-        "translate": {
-          "translate": "translate"
-        }
-      },
-      "type": "customField",
-      "customField": "plugin::field-uuid.uuid"
-    },
     "name": {
       "pluginOptions": {
         "i18n": {
