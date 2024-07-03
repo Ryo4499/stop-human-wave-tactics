@@ -1,4 +1,4 @@
-FROM node:18-alpine
+FROM oven/bun:alpine
 
 ARG HOST_UID
 ARG HOST_GID
@@ -16,25 +16,22 @@ RUN apk update && \
   npm install -g npm-check-updates && \
   usermod -l ${MY_USER} node && \
   groupmod -n ${MY_GROUP} node && \
-  mkdir /node_modules && \
-  usermod -d /home/${MY_USER} -m ${MY_USER} && \
-  chown ${HOST_UID}:${HOST_GID} /node_modules
+  usermod -d /home/${MY_USER} -m ${MY_USER}
 
 USER $MY_USER
 
-WORKDIR "/home/${MY_USER}/stop-human-wave-tactics-backend"
+WORKDIR "${HOME}/stop-human-wave-tactics-backend"
 
 RUN chown $HOST_UID:$HOST_GID -R ./
 
-COPY --chown=$HOST_UID:$HOST_GID ./.yarnrc .
 COPY --chown=$HOST_UID:$HOST_GID ./package.json .
-COPY --chown=$HOST_UID:$HOST_GID ./yarn.lock .
-COPY --chown=$HOST_UID:$HOST_GID ./public/ .
+COPY --chown=$HOST_UID:$HOST_GID ./bun.lockb .
+COPY --chown=$HOST_UID:$HOST_GID ./public/ ./
 
-ENV PATH=/node_modules/.bin:$PATH
+ENV PATH=${HOME}/stop-human-wave-tactics-backend/node_modules/.bin:$PATH
 
 RUN if [ "${NODE_ENV}" = "production" ]; then \
-  yarn install --production=true --frozen-lockfile --force ; \
+  bun install --production=true --frozen-lockfile; \
   else \
-  yarn install --production=false ; \
+  bun install --production=false ; \
   fi

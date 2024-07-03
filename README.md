@@ -1,5 +1,27 @@
 # Stop Human Wave Tactics
 
+## Technology stack
+
+- Frontend
+  - Next.js
+  - TypeScript
+  - ESLint
+  - Prettier
+  - Sentry
+  - Google Adsense
+  - Google Tag Manager
+- Backend
+  - Strapi
+  - Graphql
+- Proxy
+  - Nginx
+  - Certbot
+- Database
+  - Postgres
+- Monitoring
+  - Grafana
+  - Prometheus
+
 ## Usage
 
 execute the following command
