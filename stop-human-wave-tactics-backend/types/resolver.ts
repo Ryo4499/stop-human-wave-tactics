@@ -1466,7 +1466,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping of union types */
 export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
-  GenericMorph: ( Article ) | ( Category ) | ( ComponentSharedMetaSocial ) | ( ComponentSharedSeo ) | ( I18NLocale ) | ( Tag ) | ( TranslateBatchTranslateJob ) | ( Omit<UploadFile, 'related'> & { related?: Maybe<Array<Maybe<_RefType['GenericMorph']>>> } ) | ( UploadFolder ) | ( UsersPermissionsPermission ) | ( UsersPermissionsRole ) | ( UsersPermissionsUser );
+  GenericMorph: (Article) | (Category) | (ComponentSharedMetaSocial) | (ComponentSharedSeo) | (I18NLocale) | (Tag) | (TranslateBatchTranslateJob) | (Omit<UploadFile, 'related'> & { related?: Maybe<Array<Maybe<_RefType['GenericMorph']>>> }) | (UploadFolder) | (UsersPermissionsPermission) | (UsersPermissionsRole) | (UsersPermissionsUser);
 };
 
 

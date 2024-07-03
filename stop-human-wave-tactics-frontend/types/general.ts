@@ -34,12 +34,12 @@ export interface ArticlesCategorisTagsProps {
 }
 
 export interface UUIDParams {
-  params: { uuid: string | undefined };
+  params: { id: string | undefined };
   locale: string;
 }
 
 export type UUIDStaticProps = {
-  params: { uuid: string };
+  params: { id: string };
   locale: string;
 };
 

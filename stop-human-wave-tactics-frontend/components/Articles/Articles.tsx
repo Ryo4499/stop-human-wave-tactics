@@ -69,7 +69,7 @@ const ImageComponent = ({ article }) => {
   }
   return (
     <Grid container justifyContent="center" minHeight="25vh" xs={12}>
-      <Link href={`/article/${article.attributes.uuid}`}>
+      <Link href={`/article/${article.id}`}>
         <Image
           loader={imageLoader}
           src={article.attributes.thumbnail.data.attributes.url}
@@ -104,13 +104,13 @@ export const Articles = ({ articles, filter }: ArticlesProps) => {
           mb={2}
         >
           {articles?.data.map((article, i) => {
-            if (article.attributes?.uuid != null) {
+            if (article.id != null) {
               return (
                 <Grid
                   container
                   direction="column"
                   sx={{ flexGrow: 1 }}
-                  key={article.attributes?.uuid}
+                  key={article.id}
                   xs={12}
                   sm={6}
                   xl={4}
@@ -135,7 +135,7 @@ export const Articles = ({ articles, filter }: ArticlesProps) => {
                             sx={{ fontSize: "1.5rem" }}
                             color="text.primary"
                           >
-                            {article.attributes.title}
+                            {article.attributes?.title}
                           </Typography>
                         </Grid>
                         <CategoryLinkComponent article={article.attributes} />
@@ -145,7 +145,7 @@ export const Articles = ({ articles, filter }: ArticlesProps) => {
                             sx={{ fontSize: "1.0rem" }}
                             color="text.secondary"
                           >
-                            {article.attributes.summary}
+                            {article.attributes?.summary}
                           </Typography>
                         </Grid>
                       </CardContent>
@@ -160,8 +160,8 @@ export const Articles = ({ articles, filter }: ArticlesProps) => {
                           <Button
                             onClick={() => {
                               router.push({
-                                pathname: "/article/[uuid]",
-                                query: { uuid: article.attributes?.uuid },
+                                pathname: "/article/[id]",
+                                query: { id: article.id },
                               });
                             }}
                             onPointerOver={() => setHoverBtnNum(i)}
@@ -197,7 +197,7 @@ export const Articles = ({ articles, filter }: ArticlesProps) => {
                           >
                             <UpdateIcon />
                             <Typography sx={{ fontSize: "0.8rem" }} ml={0.8}>
-                              {article.attributes.updatedAt}
+                              {article.attributes?.updatedAt}
                             </Typography>
                           </Stack>
                           <Stack
@@ -207,7 +207,7 @@ export const Articles = ({ articles, filter }: ArticlesProps) => {
                           >
                             <CreateIcon />
                             <Typography sx={{ fontSize: "0.8rem" }} ml={0.8}>
-                              {article.attributes.createdAt}
+                              {article.attributes?.createdAt}
                             </Typography>
                           </Stack>
                         </Stack>

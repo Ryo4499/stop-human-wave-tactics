@@ -25,19 +25,19 @@ export const Categories = ({ contents }: CategoriesProps) => {
       <List disablePadding>
         {contents.data.map((content) => {
           if (
-            content.attributes?.uuid != null &&
+            content.id != null &&
             content.attributes?.articles?.data.length !== 0
           ) {
             return (
               <ListItem
                 sx={{ pl: 4, py: 0.5 }}
-                key={content.attributes?.uuid}
+                key={content.id}
                 disablePadding
               >
                 <Link
                   href={{
-                    pathname: `/category/${content.attributes?.uuid}`,
-                    query: { name: content.attributes.name },
+                    pathname: `/category/${content.id}`,
+                    query: { name: content.attributes?.name },
                   }}
                 >
                   <Typography color="text.link">
@@ -81,7 +81,7 @@ export const CategoryLinkComponent = ({ article }: { article: Article }) => {
         <Stack direction="column" spacing={0.4} textAlign="right">
           <Link
             href={{
-              pathname: `/category/${article.category.data.attributes?.uuid}`,
+              pathname: `/category/${article.category.data.id}`,
               query: { name: article.category.data.attributes?.name },
             }}
           >
