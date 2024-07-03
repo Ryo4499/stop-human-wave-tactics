@@ -35,7 +35,6 @@ export type Article = {
   thumbnail?: Maybe<UploadFileEntityResponse>;
   title: Scalars['String']['output'];
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
-  uuid?: Maybe<Scalars['String']['output']>;
 };
 
 
@@ -86,7 +85,6 @@ export type ArticleFiltersInput = {
   tags?: InputMaybe<TagFiltersInput>;
   title?: InputMaybe<StringFilterInput>;
   updatedAt?: InputMaybe<DateTimeFilterInput>;
-  uuid?: InputMaybe<StringFilterInput>;
 };
 
 export type ArticleInput = {
@@ -98,7 +96,6 @@ export type ArticleInput = {
   tags?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   thumbnail?: InputMaybe<Scalars['ID']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
-  uuid?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type ArticleRelationResponseCollection = {
@@ -139,7 +136,6 @@ export type Category = {
   localizations?: Maybe<CategoryRelationResponseCollection>;
   name: Scalars['String']['output'];
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
-  uuid?: Maybe<Scalars['String']['output']>;
 };
 
 
@@ -185,13 +181,11 @@ export type CategoryFiltersInput = {
   not?: InputMaybe<CategoryFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<CategoryFiltersInput>>>;
   updatedAt?: InputMaybe<DateTimeFilterInput>;
-  uuid?: InputMaybe<StringFilterInput>;
 };
 
 export type CategoryInput = {
   articles?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   name?: InputMaybe<Scalars['String']['input']>;
-  uuid?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type CategoryRelationResponseCollection = {
@@ -914,7 +908,6 @@ export type Tag = {
   localizations?: Maybe<TagRelationResponseCollection>;
   name: Scalars['String']['output'];
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
-  uuid?: Maybe<Scalars['String']['output']>;
 };
 
 
@@ -960,13 +953,11 @@ export type TagFiltersInput = {
   not?: InputMaybe<TagFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<TagFiltersInput>>>;
   updatedAt?: InputMaybe<DateTimeFilterInput>;
-  uuid?: InputMaybe<StringFilterInput>;
 };
 
 export type TagInput = {
   articles?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   name?: InputMaybe<Scalars['String']['input']>;
-  uuid?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type TagRelationResponseCollection = {
@@ -1474,8 +1465,8 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 ) => TResult | Promise<TResult>;
 
 /** Mapping of union types */
-export type ResolversUnionTypes<RefType extends Record<string, unknown>> = {
-  GenericMorph: ( Article ) | ( Category ) | ( ComponentSharedMetaSocial ) | ( ComponentSharedSeo ) | ( I18NLocale ) | ( Tag ) | ( TranslateBatchTranslateJob ) | ( Omit<UploadFile, 'related'> & { related?: Maybe<Array<Maybe<RefType['GenericMorph']>>> } ) | ( UploadFolder ) | ( UsersPermissionsPermission ) | ( UsersPermissionsRole ) | ( UsersPermissionsUser );
+export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
+  GenericMorph: ( Article ) | ( Category ) | ( ComponentSharedMetaSocial ) | ( ComponentSharedSeo ) | ( I18NLocale ) | ( Tag ) | ( TranslateBatchTranslateJob ) | ( Omit<UploadFile, 'related'> & { related?: Maybe<Array<Maybe<_RefType['GenericMorph']>>> } ) | ( UploadFolder ) | ( UsersPermissionsPermission ) | ( UsersPermissionsRole ) | ( UsersPermissionsUser );
 };
 
 
@@ -1705,7 +1696,6 @@ export type ArticleResolvers<ContextType = any, ParentType extends ResolversPare
   thumbnail?: Resolver<Maybe<ResolversTypes['UploadFileEntityResponse']>, ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  uuid?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1738,7 +1728,6 @@ export type CategoryResolvers<ContextType = any, ParentType extends ResolversPar
   localizations?: Resolver<Maybe<ResolversTypes['CategoryRelationResponseCollection']>, ParentType, ContextType, RequireFields<CategoryLocalizationsArgs, 'pagination' | 'sort'>>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  uuid?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1910,7 +1899,6 @@ export type TagResolvers<ContextType = any, ParentType extends ResolversParentTy
   localizations?: Resolver<Maybe<ResolversTypes['TagRelationResponseCollection']>, ParentType, ContextType, RequireFields<TagLocalizationsArgs, 'pagination' | 'sort'>>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  uuid?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
