@@ -16,7 +16,6 @@ query getTags(
     data {
       id
       attributes {
-        uuid
         name
         articles(
           filters: { publishedAt: { ne: null } }
@@ -24,9 +23,6 @@ query getTags(
         ) {
           data {
             id
-            attributes {
-              uuid
-            }
           }
         }
         createdAt

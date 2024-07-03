@@ -15,9 +15,7 @@ query getArticlesByUUID(
     publicationState: LIVE
   ) {
     data {
-      attributes {
-        uuid
-      }
+      id
     }
   }
 }

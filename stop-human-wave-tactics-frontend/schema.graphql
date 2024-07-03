@@ -654,7 +654,6 @@ type UsersPermissionsUserRelationResponseCollection {
 
 input ArticleFiltersInput {
   id: IDFilterInput
-  uuid: StringFilterInput
   title: StringFilterInput
   summary: StringFilterInput
   content: StringFilterInput
@@ -672,7 +671,6 @@ input ArticleFiltersInput {
 }
 
 input ArticleInput {
-  uuid: String
   title: String
   summary: String
   content: String
@@ -684,7 +682,6 @@ input ArticleInput {
 }
 
 type Article {
-  uuid: String
   title: String!
   summary: String!
   content: String!
@@ -728,7 +725,6 @@ type ArticleRelationResponseCollection {
 
 input CategoryFiltersInput {
   id: IDFilterInput
-  uuid: StringFilterInput
   name: StringFilterInput
   articles: ArticleFiltersInput
   createdAt: DateTimeFilterInput
@@ -741,13 +737,11 @@ input CategoryFiltersInput {
 }
 
 input CategoryInput {
-  uuid: String
   name: String
   articles: [ID]
 }
 
 type Category {
-  uuid: String
   name: String!
   articles(
     filters: ArticleFiltersInput
@@ -785,7 +779,6 @@ type CategoryRelationResponseCollection {
 
 input TagFiltersInput {
   id: IDFilterInput
-  uuid: StringFilterInput
   name: StringFilterInput
   articles: ArticleFiltersInput
   createdAt: DateTimeFilterInput
@@ -798,13 +791,11 @@ input TagFiltersInput {
 }
 
 input TagInput {
-  uuid: String
   name: String
   articles: [ID]
 }
 
 type Tag {
-  uuid: String
   name: String!
   articles(
     filters: ArticleFiltersInput
