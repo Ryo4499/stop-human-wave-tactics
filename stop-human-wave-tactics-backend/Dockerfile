@@ -11,11 +11,8 @@ ENV NODE_OPTIONS="--max-old-space-size=1024"
 
 RUN apk update && \
   apk add shadow libressl-dev libffi-dev tzdata && \
-  npm install -g npm && \
-  npm install -g --force yarn && \
-  npm install -g npm-check-updates && \
-  usermod -l ${MY_USER} node && \
-  groupmod -n ${MY_GROUP} node && \
+  usermod -l ${MY_USER} bun && \
+  groupmod -n ${MY_GROUP} bun && \
   usermod -d /home/${MY_USER} -m ${MY_USER}
 
 USER $MY_USER
@@ -31,7 +28,7 @@ COPY --chown=$HOST_UID:$HOST_GID ./public/ ./
 ENV PATH=${HOME}/stop-human-wave-tactics-backend/node_modules/.bin:$PATH
 
 RUN if [ "${NODE_ENV}" = "production" ]; then \
-  bun install --production=true --frozen-lockfile; \
+  bun install --production --frozen-lockfile; \
   else \
-  bun install --production=false ; \
+  bun install; \
   fi
