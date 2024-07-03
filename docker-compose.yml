@@ -289,19 +289,19 @@ services:
         target: "/home/${MY_USER}/stop-human-wave-tactics-backend"
       - type: volume
         source: backModules
-        target: "/node_modules"
+        target: "/home/${MY_USER}/stop-human-wave-tactics-backend/node_modules"
     ports:
       - 127.0.0.1:$BACK_PORT:$BACK_PORT
     entrypoint: sh
-    command:
-      - -c
-      - |
-        if [ "${NODE_ENV}" = "production" ]; then \
-          yarn build && \
-          yarn start; \
-        else \
-          yarn dev; \
-        fi
+    #command:
+    #  - -c
+    #  - |
+    #    if [ "${NODE_ENV}" = "production" ]; then \
+    #      bun run build && \
+    #      bun run start; \
+    #    else \
+    #      bun run dev; \
+    #    fi
     depends_on:
       db:
         condition: service_healthy
@@ -340,17 +340,17 @@ services:
         target: "/home/${MY_USER}/stop-human-wave-tactics-frontend"
       - type: volume
         source: frontModules
-        target: "/node_modules"
+        target: "/home/${MY_USER}/stop-human-wave-tactics-frontend/node_modules"
     entrypoint: sh
     command:
       - -c
       - |
         if [ "${NODE_ENV}" = "production" ]; then \
-          yarn lint --fix && \
-          yarn build && \
-          yarn start; \
+          bun run lint --fix && \
+          bun run build && \
+          bun run start; \
         else \
-          yarn dev; \
+          bun dev; \
         fi
     depends_on:
       db:

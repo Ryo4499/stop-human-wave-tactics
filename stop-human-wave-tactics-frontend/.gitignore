@@ -44,3 +44,4 @@ public/
 .sentryclirc
 dist/
 build/
+node_modules/
