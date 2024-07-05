@@ -5,9 +5,14 @@ ARG HOST_GID
 ARG MY_USER
 ARG MY_GROUP
 ARG NODE_ENV
+ARG TZ
+
+ENV TZ $TZ
 
 RUN apk update && \
     apk add shadow libressl-dev libffi-dev tzdata wget curl && \
+    echo $TZ > /etc/timezone && \
+    ln -sf /usr/share/zoneinfo/$TZ /etc/localtime && \
     npm install -g npm && npm install -g --force yarn && \
     npm install -g npm-check-updates && mkdir /node_modules && \
     usermod -l ${MY_USER} node && \

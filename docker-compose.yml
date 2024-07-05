@@ -33,6 +33,7 @@ services:
         DOMAIN: $DOMAIN
         FRONT_PORT: $FRONT_PORT
         BACK_PORT: $BACK_PORT
+        TZ: $TZ
     ports:
       - 0.0.0.0:80:80
       - 0.0.0.0:443:443
@@ -129,7 +130,7 @@ services:
       monitor_back_net:
 
   nginx-exporter:
-    image: nginx/nginx-prometheus-exporter
+    image: nginx/nginx-prometheus-exporter:latest
     <<: *env_tty
     command:
       - -nginx.scrape-uri=https://proxy/stub_status
@@ -270,6 +271,7 @@ services:
         MY_USER: $MY_USER
         MY_GROUP: $MY_GROUP
         NODE_ENV: $NODE_ENV
+        TZ: $TZ
     working_dir: "/home/${MY_USER}/stop-human-wave-tactics-backend"
     user: $MY_USER:$MY_GROUP
     secrets:
@@ -331,6 +333,7 @@ services:
         MY_GROUP: $MY_GROUP
         NODE_ENV: $NODE_ENV
         DOMAIN: $DOMAIN
+        TZ: $TZ
     <<: *env_tty
     working_dir: "/home/${MY_USER}/stop-human-wave-tactics-frontend"
     user: $MY_USER:$MY_GROUP
