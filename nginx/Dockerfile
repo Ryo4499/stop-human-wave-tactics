@@ -4,8 +4,14 @@ FROM nginx:stable-alpine
 ARG DOMAIN
 ARG FRONT_PORT
 ARG BACK_PORT
+ARG TZ
 
-RUN apk update && apk add libressl-dev libffi-dev tzdata
+ENV TZ $TZ
+
+RUN apk update && \
+    apk add libressl-dev libffi-dev tzdata && \
+    echo $TZ > /etc/timezone && \
+    ln -sf /usr/share/zoneinfo/$TZ /etc/localtime
 
 COPY ./nginx.conf.template /etc/nginx/nginx.conf.template
 COPY ./conf.d/default.conf.template /etc/nginx/conf.d/default.conf.template
