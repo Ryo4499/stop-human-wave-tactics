@@ -5,12 +5,17 @@ ARG HOST_GID
 ARG MY_USER
 ARG MY_GROUP
 ARG NODE_ENV
+ARG TZ
+
+ENV TZ $TZ
 
 # measures Webpack Memory leak
 ENV NODE_OPTIONS="--max-old-space-size=1024"
 
 RUN apk update && \
   apk add shadow libressl-dev libffi-dev tzdata && \
+  echo $TZ > /etc/timezone && \
+  ln -sf /usr/share/zoneinfo/$TZ /etc/localtime && \
   npm install -g npm && \
   npm install -g --force yarn && \
   npm install -g npm-check-updates && \
