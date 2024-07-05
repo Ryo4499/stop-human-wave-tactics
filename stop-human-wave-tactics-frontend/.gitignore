@@ -39,8 +39,8 @@ yarn-error.log*
 # Sentry Config File
 .sentryclirc
 
-public/
-# Sentry Config File
-.sentryclirc
 dist/
 build/
+
+public/static/
+public/*js*
