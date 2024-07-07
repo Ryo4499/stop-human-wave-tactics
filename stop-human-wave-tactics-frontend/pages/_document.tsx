@@ -35,20 +35,28 @@ class MyDocument extends Document {
           <meta name="apple-mobile-web-app-capable" content="yes" />
           <meta name="apple-mobile-web-app-status-bar-style" content="#000" />
           <meta name="apple-mobile-web-app-title" content="shwt" />
+          <meta name="msapplication-TileColor" content="#ffffff" />
+          <meta name="msapplication-config" content="/browserconfig.xml" />
+          <meta name="theme-color" content="#ffffff" />
           <link
             rel="apple-touch-icon"
-            sizes="150x150"
-            href="/static/images/favicon_150x150.jpg"
+            sizes="180x180"
+            href="/favicons/shwt_180x180.webp"
           />
           <meta name="application-name" content="shwt" />
           <meta name="theme-color" content="#000" />
           <meta name="description" content="This is ar44's tech blog" />
           <link
             rel="icon"
-            sizes="192x192"
-            href="/static/images/favicon_192x192.svg"
+            sizes="16x16"
+            href="/static/images/shwt_16x16.webp"
           />
-          <link rel="shortcut icon" href="/icon.svg" />
+          <link
+            rel="icon"
+            sizes="32x32"
+            href="/static/images/shwt_32x32.webp"
+          />
+          <link rel="shortcut icon" href="/favicon.ico" />
           <link rel="manifest" href="/manifest.json" />
           {adsenseEnabled() && (
             <>

@@ -43,4 +43,7 @@ dist/
 build/
 
 public/static/
-public/*js*
+public/*js
+public/*js.map
+public/sitemap*
+public/robots.txt
