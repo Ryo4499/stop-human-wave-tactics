@@ -383,8 +383,10 @@ services:
       args:
         HOST_UID: $HOST_UID
         HOST_GID: $HOST_GID
+        MY_USER: $MY_USER
+        MY_GROUP: $MY_GROUP
         RUNNER_WORKDIR: $RUNNER_WORKDIR
-    user: $HOST_UID:$HOST_GID
+    user: $MY_USER:$MY_GROUP
     <<: *env_tty
     volumes:
       - type: bind
