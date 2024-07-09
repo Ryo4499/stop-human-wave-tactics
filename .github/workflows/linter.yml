@@ -67,7 +67,8 @@ env:
 
 jobs:
   preprocessing:
-    runs-on: [self-hosted, linux, x64]
+    runs-on: ubuntu-latest
+    #runs-on: [self-hosted, linux, x64, pc]
     environment: Production
     timeout-minutes: 10
     steps:
@@ -85,6 +86,10 @@ jobs:
           mv localhost.key ../letsencrypt/live/${{env.DOMAIN}}/privkey.pem && \
           cd ../..
           mkdir -p .secrets
+          echo "MY_USER=$(whoami)" >> $GITHUB_ENV
+          echo "MY_GROUP=$(id -gn)" >> $GITHUB_ENV
+          echo "HOST_UID=$(id -u)" >> $GITHUB_ENV
+          echo "HOST_GID=$(id -g)" >> $GITHUB_ENV
           echo ${{secrets.ADMIN_JWT_SECRET}} > .secrets/ADMIN_JWT_SECRET
           echo ${{secrets.API_TOKEN_SALT}} > .secrets/API_TOKEN_SALT
           echo ${{secrets.APP_KEYS}} > .secrets/APP_KEYS
@@ -117,7 +122,8 @@ jobs:
   lint:
     if: always()
     needs: preprocessing
-    runs-on: [self-hosted, linux, x64]
+    runs-on: ubuntu-latest
+    #runs-on: [self-hosted, linux, x64, pc]
     environment: Production
     timeout-minutes: 5
     steps:
@@ -131,7 +137,8 @@ jobs:
     needs:
       - lint
       - preprocessing
-    runs-on: [self-hosted, linux, x64]
+    runs-on: ubuntu-latest
+    #runs-on: [self-hosted, linux, x64, pc]
     environment: Production
     timeout-minutes: 10
     steps:
