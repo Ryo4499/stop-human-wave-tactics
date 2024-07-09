@@ -2,13 +2,15 @@ FROM myoung34/github-runner:latest
 
 ARG HOST_UID
 ARG HOST_GID
+ARG DOCKER_GID
 ARG MY_USER
 ARG MY_GROUP
 ARG RUNNER_WORKDIR
 
 USER root
 
-RUN chown root:docker /usr/bin/docker && \
+RUN groupmod -g ${DOCKER_GID} docker && \
+    chown root:docker /usr/bin/docker && \
     groupadd -g ${HOST_GID} ${MY_GROUP} && \
     useradd -m -u ${HOST_UID} -g ${HOST_GID} ${MY_USER} && \
     usermod -aG docker ${MY_USER} && \

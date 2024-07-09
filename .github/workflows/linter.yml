@@ -184,7 +184,6 @@ jobs:
           docker compose up -d db proxy back front
         shell: bash
       - name: Lint
-        # https://github.com/supabase/supabase/issues/16777
         run: |
           docker compose exec front yarn lint
         shell: bash
