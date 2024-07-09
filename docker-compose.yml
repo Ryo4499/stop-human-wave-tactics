@@ -398,13 +398,6 @@ services:
     networks:
       runner_net:
       app_net:
-    depends_on:
-      db:
-        condition: service_healthy
-      back:
-        condition: service_healthy
-      front:
-        condition: service_healthy
 
 secrets:
   DB_NAME:

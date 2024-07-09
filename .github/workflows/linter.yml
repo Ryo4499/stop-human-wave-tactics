@@ -5,16 +5,16 @@ on:
     branches:
       - main
       - dev
-      - feat/*
-      - fix/*
-      - refactor/*
+      - -*feat-*
+      - -*fix-*
+      - -*ref-*
   pull_request:
     branches:
       - main
       - dev
-      - feat/*
-      - fix/*
-      - refactor/*
+      - -*feat-*
+      - -*fix-*
+      - -*ref-*
   workflow_dispatch:
 
 env:
@@ -69,6 +69,7 @@ jobs:
   lint:
     runs-on: [self-hosted, linux, x64]
     environment: Production
+    timeout-minutes: 30
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -179,10 +180,22 @@ jobs:
             NODE_ENV=${{env.NODE_ENV}}
       - name: Up Container
         run: |
-          docker compose restart db proxy back front
+          docker compose down; \
+          docker compose up -d db proxy back front
         shell: bash
       - name: Lint
         # https://github.com/supabase/supabase/issues/16777
         run: |
           docker compose exec front yarn lint
+        shell: bash
+  post-processing:
+    if: always()
+    needs: lint
+    runs-on: [self-hosted, linux, x64]
+    environment: Production
+    timeout-minutes: 10
+    steps:
+      - name: Post-processing
+        run: |
+          docker compose down
         shell: bash
