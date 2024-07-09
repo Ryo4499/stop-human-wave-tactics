@@ -394,8 +394,6 @@ services:
       - type: volume
         source: runnerData
         target: /tmp/runner
-    networks:
-      runner_net:
 
 secrets:
   DB_NAME:
@@ -429,10 +427,6 @@ volumes:
 networks:
   default:
     external: false
-  runner_net:
-    name: runner_net
-    driver: bridge
-    internal: false
   nginx_net:
     name: nginx_net
     driver: bridge
