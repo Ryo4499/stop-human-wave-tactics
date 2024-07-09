@@ -109,16 +109,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "18"
-      - id: build_containers
-        name: Build Containers
-        run: |
-          docker compose build db proxy back front
-      - id: up_containers
-        name: Up Containers
-        run: |
-          docker compose rm -fsv db proxy back front; \
-          docker compose up -d db proxy back front
-        shell: bash
   lint:
     if: ${{!cancelled() && !failure()}}
     needs: preprocessing
@@ -127,11 +117,11 @@ jobs:
     environment: Production
     timeout-minutes: 5
     steps:
-      - id: front_lint
-        name: Front Lint
-        run: |
-          docker compose exec front yarn lint
-        shell: bash
+      - id: compose_actions
+        name: Compose Actions
+        uses: hoverkraft-tech/compose-action@v2.0.1
+        with:
+          compose-file: docker-compose-ci.yml
   post-processing:
     if: ${{!cancelled()}}
     needs:
