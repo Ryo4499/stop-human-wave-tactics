@@ -64,11 +64,11 @@ env:
   NEXT_PUBLIC_GAN_ID: ${{vars.NEXT_PUBLIC_GAN_ID}}
   NEXT_PUBLIC_GTM_ID: ${{vars.NEXT_PUBLIC_GTM_ID}}
   SENTRY_AUTH_TOKEN: ${{vars.SENTRY_AUTH_TOKEN}}
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE20: true
 
 jobs:
-  preprocessing:
+  lint:
     runs-on: ubuntu-latest
-    #runs-on: [self-hosted, linux, x64, pc]
     environment: Production
     timeout-minutes: 10
     steps:
@@ -109,35 +109,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "18"
-      - id: compose_build
-        name: Compose Build
-        run: |
-          docker compose -f docker-compose-ci.yml build
-  lint:
-    if: ${{!cancelled() && !failure()}}
-    needs: preprocessing
-    runs-on: ubuntu-latest
-    #runs-on: [self-hosted, linux, x64, pc]
-    environment: Production
-    timeout-minutes: 5
-    steps:
-      - id: compose_up
-        name: Compose Up
-        run: |
-          docker compose -f docker-compose-ci.yml up
-  post-processing:
-    if: ${{!cancelled()}}
-    needs:
-      - lint
-      - preprocessing
-    runs-on: ubuntu-latest
-    #runs-on: [self-hosted, linux, x64, pc]
-    environment: Production
-    timeout-minutes: 10
-    steps:
-      - id: down_containers
-        name: Down Containers
-        run: |
-          docker compose rm -fsv db proxy back front; \
-          docker system prune -f
-        shell: bash
+      - id: compose_actions
+        name: Compose Actions
+        uses: hoverkraft-tech/compose-action@v2.0.1
+        with:
+          compose-file: docker-compose-ci.yml
+          services: |
+            front
