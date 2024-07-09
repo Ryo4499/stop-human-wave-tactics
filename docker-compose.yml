@@ -381,9 +381,13 @@ services:
       context: ./runner
       dockerfile: Dockerfile
       args:
+        MY_USER: $MY_USER
+        MY_GROUP: $MY_GROUP
+        HOST_UID: $HOST_UID
+        HOST_GID: $HOST_GID
         DOCKER_GID: $DOCKER_GID
         RUNNER_WORKDIR: $RUNNER_WORKDIR
-    user: runner
+    user: $MY_USER
     <<: *env_tty
     volumes:
       - type: bind
