@@ -104,16 +104,17 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "18"
-      - id: build_containers
-        name: Build Containers
-        run: |
-          docker compose build db proxy back front
-      - id: up_containers
-        name: Up Containers
-        run: |
-          docker compose rm -fsv db proxy back front; \
-          docker compose up -d db proxy back front
-        shell: bash
+      - id: compose_actions
+        name: docker compose actions
+        uses: hoverkraft-tech/compose-action@v2.0.1
+        with:
+          compose-file: docker-compose.yml
+          services: |
+            db
+            proxy
+            back
+            front
+          up-flags: --build -d
   lint:
     if: always()
     needs: preprocessing
