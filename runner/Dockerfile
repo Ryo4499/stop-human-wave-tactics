@@ -1,4 +1,4 @@
-FROM myoung34/github-runner:latest
+FROM myoung34/github-runner:ubuntu-jammy
 
 ARG MY_USER
 ARG MY_GROUP
@@ -10,12 +10,15 @@ ARG RUNNER_WORKDIR
 USER root
 
 RUN groupmod -g ${DOCKER_GID} docker && \
-    usermod -u ${HOST_UID} -l ${MY_USER} -d /home/${MY_USER} runner && \
-    groupmod -g ${HOST_GID} -n ${MY_GROUP} runner && \
+    usermod -u ${HOST_UID} -o runner && \
+    groupmod -g ${HOST_GID} -o runner && \
     chown root:docker /usr/bin/docker && \
-    chown ${MY_USER}:docker /usr/bin/docker && \
-    chown -R ${MY_USER}:${MY_GROUP} /actions-runner && \
+    chown runner:docker /usr/bin/docker && \
+    chown -R runner:runner /actions-runner && \
+    chown -R runner:runner /home/runner && \
     mkdir -p ${RUNNER_WORKDIR} && \
-    chown -R ${MY_USER}:${MY_GROUP} ${RUNNER_WORKDIR} /opt/hostedtoolcache
+    chown -R runner:runner ${RUNNER_WORKDIR} /opt/hostedtoolcache
 
-USER runner
+USER ${MY_USER}
+
+WORKDIR /actions-runner
