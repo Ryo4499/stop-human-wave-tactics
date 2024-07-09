@@ -21,6 +21,7 @@ RUN apk update && \
   npm install -g npm-check-updates && \
   usermod -l ${MY_USER} -d /home/${MY_USER} node && \
   groupmod -n ${MY_GROUP} node && \
+  newgrp ${MY_GROUP} && \
   mkdir /node_modules && \
   usermod -d /home/${MY_USER} -m ${MY_USER} && \
   chown ${HOST_UID}:${HOST_GID} /node_modules
