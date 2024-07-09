@@ -29,9 +29,6 @@ services:
       - type: bind
         source: ./nginx/html
         target: /usr/share/nginx/html
-    depends_on:
-      db:
-        condition: service_healthy
     command: '/bin/sh -c ''nginx -t && while :; do sleep 20d & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
     restart: always
     healthcheck:
@@ -101,9 +98,6 @@ services:
     ports:
       - 127.0.0.1:$BACK_PORT:$BACK_PORT
     entrypoint: sh
-    depends_on:
-      db:
-        condition: service_healthy
     restart: always
     healthcheck:
       test: wget --spider back:${BACK_PORT}${ADMIN_URL}
@@ -143,13 +137,6 @@ services:
       - -c
       - |
         yarn lint --fix
-    depends_on:
-      db:
-        condition: service_healthy
-      back:
-        condition: service_healthy
-      proxy:
-        condition: service_started
     ports:
       - 127.0.0.1:$FRONT_PORT:$FRONT_PORT
     healthcheck:
