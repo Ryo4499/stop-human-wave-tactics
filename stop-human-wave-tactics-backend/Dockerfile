@@ -23,18 +23,18 @@ RUN apk update && \
   groupmod -n ${MY_GROUP} node && \
   mkdir /node_modules && \
   usermod -d /home/${MY_USER} -m ${MY_USER} && \
-  chown ${HOST_UID}:${HOST_GID} /node_modules
+  chown ${MY_USER}:${MY_GROUP} /node_modules
 
 USER $MY_USER
 
 WORKDIR "/home/${MY_USER}/stop-human-wave-tactics-backend"
 
-RUN chown $HOST_UID:$HOST_GID -R ./
+RUN chown $MY_USER:$MY_GROUP -R ./
 
-COPY --chown=$HOST_UID:$HOST_GID ./.yarnrc .
-COPY --chown=$HOST_UID:$HOST_GID ./package.json .
-COPY --chown=$HOST_UID:$HOST_GID ./yarn.lock .
-COPY --chown=$HOST_UID:$HOST_GID ./public/ .
+COPY --chown=$MY_USER:$MY_GROUP ./.yarnrc .
+COPY --chown=$MY_USER:$MY_GROUP ./package.json .
+COPY --chown=$MY_USER:$MY_GROUP ./yarn.lock .
+COPY --chown=$MY_USER:$MY_GROUP ./public/ .
 
 ENV PATH=/node_modules/.bin:$PATH
 
