@@ -1,0 +1,204 @@
+x-template: &env_tty
+  env_file:
+    - .env
+  tty: true
+services:
+  proxy:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+      args:
+        DOMAIN: $DOMAIN
+        FRONT_PORT: $FRONT_PORT
+        BACK_PORT: $BACK_PORT
+        TZ: $TZ
+    ports:
+      - 0.0.0.0:80:80
+      - 0.0.0.0:443:443
+    <<: *env_tty
+    volumes:
+      - type: bind
+        source: ./nginx/modsecurity/
+        target: /etc/modsecurity.d/
+      - type: bind
+        source: ./nginx/log
+        target: /var/log/nginx
+      - type: bind
+        source: ./certbot/letsencrypt
+        target: /etc/letsencrypt
+      - type: bind
+        source: ./nginx/html
+        target: /usr/share/nginx/html
+    depends_on:
+      db:
+        condition: service_healthy
+    command: '/bin/sh -c ''nginx -t && while :; do sleep 20d & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
+    restart: always
+    healthcheck:
+      test: service nginx status || exit 1
+      interval: 5s
+      retries: 10
+      start_period: 5s
+      timeout: 60s
+    networks:
+      nginx_net:
+      app_net:
+
+  db:
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+    <<: *env_tty
+    volumes:
+      - type: volume
+        source: dbData
+        target: /var/lib/postgresql/data
+    secrets:
+      - DB_NAME
+      - DB_USER
+      - DB_PASS
+    restart: always
+    networks:
+      db_net:
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "$(cat $POSTGRES_USER_FILE)"]
+      interval: 5s
+      retries: 5
+      start_period: 1s
+      timeout: 10s
+
+  back:
+    build:
+      context: ./stop-human-wave-tactics-backend
+      dockerfile: Dockerfile
+      args:
+        HOST_UID: $HOST_UID
+        HOST_GID: $HOST_GID
+        MY_USER: $MY_USER
+        MY_GROUP: $MY_GROUP
+        NODE_ENV: $NODE_ENV
+        TZ: $TZ
+    working_dir: "/home/${MY_USER}/stop-human-wave-tactics-backend"
+    user: $MY_USER:$MY_GROUP
+    secrets:
+      - DB_NAME
+      - DB_USER
+      - DB_PASS
+      - ADMIN_JWT_SECRET
+      - API_TOKEN_SALT
+      - APP_KEYS
+      - DEEPL_KEY
+      - TRANSFER_TOKEN_SALT
+      - BACK_SENTRY_DSN
+    <<: *env_tty
+    volumes:
+      - type: bind
+        source: ./stop-human-wave-tactics-backend
+        target: "/home/${MY_USER}/stop-human-wave-tactics-backend"
+      - type: volume
+        source: backModules
+        target: "/node_modules"
+    ports:
+      - 127.0.0.1:$BACK_PORT:$BACK_PORT
+    entrypoint: sh
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: always
+    healthcheck:
+      test: wget --spider back:${BACK_PORT}${ADMIN_URL}
+      interval: 5s
+      retries: 24
+      start_period: 60s
+      timeout: 3s
+    networks:
+      db_net:
+      app_net:
+
+  front:
+    build:
+      context: ./stop-human-wave-tactics-frontend
+      network: host
+      dockerfile: Dockerfile
+      args:
+        HOST_UID: $HOST_UID
+        HOST_GID: $HOST_GID
+        MY_USER: $MY_USER
+        MY_GROUP: $MY_GROUP
+        NODE_ENV: $NODE_ENV
+        DOMAIN: $DOMAIN
+        TZ: $TZ
+    <<: *env_tty
+    working_dir: "/home/${MY_USER}/stop-human-wave-tactics-frontend"
+    user: $MY_USER:$MY_GROUP
+    volumes:
+      - type: bind
+        source: ./stop-human-wave-tactics-frontend
+        target: "/home/${MY_USER}/stop-human-wave-tactics-frontend"
+      - type: volume
+        source: frontModules
+        target: "/node_modules"
+    entrypoint: sh
+    command:
+      - -c
+      - |
+        yarn lint --fix
+    depends_on:
+      db:
+        condition: service_healthy
+      back:
+        condition: service_healthy
+      proxy:
+        condition: service_started
+    ports:
+      - 127.0.0.1:$FRONT_PORT:$FRONT_PORT
+    healthcheck:
+      test: wget --spider front:${FRONT_PORT}
+      interval: 5s
+      retries: 24
+      start_period: 60s
+      timeout: 3s
+    restart: always
+    networks:
+      app_net:
+
+secrets:
+  DB_NAME:
+    file: .secrets/DB_NAME
+  DB_USER:
+    file: .secrets/DB_USER
+  DB_PASS:
+    file: .secrets/DB_PASS
+  ADMIN_JWT_SECRET:
+    file: .secrets/ADMIN_JWT_SECRET
+  API_TOKEN_SALT:
+    file: .secrets/API_TOKEN_SALT
+  APP_KEYS:
+    file: .secrets/APP_KEYS
+  DEEPL_KEY:
+    file: .secrets/DEEPL_KEY
+  TRANSFER_TOKEN_SALT:
+    file: .secrets/TRANSFER_TOKEN_SALT
+  BACK_SENTRY_DSN:
+    file: .secrets/BACK_SENTRY_DSN
+
+volumes:
+  dbData:
+  frontModules:
+  backModules:
+
+networks:
+  default:
+    external: false
+  nginx_net:
+    name: nginx_net
+    driver: bridge
+    internal: false
+  app_net:
+    name: app_net
+    driver: bridge
+    internal: true
+  db_net:
+    name: db_net
+    driver: bridge
+    internal: true
