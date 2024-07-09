@@ -66,14 +66,16 @@ env:
   SENTRY_AUTH_TOKEN: ${{vars.SENTRY_AUTH_TOKEN}}
 
 jobs:
-  lint:
+  preprocessing:
     runs-on: [self-hosted, linux, x64]
     environment: Production
-    timeout-minutes: 30
+    timeout-minutes: 10
     steps:
-      - name: Checkout code
+      - id: checkout_code
+        name: Checkout code
         uses: actions/checkout@v3
-      - name: Setup Env
+      - id: setup_env
+        name: Setup Env
         run: |
           mkdir -p stop-human-wave-tactics-backend/public
           cd db && chmod +x create-cert.sh && ./create-cert.sh && cd ..
@@ -97,104 +99,45 @@ jobs:
           echo ${{secrets.JWT_SECRET}} > .secrets/JWT_SECRET
           echo ${{secrets.TRANSFER_TOKEN_SALT}} > .secrets/TRANSFER_TOKEN_SALT
           echo '${{toJson(env)}}' | jq -r 'keys[] as $k | "\($k)=\(.[$k])"' >> .env
-      - name: Setup Node.js
+      - id: setup_node
+        name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "18"
-      - uses: docker/setup-buildx-action@v3
-      - name: Cache Docker layers DB
-        uses: actions/cache@v4
-        with:
-          path: /tmp/.buildx-db-cache
-          key: ${{ github.ref }}-${{ github.sha }}
-          restore-keys: |
-            ${{ github.ref }}-${{ github.sha }}
-            ${{ github.ref }}
-            refs/head/main
-      - name: Cache Docker layers Back
-        uses: actions/cache@v4
-        with:
-          path: /tmp/.buildx-back-cache
-          key: ${{ github.ref }}-${{ github.sha }}
-          restore-keys: |
-            ${{ github.ref }}-${{ github.sha }}
-            ${{ github.ref }}
-            refs/head/main
-      - name: Cache Docker layers Nginx
-        uses: actions/cache@v4
-        with:
-          path: /tmp/.buildx-nginx-cache
-          key: ${{ github.ref }}-${{ github.sha }}
-          restore-keys: |
-            ${{ github.ref }}-${{ github.sha }}
-            ${{ github.ref }}
-            refs/head/main
-      - name: Cache Docker layers Front
-        uses: actions/cache@v4
-        with:
-          path: /tmp/.buildx-front-cache
-          key: ${{ github.ref }}-${{ github.sha }}
-          restore-keys: |
-            ${{ github.ref }}-${{ github.sha }}
-            ${{ github.ref }}
-            refs/head/main
-      - name: Build DB
-        uses: docker/build-push-action@v5
-        with:
-          context: db
-          cache-from: type=local,src=/tmp/.buildx-db-cache
-          cache-to: type=local,dest=/tmp/.buildx-db-cache
-      - name: Build Back
-        uses: docker/build-push-action@v5
-        with:
-          context: stop-human-wave-tactics-backend
-          cache-from: type=local,src=/tmp/.buildx-back-cache
-          cache-to: type=local,dest=/tmp/.buildx-back-cache
-          build-args: |
-            HOST_UID=${{env.HOST_UID}}
-            HOST_GID=${{env.HOST_GID}}
-            MY_USER=${{env.MY_USER}}
-            MY_GROUP=${{env.MY_GROUP}}
-            NODE_ENV=${{env.NODE_ENV}}
-      - name: Build Nginx
-        uses: docker/build-push-action@v5
-        with:
-          context: nginx
-          cache-from: type=local,src=/tmp/.buildx-nginx-cache
-          cache-to: type=local,dest=/tmp/.buildx-nginx-cache
-          build-args: |
-            DOMAIN=${{env.DOMAIN}}
-            FRONT_PORT=${{env.FRONT_PORT}}
-            BACK_PORT=${{env.BACK_PORT}}
-      - name: Build Front
-        uses: docker/build-push-action@v5
-        with:
-          context: stop-human-wave-tactics-frontend
-          cache-from: type=local,src=/tmp/.buildx-front-cache
-          cache-to: type=local,dest=/tmp/.buildx-front-cache
-          build-args: |
-            HOST_UID=${{env.HOST_UID}}
-            HOST_GID=${{env.HOST_GID}}
-            MY_USER=${{env.MY_USER}}
-            MY_GROUP=${{env.MY_GROUP}}
-            NODE_ENV=${{env.NODE_ENV}}
-      - name: Up Container
+      - id: build_containers
+        name: Build Containers
+        run: |
+          docker compose build db proxy back front
+      - id: up_containers
+        name: Up Containers
         run: |
           docker compose rm -fsv db proxy back front; \
           docker compose up -d db proxy back front
         shell: bash
-      - name: Lint
+  lint:
+    if: always()
+    needs: preprocessing
+    runs-on: [self-hosted, linux, x64]
+    environment: Production
+    timeout-minutes: 5
+    steps:
+      - id: front_lint
+        name: Front Lint
         run: |
           docker compose exec front yarn lint
         shell: bash
   post-processing:
     if: always()
-    needs: lint
+    needs:
+      - lint
+      - preprocessing
     runs-on: [self-hosted, linux, x64]
     environment: Production
     timeout-minutes: 10
     steps:
-      - name: Post-processing
+      - id: down_containers
+        name: Down Containers
         run: |
-          docker compose rm -fsv db proxy back front
+          docker compose rm -fsv db proxy back front; \
+          docker system prune -f
         shell: bash
