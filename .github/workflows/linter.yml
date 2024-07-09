@@ -78,12 +78,11 @@ jobs:
       - id: setup_env
         name: Setup Env
         run: |
-          mkdir -p stop-human-wave-tactics-backend/public
           cd db && chmod +x create-cert.sh && ./create-cert.sh && cd ..
-          cd certbot && mkdir -p letsencrypt/live/${{env.DOMAIN}} && \
+          cd certbot && mkdir -p 'letsencrypt/live/${{env.DOMAIN}}' && \
           cd config && chmod +x ./create-dev-key.sh && ./create-dev-key.sh && \
-          mv localhost.crt ../letsencrypt/live/${{env.DOMAIN}}/fullchain.pem && \
-          mv localhost.key ../letsencrypt/live/${{env.DOMAIN}}/privkey.pem && \
+          mv localhost.crt '../letsencrypt/live/${{env.DOMAIN}}/fullchain.pem' && \
+          mv localhost.key '../letsencrypt/live/${{env.DOMAIN}}/privkey.pem' && \
           cd ../..
           mkdir -p .secrets
           echo "MY_USER=$(whoami)" >> $GITHUB_ENV
@@ -104,6 +103,7 @@ jobs:
           echo ${{secrets.JWT_SECRET}} > .secrets/JWT_SECRET
           echo ${{secrets.TRANSFER_TOKEN_SALT}} > .secrets/TRANSFER_TOKEN_SALT
           echo '${{toJson(env)}}' | jq -r 'keys[] as $k | "\($k)=\(.[$k])"' >> .env
+        shell: bash
       - id: setup_node
         name: Setup Node.js
         uses: actions/setup-node@v3
@@ -120,7 +120,7 @@ jobs:
           docker compose up -d db proxy back front
         shell: bash
   lint:
-    if: always()
+    if: ${{!cancelled() && !failure()}}
     needs: preprocessing
     runs-on: ubuntu-latest
     #runs-on: [self-hosted, linux, x64, pc]
@@ -133,7 +133,7 @@ jobs:
           docker compose exec front yarn lint
         shell: bash
   post-processing:
-    if: always()
+    if: ${{!cancelled()}}
     needs:
       - lint
       - preprocessing
