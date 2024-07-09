@@ -383,15 +383,21 @@ services:
       args:
         HOST_UID: $HOST_UID
         HOST_GID: $HOST_GID
-        MY_USER: $MY_USER
-        MY_GROUP: $MY_GROUP
         RUNNER_WORKDIR: $RUNNER_WORKDIR
-    user: $MY_USER:$MY_GROUP
+    user: $HOST_UID:$HOST_GID
     <<: *env_tty
     volumes:
       - type: bind
         source: /var/run/docker.sock
         target: /var/run/docker.sock
+      - type: bind
+        source: /etc/passwd
+        target: /etc/passwd
+        read_only: true
+      - type: bind
+        source: /etc/group
+        target: /etc/group
+        read_only: true
       - type: volume
         source: runnerData
         target: /tmp/runner
