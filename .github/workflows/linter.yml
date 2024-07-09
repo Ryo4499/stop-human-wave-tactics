@@ -109,6 +109,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "18"
+      - id: compose_build
+        name: Compose Build
+        run: |
+          docker compose -f docker-compose-ci.yml build
   lint:
     if: ${{!cancelled() && !failure()}}
     needs: preprocessing
@@ -117,11 +121,10 @@ jobs:
     environment: Production
     timeout-minutes: 5
     steps:
-      - id: compose_actions
-        name: Compose Actions
-        uses: hoverkraft-tech/compose-action@v2.0.1
-        with:
-          compose-file: docker-compose-ci.yml
+      - id: compose_up
+        name: Compose Up
+        run: |
+          docker compose -f docker-compose-ci.yml up
   post-processing:
     if: ${{!cancelled()}}
     needs:
