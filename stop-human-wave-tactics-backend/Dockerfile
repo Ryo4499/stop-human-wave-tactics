@@ -19,7 +19,7 @@ RUN apk update && \
   npm install -g npm && \
   npm install -g --force yarn && \
   npm install -g npm-check-updates && \
-  usermod -l ${MY_USER} node && \
+  usermod -l ${MY_USER} -d /home/${MY_USER} node && \
   groupmod -n ${MY_GROUP} node && \
   mkdir /node_modules && \
   usermod -d /home/${MY_USER} -m ${MY_USER} && \

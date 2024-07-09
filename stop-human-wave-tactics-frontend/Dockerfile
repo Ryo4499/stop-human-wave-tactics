@@ -15,7 +15,7 @@ RUN apk update && \
     ln -sf /usr/share/zoneinfo/$TZ /etc/localtime && \
     npm install -g npm && npm install -g --force yarn && \
     npm install -g npm-check-updates && mkdir /node_modules && \
-    usermod -l ${MY_USER} node && \
+    usermod -l ${MY_USER} -d /home/${MY_USER} node && \
     groupmod -n ${MY_GROUP} node && \
     usermod -d /home/${MY_USER} -m ${MY_USER} && \
     chown ${HOST_UID}:${HOST_GID} /node_modules
