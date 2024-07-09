@@ -180,8 +180,7 @@ jobs:
             NODE_ENV=${{env.NODE_ENV}}
       - name: Up Container
         run: |
-          docker compose stop db proxy back front && \
-          yes | docker compose rm db proxy back front && \
+          docker compose rm -fsv db proxy back front; \
           docker compose up -d db proxy back front
         shell: bash
       - name: Lint
@@ -197,6 +196,5 @@ jobs:
     steps:
       - name: Post-processing
         run: |
-          docker compose stop db proxy back front && \
-          yes | docker compose rm db proxy back front
+          docker compose rm -fsv db proxy back front
         shell: bash
