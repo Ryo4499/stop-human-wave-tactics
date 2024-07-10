@@ -19,7 +19,7 @@ import useSWR from "swr";
 import { useLocale } from "../lib/locale";
 import type { NextPage } from "next";
 import Sidebar from "../components/Common/Sidebar";
-import { englishMorseCode, japaneseMorseCode } from "../lib/morse-code";
+import { englishMorseCode, japaneseMorseCode, generalMorseCode } from "../lib/morse-code";
 import { getCategoriesAndTags } from "../graphql/getCategoriesAndTags";
 import { getBackendGraphqlURL } from "../lib/graphqlClient";
 import {
@@ -90,7 +90,7 @@ const MorseCodeContent = () => {
   const oscillator = useRef<OscillatorNode | null>(null);
   const pressStartTime = useRef<number>(0);
 
-  const morseCode = isJapanese ? japaneseMorseCode : englishMorseCode;
+  const morseCode = isJapanese ? { ...generalMorseCode, ...japaneseMorseCode } : { ...generalMorseCode, ...englishMorseCode };
 
   const startPress = useCallback(() => {
     pressStartTime.current = new Date().getTime();
