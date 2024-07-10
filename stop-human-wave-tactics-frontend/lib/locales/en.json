@@ -14,6 +14,17 @@
   "top": "Top Page",
   "privacy_policy": "Privacy Policy",
   "achievement": "Achievement",
+  "morse_code": "Morse Code",
+  "morse_code_table": "Morse Code Table",
+  "morse_code_column_char": "Char",
+  "morse_code_column_code": "Code",
+  "japanese_mode": "Japanese Mode",
+  "dot_duration": "Dot Duration",
+  "morse_code_input": "Input",
+  "morse_code_output": "Output",
+  "morse_code_description": "Click or space key to enter\nShort press: - Long press: -",
+  "morse_code_button_description": "Click here or press the space key",
+  "reset": "Reset",
   "technology_stack": "Technology Stack",
   "achievement_text": [
     {

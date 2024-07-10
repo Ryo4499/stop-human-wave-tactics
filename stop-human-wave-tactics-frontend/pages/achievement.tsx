@@ -3,6 +3,7 @@ import Grid from "@mui/material/Unstable_Grid2";
 import Link from "next/link";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
+import Divider from "@mui/material/Divider";
 import type { NextPage } from "next";
 import useSWR from "swr";
 import { getBackendGraphqlURL } from "../lib/graphqlClient";
@@ -63,29 +64,21 @@ const AchievementContent = () => {
   const { t } = useLocale();
   const about_portfolios = t.portfolios_text.map((value, index, array) => (
     <Grid key={index}>
-      <Grid my={2}>
-        <Typography variant="h5" color="text.primary">
-          {value.title}
-        </Typography>
-      </Grid>
-      <Grid my={2} ml={2}>
+      <Typography variant="h6" color="text.primary" my={2}>
+        {value.title}
+      </Typography>
+      <Stack spacing={2} ml={2}>
         <Typography variant="body1" color="text.secondary">
           {value.date}
         </Typography>
-      </Grid>
-      <Grid my={2} ml={2}>
         {value.description.split("\n").map((line, key) => (
           <Typography key={key} variant="body1" color="text.secondary">
             {line}
           </Typography>
         ))}
-      </Grid>
-      <Grid my={2} ml={2}>
         <Typography variant="body1" color="text.secondary">
           {t.technology_stack}:{" " + value.skill}
         </Typography>
-      </Grid>
-      <Grid my={2} ml={2}>
         {value.url != "" && (
           <Typography variant="body1" color="text.secondary">
             URL:{" "}
@@ -94,8 +87,6 @@ const AchievementContent = () => {
             </Link>
           </Typography>
         )}
-      </Grid>
-      <Grid my={2} ml={2}>
         {value.github != "" && (
           <Typography variant="body1" color="text.secondary">
             GitHub:{" "}
@@ -104,33 +95,27 @@ const AchievementContent = () => {
             </Link>
           </Typography>
         )}
-      </Grid>
+      </Stack>
     </Grid>
   ));
   const about_achivement = t.achievement_text.map((value, index, array) => (
     <Grid key={index}>
-      <Grid my={2}>
-        <Typography variant="h5" color="text.primary">
-          {value.title}
-        </Typography>
-      </Grid>
-      <Grid my={2} ml={2}>
+      <Typography variant="h6" color="text.primary" my={2}>
+        {value.title}
+      </Typography>
+      <Stack spacing={3} ml={2}>
         <Typography variant="body1" color="text.secondary">
           {value.date}
         </Typography>
-      </Grid>
-      <Grid my={2} ml={2}>
         {value.description.split("\n").map((line, key) => (
           <Typography key={key} variant="body1" color="text.secondary">
             {line}
           </Typography>
         ))}
-      </Grid>
-      <Grid my={2} ml={2}>
         <Typography variant="body1" color="text.secondary">
           {t.technology_stack}:{" " + value.skill}
         </Typography>
-      </Grid>
+      </Stack>
     </Grid>
   ));
   const about_instance = (
@@ -148,28 +133,28 @@ const AchievementContent = () => {
       container
       direction="column"
       xs={12}
-      mx={3}
-      px={3}
       sx={{
         backgroundColor: "background.content",
-        my: { md: 0, xs: 2 },
+        px: { xs: 1, sm: 3 },
+        mx: { xs: 1, sm: 3 },
+        py: { xs: 1, sm: 1 },
+        my: { xs: 2, md: 0 },
         flexGrow: 1,
       }}
     >
-      <Stack spacing={2}>
-        <Stack spacing={2}>
-          <Typography color="text.primary" variant="h4">
-            {t.achievement}
-          </Typography>
-          {about_achivement}
-        </Stack>
-        <Stack spacing={2}>
-          <Typography color="text.primary" variant="h4">
-            {t.portfolios}
-          </Typography>
-          {about_portfolios}
-        </Stack>
-      </Stack>
+      <Grid sx={{ my: { xs: 2 } }}>
+        <Typography color="text.primary" variant="h5">
+          {t.achievement}
+        </Typography>
+        {about_achivement}
+      </Grid>
+      <Divider sx={{ my: 5 }} />
+      <Grid>
+        <Typography color="text.primary" variant="h5">
+          {t.portfolios}
+        </Typography>
+        {about_portfolios}
+      </Grid>
     </Grid>
   );
 };
@@ -198,7 +183,7 @@ const Achievement: NextPage<CategoriesAndTagsResponseProps> = ({
           description="This page introduce my portfolios."
         />
         <Grid container direction="row" sx={{ flexGrow: 1 }}>
-          <Grid container py={2} xs={12} md={10} sx={{ flexGrow: 1 }}>
+          <Grid container xs={12} md={10} sx={{ flexGrow: 1, py: { sm: 3 } }}>
             <AchievementContent />
           </Grid>
           <Grid container xs={12} md={2} sx={{ flexGrow: 1 }}>
