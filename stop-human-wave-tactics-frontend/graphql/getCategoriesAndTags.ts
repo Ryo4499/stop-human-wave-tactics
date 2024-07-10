@@ -7,6 +7,11 @@ query getCategoriesAndTags($categoryFilters: CategoryFiltersInput,$tagFilters: T
       id
       attributes{
         name
+        articles {
+          data {
+            id
+          }
+        }
       }
     }
   }
@@ -15,6 +20,11 @@ query getCategoriesAndTags($categoryFilters: CategoryFiltersInput,$tagFilters: T
       id
       attributes{
         name
+        articles {
+          data {
+            id
+          }
+        }
       }
     }
   }
