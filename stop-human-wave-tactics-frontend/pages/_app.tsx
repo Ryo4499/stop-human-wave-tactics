@@ -23,14 +23,14 @@ import { GoogleTagManager } from "@next/third-parties/google";
 import { getGtmId } from "../lib/google";
 import type { PaletteMode } from "@mui/material";
 
-export const ColorModeContext = createContext({ toggleColorMode: () => {} });
+export const ColorModeContext = createContext({ toggleColorMode: () => { } });
 export const PageContext = createContext({
   page: 1,
-  setPage: (value: number) => {},
+  setPage: (value: number) => { },
 });
 const ParticleContext = createContext({
   particle: mainParticle,
-  setParticle: (value: any) => {},
+  setParticle: (value: any) => { },
 });
 
 const PsComponents = () => {
@@ -40,7 +40,7 @@ const PsComponents = () => {
       await loadSlim(engine);
     });
   }, [particle]);
-  const particlesLoaded = async (container?: Container): Promise<void> => {};
+  const particlesLoaded = async (container?: Container): Promise<void> => { };
   return (
     <ParticlesComponents
       id="tsparticles"
@@ -67,6 +67,22 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
       }),
     [mode],
   );
+  theme.typography.h4 = {
+    fontSize: "2.125rem",
+    fontWeight: 400,
+    fontFamily: ["Roboto", "Helvetica", "Arial", "sans-serif"],
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "1.5rem"
+    }
+  }
+  theme.typography.h5 = {
+    fontSize: "1.5rem",
+    fontWeight: 400,
+    fontFamily: ["Roboto", "Helvetica", "Arial", "sans-serif"],
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "1.25rem"
+    }
+  }
 
   const fetcher = (query: any, variables: any) =>
     client.request(query, variables);

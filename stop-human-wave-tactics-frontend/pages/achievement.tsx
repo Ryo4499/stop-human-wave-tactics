@@ -2,6 +2,7 @@ import { request } from "graphql-request";
 import Grid from "@mui/material/Unstable_Grid2";
 import Link from "next/link";
 import Typography from "@mui/material/Typography";
+import Stack from '@mui/material/Stack';
 import type { NextPage } from "next";
 import useSWR from "swr";
 import { getBackendGraphqlURL } from "../lib/graphqlClient";
@@ -61,81 +62,85 @@ export const getStaticProps = async ({ locale }) => {
 const AchievementContent = () => {
   const { t } = useLocale();
   const about_portfolios = t.portfolios_text.map((value, index, array) => (
-    <Grid key={index}>
-      <Typography variant="h5" color="text.primary">
-        {value.title}
-      </Typography>
-      <Grid my={2} ml={2}>
-        <Typography variant="body1" color="text.secondary">
-          {value.date}
+    <Stack spacing={2}>
+      <Grid key={index}>
+        <Typography variant="h5" color="text.primary">
+          {value.title}
         </Typography>
-      </Grid>
-      <Grid my={2} ml={2}>
-        {value.description.split("\n").map((line, key) => (
-          <Typography key={key} variant="body1" color="text.secondary">
-            {line}
-          </Typography>
-        ))}
-      </Grid>
-      <Grid my={2} ml={2}>
-        <Typography variant="body1" color="text.secondary">
-          {t.technology_stack}:{" " + value.skill}
-        </Typography>
-      </Grid>
-      <Grid my={2} ml={2}>
-        {value.url != "" && (
+        <Grid my={2} ml={2}>
           <Typography variant="body1" color="text.secondary">
-            URL:{" "}
-            <Link href={value.url} color="text.link">
-              {value.url}
-            </Link>
+            {value.date}
           </Typography>
-        )}
-      </Grid>
-      <Grid my={2} ml={2}>
-        {value.github != "" && (
+        </Grid>
+        <Grid my={2} ml={2}>
+          {value.description.split("\n").map((line, key) => (
+            <Typography key={key} variant="body1" color="text.secondary">
+              {line}
+            </Typography>
+          ))}
+        </Grid>
+        <Grid my={2} ml={2}>
           <Typography variant="body1" color="text.secondary">
-            GitHub:{" "}
-            <Link href={value.github} color="text.link">
-              {value.github}
-            </Link>
+            {t.technology_stack}:{" " + value.skill}
           </Typography>
-        )}
+        </Grid>
+        <Grid my={2} ml={2}>
+          {value.url != "" && (
+            <Typography variant="body1" color="text.secondary">
+              URL:{" "}
+              <Link href={value.url} color="text.link">
+                {value.url}
+              </Link>
+            </Typography>
+          )}
+        </Grid>
+        <Grid my={2} ml={2}>
+          {value.github != "" && (
+            <Typography variant="body1" color="text.secondary">
+              GitHub:{" "}
+              <Link href={value.github} color="text.link">
+                {value.github}
+              </Link>
+            </Typography>
+          )}
+        </Grid>
       </Grid>
-    </Grid>
+    </Stack>
   ));
   const about_achivement = t.achievement_text.map((value, index, array) => (
-    <Grid key={index}>
-      <Typography variant="h5" color="text.primary">
-        {value.title}
-      </Typography>
-      <Grid my={2} ml={2}>
-        <Typography variant="body1" color="text.secondary">
-          {value.date}
+    <Stack spacing={2}>
+      <Grid key={index}>
+        <Typography variant="h5" color="text.primary">
+          {value.title}
         </Typography>
-      </Grid>
-      <Grid my={2} ml={2}>
-        {value.description.split("\n").map((line, key) => (
-          <Typography key={key} variant="body1" color="text.secondary">
-            {line}
+        <Grid my={2} ml={2}>
+          <Typography variant="body1" color="text.secondary">
+            {value.date}
           </Typography>
-        ))}
+        </Grid>
+        <Grid my={2} ml={2}>
+          {value.description.split("\n").map((line, key) => (
+            <Typography key={key} variant="body1" color="text.secondary">
+              {line}
+            </Typography>
+          ))}
+        </Grid>
+        <Grid my={2} ml={2}>
+          <Typography variant="body1" color="text.secondary">
+            {t.technology_stack}:{" " + value.skill}
+          </Typography>
+        </Grid>
       </Grid>
-      <Grid my={2} ml={2}>
-        <Typography variant="body1" color="text.secondary">
-          {t.technology_stack}:{" " + value.skill}
-        </Typography>
-      </Grid>
-    </Grid>
+    </Stack>
   ));
   const about_instance = (
-    <Grid spacing={2}>
+    <Stack spacing={2}>
       {t.about_instance.split("\n").map((line, key) => (
         <Typography key={key} variant="h6" color="text.primary">
           {line}
         </Typography>
       ))}
-    </Grid>
+    </Stack>
   );
 
   return (
@@ -143,31 +148,32 @@ const AchievementContent = () => {
       container
       direction="column"
       xs={12}
-      mx={5}
-      px={5}
-      spacing={3}
+      mx={3}
+      px={3}
       sx={{
         backgroundColor: "background.content",
         my: { md: 0, xs: 2 },
         flexGrow: 1,
       }}
     >
-      <Grid>
+      <Stack spacing={2}>
         <Grid>
-          <Typography color="text.primary" variant="h4">
-            {t.achievement}
-          </Typography>
+          <Grid>
+            <Typography color="text.primary" variant="h4">
+              {t.achievement}
+            </Typography>
+          </Grid>
         </Grid>
-      </Grid>
-      <Grid>{about_achivement}</Grid>
-      <Grid>
+        <Grid>{about_achivement}</Grid>
         <Grid>
-          <Typography color="text.primary" variant="h4">
-            {t.portfolios}
-          </Typography>
+          <Grid>
+            <Typography color="text.primary" variant="h4">
+              {t.portfolios}
+            </Typography>
+          </Grid>
         </Grid>
-      </Grid>
-      <Grid>{about_portfolios}</Grid>
+        <Grid>{about_portfolios}</Grid>
+      </Stack>
     </Grid>
   );
 };
