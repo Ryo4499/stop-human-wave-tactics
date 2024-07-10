@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Grid from "@mui/material/Unstable_Grid2";
 import Typography from "@mui/material/Typography";
-import Stack from '@mui/material/Stack';
+import Stack from "@mui/material/Stack";
 import { request } from "graphql-request";
 import useSWR from "swr";
 import { useLocale } from "../lib/locale";
@@ -92,7 +92,7 @@ const PrivacyPolicyContent = () => {
       }}
     >
       <Stack spacing={2}>
-        <Grid>
+        <Grid my={2}>
           <Typography color="text.primary" variant="h4">
             {t.privacy_policy}
           </Typography>
