@@ -107,7 +107,7 @@ export const generalMorseCode: { [key: string]: string } = {
   ".--.-.": "@",
   "-.--.": "(",
   "-.--.-": ")",
-  ".-..-.": "\"",
+  ".-..-.": '"',
   ".----.": "'",
   "........": "HH",
   "-...-": "BT,=",
@@ -115,4 +115,6 @@ export const generalMorseCode: { [key: string]: string } = {
   "...-.-": "VA",
   ".-...": "AS",
   "...-.": "R",
-}
+};
+Object.assign(generalMorseCode, japaneseMorseCode);
+Object.assign(generalMorseCode, englishMorseCode);
