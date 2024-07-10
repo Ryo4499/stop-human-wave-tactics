@@ -21,7 +21,7 @@ import { CategoriesAndTagsProps } from "../../types/general";
 
 const Sidebar = ({ categories, tags }: CategoriesAndTagsProps) => {
   const router = useRouter();
-  const { locale, locales, t } = useLocale();
+  const { t } = useLocale();
 
   const submitHandle = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -182,6 +182,22 @@ const Sidebar = ({ categories, tags }: CategoriesAndTagsProps) => {
           </Grid>
           <Grid xs={12}>
             <Tags contents={tags} />
+          </Grid>
+          <Grid xs={12}>
+            <Stack my={1}>
+              <Stack my={1}>
+                <Typography my={1} variant="subtitle1" color="text.primary">
+                  PlayGround
+                </Typography>
+                <List disablePadding>
+                  <ListItem sx={{ pl: 4, py: 0.5 }} disablePadding>
+                    <Link href="/morse-code" as="/morse-code">
+                      <Typography color="text.link">{t.morse_code}</Typography>
+                    </Link>
+                  </ListItem>
+                </List>
+              </Stack>
+            </Stack>
           </Grid>
         </Grid>
       </Grid>

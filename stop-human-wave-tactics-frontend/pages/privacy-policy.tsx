@@ -83,74 +83,53 @@ const PrivacyPolicyContent = () => {
       container
       direction="column"
       xs={12}
-      mx={3}
-      px={3}
       sx={{
         backgroundColor: "background.content",
-        my: { md: 0, xs: 2 },
+        px: { xs: 1, sm: 3 },
+        mx: { xs: 1, sm: 3 },
+        py: { xs: 1, sm: 1 },
+        my: { xs: 2, md: 0 },
         flexGrow: 1,
       }}
     >
-      <Stack spacing={2}>
-        <Grid my={2}>
-          <Typography color="text.primary" variant="h4">
-            {t.privacy_policy}
-          </Typography>
+      <Stack spacing={3} sx={{ my: { xs: 2 } }}>
+        <Typography color="text.primary" variant="h5">
+          {t.privacy_policy}
+        </Typography>
+        <Typography color="text.primary" variant="h6">
+          {t.site_info}
+        </Typography>
+        <Grid ml={2}>{site_info}</Grid>
+        <Typography color="text.primary" variant="h6">
+          {t.google_ad}
+        </Typography>
+        <Grid ml={2}>
+          {google_ad_info}
+          <Link href={google_ad_url} color="text.link">
+            {google_ad_url}
+          </Link>
         </Grid>
-        <Grid my={2}>
-          <Typography color="text.primary" variant="h5">
-            {t.site_info}
-          </Typography>
-          <Grid my={2} ml={2}>
-            {site_info}
-          </Grid>
+        <Typography color="text.primary" variant="h6">
+          {t.google_analysis}
+        </Typography>
+        <Grid ml={2}>
+          {google_analysis_info}
+          <Link href={google_analysis_url} color="text.link">
+            {google_analysis_url}
+          </Link>
         </Grid>
-        <Grid my={2}>
-          <Typography color="text.primary" variant="h5">
-            {t.google_ad}
-          </Typography>
-          <Grid my={2} ml={2}>
-            {google_ad_info}
-            <Link href={google_ad_url} color="text.link">
-              {google_ad_url}
-            </Link>
-          </Grid>
-        </Grid>
-        <Grid my={2}>
-          <Typography color="text.primary" variant="h5">
-            {t.google_analysis}
-          </Typography>
-          <Grid my={2} ml={2}>
-            {google_analysis_info}
-            <Link href={google_analysis_url} color="text.link">
-              {google_analysis_url}
-            </Link>
-          </Grid>
-        </Grid>
-        <Grid my={2}>
-          <Typography color="text.primary" variant="h5">
-            {t.copy_right}
-          </Typography>
-          <Grid my={2} ml={2}>
-            {copy_right_info}
-          </Grid>
-        </Grid>
-        <Grid my={2}>
-          <Typography color="text.primary" variant="h5">
-            {t.link_free}
-          </Typography>
-          <Grid my={2} ml={2}>
-            {link_free_info}
-          </Grid>
-        </Grid>
-        <Grid my={2}>
-          <Typography color="text.primary" variant="h5">
-            {t.disclaimer}
-          </Typography>
-          <Grid my={2} ml={2}>
-            {disclaimer_info}
-          </Grid>
-        </Grid>
+        <Typography color="text.primary" variant="h6">
+          {t.copy_right}
+        </Typography>
+        <Grid ml={2}>{copy_right_info}</Grid>
+        <Typography color="text.primary" variant="h6">
+          {t.link_free}
+        </Typography>
+        <Grid ml={2}>{link_free_info}</Grid>
+        <Typography color="text.primary" variant="h6">
+          {t.disclaimer}
+        </Typography>
+        <Grid ml={2}>{disclaimer_info}</Grid>
       </Stack>
     </Grid>
   );
@@ -180,7 +159,7 @@ const PrivacyPolicy: NextPage<CategoriesAndTagsResponseProps> = ({
           description="This page published about privacy policy."
         />
         <Grid container direction="row" sx={{ flexGrow: 1 }}>
-          <Grid container py={2} xs={12} md={10} sx={{ flexGrow: 1 }}>
+          <Grid container xs={12} md={10} sx={{ flexGrow: 1, py: { sm: 3 } }}>
             <PrivacyPolicyContent />
           </Grid>
           <Grid container xs={12} md={2} sx={{ flexGrow: 1 }}>

@@ -1,12 +1,13 @@
 import "../styles/globals.css";
 import type { NextPage } from "next";
 import { SWRConfig } from "swr";
-import React, {
+import {
   createContext,
   StrictMode,
   useState,
   useMemo,
   useEffect,
+  useContext,
 } from "react";
 import { AppProps } from "next/app";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -34,7 +35,7 @@ const ParticleContext = createContext({
 });
 
 const PsComponents = () => {
-  const { particle } = React.useContext(ParticleContext);
+  const { particle } = useContext(ParticleContext);
   useEffect(() => {
     initParticlesEngine(async (engine: any) => {
       await loadSlim(engine);

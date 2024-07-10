@@ -14,6 +14,17 @@
   "top": "トップページ",
   "privacy_policy": "利用規約",
   "achievement": "実績",
+  "morse_code": "モールス信号",
+  "morse_code_table": "モールス信号コード表",
+  "morse_code_column_char": "文字",
+  "morse_code_column_code": "コード",
+  "japanese_mode": "日本語モード",
+  "dot_duration": "ドット持続時間",
+  "morse_code_input": "入力",
+  "morse_code_output": "変換結果",
+  "morse_code_description": "クリックまたはスペースキーで入力\n短押し: ・ 長押し: -",
+  "morse_code_button_description": "ここをクリック\nまたはスペースキー",
+  "reset": "リセット",
   "technology_stack": "技術スタック",
   "achievement_text": [
     {
