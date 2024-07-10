@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Grid from "@mui/material/Unstable_Grid2";
 import Typography from "@mui/material/Typography";
+import Stack from '@mui/material/Stack';
 import { request } from "graphql-request";
 import useSWR from "swr";
 import { useLocale } from "../lib/locale";
@@ -82,16 +83,15 @@ const PrivacyPolicyContent = () => {
       container
       direction="column"
       xs={12}
-      mx={5}
-      px={5}
-      spacing={3}
+      mx={3}
+      px={3}
       sx={{
         backgroundColor: "background.content",
         my: { md: 0, xs: 2 },
         flexGrow: 1,
       }}
     >
-      <Grid>
+      <Stack spacing={2}>
         <Grid>
           <Typography color="text.primary" variant="h4">
             {t.privacy_policy}
@@ -151,7 +151,7 @@ const PrivacyPolicyContent = () => {
             {disclaimer_info}
           </Grid>
         </Grid>
-      </Grid>
+      </Stack>
     </Grid>
   );
 };

@@ -4,6 +4,7 @@ x-template: &env_tty
   tty: true
 services:
   certbot:
+    container_name: certbot
     build:
       context: ./certbot
       dockerfile: Dockerfile
@@ -26,6 +27,7 @@ services:
     <<: *env_tty
 
   proxy:
+    container_name: proxy
     build:
       context: ./nginx
       dockerfile: Dockerfile
@@ -67,6 +69,7 @@ services:
       app_net:
 
   prometheus:
+    container_name: prometheus
     image: prom/prometheus:latest
     volumes:
       - type: bind
@@ -88,6 +91,7 @@ services:
     <<: *env_tty
 
   grafana:
+    container_name: grafana
     image: grafana/grafana:latest
     user: "427"
     <<: *env_tty
@@ -109,6 +113,7 @@ services:
       monitor_front_net:
 
   alertmanager:
+    container_name: alertmanager
     image: prom/alertmanager:latest
     <<: *env_tty
     volumes:
@@ -130,6 +135,7 @@ services:
       monitor_back_net:
 
   nginx-exporter:
+    container_name: nginx-exporter
     image: nginx/nginx-prometheus-exporter:latest
     <<: *env_tty
     command:
@@ -149,6 +155,7 @@ services:
       app_net:
 
   exporter:
+    container_name: exporter
     image: prom/node-exporter:latest
     <<: *env_tty
     command:
@@ -181,6 +188,7 @@ services:
       monitor_back_net:
 
   cadvisor:
+    container_name: cadvisor
     image: gcr.io/cadvisor/cadvisor:v0.47.2
     volumes:
       - type: bind
@@ -209,6 +217,7 @@ services:
       monitor_back_net:
 
   influxdb:
+    container_name: influxdb
     image: influxdb:alpine
     <<: *env_tty
     volumes:
@@ -224,6 +233,7 @@ services:
       k6_net:
 
   k6:
+    container_name: k6
     image: grafana/k6:latest
     <<: *env_tty
     volumes:
@@ -238,6 +248,7 @@ services:
       k6_net:
 
   db:
+    container_name: db
     build:
       context: ./db
       dockerfile: Dockerfile
@@ -262,6 +273,7 @@ services:
       timeout: 10s
 
   back:
+    container_name: back
     build:
       context: ./stop-human-wave-tactics-backend
       dockerfile: Dockerfile
@@ -322,6 +334,7 @@ services:
       monitor_front_net:
 
   front:
+    container_name: front
     build:
       context: ./stop-human-wave-tactics-frontend
       network: host
@@ -349,7 +362,6 @@ services:
       - -c
       - |
         if [ "${NODE_ENV}" = "production" ]; then \
-          yarn lint --fix && \
           yarn build && \
           yarn start; \
         else \
@@ -376,24 +388,6 @@ services:
       monitor_back_net:
       # debug
       monitor_front_net:
-  runner:
-    build:
-      context: ./runner
-      dockerfile: Dockerfile
-      args:
-        HOST_UID: $HOST_UID
-        HOST_GID: $HOST_GID
-        DOCKER_GID: $DOCKER_GID
-        RUNNER_WORKDIR: $RUNNER_WORKDIR
-    user: runner
-    <<: *env_tty
-    volumes:
-      - type: bind
-        source: /var/run/docker.sock
-        target: /var/run/docker.sock
-      - type: volume
-        source: runnerData
-        target: /tmp/runner
 
 secrets:
   DB_NAME:
@@ -422,7 +416,6 @@ volumes:
   dbData:
   frontModules:
   backModules:
-  runnerData:
 
 networks:
   default:
