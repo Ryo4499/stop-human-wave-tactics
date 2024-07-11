@@ -330,10 +330,10 @@ const MorseCodeContent = () => {
               borderRadius: "20%",
               fontSize: "1.2rem",
             }}
-            onMouseDown={() => {
-              startPress();
-            }}
+            onMouseDown={startPress}
             onMouseUp={endPress}
+            onTouchStart={startPress}
+            onTouchEnd={endPress}
           ></Button>
         </Grid>
         <Grid>
