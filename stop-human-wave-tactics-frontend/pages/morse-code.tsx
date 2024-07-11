@@ -13,7 +13,7 @@ import Button from "@mui/material/Button";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { request } from "graphql-request";
 import useSWR from "swr";
 import { useLocale } from "../lib/locale";
@@ -90,7 +90,9 @@ const MorseCodeContent = () => {
   const oscillator = useRef<OscillatorNode | null>(null);
   const pressStartTime = useRef<number>(0);
 
-  const morseCode = isJapanese ? japaneseMorseCode : englishMorseCode;
+  const morseCode = useMemo(() => {
+    return isJapanese ? japaneseMorseCode : englishMorseCode;
+  }, [isJapanese]);
 
   const startPress = useCallback(() => {
     pressStartTime.current = new Date().getTime();
@@ -162,12 +164,12 @@ const MorseCodeContent = () => {
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("keyup", handleKeyUp);
+    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("keyup", handleKeyUp);
 
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("keyup", handleKeyUp);
+      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("keyup", handleKeyUp);
     };
   }, [startPress, endPress]);
   const changedDuration = (_, newValue) => {

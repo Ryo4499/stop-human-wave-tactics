@@ -1,4 +1,4 @@
-export const englishMorseCode: { [key: string]: string } = {
+const englishMorseCodeBase = {
   ".-": "A",
   "-...": "B",
   "-.-.": "C",
@@ -26,7 +26,7 @@ export const englishMorseCode: { [key: string]: string } = {
   "-.--": "Y",
   "--..": "Z",
 };
-export const japaneseMorseCode: { [key: string]: string } = {
+const japaneseMorseCodeBase: { [key: string]: string } = {
   "--.--": "ア",
   ".-": "イ",
   "..-": "ウ",
@@ -84,7 +84,7 @@ export const japaneseMorseCode: { [key: string]: string } = {
   "..--.": "゜",
 };
 
-export const generalMorseCode: { [key: string]: string } = {
+const generalMorseCode = {
   ".----": "1",
   "..---": "2",
   "...--": "3",
@@ -116,5 +116,11 @@ export const generalMorseCode: { [key: string]: string } = {
   ".-...": "AS",
   "...-.": "R",
 };
-Object.assign(generalMorseCode, japaneseMorseCode);
-Object.assign(generalMorseCode, englishMorseCode);
+export const japaneseMorseCode = {
+  ...generalMorseCode,
+  ...japaneseMorseCodeBase,
+};
+export const englishMorseCode = {
+  ...generalMorseCode,
+  ...englishMorseCodeBase,
+};
