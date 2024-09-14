@@ -5,5 +5,5 @@ CURRENT=$(
 )
 echo $CURRENT
 
-docker compose run --rm certbot renew --dry-run
+docker compose exec certbot certbot renew --dry-run
 docker compose exec proxy nginx -s reload
