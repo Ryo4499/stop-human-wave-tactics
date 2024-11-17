@@ -1,3 +1,4 @@
+import React from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
@@ -14,6 +15,7 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
+import type { NodeJS } from "node";
 import { request } from "graphql-request";
 import useSWR from "swr";
 import { useLocale } from "../lib/locale";
@@ -85,17 +87,34 @@ const MorseCodeContent = () => {
   const [currentLetter, setCurrentLetter] = useState<string>("");
   const [result, setResult] = useState<string>("");
   const [dotDuration, setDotDuration] = useState<number>(250);
+  const [charGap, setCharGap] = useState(500);
+  const [wordGap, setWordGap] = useState(1000);
   const [isJapanese, setIsJapanese] = useState<boolean>(false);
+  const [isPressed, setIsPressed] = useState(false);
+  const isTouchActiveRef = useRef(false);
+  const touchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const lastTouchRef = useRef<number>(0);
+  const MIN_TOUCH_INTERVAL = 100;
   const audioContext = useRef<AudioContext | null>(null);
   const oscillator = useRef<OscillatorNode | null>(null);
   const pressStartTime = useRef<number>(0);
+  const morseCode = useMemo(() => isJapanese ? japaneseMorseCode : englishMorseCode, [isJapanese]);
 
-  const morseCode = useMemo(() => {
-    return isJapanese ? japaneseMorseCode : englishMorseCode;
-  }, [isJapanese]);
+  const startPress = useCallback((e: React.TouchEvent | React.MouseEvent) => {
+    // タッチイベントの場合のみ preventDefault を呼び出し
+    if ('touches' in e) {
+      e.preventDefault();
+    }
 
-  const startPress = useCallback(() => {
+    // すでにアクティブな場合は何もしない
+    if (isTouchActiveRef.current) {
+      return;
+    }
+
+    isTouchActiveRef.current = true;
     pressStartTime.current = new Date().getTime();
+
     if (!audioContext.current) {
       audioContext.current = new (window.AudioContext ||
         (window as any).webkitAudioContext)();
@@ -108,15 +127,52 @@ const MorseCodeContent = () => {
     );
     oscillator.current.connect(audioContext.current.destination);
     oscillator.current.start();
+
+    // 安全対策: 5秒後に強制終了
+    touchTimeoutRef.current = setTimeout(() => {
+      if (isTouchActiveRef.current) {
+        endPress(e);
+      }
+    }, 5000);
   }, []);
 
-  const endPress = useCallback(() => {
+  const endPress = useCallback((e: React.TouchEvent | React.MouseEvent) => {
+    // タッチイベントの場合のみ preventDefault を呼び出し
+    if ('touches' in e) {
+      e.preventDefault();
+    }
+
+    // アクティブでない場合は何もしない
+    if (!isTouchActiveRef.current) {
+      return;
+    }
+
+    isTouchActiveRef.current = false;
+
+    if (touchTimeoutRef.current) {
+      clearTimeout(touchTimeoutRef.current);
+      touchTimeoutRef.current = null;
+    }
+
     const duration = new Date().getTime() - pressStartTime.current;
+    if (duration > wordGap) {
+      setCurrentLetter(prev => prev + ' / ');
+    } else if (duration > charGap) {
+      setCurrentLetter(prev => prev + ' ');
+    }
     setCurrentLetter((prev) => prev + (duration < dotDuration ? "." : "-"));
+
     if (oscillator.current) {
       oscillator.current.stop();
+      oscillator.current = null;
     }
-  }, [dotDuration]);
+
+    // タッチ終了後、短い遅延を設けてフラグをリセット
+    setTimeout(() => {
+      isTouchActiveRef.current = false;
+    }, 50);
+  }, [dotDuration, charGap, wordGap]);
+
 
   const addLetter = useCallback(() => {
     if (currentLetter) {
@@ -138,6 +194,18 @@ const MorseCodeContent = () => {
     setMorseInput("");
     setCurrentLetter("");
     setResult("");
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      if (oscillator.current) {
+        oscillator.current.stop();
+        oscillator.current = null;
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -309,6 +377,10 @@ const MorseCodeContent = () => {
               min={150}
               max={350}
             />
+            <Typography>Character Gap: {charGap}ms</Typography>
+            <Slider value={charGap} onChange={(_, value) => setCharGap(value as number)} min={100} max={1000} />
+            <Typography>Word Gap: {wordGap}ms</Typography>
+            <Slider value={wordGap} onChange={(_, value) => setWordGap(value as number)} min={500} max={2000} />
           </Box>
         </Grid>
 
@@ -331,11 +403,20 @@ const MorseCodeContent = () => {
               height: "9rem",
               borderRadius: "20%",
               fontSize: "1.2rem",
+              touchAction: "none", // タッチ操作を無効化
+              userSelect: "none", // テキスト選択を防止
+              WebkitTapHighlightColor: "transparent", // タップ時のハイライトを無効化
             }}
-            onMouseDown={startPress}
-            onMouseUp={endPress}
             onTouchStart={startPress}
             onTouchEnd={endPress}
+            onTouchCancel={endPress}
+            // マウスイベントも残しておく（PCでの使用のため）
+            onMouseDown={(e) => {
+              if (!('touches' in e)) startPress(e);
+            }}
+            onMouseUp={(e) => {
+              if (!('touches' in e)) endPress(e);
+            }}
           ></Button>
         </Grid>
         <Grid>
