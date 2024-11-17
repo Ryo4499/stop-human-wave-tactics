@@ -21,17 +21,15 @@ export const MorseCodeButton: React.FC<MorseCodeButtonProps> = ({ handlers }) =>
                 fontSize: "1.2rem",
                 touchAction: "none",
                 userSelect: "none",
-                WebkitTapHighlightColor: "transparent",
+                cursor: "pointer",
+                WebkitTapHighlightColor: "transparent", // タップ時のハイライトを無効化
+                WebkitTouchCallout: "none", // タッチ時のコンテキストメニューを無効化
             }}
-            onTouchStart={startPress}
-            onTouchEnd={endPress}
-            onTouchCancel={endPress}
-            onMouseDown={(e) => {
-                if (!('touches' in e)) startPress(e);
-            }}
-            onMouseUp={(e) => {
-                if (!('touches' in e)) endPress(e);
-            }}
+            onPointerDown={startPress}
+            onPointerUp={endPress}
+            onPointerLeave={endPress}
+            onPointerCancel={endPress}
+            onContextMenu={(e) => e.preventDefault()}
         />
     );
 };

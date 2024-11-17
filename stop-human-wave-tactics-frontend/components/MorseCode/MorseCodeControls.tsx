@@ -40,26 +40,6 @@ export const MorseCodeControls: React.FC<MorseCodeControlsProps> = ({ state, han
                         min={150}
                         max={350}
                     />
-                    <Typography color="text.secondary" gutterBottom>{t.character_gap}: {state.charGap}ms</Typography>
-                    <Slider
-                        value={state.charGap}
-                        onChange={(_, value) => handlers.setCharGap(value as number)}
-                        valueLabelDisplay="auto"
-                        marks
-                        step={100}
-                        min={100}
-                        max={1000}
-                    />
-                    <Typography color="text.secondary" gutterBottom>{t.word_gap}: {state.wordGap}ms</Typography>
-                    <Slider
-                        value={state.wordGap}
-                        onChange={(_, value) => handlers.setWordGap(value as number)}
-                        valueLabelDisplay="auto"
-                        marks
-                        step={100}
-                        min={500}
-                        max={2000}
-                    />
                 </Box>
             </Grid>
         </Grid>

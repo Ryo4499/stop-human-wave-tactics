@@ -20,8 +20,6 @@
   "morse_code_column_code": "Code",
   "japanese_mode": "Japanese Mode",
   "dot_duration": "Dot Duration",
-  "character_gap": "Character Gap",
-  "word_gap": "Word Gap",
   "morse_code_input": "Input",
   "morse_code_output": "Output",
   "morse_code_description": "Click or space key to enter\nShort press: .\nLong press: -",

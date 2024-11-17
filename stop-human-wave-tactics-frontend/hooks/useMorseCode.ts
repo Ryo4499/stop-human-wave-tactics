@@ -8,26 +8,58 @@ type TimeoutHandle = ReturnType<typeof setTimeout>;
 
 export const useMorseCode = (): [MorseCodeState, MorseCodeHandlers] => {
     const { locale } = useLocale();
+    const defaultDotDuration = 250;
     const [state, setState] = useState<MorseCodeState>({
         morseInput: "",
         currentLetter: "",
         result: "",
-        dotDuration: 250,
-        charGap: 500,
-        wordGap: 1000,
+        dotDuration: defaultDotDuration,
+        charGap: defaultDotDuration * 3,
+        wordGap: defaultDotDuration * 7,
         isJapanese: locale === "ja",
     });
 
     const { startTone, stopTone } = useAudio();
-    const isTouchActiveRef = useRef(false);
-    const touchTimeoutRef = useRef<TimeoutHandle | null>(null);
+    const isActiveRef = useRef(false);
+    const timeoutRef = useRef<TimeoutHandle | null>(null);
     const pressStartTime = useRef<number>(0);
 
-    /*
-    * モールス信号の入力を解析して結果を更新する
-    */
+    // 強化されたクリーンアップ関数
+    const cleanup = useCallback((forceStop: boolean = true) => {
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+            timeoutRef.current = null;
+        }
+        if (forceStop || isActiveRef.current) {
+            stopTone();
+        }
+        isActiveRef.current = false;
+    }, [stopTone]);
+
+    // 複数のクリーンアップイベントを監視
+    useEffect(() => {
+        const handleVisibilityChange = () => {
+            if (document.hidden) {
+                cleanup(true);
+            }
+        };
+
+        const handleBlur = () => {
+            cleanup(true);
+        };
+
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+        window.addEventListener('blur', handleBlur);
+        window.addEventListener('beforeunload', () => cleanup(true));
+
+        return () => {
+            cleanup(true);
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+            window.removeEventListener('blur', handleBlur);
+        };
+    }, [cleanup]);
+
     const updateResult = useCallback(() => {
-        // 入力が空の場合は結果も空にする
         if (!state.morseInput.trim()) {
             setState(prev => ({ ...prev, result: "" }));
             return;
@@ -42,9 +74,6 @@ export const useMorseCode = (): [MorseCodeState, MorseCodeHandlers] => {
         setState(prev => ({ ...prev, result: decoded }));
     }, [state.morseInput, state.isJapanese]);
 
-    /*
-    * モールス信号の入力を追加する
-    */
     const addLetter = useCallback(() => {
         if (state.currentLetter) {
             setState(prev => ({
@@ -55,104 +84,79 @@ export const useMorseCode = (): [MorseCodeState, MorseCodeHandlers] => {
         }
     }, [state.currentLetter]);
 
-    /*
-    * モールス信号の入力を開始する
-    */
-    const startPress = useCallback((e: React.TouchEvent | React.MouseEvent) => {
-        if ('touches' in e) {
-            e.preventDefault();
+    // 押下開始処理の改善
+    const startPress = useCallback((e: React.PointerEvent) => {
+        e.preventDefault();
+
+        // 既にアクティブな場合は確実にクリーンアップ
+        if (isActiveRef.current) {
+            cleanup(true);
+            return; // 連続した押下を防止
         }
 
-        if (isTouchActiveRef.current) {
-            return;
-        }
-
-        isTouchActiveRef.current = true;
-        pressStartTime.current = new Date().getTime();
+        isActiveRef.current = true;
+        pressStartTime.current = Date.now();
         startTone();
 
-        touchTimeoutRef.current = setTimeout(() => {
-            if (isTouchActiveRef.current) {
-                endPress(e);
-            }
-        }, 5000);
-    }, []);
+        // 安全タイマーの設定
+        timeoutRef.current = setTimeout(() => {
+            cleanup(true);
+        }, 3000); // 最大押下時間を3秒に制限
+    }, [cleanup, startTone]);
 
-    /*
-    * モールス信号の入力を終了する
-    */
-    const endPress = useCallback((e: React.TouchEvent | React.MouseEvent) => {
-        if ('touches' in e) {
-            e.preventDefault();
-        }
+    // 押下終了処理の改善
+    const endPress = useCallback((e: React.PointerEvent) => {
+        e.preventDefault();
 
-        if (!isTouchActiveRef.current) {
-            return;
-        }
+        if (!isActiveRef.current) return;
 
-        isTouchActiveRef.current = false;
+        const duration = Date.now() - pressStartTime.current;
+        const isDot = duration < state.dotDuration * 1.2;
 
-        if (touchTimeoutRef.current) {
-            clearTimeout(touchTimeoutRef.current);
-            touchTimeoutRef.current = null;
-        }
+        setState(prev => ({
+            ...prev,
+            currentLetter: prev.currentLetter + (isDot ? "." : "-")
+        }));
 
-        const duration = new Date().getTime() - pressStartTime.current;
-        setState(prev => {
-            let newCurrentLetter = prev.currentLetter;
-            if (duration > prev.wordGap) {
-                newCurrentLetter += ' / ';
-            } else if (duration > prev.charGap) {
-                newCurrentLetter += ' ';
-            }
-            newCurrentLetter += (duration < prev.dotDuration ? "." : "-");
-            return { ...prev, currentLetter: newCurrentLetter };
-        });
+        // 確実にクリーンアップ
+        cleanup(true);
+    }, [cleanup, state.dotDuration]);
 
-        stopTone();
-
-        setTimeout(() => {
-            isTouchActiveRef.current = false;
-        }, 50);
-    }, [state.dotDuration, state.charGap, state.wordGap]);
-
-    /*
-    * モールス信号の入力をリセットする
-    */
     const resetInput = useCallback(() => {
+        cleanup(true);
         setState(prev => ({
             ...prev,
             morseInput: "",
             currentLetter: "",
             result: ""
         }));
-    }, []);
+    }, [cleanup]);
 
-    /*
-        * モールス信号の入力が変更された場合に結果を更新する
-        */
     useEffect(() => {
         updateResult();
     }, [state.morseInput, updateResult]);
 
-    /*
-    * モールス信号の入力が変更された場合に文字を追加する
-    */
     useEffect(() => {
+        if (!state.currentLetter) return;
+
         const timer = setTimeout(addLetter, state.dotDuration * 3);
         return () => clearTimeout(timer);
     }, [state.currentLetter, addLetter, state.dotDuration]);
 
-    /*
-    * モールス信号の入力が変更された場合に文字を追加する
-    */
+    const setDotDuration = useCallback((duration: number) => {
+        setState(prev => ({
+            ...prev,
+            dotDuration: duration,
+            charGap: duration * 3,
+            wordGap: duration * 7
+        }));
+    }, []);
+
     const handlers: MorseCodeHandlers = {
         startPress,
         endPress,
         resetInput,
-        setDotDuration: (duration: number) => setState(prev => ({ ...prev, dotDuration: duration })),
-        setCharGap: (gap: number) => setState(prev => ({ ...prev, charGap: gap })),
-        setWordGap: (gap: number) => setState(prev => ({ ...prev, wordGap: gap })),
+        setDotDuration,
         setIsJapanese: (isJapanese: boolean) => setState(prev => ({ ...prev, isJapanese }))
     };
 
