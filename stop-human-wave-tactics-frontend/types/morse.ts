@@ -1,4 +1,4 @@
-import React from 'react';
+import { PointerEvent } from 'react';
 
 export interface MorseCodeState {
     morseInput: string;
@@ -11,8 +11,8 @@ export interface MorseCodeState {
 }
 
 export interface MorseCodeHandlers {
-    startPress: (e: React.TouchEvent | React.MouseEvent) => void;
-    endPress: (e: React.TouchEvent | React.MouseEvent) => void;
+    startPress: (e: PointerEvent) => void;
+    endPress: (e: PointerEvent) => void;
     resetInput: () => void;
     setDotDuration: (duration: number) => void;
     setIsJapanese: (isJapanese: boolean) => void;

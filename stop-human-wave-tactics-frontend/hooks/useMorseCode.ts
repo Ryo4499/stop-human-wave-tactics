@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import { useState, useCallback, useRef, useEffect, PointerEvent } from 'react';
 import { useAudio } from './useAudio';
 import { MorseCodeState, MorseCodeHandlers } from "../types/morse";
 import { englishMorseCode, japaneseMorseCode } from '../lib/morse-code';
@@ -85,7 +85,7 @@ export const useMorseCode = (): [MorseCodeState, MorseCodeHandlers] => {
     }, [state.currentLetter]);
 
     // 押下開始処理の改善
-    const startPress = useCallback((e: React.PointerEvent) => {
+    const startPress = useCallback((e: PointerEvent) => {
         e.preventDefault();
 
         // 既にアクティブな場合は確実にクリーンアップ
@@ -105,7 +105,7 @@ export const useMorseCode = (): [MorseCodeState, MorseCodeHandlers] => {
     }, [cleanup, startTone]);
 
     // 押下終了処理の改善
-    const endPress = useCallback((e: React.PointerEvent) => {
+    const endPress = useCallback((e: PointerEvent) => {
         e.preventDefault();
 
         if (!isActiveRef.current) return;
