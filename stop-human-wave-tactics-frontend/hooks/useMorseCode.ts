@@ -2,8 +2,9 @@ import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { useAudio } from './useAudio';
 import { MorseCodeState, MorseCodeHandlers } from "../types/morse";
 import { englishMorseCode, japaneseMorseCode } from '../lib/morse-code';
-import type { NodeJS } from 'node';
 import { useLocale } from "../lib/locale"
+
+type TimeoutHandle = ReturnType<typeof setTimeout>;
 
 export const useMorseCode = (): [MorseCodeState, MorseCodeHandlers] => {
     const { locale } = useLocale();
@@ -19,7 +20,7 @@ export const useMorseCode = (): [MorseCodeState, MorseCodeHandlers] => {
 
     const { startTone, stopTone } = useAudio();
     const isTouchActiveRef = useRef(false);
-    const touchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const touchTimeoutRef = useRef<TimeoutHandle | null>(null);
     const pressStartTime = useRef<number>(0);
 
     /*
