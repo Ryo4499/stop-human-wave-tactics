@@ -20,6 +20,8 @@
   "morse_code_column_code": "コード",
   "japanese_mode": "日本語モード",
   "dot_duration": "ドット持続時間",
+  "character_gap": "文字間隔",
+  "word_gap": "単語間隔",
   "morse_code_input": "入力",
   "morse_code_output": "変換結果",
   "morse_code_description": "クリックまたはスペースキーで入力\n短押し: ・ 長押し: -",

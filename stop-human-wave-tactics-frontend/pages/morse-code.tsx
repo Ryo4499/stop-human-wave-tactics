@@ -1,25 +1,15 @@
 import React from "react";
-import Grid from "@mui/material/Unstable_Grid2";
-import Typography from "@mui/material/Typography";
-import Stack from "@mui/material/Stack";
-import Switch from "@mui/material/Switch";
-import Slider from "@mui/material/Slider";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Button from "@mui/material/Button";
-import RefreshIcon from "@mui/icons-material/Refresh";
-import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import { useState, useEffect, useCallback, useRef, useMemo } from "react";
-import type { NodeJS } from "node";
 import { request } from "graphql-request";
 import useSWR from "swr";
-import { useLocale } from "../lib/locale";
 import type { NextPage } from "next";
+import { Box, Grid } from '@mui/material';
+import { MorseCodeButton } from '../components/MorseCode/MorseCodeButton';
+import { MorseCodeOutput } from '../components/MorseCode/MorseCodeOutput';
+import { MorseCodeControls } from '../components/MorseCode/MorseCodeControls';
+import { MorseCodeTable } from '../components/MorseCode/MorseCodeTable';
+import { MorseCodeResetButton } from "../components/MorseCode/MorseCodeResetButton";
+import { useMorseCode } from '../hooks/useMorseCode';
+import { useLocale } from "../lib/locale";
 import Sidebar from "../components/Common/Sidebar";
 import { englishMorseCode, japaneseMorseCode } from "../lib/morse-code";
 import { getCategoriesAndTags } from "../graphql/getCategoriesAndTags";
@@ -75,180 +65,8 @@ export const getStaticProps = async ({ locale }) => {
 };
 
 const MorseCodeContent = () => {
+  const [state, handlers] = useMorseCode();
   const { t } = useLocale();
-  const typo = (text: string) =>
-    text.split("\n").map((line, key) => (
-      <Typography key={key} variant="body1" color="text.secondary">
-        {line}
-      </Typography>
-    ));
-  const site_info = typo(t.site_text);
-  const [morseInput, setMorseInput] = useState<string>("");
-  const [currentLetter, setCurrentLetter] = useState<string>("");
-  const [result, setResult] = useState<string>("");
-  const [dotDuration, setDotDuration] = useState<number>(250);
-  const [charGap, setCharGap] = useState(500);
-  const [wordGap, setWordGap] = useState(1000);
-  const [isJapanese, setIsJapanese] = useState<boolean>(false);
-  const [isPressed, setIsPressed] = useState(false);
-  const isTouchActiveRef = useRef(false);
-  const touchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const lastTouchRef = useRef<number>(0);
-  const MIN_TOUCH_INTERVAL = 100;
-  const audioContext = useRef<AudioContext | null>(null);
-  const oscillator = useRef<OscillatorNode | null>(null);
-  const pressStartTime = useRef<number>(0);
-  const morseCode = useMemo(() => isJapanese ? japaneseMorseCode : englishMorseCode, [isJapanese]);
-
-  const startPress = useCallback((e: React.TouchEvent | React.MouseEvent) => {
-    // タッチイベントの場合のみ preventDefault を呼び出し
-    if ('touches' in e) {
-      e.preventDefault();
-    }
-
-    // すでにアクティブな場合は何もしない
-    if (isTouchActiveRef.current) {
-      return;
-    }
-
-    isTouchActiveRef.current = true;
-    pressStartTime.current = new Date().getTime();
-
-    if (!audioContext.current) {
-      audioContext.current = new (window.AudioContext ||
-        (window as any).webkitAudioContext)();
-    }
-    oscillator.current = audioContext.current.createOscillator();
-    oscillator.current.type = "sine";
-    oscillator.current.frequency.setValueAtTime(
-      600,
-      audioContext.current.currentTime,
-    );
-    oscillator.current.connect(audioContext.current.destination);
-    oscillator.current.start();
-
-    // 安全対策: 5秒後に強制終了
-    touchTimeoutRef.current = setTimeout(() => {
-      if (isTouchActiveRef.current) {
-        endPress(e);
-      }
-    }, 5000);
-  }, []);
-
-  const endPress = useCallback((e: React.TouchEvent | React.MouseEvent) => {
-    // タッチイベントの場合のみ preventDefault を呼び出し
-    if ('touches' in e) {
-      e.preventDefault();
-    }
-
-    // アクティブでない場合は何もしない
-    if (!isTouchActiveRef.current) {
-      return;
-    }
-
-    isTouchActiveRef.current = false;
-
-    if (touchTimeoutRef.current) {
-      clearTimeout(touchTimeoutRef.current);
-      touchTimeoutRef.current = null;
-    }
-
-    const duration = new Date().getTime() - pressStartTime.current;
-    if (duration > wordGap) {
-      setCurrentLetter(prev => prev + ' / ');
-    } else if (duration > charGap) {
-      setCurrentLetter(prev => prev + ' ');
-    }
-    setCurrentLetter((prev) => prev + (duration < dotDuration ? "." : "-"));
-
-    if (oscillator.current) {
-      oscillator.current.stop();
-      oscillator.current = null;
-    }
-
-    // タッチ終了後、短い遅延を設けてフラグをリセット
-    setTimeout(() => {
-      isTouchActiveRef.current = false;
-    }, 50);
-  }, [dotDuration, charGap, wordGap]);
-
-
-  const addLetter = useCallback(() => {
-    if (currentLetter) {
-      setMorseInput((prev) => prev + currentLetter + " ");
-      setCurrentLetter("");
-    }
-  }, [currentLetter]);
-
-  const updateResult = useCallback(() => {
-    const decoded = morseInput
-      .trim()
-      .split(" ")
-      .map((code) => morseCode[code] || "?")
-      .join("");
-    setResult(decoded);
-  }, [morseInput, morseCode]);
-
-  const resetInput = useCallback(() => {
-    setMorseInput("");
-    setCurrentLetter("");
-    setResult("");
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-      if (oscillator.current) {
-        oscillator.current.stop();
-        oscillator.current = null;
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    updateResult();
-  }, [morseInput, updateResult]);
-
-  useEffect(() => {
-    const timer = setTimeout(addLetter, dotDuration * 3);
-    return () => clearTimeout(timer);
-  }, [currentLetter, addLetter, dotDuration]);
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.code === "Space" && !e.repeat) {
-        e.preventDefault();
-        startPress();
-      }
-    };
-
-    const handleKeyUp = (e: KeyboardEvent) => {
-      if (e.code === "Space") {
-        e.preventDefault();
-        endPress();
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    document.addEventListener("keyup", handleKeyUp);
-
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      document.removeEventListener("keyup", handleKeyUp);
-    };
-  }, [startPress, endPress]);
-  const changedDuration = (_, newValue) => {
-    setDotDuration(newValue as number);
-    resetInput();
-  };
-
-  const chunk = <T,>(arr: T[], size: number): T[][] =>
-    Array.from({ length: Math.ceil(arr.length / size) }, (_, i) =>
-      arr.slice(i * size, i * size + size),
-    );
 
   return (
     <Grid
@@ -264,193 +82,25 @@ const MorseCodeContent = () => {
         flexGrow: 1,
       }}
     >
-      <Grid textAlign="center" sx={{ my: { xs: 2 } }}>
-        <Typography color="text.primary" variant="h5" gutterBottom>
-          {t.morse_code_table}
-        </Typography>
+      <Grid>
+        <MorseCodeTable morseCode={state.isJapanese ? japaneseMorseCode : englishMorseCode} />
       </Grid>
-      <Stack textAlign="center" spacing={3}>
-        <Grid>
-          <Paper elevation={3}>
-            <TableContainer>
-              <Table size="small">
-                <TableHead>
-                  <TableRow>
-                    <TableCell
-                      variant="head"
-                      align="justify"
-                      sx={{ fontSize: "1.0rem" }}
-                    >
-                      {t.morse_code_column_char}
-                    </TableCell>
-                    <TableCell
-                      variant="head"
-                      align="justify"
-                      sx={{ fontSize: "1.0rem" }}
-                    >
-                      {t.morse_code_column_code}
-                    </TableCell>
-                    <TableCell
-                      variant="head"
-                      align="justify"
-                      sx={{ fontSize: "1.0rem" }}
-                    >
-                      {t.morse_code_column_char}
-                    </TableCell>
-                    <TableCell
-                      variant="head"
-                      align="justify"
-                      sx={{ fontSize: "1.0rem" }}
-                    >
-                      {t.morse_code_column_code}
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {chunk(Object.entries(morseCode), 2).map(
-                    ([left, right], index) => (
-                      <TableRow key={index}>
-                        <TableCell
-                          align="justify"
-                          sx={{ color: "text.secondary" }}
-                        >
-                          {left[1]}
-                        </TableCell>
-                        <TableCell
-                          align="justify"
-                          sx={{ fontSize: "2rem", color: "text.secondary" }}
-                        >
-                          {left[0]}
-                        </TableCell>
-                        {right && (
-                          <>
-                            <TableCell
-                              align="justify"
-                              sx={{ color: "text.secondary" }}
-                            >
-                              {right[1]}
-                            </TableCell>
-                            <TableCell
-                              align="justify"
-                              sx={{ fontSize: "2rem", color: "text.secondary" }}
-                            >
-                              {right[0]}
-                            </TableCell>
-                          </>
-                        )}
-                      </TableRow>
-                    ),
-                  )}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Paper>
-        </Grid>
-        <Grid>
-          <Typography variant="body1" color="text.secondary" gutterBottom>
-            {t.japanese_mode}
-          </Typography>
-          <Switch
-            color="primary"
-            checked={isJapanese}
-            onChange={(e) => setIsJapanese(e.target.checked)}
-          />
-        </Grid>
-        <Grid>
-          <Box>
-            <Typography
-              id="dot-duration-slider"
-              color="text.secondary"
-              gutterBottom
-            >
-              {t.dot_duration}: {dotDuration}ms
-            </Typography>
-            <Slider
-              color="primary"
-              value={dotDuration}
-              onChange={changedDuration}
-              aria-labelledby="dot-duration-slider"
-              valueLabelDisplay="auto"
-              sx={{ width: "70%" }}
-              marks
-              step={10}
-              min={150}
-              max={350}
-            />
-            <Typography>Character Gap: {charGap}ms</Typography>
-            <Slider value={charGap} onChange={(_, value) => setCharGap(value as number)} min={100} max={1000} />
-            <Typography>Word Gap: {wordGap}ms</Typography>
-            <Slider value={wordGap} onChange={(_, value) => setWordGap(value as number)} min={500} max={2000} />
-          </Box>
-        </Grid>
-
-        <Grid>
-          <Typography
-            variant="body1"
-            color="text.secondary"
-            gutterBottom
-            paragraph={true}
-            sx={{ whiteSpace: "pre-line" }}
-          >
-            {t.morse_code_description}
-          </Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            size="large"
-            sx={{
-              width: "9rem",
-              height: "9rem",
-              borderRadius: "20%",
-              fontSize: "1.2rem",
-              touchAction: "none", // タッチ操作を無効化
-              userSelect: "none", // テキスト選択を防止
-              WebkitTapHighlightColor: "transparent", // タップ時のハイライトを無効化
-            }}
-            onTouchStart={startPress}
-            onTouchEnd={endPress}
-            onTouchCancel={endPress}
-            // マウスイベントも残しておく（PCでの使用のため）
-            onMouseDown={(e) => {
-              if (!('touches' in e)) startPress(e);
-            }}
-            onMouseUp={(e) => {
-              if (!('touches' in e)) endPress(e);
-            }}
-          ></Button>
-        </Grid>
-        <Grid>
-          <Button
-            variant="contained"
-            startIcon={<RefreshIcon />}
-            onClick={resetInput}
-          >
-            {t.reset}
-          </Button>
-        </Grid>
-        <Grid>
-          <Paper elevation={3} sx={{ py: 2, width: "70%", mx: "auto", my: 2 }}>
-            <Typography variant="h6" gutterBottom color="text.primary">
-              {t.morse_code_input}:
-            </Typography>
-            <Typography
-              variant="body1"
-              color="text.secondary"
-              sx={{ fontSize: "2rem" }}
-            >
-              {morseInput + currentLetter}
-            </Typography>
-          </Paper>
-          <Paper elevation={3} sx={{ py: 2, width: "70%", mx: "auto", my: 2 }}>
-            <Typography variant="h6" gutterBottom color="text.primary">
-              {t.morse_code_output}:
-            </Typography>
-            <Typography variant="body1" color="text.secondary">
-              {result}
-            </Typography>
-          </Paper>
-        </Grid>
-      </Stack>
+      <Grid>
+        <MorseCodeControls state={state} handlers={handlers} />
+      </Grid>
+      <Grid>
+        <Box display="flex" flexDirection="column" alignItems="center" my={4}>
+          <MorseCodeButton handlers={handlers} />
+        </Box>
+      </Grid>
+      <Grid>
+        <Box display="flex" justifyContent="center" mb={4}>
+          <MorseCodeResetButton handlers={handlers} />
+        </Box>
+      </Grid>
+      <Grid>
+        <MorseCodeOutput input={state.morseInput + state.currentLetter} output={state.result} />
+      </Grid>
     </Grid>
   );
 };
