@@ -2,8 +2,11 @@ server {
         listen 80;
 
         server_name ${DOMAIN};
-        limit_req zone=one burst=5 nodelay;
         root /usr/share/nginx/html;
+
+        location ~ ^/.well-known {
+                root /usr/share/nginx/html;
+        }
 
         location / {
                 root /usr/share/nginx/html;

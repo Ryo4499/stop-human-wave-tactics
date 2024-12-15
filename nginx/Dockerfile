@@ -13,6 +13,8 @@ RUN apk update && \
     echo $TZ > /etc/timezone && \
     ln -sf /usr/share/zoneinfo/$TZ /etc/localtime
 
+#COPY ./conf.d/default.conf.txt /etc/nginx/conf.d/default.conf
+
 COPY ./nginx.conf.template /etc/nginx/nginx.conf.template
 COPY ./conf.d/default.conf.template /etc/nginx/conf.d/default.conf.template
 
