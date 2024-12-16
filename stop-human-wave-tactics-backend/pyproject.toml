@@ -5,14 +5,27 @@ description = "Add your description here"
 readme = "README.md"
 authors = [{ name = "Ryo Arai", email = "ryo.p4499@gmail.com" }]
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "fastapi>=0.115.6",
+    "granian>=1.7.0",
+    "pydantic>=2.10.3",
+    "sqlalchemy>=2.0.36",
+    "strawberry-graphql>=0.254.0",
+]
 
 [tool.uv]
-default-groups = ["dev", "test"]
+default-groups = ["dev"]
 
 [dependency-groups]
-dev = ["mypy>=1.13.0", "mypy-extensions>=1.0.0", "ruff>=0.8.3"]
-test = ["pytest-mock>=3.14.0", "pytest>=8.3.4", "pytest-cov>=6.0.0"]
+dev = [
+    "mypy>=1.13.0",
+    "mypy-extensions>=1.0.0",
+    "ruff>=0.8.3",
+    "strawberry-graphql[debug-server]>=0.254.0",
+    "pytest-mock>=3.14.0",
+    "pytest>=8.3.4",
+    "pytest-cov>=6.0.0",
+]
 
 [project.optional-dependencies]
 cli = ["rich", "click"]
