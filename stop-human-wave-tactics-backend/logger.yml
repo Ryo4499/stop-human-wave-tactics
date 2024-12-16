@@ -1,0 +1,25 @@
+version: 1
+disable_existing_loggers: False
+formatters:
+  simple_fmt:
+    format: "%(asctime)s - %(name)s:%(lineno)s %(funcName)s - %(levelname)s - %(message)s"
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: DEBUG
+    formatter: simple_fmt
+    stream: ext://sys.stdout
+  fileHandler:
+    class: logging.FileHandler
+    level: INFO
+    formatter: simple_fmt
+    encoding: "utf-8"
+    filename: logs/stop-human-wave-tactics-backend.log
+loggers:
+  stop-human-wave-tactics-backend:
+    level: INFO
+    handler: [fileHandler, consoleHandler]
+    propagate: no
+root:
+  level: DEBUG
+  handlers: [console]
