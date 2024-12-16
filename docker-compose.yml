@@ -304,25 +304,16 @@ services:
     ports:
       - 127.0.0.1:$BACK_PORT:$BACK_PORT
     entrypoint: sh
-    command:
-      - -c
-      - |
-        if [ "${NODE_ENV}" = "production" ]; then \
-          yarn build && \
-          yarn start; \
-        else \
-          yarn dev; \
-        fi
     depends_on:
       db:
         condition: service_healthy
     restart: always
-    healthcheck:
-      test: wget --spider back:${BACK_PORT}${ADMIN_URL}
-      interval: 5s
-      retries: 24
-      start_period: 60s
-      timeout: 3s
+    #healthcheck:
+    #  test: wget --spider back:${BACK_PORT}${ADMIN_URL}
+    #  interval: 5s
+    #  retries: 24
+    #  start_period: 60s
+    #  timeout: 3s
     networks:
       db_net:
       app_net:
