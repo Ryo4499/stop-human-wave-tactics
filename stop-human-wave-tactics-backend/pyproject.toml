@@ -1,0 +1,26 @@
+[project]
+name = "stop-human-wave-tactics-backend"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [{ name = "Ryo Arai", email = "ryo.p4499@gmail.com" }]
+requires-python = ">=3.12"
+dependencies = []
+
+[tool.uv]
+default-groups = ["dev", "test"]
+
+[dependency-groups]
+dev = ["mypy>=1.13.0", "mypy-extensions>=1.0.0", "ruff>=0.8.3"]
+test = ["pytest-mock>=3.14.0", "pytest>=8.3.4", "pytest-cov>=6.0.0"]
+
+[project.optional-dependencies]
+cli = ["rich", "click"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/stop-human-wave-tactics-backend"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = ["-sv"]

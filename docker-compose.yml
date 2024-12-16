@@ -9,7 +9,7 @@ services:
       context: ./certbot
       dockerfile: Dockerfile
       args:
-        MY_USER: $MY_USER
+        HOST_USER: $HOST_USER
     volumes:
       - type: bind
         source: ./certbot/letsencrypt
@@ -280,12 +280,12 @@ services:
       args:
         HOST_UID: $HOST_UID
         HOST_GID: $HOST_GID
-        MY_USER: $MY_USER
-        MY_GROUP: $MY_GROUP
+        HOST_USER: $HOST_USER
+        HOST_GROUP: $HOST_GROUP
         NODE_ENV: $NODE_ENV
         TZ: $TZ
-    working_dir: "/home/${MY_USER}/stop-human-wave-tactics-backend"
-    user: $MY_USER:$MY_GROUP
+    working_dir: "/home/${HOST_USER}/stop-human-wave-tactics-backend"
+    user: $HOST_USER:$HOST_GROUP
     secrets:
       - DB_NAME
       - DB_USER
@@ -300,10 +300,7 @@ services:
     volumes:
       - type: bind
         source: ./stop-human-wave-tactics-backend
-        target: "/home/${MY_USER}/stop-human-wave-tactics-backend"
-      - type: volume
-        source: backModules
-        target: "/node_modules"
+        target: "/home/${HOST_USER}/stop-human-wave-tactics-backend"
     ports:
       - 127.0.0.1:$BACK_PORT:$BACK_PORT
     entrypoint: sh
@@ -342,18 +339,18 @@ services:
       args:
         HOST_UID: $HOST_UID
         HOST_GID: $HOST_GID
-        MY_USER: $MY_USER
-        MY_GROUP: $MY_GROUP
+        HOST_USER: $HOST_USER
+        HOST_GROUP: $HOST_GROUP
         NODE_ENV: $NODE_ENV
         DOMAIN: $DOMAIN
         TZ: $TZ
     <<: *env_tty
-    working_dir: "/home/${MY_USER}/stop-human-wave-tactics-frontend"
-    user: $MY_USER:$MY_GROUP
+    working_dir: "/home/${HOST_USER}/stop-human-wave-tactics-frontend"
+    user: $HOST_USER:$HOST_GROUP
     volumes:
       - type: bind
         source: ./stop-human-wave-tactics-frontend
-        target: "/home/${MY_USER}/stop-human-wave-tactics-frontend"
+        target: "/home/${HOST_USER}/stop-human-wave-tactics-frontend"
       - type: volume
         source: frontModules
         target: "/node_modules"
@@ -415,7 +412,6 @@ volumes:
   grafanaData:
   dbData:
   frontModules:
-  backModules:
 
 networks:
   default:

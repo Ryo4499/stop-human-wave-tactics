@@ -2,8 +2,8 @@ FROM node:20-alpine
 
 ARG HOST_UID
 ARG HOST_GID
-ARG MY_USER
-ARG MY_GROUP
+ARG HOST_USER
+ARG HOST_GROUP
 ARG NODE_ENV
 ARG TZ
 
@@ -15,21 +15,21 @@ RUN apk update && \
     ln -sf /usr/share/zoneinfo/$TZ /etc/localtime && \
     npm install -g npm && npm install -g --force yarn && \
     npm install -g npm-check-updates && mkdir /node_modules && \
-    usermod -l ${MY_USER} -d /home/${MY_USER} node && \
-    groupmod -n ${MY_GROUP} node && \
-    usermod -d /home/${MY_USER} -m ${MY_USER} && \
-    chown ${MY_USER}:${MY_GROUP} /node_modules
+    usermod -l ${HOST_USER} -d /home/${HOST_USER} node && \
+    groupmod -n ${HOST_GROUP} node && \
+    usermod -d /home/${HOST_USER} -m ${HOST_USER} && \
+    chown ${HOST_USER}:${HOST_GROUP} /node_modules
 
-USER $MY_USER
+USER $HOST_USER
 
-WORKDIR "/home/${MY_USER}/stop-human-wave-tactics-frontend"
+WORKDIR "/home/${HOST_USER}/stop-human-wave-tactics-frontend"
 
-RUN chown $MY_USER:$MY_GROUP -R ./
+RUN chown $HOST_USER:$HOST_GROUP -R ./
 
-COPY --chown=$MY_USER:$MY_GROUP ./.yarnrc .
-COPY --chown=$MY_USER:$MY_GROUP ./package.json .
-COPY --chown=$MY_USER:$MY_GROUP ./yarn.lock .
-COPY --chown=$MY_USER:$MY_GROUP ./public/ ./
+COPY --chown=$HOST_USER:$HOST_GROUP ./.yarnrc .
+COPY --chown=$HOST_USER:$HOST_GROUP ./package.json .
+COPY --chown=$HOST_USER:$HOST_GROUP ./yarn.lock .
+COPY --chown=$HOST_USER:$HOST_GROUP ./public/ ./
 
 ENV PATH=/node_modules/.bin:$PATH
 
