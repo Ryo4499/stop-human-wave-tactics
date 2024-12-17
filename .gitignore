@@ -11,3 +11,4 @@
 .secrets/
 backup/
 *db_bk*
+assets/

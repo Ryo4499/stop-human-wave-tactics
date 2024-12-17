@@ -301,6 +301,9 @@ services:
       - type: bind
         source: ./stop-human-wave-tactics-backend
         target: "/home/${HOST_USER}/stop-human-wave-tactics-backend"
+      - type: bind
+        source: ./assets
+        target: "/home/${HOST_USER}/stop-human-wave-tactics-backend/assets"
     ports:
       - 127.0.0.1:$BACK_PORT:$BACK_PORT
     entrypoint: sh
