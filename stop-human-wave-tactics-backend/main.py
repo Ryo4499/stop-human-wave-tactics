@@ -1,44 +1,41 @@
 import uvicorn
 import strawberry
 from fastapi import FastAPI
-from strawberry.asgi import GraphQL
-from typing import List
-
-
-@strawberry.type
-class Book:
-    id: int
-    title: str
-    author: str
-
-
-@strawberry.type
-class Query:
-    @strawberry.field
-    def books(self) -> List[Book]:
-        return [
-            Book(id=1, title="GraphQLの入門", author="山田太郎"),
-            Book(id=2, title="FastAPIで作るWeb API", author="鈴木次郎"),
-        ]
+from strawberry.fastapi import GraphQLRouter
+from pathlib import Path
+from src.stop_human_wave_tactics_backend.entities.configs.app_config import AppConfig
+from src.stop_human_wave_tactics_backend.utils.logger import setup_logger
+from src.stop_human_wave_tactics_backend.entities.schemas import Query, Mutation
+from src.stop_human_wave_tactics_backend.infrastructure.database import Database
 
 
 def create_app():
-    # config_path = Path("app_config.yml")
-    # app_config = AppConfig.read_config(config_path)
-    # config_path = Path("logger_config.yml")
-    # setup_logger(config_path)
-    schema = strawberry.Schema(query=Query)
-    graphql_app = GraphQL(schema)
+    config_path = Path("app_config.yml")
+    app_config = AppConfig.read_config(config_path)
+    config_path = Path("logger.yml")
+    setup_logger(config_path)
     app = FastAPI()
+
+    # データベース接続の初期化
+    db = Database(app_config.db_url)
+
+    async def get_context() -> dict[str, Database]:
+        return {"db": db}
+
+    schema = strawberry.Schema(query=Query, mutation=Mutation)
+    # GraphQLルーターの設定
+    graphql_app = GraphQLRouter(schema=schema, context_getter=get_context)
+
+    # GraphQLエンドポイントの追加
+    app.include_router(graphql_app, prefix="/graphql")
 
     @app.get("/")
     async def root():
         return {"message": "Hello GraphQL with FastAPI and Granian!"}
 
-    app.mount("/graphql", graphql_app)
     return app
 
 
 app = create_app()
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app)

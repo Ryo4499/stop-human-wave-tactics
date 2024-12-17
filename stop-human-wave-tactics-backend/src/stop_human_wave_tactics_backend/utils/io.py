@@ -16,7 +16,7 @@ def read_text(file_path: Path) -> str:
         return f.read()
 
 
-def read_yml(config_path: Path, **kwargs) -> dict[str, Any]:
+def read_yml(config_path: Path) -> dict[str, Any]:
     """ymlを読み込み、dictとして返す
 
     Args:
