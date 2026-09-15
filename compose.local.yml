@@ -1,0 +1,37 @@
+services:
+  db:
+    image: postgres:14-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-archive}
+      POSTGRES_USER: ${POSTGRES_USER:-archive}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}
+    volumes:
+      - local-db:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"']
+      interval: 2s
+      timeout: 5s
+      retries: 30
+  back:
+    build: ./stop-human-wave-tactics-backend
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-archive}
+      POSTGRES_USER: ${POSTGRES_USER:-archive}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}
+      ADMIN_TOKEN: ${ADMIN_TOKEN:?Set ADMIN_TOKEN}
+      DATABASE_HOST: db
+    ports:
+      - '127.0.0.1:${BACK_PORT:-18000}:8000'
+    depends_on:
+      db:
+        condition: service_healthy
+  front:
+    build: ./stop-human-wave-tactics-frontend
+    environment:
+      BACKEND_URL: http://back:8000
+    ports:
+      - '127.0.0.1:${FRONT_PORT:-13000}:3000'
+    depends_on:
+      - back
+volumes:
+  local-db:

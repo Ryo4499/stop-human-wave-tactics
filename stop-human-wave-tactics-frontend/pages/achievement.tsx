@@ -1,12 +1,12 @@
-import { request } from "graphql-request";
+import { contentProps } from "../lib/content";
+
 import Grid from "@mui/material/Unstable_Grid2";
 import Link from "next/link";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
 import type { NextPage } from "next";
-import useSWR from "swr";
-import { getBackendGraphqlURL } from "../lib/graphqlClient";
+
 import {
   CategoryEntityResponseCollection,
   GetCategoriesAndTagsQuery,
@@ -17,46 +17,9 @@ import { GraphqlError } from "../components/Common/DisplayError";
 import { useLocale } from "../lib/locale";
 import Sidebar from "../components/Common/Sidebar";
 import Meta from "../components/Common/Meta";
-import { getCategoriesAndTags } from "../graphql/getCategoriesAndTags";
 
-export const getStaticProps = async ({ locale }) => {
-  const variables = {
-    categoryFilters: {},
-    tagFilters: {},
-    categoryPagination: {},
-    tagPagination: {},
-    categorySort: [],
-    tagSort: [],
-    locale: locale,
-  };
-  const result = await request<{
-    categories: CategoryEntityResponseCollection;
-    tags: TagEntityResponseCollection;
-  }>(getBackendGraphqlURL(), getCategoriesAndTags, variables).then(
-    (res: GetCategoriesAndTagsQuery) => {
-      if (res.categories == null && res.tags == null) {
-        return {
-          props: {
-            categories: null,
-            tags: null,
-            variables: variables,
-          },
-          notFound: true,
-          revalidate: 3600,
-        };
-      } else {
-        return {
-          props: {
-            categories: res.categories,
-            tags: res.tags,
-            variables: variables,
-          },
-          notFound: false,
-          revalidate: 3600,
-        };
-      }
-    },
-  );
+export const getServerSideProps = async (context) => {
+  const result = await contentProps(context);
   return result;
 };
 
@@ -164,17 +127,8 @@ const Achievement: NextPage<CategoriesAndTagsResponseProps> = ({
   tags,
   variables,
 }) => {
-  const { data, error } = useSWR([getCategoriesAndTags, variables], {
-    onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
-      // Never retry on 404.
-      if (error.status === 404) return;
-      // Only retry up to 10 times.
-      if (retryCount >= 10) return;
-      // Retry after 3 seconds.
-      setTimeout(() => revalidate({ retryCount }), 3000);
-    },
-    fallbackData: { categories: categories, tags: tags, variables: variables },
-  });
+  const data = { categories, tags };
+  const error = undefined;
   if (data != null) {
     return (
       <Grid container sx={{ flexGrow: 1 }}>

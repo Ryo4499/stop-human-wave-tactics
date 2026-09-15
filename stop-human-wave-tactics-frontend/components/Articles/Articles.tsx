@@ -100,7 +100,6 @@ export const Articles = ({ articles, filter }: ArticlesProps) => {
           direction="row"
           xs={12}
           sx={{ flexGrow: 1 }}
-          spacing={0.2}
           mb={2}
         >
           {articles?.data.map((article, i) => {

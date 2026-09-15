@@ -307,6 +307,10 @@ services:
     ports:
       - 127.0.0.1:$BACK_PORT:$BACK_PORT
     entrypoint: sh
+    #command:
+    #  - -c
+    #  - |
+    #    uv run granian --interface asgi main:app --port $BACK_PORT
     depends_on:
       db:
         condition: service_healthy

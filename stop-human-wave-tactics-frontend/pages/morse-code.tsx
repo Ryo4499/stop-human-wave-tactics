@@ -1,19 +1,17 @@
+import { contentProps } from "../lib/content";
 import React from "react";
-import { request } from "graphql-request";
-import useSWR from "swr";
+
 import type { NextPage } from "next";
-import { Box, Grid } from '@mui/material';
-import { MorseCodeButton } from '../components/MorseCode/MorseCodeButton';
-import { MorseCodeOutput } from '../components/MorseCode/MorseCodeOutput';
-import { MorseCodeControls } from '../components/MorseCode/MorseCodeControls';
-import { MorseCodeTable } from '../components/MorseCode/MorseCodeTable';
+import { Box, Grid } from "@mui/material";
+import { MorseCodeButton } from "../components/MorseCode/MorseCodeButton";
+import { MorseCodeOutput } from "../components/MorseCode/MorseCodeOutput";
+import { MorseCodeControls } from "../components/MorseCode/MorseCodeControls";
+import { MorseCodeTable } from "../components/MorseCode/MorseCodeTable";
 import { MorseCodeResetButton } from "../components/MorseCode/MorseCodeResetButton";
-import { useMorseCode } from '../hooks/useMorseCode';
+import { useMorseCode } from "../hooks/useMorseCode";
 import { useLocale } from "../lib/locale";
 import Sidebar from "../components/Common/Sidebar";
 import { englishMorseCode, japaneseMorseCode } from "../lib/morse-code";
-import { getCategoriesAndTags } from "../graphql/getCategoriesAndTags";
-import { getBackendGraphqlURL } from "../lib/graphqlClient";
 import {
   CategoryEntityResponseCollection,
   GetCategoriesAndTagsQuery,
@@ -23,44 +21,8 @@ import { CategoriesAndTagsResponseProps } from "../types/general";
 import { GraphqlError } from "../components/Common/DisplayError";
 import Meta from "../components/Common/Meta";
 
-export const getStaticProps = async ({ locale }) => {
-  const variables = {
-    categoryFilters: {},
-    tagFilters: {},
-    categoryPagination: {},
-    tagPagination: {},
-    categorySort: [],
-    tagSort: [],
-    locale: locale,
-  };
-  const result = await request<{
-    categories: CategoryEntityResponseCollection;
-    tags: TagEntityResponseCollection;
-  }>(getBackendGraphqlURL(), getCategoriesAndTags, variables).then(
-    (res: GetCategoriesAndTagsQuery) => {
-      if (res.categories == null && res.tags == null) {
-        return {
-          props: {
-            categories: null,
-            tags: null,
-            variables: variables,
-          },
-          notFound: true,
-          revalidate: 3600,
-        };
-      } else {
-        return {
-          props: {
-            categories: res.categories,
-            tags: res.tags,
-            variables: variables,
-          },
-          notFound: false,
-          revalidate: 3600,
-        };
-      }
-    },
-  );
+export const getServerSideProps = async (context) => {
+  const result = await contentProps(context);
   return result;
 };
 
@@ -83,7 +45,9 @@ const MorseCodeContent = () => {
       }}
     >
       <Grid>
-        <MorseCodeTable morseCode={state.isJapanese ? japaneseMorseCode : englishMorseCode} />
+        <MorseCodeTable
+          morseCode={state.isJapanese ? japaneseMorseCode : englishMorseCode}
+        />
       </Grid>
       <Grid>
         <MorseCodeControls state={state} handlers={handlers} />
@@ -99,7 +63,10 @@ const MorseCodeContent = () => {
         </Box>
       </Grid>
       <Grid>
-        <MorseCodeOutput input={state.morseInput + state.currentLetter} output={state.result} />
+        <MorseCodeOutput
+          input={state.morseInput + state.currentLetter}
+          output={state.result}
+        />
       </Grid>
     </Grid>
   );
@@ -110,17 +77,8 @@ const MorseCode: NextPage<CategoriesAndTagsResponseProps> = ({
   tags,
   variables,
 }) => {
-  const { data, error } = useSWR([getCategoriesAndTags, variables], {
-    onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
-      // Never retry on 404.
-      if (error.status === 404) return;
-      // Only retry up to 10 times.
-      if (retryCount >= 10) return;
-      // Retry after 3 seconds.
-      setTimeout(() => revalidate({ retryCount }), 3000);
-    },
-    fallbackData: { categories: categories, tags: tags, variables: variables },
-  });
+  const data = { categories, tags };
+  const error = undefined;
   if (data != null) {
     return (
       <Grid container sx={{ flexGrow: 1 }}>

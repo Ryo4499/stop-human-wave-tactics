@@ -1,26 +1,35 @@
 # schemas/graphql.py
-from typing import List, Optional
+import hmac
+import os
+
 import strawberry
-from sqlalchemy import select, func
+from sqlalchemy import func, select
 from sqlalchemy.orm import selectinload
+from strawberry.permission import BasePermission
 
 from ..infrastructure.database import Database
-from .models import ArticleDB
-from .models import CategoryDB
-from .models import TagDB
-from .models import SEOMetadataDB
 from .graphql import (
     Article,
-    Category,
-    Tag,
-    ArticleInput,
-    ArticleUpdateInput,
-    PaginationInput,
     ArticleFilterInput,
+    ArticleInput,
     ArticleSortInput,
+    ArticleUpdateInput,
+    Category,
     PageInfo,
     PaginatedArticles,
+    PaginationInput,
+    Tag,
 )
+from .models import ArticleDB, CategoryDB, SEOMetadataDB, TagDB, article_tags
+
+
+class AdminPermission(BasePermission):
+    message = "A valid administrator bearer token is required"
+
+    def has_permission(self, source, info, **kwargs):
+        expected = os.environ.get("ADMIN_TOKEN", "")
+        supplied = info.context["request"].headers.get("authorization", "")
+        return bool(expected) and hmac.compare_digest(supplied, f"Bearer {expected}")
 
 
 @strawberry.type
@@ -28,7 +37,7 @@ class Query:
     @strawberry.field
     async def article(
         self, info: strawberry.Info, locale: str, slug: str
-    ) -> Optional[Article]:
+    ) -> Article | None:
         db: Database = info.context["db"]
         async with db.session() as session:
             query = (
@@ -38,7 +47,11 @@ class Query:
                     selectinload(ArticleDB.category),
                     selectinload(ArticleDB.tags),
                 )
-                .where(ArticleDB.locale == locale, ArticleDB.slug == slug)
+                .where(
+                    ArticleDB.locale == locale,
+                    ArticleDB.slug == slug,
+                    ArticleDB.published_at.is_not(None),
+                )
             )
             result = await session.execute(query)
             db_article = result.scalar_one_or_none()
@@ -52,9 +65,9 @@ class Query:
     async def articles(
         self,
         info: strawberry.Info,
-        pagination: Optional[PaginationInput] = None,
-        filter: Optional[ArticleFilterInput] = None,
-        sort: Optional[ArticleSortInput] = None,
+        pagination: PaginationInput | None = None,
+        filter: ArticleFilterInput | None = None,
+        sort: ArticleSortInput | None = None,
     ) -> PaginatedArticles:
         db: Database = info.context["db"]
         pagination = pagination or PaginationInput()
@@ -62,12 +75,27 @@ class Query:
         sort = sort or ArticleSortInput()
 
         async with db.session() as session:
+            if not 1 <= pagination.page or not 1 <= pagination.size <= 100:
+                raise ValueError(
+                    "Page must be positive and size must be between 1 and 100"
+                )
+            if sort.field not in {"published_at", "updated_at", "created_at", "id"}:
+                raise ValueError("Unsupported article sort field")
+
             # Base query
             query = select(ArticleDB).options(
                 selectinload(ArticleDB.seo_metadata),
                 selectinload(ArticleDB.category),
                 selectinload(ArticleDB.tags),
             )
+
+            query = query.where(ArticleDB.published_at.is_not(None))
+            if filter.id is not None:
+                query = query.where(ArticleDB.id == int(filter.id))
+            if filter.category_id is not None:
+                query = query.where(ArticleDB.category_id == int(filter.category_id))
+            if filter.tag_id is not None:
+                query = query.where(ArticleDB.tags.any(TagDB.id == int(filter.tag_id)))
 
             # Apply filters
             if filter.locale:
@@ -79,8 +107,8 @@ class Query:
                 )
 
             if filter.tag_slugs:
-                query = query.join(ArticleDB.tags).where(
-                    TagDB.slug.in_(filter.tag_slugs)
+                query = query.where(
+                    ArticleDB.tags.any(TagDB.slug.in_(filter.tag_slugs))
                 )
 
             if filter.search_query:
@@ -103,9 +131,9 @@ class Query:
 
             # Apply sorting
             sort_field = getattr(ArticleDB, sort.field)
-            if sort.order == "DESC":
+            if sort.order.value == "desc":
                 sort_field = sort_field.desc()
-            query = query.order_by(sort_field)
+            query = query.order_by(sort_field, ArticleDB.id)
 
             # Apply pagination
             query = query.offset((pagination.page - 1) * pagination.size).limit(
@@ -131,27 +159,47 @@ class Query:
             )
 
     @strawberry.field
-    async def categories(self, info: strawberry.Info) -> List[Category]:
+    async def categories(
+        self, info: strawberry.Info, locale: str | None = None
+    ) -> list[Category]:
         db: Database = info.context["db"]
         async with db.session() as session:
-            query = select(CategoryDB).order_by(CategoryDB.name)
+            count = select(func.count(ArticleDB.id)).where(
+                ArticleDB.category_id == CategoryDB.id,
+                ArticleDB.published_at.is_not(None),
+            )
+            if locale:
+                count = count.where(ArticleDB.locale == locale)
+            query = select(CategoryDB, count.scalar_subquery()).order_by(
+                CategoryDB.name
+            )
             result = await session.execute(query)
-            db_categories = result.scalars().all()
-            return [Category.from_db(category) for category in db_categories]
+            return [
+                Category.from_db(category, total) for category, total in result.all()
+            ]
 
     @strawberry.field
-    async def tags(self, info: strawberry.Info) -> List[Tag]:
+    async def tags(self, info: strawberry.Info, locale: str | None = None) -> list[Tag]:
         db: Database = info.context["db"]
         async with db.session() as session:
-            query = select(TagDB).order_by(TagDB.name)
+            count = (
+                select(func.count(ArticleDB.id))
+                .join(article_tags)
+                .where(
+                    article_tags.c.tag_id == TagDB.id,
+                    ArticleDB.published_at.is_not(None),
+                )
+            )
+            if locale:
+                count = count.where(ArticleDB.locale == locale)
+            query = select(TagDB, count.scalar_subquery()).order_by(TagDB.name)
             result = await session.execute(query)
-            db_tags = result.scalars().all()
-            return [Tag.from_db(tag) for tag in db_tags]
+            return [Tag.from_db(tag, total) for tag, total in result.all()]
 
 
 @strawberry.type
 class Mutation:
-    @strawberry.mutation
+    @strawberry.mutation(permission_classes=[AdminPermission])
     async def create_article(
         self, info: strawberry.Info, input: ArticleInput
     ) -> Article:
@@ -165,7 +213,7 @@ class Mutation:
                 canonical_url=input.seo.canonical_url,
                 og_title=input.seo.og_title,
                 og_description=input.seo.og_description,
-                thumbnail_url=input.seo.thumbnail_url,
+                og_image=input.seo.thumbnail_url,
             )
             session.add(seo_metadata)
             await session.flush()
@@ -181,7 +229,9 @@ class Mutation:
             # Get tags
             tags = []
             if input.tag_ids:
-                query = select(TagDB).where(TagDB.id.in_(input.tag_ids))
+                query = select(TagDB).where(
+                    TagDB.id.in_([int(id) for id in input.tag_ids])
+                )
                 result = await session.execute(query)
                 tags = result.scalars().all()
 
@@ -198,9 +248,10 @@ class Mutation:
             session.add(article)
             await session.flush()
 
+            await session.refresh(article)
             return Article.from_db(article)
 
-    @strawberry.mutation
+    @strawberry.mutation(permission_classes=[AdminPermission])
     async def update_article(
         self, info: strawberry.Info, id: strawberry.ID, input: ArticleUpdateInput
     ) -> Article:
@@ -229,7 +280,7 @@ class Mutation:
                 article.locale = input.locale
             if input.content is not None:
                 article.content = input.content
-            if input.published_at is not None:
+            if input.published_at is not strawberry.UNSET:
                 article.published_at = input.published_at
 
             # Update category
@@ -258,13 +309,43 @@ class Mutation:
                 if input.seo.og_description is not None:
                     article.seo_metadata.og_description = input.seo.og_description
                 if input.seo.thumbnail_url is not None:
-                    article.seo_metadata.thumbnail_url = input.seo.thumbnail_url
+                    article.seo_metadata.og_image = input.seo.thumbnail_url
 
             # Update tags
             if input.tag_ids is not None:
-                query = select(TagDB).where(TagDB.id.in_(input.tag_ids))
+                query = select(TagDB).where(
+                    TagDB.id.in_([int(id) for id in input.tag_ids])
+                )
                 result = await session.execute(query)
                 article.tags = result.scalars().all()
 
             await session.flush()
+            await session.refresh(article)
             return Article.from_db(article)
+
+    @strawberry.mutation(permission_classes=[AdminPermission])
+    async def create_category(
+        self, info: strawberry.Info, name: str, slug: str
+    ) -> Category:
+        async with info.context["db"].session() as session:
+            category = CategoryDB(name=name, slug=slug)
+            session.add(category)
+            await session.flush()
+            return Category.from_db(category)
+
+    @strawberry.mutation(permission_classes=[AdminPermission])
+    async def create_tag(self, info: strawberry.Info, name: str, slug: str) -> Tag:
+        async with info.context["db"].session() as session:
+            tag = TagDB(name=name, slug=slug)
+            session.add(tag)
+            await session.flush()
+            return Tag.from_db(tag)
+
+    @strawberry.mutation(permission_classes=[AdminPermission])
+    async def delete_article(self, info: strawberry.Info, id: strawberry.ID) -> bool:
+        async with info.context["db"].session() as session:
+            article = await session.get(ArticleDB, int(id))
+            if article is None:
+                return False
+            await session.delete(article)
+            return True

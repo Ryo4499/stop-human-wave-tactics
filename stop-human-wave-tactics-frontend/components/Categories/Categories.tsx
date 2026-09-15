@@ -26,7 +26,7 @@ export const Categories = ({ contents }: CategoriesProps) => {
         {contents.data.map((content) => {
           if (
             content.id != null &&
-            content.attributes?.articles?.data.length !== 0
+            (content.attributes?.articleCount || 0) > 0
           ) {
             return (
               <ListItem sx={{ pl: 4, py: 0.5 }} key={content.id} disablePadding>
@@ -38,7 +38,7 @@ export const Categories = ({ contents }: CategoriesProps) => {
                 >
                   <Typography color="text.link">
                     {content.attributes?.name} (
-                    {content.attributes?.articles?.data.length})
+                    {content.attributes?.articleCount})
                   </Typography>
                 </Link>
               </ListItem>

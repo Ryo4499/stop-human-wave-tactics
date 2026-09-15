@@ -1,6 +1,6 @@
 import "../styles/globals.css";
 import type { NextPage } from "next";
-import { SWRConfig } from "swr";
+
 import {
   createContext,
   StrictMode,
@@ -15,7 +15,7 @@ import { useRouter } from "next/router";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { darkPalette, lightPalette } from "../lib/theme";
 import mainParticle from "../styles/presets/basic.json";
-import { client } from "../lib/graphqlClient";
+
 import Layout from "../components/Layouts/Layout";
 import { loadSlim } from "@tsparticles/slim";
 import ParticlesComponents, { initParticlesEngine } from "@tsparticles/react";
@@ -85,32 +85,18 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
     },
   };
 
-  const fetcher = (query: any, variables: any) =>
-    client.request(query, variables);
-
   return (
     <StrictMode>
       <CssBaseline />
-      <SWRConfig
-        value={{
-          fetcher,
-          suspense: true,
-          errorRetryCount: 3,
-          revalidateIfStale: true,
-          revalidateOnMount: true,
-          shouldRetryOnError: false,
-        }}
-      >
-        <ThemeProvider theme={theme}>
-          <PageContext.Provider value={{ page, setPage }}>
-            <Layout>
-              <PsComponents />
-              <Component {...pageProps} />
-            </Layout>
-          </PageContext.Provider>
-        </ThemeProvider>
-        <GoogleTagManager gtmId={`${getGtmId()}`} />
-      </SWRConfig>
+      <ThemeProvider theme={theme}>
+        <PageContext.Provider value={{ page, setPage }}>
+          <Layout>
+            <PsComponents />
+            <Component {...pageProps} />
+          </Layout>
+        </PageContext.Provider>
+      </ThemeProvider>
+      <GoogleTagManager gtmId={`${getGtmId()}`} />
     </StrictMode>
   );
 };

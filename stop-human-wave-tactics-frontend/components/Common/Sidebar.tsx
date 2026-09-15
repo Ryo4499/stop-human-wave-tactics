@@ -73,7 +73,7 @@ const Sidebar = ({ categories, tags }: CategoriesAndTagsProps) => {
           <Avatar
             sx={{ width: "18vh", height: "18vh" }}
             alt="Avater"
-            src="/static/images/ar44.webp"
+            src="/ar44.webp"
           />
         </Grid>
         <Grid

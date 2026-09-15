@@ -129,6 +129,7 @@ export type BooleanFilterInput = {
 };
 
 export type Category = {
+  articleCount?: number;
   __typename?: 'Category';
   articles?: Maybe<ArticleRelationResponseCollection>;
   createdAt?: Maybe<Scalars['DateTime']['output']>;
@@ -901,6 +902,7 @@ export type StringFilterInput = {
 };
 
 export type Tag = {
+  articleCount?: number;
   __typename?: 'Tag';
   articles?: Maybe<ArticleRelationResponseCollection>;
   createdAt?: Maybe<Scalars['DateTime']['output']>;
